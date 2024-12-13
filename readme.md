@@ -27,4 +27,5 @@ ventilation:  !include custom_components/helios_vallox_ventilation/configuration
 IP and port can be adjusted in that file. No more configuration needed.
 
 
-**Please note: This software is still under development - we hit the end of the Alpha phase and it is working well for me, so I made it available to the public. Lot's of features are yet to come, including a graphical configuration in HA (although it's only IP and Port that need to be configured). Working on this right now.**
+### Please note
+**This software is still under development - we hit the end of the Alpha phase and it is working well for me, so I made it available to the public. Lot's of features are yet to come, including a graphical configuration in HA (although it's only IP and Port that need to be configured). Working on this right now.**
