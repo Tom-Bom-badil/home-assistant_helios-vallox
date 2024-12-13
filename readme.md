@@ -1,4 +1,4 @@
-This is the HA-adaption of my Python script that used to work in my old home automation system for >10 years. During that time, users have confirmed that the following models are compatible to the protocol implemented in this custom component:
+This is the HA-adaption of my Python script that used to work in my previous home automation system for >10 years (see here, also for Wiki, docs and how-to's - it will take a bit until I moved everything over here). Users have confirmed that the following models are compatible to the protocol implemented in this custom component:
 
 - Helios EC 200 Pro R/L
 - Helios EC 200 Pro R/L
@@ -9,4 +9,8 @@ This is the HA-adaption of my Python script that used to work in my old home aut
 - Vallox Digit SE
 - Vallox 130D (not all registers reported working or with same number, see below)
 
-The protocol we are utilizing for this custom integration is Modbus-like; however, it is not exactly Modbus, so an individual implementation is required. The communication is done through a RS485 to LAN adaptor.
+The protocol we are utilizing for reading and writing is Modbus-like; however, it is not exactly Modbus, so an individual implementation is required (pyModbus simply doesn't work for this).
+
+The HA implementation is now socket-based and doesn't need anymore serial tools like socat, netcat etc for communicating with a RS485-LAN/Wifi adaptor.
+
+Please note: This software is still under development - we hit the end of the Alpha phase and it is working well for me, so I made it available to the public.
