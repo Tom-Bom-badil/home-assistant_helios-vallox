@@ -1,4 +1,4 @@
-## Home Assistant: Integration for Helios / Vallox devices with RS485 Modbus (pre-EasyControls aka pre-2014 models)
+## Home Assistant: Integration for Helios / Vallox devices with RS485 Poerts (pre-EasyControls aka pre-2014 models)
 
 This is the HA-adaption of my Python script that used to work in my previous home automation system for >10 years (see [here](https://github.com/Tom-Bom-badil/helios/wiki), also for Wiki/docs/how-to's - it will take a bit until I moved everything over here). Users have confirmed that the following models are compatible to the protocol implemented in this custom component:
 
