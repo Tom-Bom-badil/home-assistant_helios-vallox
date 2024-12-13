@@ -24,8 +24,7 @@ Upload the directories and files with original pathes to your HA. Then add to yo
 ventilation:  !include custom_components/helios_vallox_ventilation/configuration.yaml
 ```
 
-Make sure `ventilation:` is at the outer left corner, no indentations.
-IP and port can be adjusted in `custom_components/helios_vallox_ventilation/configuration.yaml`. No more configuration needed.
+Make sure `ventilation:` is at the outer left corner, no indentations. IP and port can be adjusted in `custom_components/helios_vallox_ventilation/configuration.yaml`. No more configuration needed.
 
 
 ### Please note
