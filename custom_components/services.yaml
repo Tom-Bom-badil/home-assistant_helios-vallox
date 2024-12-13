@@ -1,0 +1,9 @@
+write_value:
+  description: "Writes a value to the ventilation system."
+  fields:
+    variable:
+      description: "The variable to write to (e.g., fanspeed, boost_mode)."
+      example: "fanspeed"
+    value:
+      description: "The value to set for the variable."
+      example: 5

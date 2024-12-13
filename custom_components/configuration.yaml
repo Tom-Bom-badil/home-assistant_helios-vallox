@@ -1,0 +1,184 @@
+
+  # All min/max/default values are taken from the Helios EC300 Pro manual.
+  # Vallox values may differ!
+  # (especially for heating - as per my knowldge, Helios is using pre-heating,
+  # Vallox is using post-heating)
+
+
+  ip_address: 192.168.178.38
+  port: 8234
+
+  sensors:
+
+    - name: fanspeed
+      friendly_name: Fan speed
+      min_value: 1
+      max_value: 8
+      icon: "mdi:speedometer-medium"
+
+    - name: "initial_fanspeed"
+      friendly_name: Initial fan speed after switching on
+      unit_of_measurement: "level"
+      min_value: 1
+      max_value: 8
+      default_value: 1
+      icon: "mdi:speedometer-slow"
+
+    - name: "max_fanspeed"
+      friendly_name: Maximum fan speed availabe to remotes
+      unit_of_measurement: "level"
+      min_value: 1
+      max_value: 8
+      default_value: 8
+      icon: "mdi:speedometer"
+
+    - name: "outside_temp"
+      unit_of_measurement: "°C"
+      device_class: "temperature"
+      state_class: "measurement"   # this means "read-only"
+      icon: "mdi:thermometer"
+
+    - name: "inlet_temp"
+      unit_of_measurement: "°C"
+      device_class: "temperature"
+      state_class: "measurement"
+      icon: "mdi:thermometer"
+
+    - name: "outlet_temp"
+      unit_of_measurement: "°C"
+      device_class: "temperature"
+      state_class: "measurement"
+      icon: "mdi:thermometer"
+
+    - name: "exhaust_temp"
+      unit_of_measurement: "°C"
+      device_class: "temperature"
+      state_class: "measurement"
+      icon: "mdi:thermometer"
+
+    - name: "bypass_setpoint"
+      unit_of_measurement: "°C"
+      min_value: 0
+      max_value: 25
+      default_value: 10
+      icon: "mdi:thermometer"
+
+    - name: "preheat_setpoint"
+      unit_of_measurement: "°C"
+      min_value: -10      # none according to manual, but limiting input options
+      max_value: 10       # none according to manual, but limiting input options
+      default_value: -3   # set to +5 to activate with defrost defaults below
+      icon: "mdi:thermometer"
+
+    - name: "defrost_setpoint"
+      unit_of_measurement: "°C"
+      min_value: -6
+      max_value: 15
+      default_value: 3   # can be reduced below 0 in case of enthalpy exchanger
+      icon: "mdi:thermometer"
+
+    - name: "defrost_hysteresis"
+      unit_of_measurement: "°C"
+      min_value: 1
+      max_value: 10
+      default_value: 3
+      icon: "mdi:thermometer"
+
+    - name: "boost_mode"
+      min_value: 0  # Fireplace mode
+      max_value: 1  # Boost mode
+      default_value: 1
+      icon: "mdi:fan-speed-2"
+
+    - name: "boost_remaining"
+      device_class: "duration"
+      state_class: "measurement"
+      unit_of_measurement: "minutes"
+      icon: "mdi:fan-clock"
+    
+    - name: "input_fan_percent"
+      unit_of_measurement: "%"
+      min_value: 65
+      max_value: 100
+      default_value: 100
+      icon: "mdi:percent"
+
+    - name: "output_fan_percent"
+      unit_of_measurement: "%"
+      min_value: 65
+      max_value: 100
+      default_value: 100
+      icon: "mdi:percent"
+
+    - name: "service_interval"
+      unit_of_measurement: "months"
+      min_value: 1
+      max_value: 12
+      default_value: 4
+      icon: "mdi:calendar-multiple"
+
+    - name: "service_due_months"
+      unit_of_measurement: "months"
+      min_value: 0
+      icon: "mdi:calendar-end"
+
+    - name: "fault_number"
+      state_class: "measurement"
+      unit_of_measurement: ""
+      icon: "mdi:alert"
+
+    - name: "fault_text"
+      state_class: "measurement"
+      icon: "mdi:alert"
+
+    - name: "preheat_status" # ??????????????? --> binary_sensor???
+      min_value: 0
+      max_value: 1
+      icon: "mdi:tooltip-question"
+
+  binary_sensors:
+
+    - name: "powerstate"     # switch ???? --> wirft zZ Fehler
+      device_class: "power"
+      icon: "mdi:power-settings"
+
+    - name: "post_heating_on" # Vallox only
+      device_class: "heat"
+      icon: "mdi:heating-coil"
+
+    - name: "boost_status"
+      icon: "mdi:tooltip-question"
+
+    - name: "co2_indicator"
+      device_class: "problem"
+      icon: "mdi:alert"
+
+    - name: "rh_indicator"
+      device_class: "problem"
+      icon: "mdi:alert"
+
+    - name: "clean_filter"
+      device_class: "problem"
+      icon: "mdi:alert"
+
+    - name: "fault_detected"
+      device_class: "problem"
+      icon: "mdi:alert"
+
+    - name: "service_requested"
+      device_class: "problem"
+      icon: "mdi:alert"
+
+  switches:
+
+    - name: "boost_on_switch"
+      device_class: "switch"
+      icon: "mdi:fan"
+
+    - name: "input_fan_off"
+      device_class: "power"
+      icon: "mdi:fan-off"
+
+    - name: "output_fan_off"
+      device_class: "power"
+      icon: "mdi:fan-off"
