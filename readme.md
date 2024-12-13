@@ -1,6 +1,6 @@
 # Home Assistant: Integration for Helios / Vallox devices with RS485 Modbus (pre-EasyControls / pre-2014 models)
 
-This is the HA-adaption of my Python script that used to work in my previous home automation system for >10 years (see here, also for Wiki, docs and how-to's - it will take a bit until I moved everything over here). Users have confirmed that the following models are compatible to the protocol implemented in this custom component:
+This is the HA-adaption of my Python script that used to work in my previous home automation system for >10 years (see [here](https://github.com/Tom-Bom-badil/helios/wiki), also for Wiki/docs/how-to's - it will take a bit until I moved everything over here). Users have confirmed that the following models are compatible to the protocol implemented in this custom component:
 
 - Helios EC 200 Pro R/L
 - Helios EC 200 Pro R/L
@@ -9,7 +9,7 @@ This is the HA-adaption of my Python script that used to work in my previous hom
 - Vallox 910SE
 - Vallox 090 SE
 - Vallox Digit SE
-- Vallox 130D (not all registers reported working or with same number, see below)
+- Vallox 130D (not all registers reported working or with same number, see see wiki)
 
 The protocol we are utilizing for reading and writing is Modbus-like; however, it is not exactly Modbus, so an individual implementation is required (pyModbus simply doesn't work for this).
 
