@@ -16,4 +16,15 @@ The protocol we are utilizing for reading and writing is Modbus-like; however, i
 
 The HA implementation is now socket-based and doesn't need anymore serial tools like socat, netcat etc for communicating with a RS485-LAN/Wifi adaptor.
 
+### Installation
+
+Copy the files into the directories under /config. Then add to your configuration.yaml:
+
+```yaml
+ventilation:  !include custom_components/helios_vallox_ventilation/configuration.yaml
+```
+
+IP and port can be adjusted in that file.
+
+
 **Please note: This software is still under development - we hit the end of the Alpha phase and it is working well for me, so I made it available to the public. Lot's of features are yet to come, including a graphical configuration in HA (although it's only IP and Port that need to be configured). Working on this right now.**
