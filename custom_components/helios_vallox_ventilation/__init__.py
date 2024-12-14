@@ -8,7 +8,9 @@ import logging
 import subprocess
 import json
 
+
 _LOGGER = logging.getLogger(__name__)
+
 
 # Schema
 SERVICE_WRITE_VALUE_SCHEMA = vol.Schema({
@@ -16,17 +18,28 @@ SERVICE_WRITE_VALUE_SCHEMA = vol.Schema({
     vol.Required("value"): vol.Coerce(int),
 })
 
+
 # Shared class - fetch and cache data from the python script
 class HeliosData:
 
-    def __init__(self):
+    def __init__(self, config):
         self.data = None
+        self.ip_address = config.get("ip_address", "192.168.178.38")
+        self.port = config.get("port", 8234)
+        _LOGGER.debug(f"Initialized HeliosData with IP: {self.ip_address} and Port: {self.port}")
+
 
     # fetch and cache
     def update(self):
         try:
+            # ["python3", "/config/scripts/helios_vallox_ventilation.py", "--json"],
             result = subprocess.run(
-                ["python3", "/config/scripts/helios_vallox_ventilation.py", "--json"],
+                [
+                    "python3", "/config/scripts/helios_vallox_ventilation.py",
+                    "--json",
+                    "--ip", self.ip_address,
+                    "--port", str(self.port),
+                ],
                 capture_output=True,
                 text=True,
                 check=True
@@ -46,7 +59,7 @@ class HeliosData:
         return None
 
 
-HELIOS_DATA = HeliosData()
+# HELIOS_DATA = HeliosData()
 
 
 # write a specific variable to ventilation
@@ -54,8 +67,15 @@ def write_value(variable: str, value: int) -> bool:
 
     try:
         _LOGGER.debug(f"Writing {value} to variable {variable}")
+        ip_address = HELIOS_DATA.ip_address
+        port = HELIOS_DATA.port
         result = subprocess.run(
-            ["python3", "/config/scripts/helios_vallox_ventilation.py", "--write_value", variable, str(value)],
+            [
+                "python3", "/config/scripts/helios_vallox_ventilation.py",
+                "--write_value", variable, str(value),
+                "--ip", ip_address,
+                "--port", str(port),
+            ],
             capture_output=True,
             text=True,
             check=True
@@ -170,10 +190,18 @@ async def async_setup(hass, config):
 
     _LOGGER.debug("Starting setup of Helios Pro / Vallox SE Integration")
     try:
-        ventilation_config = config.get("helios_vallox_ventilation")
+        # ventilation_config = config.get("helios_vallox_ventilation")
+        ventilation_config = config.get("helios_vallox_ventilation", {})
         if not ventilation_config:
             _LOGGER.error("No configuration found for Helios Pro / Vallox SE.")
             return False
+
+        global HELIOS_DATA
+        HELIOS_DATA = HeliosData(ventilation_config)
+
+        # IP adress and port for writing
+        ip_address = ventilation_config.get("ip_address", "192.168.178.38")
+        port = ventilation_config.get("port", 8234)
 
         _LOGGER.debug(f"Loaded configuration: {ventilation_config}")
 
@@ -188,9 +216,8 @@ async def async_setup(hass, config):
             async_load_platform(hass, "switch", "helios_vallox_ventilation", {"switches": ventilation_config.get("switches", [])}, config)
         )
 
-        # refresh in regular intervals
+        # refresh entities in regular intervals
         async def update_data(_):
-            """Update Helios data periodically."""
             _LOGGER.debug("Updating Helios data")
             HELIOS_DATA.update()
 
@@ -202,7 +229,7 @@ async def async_setup(hass, config):
             hass.services.async_register(
                 "helios_vallox_ventilation",
                 "write_value",
-                create_write_service_handler(hass),  # Übergibt den hass-Kontext
+                create_write_service_handler(hass),
                 schema=SERVICE_WRITE_VALUE_SCHEMA
             )
             _LOGGER.debug("Service write_value registered successfully")
