@@ -2,11 +2,13 @@ from homeassistant.components.sensor import SensorEntity
 from custom_components.helios_vallox_ventilation import HELIOS_DATA
 import logging
 
+
 _LOGGER = logging.getLogger(__name__)
 
+
+# set up sensors
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
-    """Set up Helios Pro / Vallox SE sensors."""
-    HELIOS_DATA.update()  # Aktualisiere die Daten
+    HELIOS_DATA.update() 
     sensor_config = discovery_info.get("sensors", []) if discovery_info else []
     sensors = []
 
@@ -29,10 +31,11 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
         )
     async_add_entities(sensors)
     hass.data.setdefault("ventilation_entities", []).extend(sensors)
-    _LOGGER.info("Helios Pro / Vallox SE sensors successfully set up.")
+    _LOGGER.debug("Ventilation sensors successfully set up.")
 
+
+# representation of a sensor
 class HeliosSensor(SensorEntity):
-    """Representation of a Helios Pro / Vallox SE Sensor."""
 
     def __init__(
         self,
@@ -77,16 +80,21 @@ class HeliosSensor(SensorEntity):
     def icon(self):
         return self._icon
 
+    # additional (non-default) state attributes
     @property
     def extra_state_attributes(self):
-        """Return additional state attributes."""
+
         attributes = {}
+
         if self._min_value is not None:
             attributes["min_value"] = self._min_value
+
         if self._max_value is not None:
             attributes["max_value"] = self._max_value
+
         if self._default_value is not None:
             attributes["default_value"] = self._default_value
+
         return attributes
 
     def update(self):
