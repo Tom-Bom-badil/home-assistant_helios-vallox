@@ -1,9 +1,9 @@
 {
     "domain": "helios_vallox_ventilation",
-    "name": "Helios Pro / Vallox SE",
+    "name": "Helios Pro / Vallox SE Ventilation",
     "documentation": "https://github.com/Tom-Bom-badil/helios/wiki",
     "requirements": [],
     "dependencies": [],
     "codeowners": ["@Tom-Bom-badil"],
     "version": "2024.12.1"
-  }
+}
