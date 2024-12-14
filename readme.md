@@ -21,11 +21,14 @@ The HA implementation is now socket-based and doesn't need anymore serial tools 
 Upload the directories and files with original pathes to your HA. Then add to your configuration.yaml:
 
 ```yaml
-ventilation:  !include custom_components/helios_vallox_ventilation/configuration.yaml
+helios_vallox_ventilation:  !include custom_components/helios_vallox_ventilation/configuration.yaml
 ```
 
-Make sure `ventilation:` is at the outer left corner, no indentations. IP and port can be adjusted in `custom_components/helios_vallox_ventilation/configuration.yaml`. No more configuration needed.
-
+Finally add this to your secrets.yaml, correct IP and Port of your LAN/Wifi-RS485 adaptor as needed:
+```yaml
+helios_vallox_ip:   192.168.178.38
+helios_vallox_port: 8234
+```
 
 ### Please note
-**This software is still under development - we hit the end of the Alpha phase and it is working well for me, so I made it available to the public. Lot's of features are yet to come, including a graphical configuration in HA (although it's only IP and Port that need to be configured). Working on this right now.**
+**This software is still under development - we hit the end of the Alpha phase and it is working well for me, so I made it available to the public. Lot's of features are yet to come, including a graphical configuration in HA (although it's only IP and Port that need to be configured). Also, a default lovelace card is part of this project. Working on this right now.**
