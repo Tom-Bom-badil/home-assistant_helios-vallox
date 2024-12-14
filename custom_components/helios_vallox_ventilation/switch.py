@@ -2,29 +2,47 @@ from homeassistant.components.switch import SwitchEntity
 from custom_components.helios_vallox_ventilation import HeliosData
 import logging
 
+
 _LOGGER = logging.getLogger(__name__)
 
+
+# set up switches
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
-    """Set up Helios Pro / Vallox SE switches."""
+
     data_provider = HeliosData()
     data_provider.update()
 
-    switches = [
-        HeliosSwitch("boost_mode", data_provider),
-        HeliosSwitch("power_state", data_provider)
-    ]
+    switch_config = discovery_info.get("switches", []) if discovery_info else []
+    switches = []
+
+    for switch in switch_config:
+        name = switch.get("name")
+        if not name:
+            continue
+        switches.append(
+            HeliosSwitch(
+                name=name,
+                variable=name,
+                data_provider=data_provider,
+                device_class=switch.get("device_class"),
+                icon=switch.get("icon")
+            )
+        )
     async_add_entities(switches)
     hass.data.setdefault("ventilation_entities", []).extend(switches)
-    _LOGGER.info("Helios Pro / Vallox SE switches successfully set up.")
+    _LOGGER.debug("Ventilation switches successfully set up.")
 
+
+# representation of a switch
 class HeliosSwitch(SwitchEntity):
-    """Representation of a Helios Pro / Vallox SE switch."""
 
-    def __init__(self, name, data_provider):
+    def __init__(self, name, variable, data_provider, device_class=None, icon=None):
         self._name = f"ventilation_{name}"
+        self._variable = variable
         self._state = False
+        self._device_class = device_class
+        self._icon = icon
         self._data_provider = data_provider
-        self._variable = name
 
     @property
     def name(self):
@@ -32,23 +50,25 @@ class HeliosSwitch(SwitchEntity):
 
     @property
     def is_on(self):
-        """Return True if the switch is on."""
         return bool(self._data_provider.get_value(self._variable))
 
+    @property
+    def device_class(self):
+        return self._device_class
+
+    @property
+    def icon(self):
+        return self._icon
+
+    # logic for activation
     def turn_on(self, **kwargs):
-        """Turn the switch on."""
         _LOGGER.info(f"Turning on {self._name}")
-        # Logik zum Aktivieren (z. B. durch ein Kommando an Helios)
-        # Update self._state hier bei Erfolg
         self._state = True
 
+    # logic for de-activation
     def turn_off(self, **kwargs):
-        """Turn the switch off."""
         _LOGGER.info(f"Turning off {self._name}")
-        # Logik zum Deaktivieren (z. B. durch ein Kommando an Helios)
-        # Update self._state hier bei Erfolg
         self._state = False
 
     def update(self):
-        """Fetch new state data for the switch."""
         self._state = bool(self._data_provider.get_value(self._variable))
