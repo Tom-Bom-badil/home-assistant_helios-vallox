@@ -1,3 +1,35 @@
+################################################################################
+# Python script to control a central Helios Pro / Vallox SE ventilation device.
+# Based on my my old script - see https://github.com/Tom-Bom-badil/helios/wiki.
+#
+# Author: René Jahncke aka Tom-Bom-badil (https://github.com/Tom-Bom-badil)
+#
+# This script can
+# - read all registers and output it on screen in text / dict / json format
+# - read a specific register and output it in text, dic, json format
+# - write to a named register in number format.
+#
+# For your convenience, you can set a default IP and port of your adaptor below
+# in this script (see DEFAULT_IP and DEFAULT_PORT). Or you set them by hand:
+#   python3 helios_vallox_ventilation.py --ip 10.10.10.10 --port 1010
+#
+# Further parameters (all can be combinedas per above with IP and port):
+#
+# read and output all registers from default IP+Port (might take a few seconds):
+#   python3 helios_vallox_ventilation.py --read_all
+#   python3 helios_vallox_ventilation.py --read_all --json
+#   python3 helios_vallox_ventilation.py --read_all --dict
+#
+# read a single register only:
+#   python3 helios_vallox_ventilation.py --read_value fanspeed
+#   python3 helios_vallox_ventilation.py --read_value fanspeed --json
+#   python3 helios_vallox_ventilation.py --read_value fanspeed --dict
+#
+# write to a single named register:
+#   python3 helios_vallox_ventilation.py --write_value fanspeed 5
+################################################################################
+
+
 import logging
 import socket
 import threading
@@ -6,44 +38,45 @@ import array
 import json
 import argparse
 
-# Log-Einstellungen
-logging.basicConfig(
-    filename='helios.log',  # Logdatei
-    # level=logging.DEBUG,    # Loglevel
-    level=logging.INFO,    # Loglevel
-    format='%(asctime)s - %(levelname)s - %(message)s'  # Logformat
-)
-logger = logging.getLogger("")
 
-
-# Threading-Einstellungen
-execution_lock = threading.Lock()
-operation_timeout = 50  # Maximal erlaubte Zeit für das Script in Sekunden
-def watchdog(stop_event):
-    """Watchdog beendet das Skript, wenn die operation_timeout überschritten wird."""
-    if not stop_event.wait(operation_timeout):
-        logger.error("Watchdog: Timeout überschritten. Script wird abgebrochen.")
-        raise TimeoutError("Maximale Ausführungszeit überschritten.")
-
-
-# Netzwerkeinstellungen des LAN-RS485 Konverters
+# default network address and port of the LAN/Wifi RS485 adaptor
 DEFAULT_IP = "192.168.178.38"
 DEFAULT_PORT = 8234
 
 
-# Mapping für Sender und Empfänger
+# log settings
+logging.basicConfig(
+    filename='/config/scripts/helios.log',  # file
+    # level=logging.DEBUG,  # level
+    level=logging.INFO,     # level
+    format='%(asctime)s - %(levelname)s - %(message)s'  # format
+)
+logger = logging.getLogger("")
+
+
+# threading settings - we need to prevent parallel execution of the script,
+# as this can result in bus overload (it's still only 9.600 baud!)
+execution_lock = threading.Lock()
+operation_timeout = 50      # max execution time in seconds
+def watchdog(stop_event):   # end script if max execution time is reached
+    if not stop_event.wait(operation_timeout):
+        logger.error("Watchdog: Timeout reached, stopping script.")
+        raise TimeoutError(" Timeout reached, stopping script.")
+
+
+# mapping for valid senders / receivers
 BUS_ADDRESSES = {
-    "MB*": 0x10,  # alle Mainboards
-    "MB1": 0x11,  # Mainboard 1
-    "FB*": 0x20,  # alle Fernbedienungen
-    "FB1": 0x21,  # Fernbedienung 1
-    "LON": 0x28,  # LON Bus Modul
-    "_HA": 0x2E,  # dieses Python Script
-    "_SH": 0x2F   # SmartHomeNG Python Script
+    "MB*": 0x10,  # all mainboards
+    "MB1": 0x11,  # mainboard 1
+    "FB*": 0x20,  # alle remote controls
+    "FB1": 0x21,  # remote control 1
+    "LON": 0x28,  # LON bus module (if any)
+    "_HA": 0x2E,  # this HA Python script; we are simulating a remote
+    "_SH": 0x2F   # SmartHomeNG Python script; also simulating a remote
 }
 
 
-# Mapping für Temperaturen
+# mapping for the four NTC5k temperature sensors
 NTC5K_TEMPERATURES = array.array(
     "i",
     [
@@ -60,7 +93,8 @@ NTC5K_TEMPERATURES = array.array(
     ]
 )
 
-# Mapping für Lüftungsstufe
+
+# mapping bits to fan speeds
 FANSPEEDS = {
     1: 1,
     3: 2,
@@ -72,7 +106,8 @@ FANSPEEDS = {
     255: 8
 }
 
-# Mapping für Fehlermeldungen
+
+# mapping error messages / faults
 COMPONENT_FAULTS = {
     5: 'Inlet air sensor fault',
     6: 'CO2 Alarm',
@@ -82,79 +117,81 @@ COMPONENT_FAULTS = {
     10: 'Outlet air sensor fault'
 }
 
-# Mapping für Register
+
+# mapping for registers and coils
 REGISTERS_AND_COILS = {
-    # Aktuelle Lüftungsstufe (EC300Pro: 1..8)
+    # Current fanspeed (EC300Pro: 1..8)
     "fanspeed"          : {"varid" : 0x29, 'type': 'fanspeed',     'bitposition': -1, 'read': True, 'write': True  },
-    # Automatische Lüftungsstufe nach dem Einschalten
+    # Fanspeed after switching on
     "initial_fanspeed"  : {"varid" : 0xA9, 'type': 'fanspeed',     'bitposition': -1, 'read': True, 'write': True  },
-    # Maximal einstellbare Lüftungsstufe
+    # Maximum settable fanspeed
     "max_fanspeed"      : {"varid" : 0xA5, 'type': 'fanspeed',     'bitposition': -1, 'read': True, 'write': True  },
-    # NTC5K Sensoren in der KWL
-    # Temperatur Frischluft
+    # NTC5K sensors: outside air temperature
     "outside_temp"      : {"varid" : 0x32, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
-    # Temperatur Zuluft
+    # NTC5K sensors: supply air temperature
     "inlet_temp"        : {"varid" : 0x35, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
-    # Temperatur Abluft
+    # NTC5K sensors: extract / inside air temperature
     "outlet_temp"       : {"varid" : 0x34, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
-    # Temperatur Fortluft
+    # NTC5K sensors: exhaust air temperature
     "exhaust_temp"      : {"varid" : 0x33, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
-    # verschiedene Coils im Register 0xA3 mit Statusanzeigen auf den Fernbedienungen (0..3 read/write, 4..7 readonly)
-    # FB LED1: KWL an/aus; Achtung: Fernbedienungen schalten nicht automatisch an; fanspeed=initial_fanspeed bei 'on'
+    # various coils in register 0xA3 that are displayed on the remote controls (0..3 read/write, 4..7 readonly)
+    # FB LED1: on/off Caution: Remotes will not be switched back on automatically; initial_fanspeed set if done manually.
     "powerstate"        : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  0, 'read': True, 'write': True  },
-    # FB LED2: CO2
+    # FB LED2: CO2 warning
     "co2_indicator"     : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  1, 'read': True, 'write': False },
-    # FB LED3: Luftfeuchte
+    # FB LED3: Humidity warning
     "rh_indicator"      : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  2, 'read': True, 'write': False },
-    # FB LED4: 0 = Sommermodus mit Bypass, 1 = Wintermodus mit Wärmerückgewinnung (LED ist im Wintermodus an)
+    # FB LED4: 0 = summer mode with bypass, 1 = wintermode with heat regeneration (LED is on in winter mode)
     "summer_winter_mode": {"varid" : 0xA3, 'type': 'bit',          'bitposition':  3, 'read': True, 'write': False },
-    # FB Anzeige 1: Filterwarnung
+    # FB icon 1: "Clean filter" warning
     "clean_filter"      : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  4, 'read': True, 'write': False },
-    # FB Anzeige 2: Nachheizung aktiv
+    # FB icon 2 2: Pre-/Post heating active
     "post_heating_on"   : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  5, 'read': True, 'write': False },
-    # FB Anzeige 3: Fehleranzeige
+    # FB icon 3: Error / fault
     "fault_detected"    : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  6, 'read': True, 'write': False },
-    # FB Anzeige 4: Serviceanzeige
+    # FB icon 4: Service request
     "service_requested" : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  7, 'read': True, 'write': False },
-    # Ab dieser Temperatur im Sommermodus: Wenn Abluft (innen) > Frischluft (außen), dann Bypass aktivieren
+    # Summer mode: Activate bypass from this temperature onwards if fresh air °C (outside) < extract air °C (inside)
     "bypass_setpoint"   : {"varid" : 0xAF, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': True  },
-    # Einschalttemperatur Vorheizung
+    # Activation temperature for pre / post heating
     "preheat_setpoint"  : {"varid" : 0xA7, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': True  },
-    # Vorheizung aus (0) / ein (1)
+    # Pre / post heating is off (0) / on (1)
     "preheat_status"    : {"varid" : 0x70, 'type': 'bit',          'bitposition':  7, 'read': True, 'write': True  },
-    # Frostschutz - unterhalb dieser Temperatur Frischluftventilator und Vorheizung aus; -6 ... +15°C
+    # Frost protection - switch off fresh air ventilator and heating below this temperature; -6 ... +15°C
     "defrost_setpoint"  : {"varid" : 0xA8, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': True  },
-    # Frostschutztemperatur + dieser Wert = Ventilator wieder ein (Hysterese); Wert / 3 entspricht ca 1°C
+    # Frost protection hysteresis - when to switch it on again (defrost_setpoint + (this_value/3)) --> 0x03 = 1°C
     "defrost_hysteresis": {"varid" : 0xB2, 'type': 'dec_special',  'bitposition': -1, 'read': True, 'write': True  },
-    # Stoßlüftungs-Modus: 0=Kaminlüftung ("Anheizen - Abluft in den ersten 15 Minuten aus"), 1=Stoßlüftung
+    # Boost mode: 0=fireplace  (ignition - no exhaust air in the first 15 minutes of boost); 1=normal boost mode
     "boost_mode"        : {"varid" : 0xAA, 'type': 'bit',          'bitposition':  5, 'read': True, 'write': True  },
-    # Einschalter 45 Minuten Stoßlüftung / Maximalstufe (für Boost auf 1 setzen; Anlage setzt selbstständig zurück)
+    # Switch boost on for 45 minutes (set to 1; will be reset automatically)
     "boost_on_switch"   : {"varid" : 0x71, 'type': 'bit',          'bitposition':  5, 'read': True, 'write': True  },
-    # Aktueller Status der Stoßlüftung (aus/an)
+    # Current boost status (off/on)
     "boost_status"      : {"varid" : 0x71, 'type': 'bit',          'bitposition':  6, 'read': True, 'write': False },
-    # Verbleibende Minuten bei aktivierter Stoßlüftung
+    # Remaining minutes of boost if on
     "boost_remaining"   : {"varid" : 0x79, 'type': 'dec',          'bitposition': -1, 'read': True, 'write': False },
-    # Ausschaltregister Zuluftventilator (1=aus); u.a. vom Frostschutz benutzt; muss ggf. zweifach beschrieben werden
+    # Fresh air vetilator off; set to 1 to switch off; requires to be set twice
     "input_fan_off"     : {"varid" : 0x08, 'type': 'bit',          'bitposition':  3, 'read': True, 'write': True  },
-    # Ausschaltregister Abluftventilator (1=aus); muss ggf. zweifach beschrieben werden
+    # Exhaust air vetilator off; set to 1 to switch off; requires to be set twice
     "output_fan_off"    : {"varid" : 0x08, 'type': 'bit',          'bitposition':  5, 'read': True, 'write': True  },
-	# Voreinstellwert für die Motordrehzahl des Zuluftventilators (65...100% - Drosselung / pneumatischer Abgleich)
+	# rpm of fresh air ventilator (65...100% - pneumatic calibration; default=100)
     "input_fan_percent" : {"varid" : 0xB0, 'type': 'dec',          'bitposition': -1, 'read': True, 'write': True  },
-	# Voreinstellwert für die Motordrehzahl des Abluftventilators (65...100% - Drosselung / pneumatischer Abgleich)
+	# rpm of exhaust air ventilator (65...100% - pneumatic calibration; default=100)
     "output_fan_percent": {"varid" : 0xB1, 'type': 'dec',          'bitposition': -1, 'read': True, 'write': True  },   
-    # Voreinstellung für Intervall der Service-Erinnerung (Filterwechsel) nach Zurücksetzen in Monaten
+    # Service reminder interval in months (used after reset f service reminder)
     "service_interval"  : {"varid" : 0xA6, 'type': 'dec',          'bitposition': -1, 'read': True, 'write': True  },
-    # Restzeit bis zum nächsten Filterwechsel in Monaten
+    # Remaining months for current service reminder
     "service_due_months": {"varid" : 0xAB, 'type': 'dec',          'bitposition': -1, 'read': True, 'write': True  },
-    # Fehlerregister - 0 = kein Fehler; siehe COMPONENT_FAULTS
+    # Error / fault register. 0 = no fault. see COMPONENT_FAULTS below
     "fault_number"      : {"varid" : 0x36, 'type': 'dec',          'bitposition': -1, 'read': True, 'write': False }
 }
 
 
+# exception handler
 class HeliosException(Exception):
     pass
 
 
+# base class
 class HeliosBase():
 
     def __init__(self, ip=DEFAULT_IP, port=DEFAULT_PORT):
@@ -162,9 +199,8 @@ class HeliosBase():
         self._port = port
         self._is_connected = False
         self._socket = None
-        self._lock = threading.Lock() # Threading-Überwachung gegen Mehrfachausführung
-        self.GLOBAL_VALUES = {}  # Lokales Dictionary nur für diesen Thread
-
+        self._lock = threading.Lock()  # call threading
+        self.GLOBAL_VALUES = {}        # value dict for this thread only
 
     def connect(self):
         if self._is_connected and self._socket:
@@ -179,16 +215,13 @@ class HeliosBase():
             logger.error(f"Helios: Could not connect to {self._ip}:{self._port}. Error: {e}")
             return False
 
-
     def disconnect(self):
         if self._is_connected and self._socket:
             logger.debug("HeliosBase: Disconnecting socket...")
             self._socket.close()
             self._is_connected = False
 
-
     def _sendTelegram(self, telegram):
-        """Sende ein Telegramm und logge den Inhalt."""
         if not self._is_connected:
             return False
         try:
@@ -199,7 +232,6 @@ class HeliosBase():
             logger.error(f"Helios: Error sending telegram. {e}")
             return False
 
-
     def _readTelegram(self, sender, receiver, datapoint):
         try:
             timeout = time.time() + 5
@@ -208,8 +240,7 @@ class HeliosBase():
                 data = self._socket.recv(6)
                 if len(data) == 6:
                     buffer = data
-                    # Jitter-Handhabung: Ignoriere Telegramme, die nicht mit dem Startbyte 0x01 beginnen, aber logge sie
-                    if buffer[0] != 0x01:
+                    if buffer[0] != 0x01:       # lots of jitter on the RS485
                         logger.warning(f"Ignoring jitter data: {' '.join(f'{byte:02X}' for byte in buffer)}")
                         continue
                     if (buffer[0] == 0x01 and
@@ -225,65 +256,53 @@ class HeliosBase():
             logger.error(f"Helios: Error reading telegram. {e}")
             return None
 
-
     def _createTelegram(self, sender, receiver, function, value):
         telegram = [1, sender, receiver, function, value, 0]
         telegram[5] = self._calculateCRC(telegram)
         return telegram
 
-
     def _calculateCRC(self, telegram):
         return sum(telegram[:-1]) % 256
 
+    def _waitForBusQuiet(self):  # at least 1 character silence = 7ms
 
-    def _waitForBusQuiet(self):
-        """
-        Wartet, bis mindestens 10 ms keine Aktivität auf dem RS485-Bus stattgefunden hat.
-        Überwacht die Busaktivität durch den Empfang von Daten.
-        """
-        logger.debug("Helios: Waiting for bus silence...")
+        logger.debug("Helios: Waiting for silence on bus...")
         got_slot = False
-        backup_timeout = self._socket.gettimeout()  # Sichere den aktuellen Timeout
-        self._socket.settimeout(0.01)  # Überwachung mit kurzen Zeitfenstern
+        backup_timeout = self._socket.gettimeout()    # save current timeout
+        self._socket.settimeout(0.01)                 # watch the bus
 
         try:
-            end = time.time() + 3  # Maximal 3 Sekunden auf Ruhe warten
+            end = time.time() + 5  # wait for max 5 seconds, then stop
             last_activity = time.time()
 
             while end > time.time():
                 try:
-                    data = self._socket.recv(1)  # Versuche, ein Byte zu lesen
-                    if data:
-                        # Aktivität festgestellt, aktualisiere Zeit
+                    data = self._socket.recv(1)  # try to read a byte
+                    if data: # yes, we have activity on the bus
                         last_activity = time.time()
-                    else:
-                        # Keine Daten: Prüfe, ob 10 ms vergangen sind
-                        if time.time() - last_activity > 0.01:  # 10 ms Ruhezeit
+                    else:    # no current activity; wait till 10ms reached
+                        if time.time() - last_activity > 0.01:
                             got_slot = True
                             break
-                except socket.timeout:
-                    # Timeout ohne Daten → Ruhephase erkannt
-                    if time.time() - last_activity > 0.01:  # 10 ms Ruhezeit
+                except socket.timeout:  # timeout without data
+                    if time.time() - last_activity > 0.01:  # 10 ms again
                         got_slot = True
                         break
         except Exception as e:
             logger.error(f"Helios: Error while waiting for bus silence: {e}")
         finally:
-            self._socket.settimeout(backup_timeout)  # Ursprünglichen Timeout wiederherstellen
+            self._socket.settimeout(backup_timeout)  # restore timeout
 
         if not got_slot:
             logger.warning("Helios: Bus silence not achieved within 3 seconds.")
         return got_slot
 
-
     def readValue(self, varname, retries=3):
-        """Liest einen Wert vom Bus mit Synchronisation für RS485."""
         for attempt in range(retries):
             if not self._is_connected:
                 logger.error("Helios: Not connected.")
                 return None
             try:
-                # Warte auf Busruhe
                 if not self._waitForBusQuiet():
                     logger.error("Helios: Bus not silent, cannot read value.")
                     continue
@@ -292,7 +311,6 @@ class HeliosBase():
                 telegram = self._createTelegram(BUS_ADDRESSES["_HA"], BUS_ADDRESSES["MB1"], 0, var_id)
                 self._sendTelegram(telegram)
 
-                # Warte auf Busruhe vor Empfang
                 if not self._waitForBusQuiet():
                     logger.error("Helios: Bus not silent before receiving data.")
                     continue
@@ -303,77 +321,69 @@ class HeliosBase():
 
             except Exception as e:
                 logger.error(f"Helios: Error in readValue (Attempt {attempt + 1}): {e}")
-            time.sleep(0.05)  # Kurze Pause vor dem nächsten Versuch
+            time.sleep(0.05)  # have a snickers before next attempt
         logger.error(f"Helios: Failed to read value for variable {varname} after {retries} retries.")
         return None
 
 
     def prepare_value_for_write(self, varname, value):
-        """
-        Bereitet den Wert für das Schreiben entsprechend dem Variablentyp vor.
-        - temperature: Index aus NTC5K_TEMPERATURES
-        - fanspeed: Zuordnung aus FANSPEEDS
-        - bit: Setzt das Bit an der korrekten Position im Byte
-        - dec: normale Zahl (int)
-        - dec_special: Spezialbehandlung für Register 0xB2, 03h=1°C
-        """
 
         if varname not in REGISTERS_AND_COILS:
             raise ValueError(f"Variable '{varname}' is not defined in REGISTERS_AND_COILS.")
 
         var_info = REGISTERS_AND_COILS[varname]
         
-        if var_info["type"] == "temperature":
-            return NTC5K_TEMPERATURES.index(value)   # Index wird geschrieben
+        if var_info["type"] == "temperature": # use index
+            return NTC5K_TEMPERATURES.index(value)
             
-        elif var_info["type"] == "fanspeed":
-            return {v: k for k, v in FANSPEEDS.items()}[value]   # Rückwärtsmapping
+        elif var_info["type"] == "fanspeed": # reverse mapping
+            return {v: k for k, v in FANSPEEDS.items()}[value]
 
-        elif var_info["type"] == "bit":
+        elif var_info["type"] == "bit": # handle bit position
             current_value = self.readValue(varname)
             bit_pos = var_info["bitposition"]
             if value:
-                return current_value | (1 << bit_pos)  # Setzen des Bits
+                return current_value | (1 << bit_pos)  # set
             else:
-                return current_value & ~(1 << bit_pos)  # Löschen des Bits
+                return current_value & ~(1 << bit_pos)  # unset
             
-        elif var_info["type"] == "dec":
-            return value   # Dezimalwert direkt zurückgeben
+        elif var_info["type"] == "dec": # a number
+            return value
 
-        elif var_info["type"] == "dec_special":
-            return value * 3    # Wert mit 3 multiplizieren
+        elif var_info["type"] == "dec_special": # Register 0xB2: 0x03 = 1°C
+            return value * 3
 
 
     def writeValue(self, varname, value):
-        """Schreibt einen Wert auf den Bus mit Sicherheitsüberprüfungen und Typkonvertierung."""
 
         if not self._is_connected:
             logger.error("Helios: Not connected, cannot write register.")
             return False
 
-        # Überprüfe, ob die Variable existiert und beschrieben werden darf
+        # valid var?
         if varname not in REGISTERS_AND_COILS:
-            logger.error(f"Variable '{varname}' ist nicht definiert.")
+            logger.error(f"Variable '{varname}' not defined.")
             return False
 
+        # read-only var?
         var_info = REGISTERS_AND_COILS[varname]
         if not var_info.get("write", False):
-            logger.error(f"Variable '{varname}' ist nicht schreibbar.")
+            logger.error(f"Variable '{varname}' is read-only.")
             return False
 
-        # Prüfe, ob das Zielregister 0x06 ist (kritische Sicherheitsfunktion)
+        # safety function for 0x06 - !!!!DO NOT REMOVE OR RISK SEVERE DAMAGE!!!!
         if var_info['varid'] == 0x06:
-            logger.critical("Helios: Attempted to write to register 0x06. Operation aborted to prevent system damage.")
+            logger.critical("Helios: Trying to write register 0x06. Operation aborted to prevent system damage.")
             return False
 
-        # Wert vorbereiten
+        # prepare value
         formatted_value = self.prepare_value_for_write(varname, value)
-        logger.debug(f"Starting to write {value}/{formatted_value} into {varname}.")
+        logger.debug(f"Attempting to write {value}/{formatted_value} to {varname}.")
 
 
         for target in ["FB*", "MB*", "MB1"]:
             
-            # Erstelle das Telegramm
+            # create telegram
             telegram = [
                 0x01,
                 BUS_ADDRESSES["_HA"],
@@ -384,36 +394,35 @@ class HeliosBase():
             ]
             telegram[5] = self._calculateCRC(telegram)
 
-            # Warte auf Busruhe vor dem Schreiben
+            # wait for silence
             if not self._waitForBusQuiet():
-                logger.error("Bus nicht ruhig vor Schreibvorgang.")
+                logger.error("Helios: Bus not silent, cannot write value.")
                 return False
 
-            #----------------------------------------------------------------#
+            # send it
             if not self._sendTelegram(telegram):
-                logger.error(f"Helios: Failed write variable '{varname}'.")
+                logger.error(f"Helios: Failed to write variable '{varname}'.")
                 return False
 
+            # confirm setting the variable to mainboard
             if target == "MB1":
                 crc_telegram = [telegram[5]]
                 self._sendTelegram(crc_telegram)
                 logger.debug(f"Resent CRC to Mainboard to finalize writing.")
-            #-----------------------------------------------------------------#
 
         logger.debug(f"Writing successful.")
         return True
 
 
     def resolve_variable(self, varid, data_byte):
-        """
-        Ermittelt die Variable basierend auf der ID und interpretiert sie.
-        Stellt sicher, dass jede Variable nur einmal ausgegeben wird.
-        """
-        results = []
-        processed_bits = set()  # Verwendet zur Verfolgung von verarbeiteten Bitpositionen
+
+        results = []  # returns unique variables only
+        processed_bits = set()
 
         for var_name, details in REGISTERS_AND_COILS.items():
+
             if details["varid"] == varid:
+                
                 var_type = details["type"]
                 if var_type == "bit":
                     bit_position = details["bitposition"]
@@ -426,34 +435,32 @@ class HeliosBase():
                         temperature = NTC5K_TEMPERATURES[data_byte]
                         results.append((var_name, temperature))
                 elif var_type == "fanspeed":
-                    fanspeed = FANSPEEDS.get(data_byte, "Unbekannt")
+                    fanspeed = FANSPEEDS.get(data_byte, "unknown")
                     results.append((var_name, fanspeed))
                 elif var_type == "dec":
                     results.append((var_name, data_byte))
                 elif var_type == "dec_special":
                     results.append((var_name, data_byte))
-        return results  # Rückgabe eindeutiger Variablen
+
+        return results
 
 
     def readAllValues(self, textoutput=True):
-        """Liest alle bekannten Variablen, gruppiert nach varid, und aktualisiert das globale Dictionary."""
-        logger.debug("Helios: Reading all variable values...")
 
-        # Gruppiere Variablen nach varid, um doppelte Anfragen zu vermeiden
-        varid_groups = {}
+        logger.debug("Helios: Reading values of all registers and coils ...")
+
+        varid_groups = {}  # prevent double handling of coil bytes
         for varname, details in REGISTERS_AND_COILS.items():
             varid = details["varid"]
             if varid not in varid_groups:
                 varid_groups[varid] = []
             varid_groups[varid].append(varname)
 
-        # Sende eine Anfrage pro varid und bearbeite alle zugehörigen Variablen
         for varid, varnames in varid_groups.items():
-            self._waitForBusQuiet()  # Warte auf Ruhe vor der Anfrage
-            time.sleep(0.02)  # 50 ms Pause zwischen Anfragen
-            value = self.readValue(varnames[0])  # Nutze die erste Variable nur zur Anfrage
+            self._waitForBusQuiet()  # wait for silence
+            time.sleep(0.02)         # 20 ms between requests
+            value = self.readValue(varnames[0])  # request var1 only
             if value is not None:
-                # Auflösen aller zugehörigen Variablen
                 resolved_values = self.resolve_variable(varid, value)
                 for resolved_value in resolved_values:
                     var_name, var_value = resolved_value
@@ -481,52 +488,61 @@ class HeliosBase():
 
 def main():
 
-    # Argumentparser für die Parameter
-    parser = argparse.ArgumentParser(description="Helios RS485 Steuerung")
-    parser.add_argument("--read_all", action="store_true", help="Liest alle bekannten Variablen (Standardverhalten). Ausgabe zeilenweise als Text.")
-    parser.add_argument("--dict", action="store_true", help="Wie --read_all, aber Ausgabe als Dictionary.")
-    parser.add_argument("--json", action="store_true", help="Wie --read_all, aber Ausgabe als JSON.")
-    parser.add_argument("--read_value", nargs=1, metavar="VARIABLE", help="Liest den Wert einer spezifischen Variablen.")
-    parser.add_argument("--write_value", nargs=2, metavar=("VARIABLE", "WERT"), help="Schreibt einen Wert in eine spezifische Variable.")
+    # argument parser
+    parser = argparse.ArgumentParser(description="Helios / Vallox RS485 Control Script")
+    parser.add_argument("--ip", metavar="IP", help="IP address of the RS485-Wifi/LAN adator (using default if not provided)", default=DEFAULT_IP)
+    parser.add_argument("--port", type=int, metavar="PORT", help="Port of the RS485-Wifi/LAN adator (using default if not provided)", default=DEFAULT_PORT)
+    parser.add_argument("--read_all", action="store_true", help="Read and output line-by-line all known variables.")
+    parser.add_argument("--read_value", nargs=1, metavar="VARIABLE", help="Read and output a specific variable.")
+    parser.add_argument("--dict", action="store_true", help="Like --read_all, but output as a DICT.")
+    parser.add_argument("--json", action="store_true", help="Like --read_all, but output as a JSON.")
+    parser.add_argument("--write_value", nargs=2, metavar=("VARIABLE", "VALUE"), help="Writes value into a variable.")
 
     args = parser.parse_args()
 
-    # Starte den Watchdog-Thread
+# ----------------------------------------
+    # use IP and Port from arguments, if provided (otherwise use default)
+    ip_address = args.ip
+    port = args.port
+
+    # initialize helios connection
+    helios = HeliosBase(ip_address, port)
+# ----------------------------------------
+
+    # start watchdog thread
     stop_event = threading.Event()
     watchdog_thread = threading.Thread(target=watchdog, args=(stop_event,))
     watchdog_thread.start()
 
     try:
-        logger.debug("Waiting for ok from threading ...")
-        with execution_lock:  # Sperre blockiert, bis sie verfügbar ist
-            logger.debug("Got it.")
+        logger.debug("~~ Starting - waiting for ok from threading")
+        with execution_lock:
+            logger.debug("Got ok from threading.")
             helios = HeliosBase()
             if helios.connect():
                 logger.debug(f"Connected to Helios - {helios._ip}:{helios._port}")
 
+                # read all variables
                 if args.read_all or not (args.read_value or args.write_value):
-
-                    # Standardverhalten: Alle Werte, Ausgabe als Text
+                    # default output (no args): text
                     if not (args.dict or args.json):
                         helios.readAllValues()
-                    
-                    # Alle Werte, Ausgabe als Dictionary
+                    # --dict
                     if args.dict:
                         helios.readAllValues(textoutput=False)
                         GLOBAL_VALUES = helios.get_global_values()
                         print(GLOBAL_VALUES)
-                        
-                    # Alle Werte, Ausgabe als JSON
+                    # --json
                     if args.json:
                         helios.readAllValues(textoutput=False)
                         GLOBAL_VALUES = helios.get_global_values()
                         print(json.dumps(GLOBAL_VALUES, indent=4))
 
+                # read a specific variable
                 if args.read_value:
                     variable = args.read_value[0]
                     value = helios.readValue(variable)
                     if value is not None:
-                        # Konvertierten Wert ausgeben
                         var_info = REGISTERS_AND_COILS.get(variable, {})
                         if var_info.get("type") == "temperature":
                             converted_value = NTC5K_TEMPERATURES[value]
@@ -539,14 +555,23 @@ def main():
                             converted_value = value // 3
                         else:
                             converted_value = value
-                        print(f"{variable}: {converted_value}")
+                        if args.json:
+                            output = {variable: converted_value}
+                            print(json.dumps(output, indent=4))
+                        elif args.dict:
+                            output = {variable: converted_value}
+                            print(output)
+                        else:
+                            print(f"{variable}: {converted_value}")
+
                     else:
                         logger.error(f"Failed to read value for {variable}.")
 
+                # write a specific variable
                 if args.write_value:
                     variable, raw_value = args.write_value
                     try:
-                        value = int(raw_value)  # Konvertiere den Wert in eine Zahl
+                        value = int(raw_value)  # just to be on safe side
                         if helios.writeValue(variable, value):
                             print(f"Successfully wrote {value} to {variable}.")
                         else:
@@ -557,42 +582,11 @@ def main():
                 helios.disconnect()
                 logger.debug("Disconnected from Helios.")
 
-                
-                # Testszenario: Werte schreiben
-
-                # ok:  type temperature - 10 (default) / 12
-                #helios.writeValue("bypass_setpoint", 10)
-                #time.sleep(2)
-                
-                # ok:  type fanspeed - 2 / 4
-                #helios.writeValue("fanspeed", 4)
-                #time.sleep(2)
-                
-                # ok: type dec - 0 / 2
-                #helios.writeValue("service_due_months", 0)
-                #time.sleep(2)
-
-                # ok: dec_special 3 (default) / 2
-                #helios.writeValue("defrost_hysteresis", 2)
-                #time.sleep(2)
-
-                # ok: bit 0 / 1 (default)
-                # helios.writeValue("boost_mode", 1)
-                # time.sleep(2)
-
-                # ok - Beispiel: Lesen aller Werte
-                #helios.readAllValues()
-                #GLOBAL_VALUES = helios.get_global_values()
-                #logger.debug(f"Global values: {GLOBAL_VALUES}")
-
-                # nur zur Kontrolle:
-                #print(f"Global values: {GLOBAL_VALUES}")
-
     except TimeoutError as te:
         print(f"Error: {te}")
     finally:
-        stop_event.set()  # Signalisiert dem Watchdog, dass die Arbeit beendet ist
-        watchdog_thread.join()  # Warte auf das Ende des Watchdog-Threads
+        stop_event.set()        # dear watchdog: we are done, thanks
+        watchdog_thread.join()  # wait for end of watchdog thread
 
 
 if __name__ == "__main__":
