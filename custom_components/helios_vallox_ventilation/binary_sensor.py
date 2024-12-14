@@ -2,10 +2,13 @@ from homeassistant.components.binary_sensor import BinarySensorEntity
 from custom_components.helios_vallox_ventilation import HeliosData
 import logging
 
+
 _LOGGER = logging.getLogger(__name__)
 
+
+# set up binary_sensors
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
-    """Set up Helios Pro / Vallox SE binary sensors."""
+
     data_provider = HeliosData()
     data_provider.update()
 
@@ -27,10 +30,11 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
         )
     async_add_entities(binary_sensors)
     hass.data.setdefault("ventilation_entities", []).extend(binary_sensors)
-    _LOGGER.info("Helios Pro / Vallox SE binary sensors successfully set up.")
+    _LOGGER.debug("Ventilation binary_sensors successfully set up.")
 
+
+# representation of a binary_sensor
 class HeliosBinarySensor(BinarySensorEntity):
-    """Representation of a Helios Pro / Vallox SE Binary Sensor."""
 
     def __init__(self, name, variable, data_provider, device_class=None, icon=None):
         self._name = f"ventilation_{name}"
