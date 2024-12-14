@@ -9,7 +9,7 @@ _LOGGER = logging.getLogger(__name__)
 # set up switches
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
 
-    data_provider =     data_provider = HELIOS_DATA
+    data_provider = HELIOS_DATA
     data_provider.update()
 
     switch_config = discovery_info.get("switches", []) if discovery_info else []
