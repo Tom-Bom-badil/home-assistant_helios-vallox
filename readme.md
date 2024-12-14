@@ -24,7 +24,7 @@ Upload the directories and files with original pathes to your HA. Then add to yo
 helios_vallox_ventilation:  !include custom_components/helios_vallox_ventilation/configuration.yaml
 ```
 
-Finally add this to your secrets.yaml, correct IP and Port of your LAN/Wifi-RS485 adaptor as needed:
+Finally add this to your secrets.yaml (adjust IP and Port of your LAN/Wifi-RS485 adaptor as needed):
 ```yaml
 helios_vallox_ip:   192.168.178.38
 helios_vallox_port: 8234
