@@ -1,5 +1,5 @@
 from homeassistant.components.binary_sensor import BinarySensorEntity
-from custom_components.helios_vallox_ventilation import HeliosData
+from custom_components.helios_vallox_ventilation import HELIOS_DATA
 import logging
 
 
@@ -9,7 +9,7 @@ _LOGGER = logging.getLogger(__name__)
 # set up binary_sensors
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
 
-    data_provider = HeliosData()
+    data_provider = HELIOS_DATA
     data_provider.update()
 
     binary_sensor_config = discovery_info.get("binary_sensors", []) if discovery_info else []
