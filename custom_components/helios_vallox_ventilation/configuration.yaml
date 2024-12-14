@@ -1,9 +1,11 @@
-
   # All min/max/default values are taken from the Helios EC300 Pro manual.
   # Vallox values may differ!
   # (especially for heating - as per my knowldge, Helios is using pre-heating,
   # Vallox is using post-heating)
 
+  # Please note that the set of registers and values is fixed by the device.
+  # Therefore, there should be no need to add or remove entities in this file.
+  # All entities are automatically prefixed with 'ventilation_'.
 
   ip_address: 192.168.178.38
   port: 8234
@@ -182,3 +184,7 @@
     - name: "output_fan_off"
       device_class: "power"
       icon: "mdi:fan-off"
+
+  # Internal developer note / todo:
+  # Outdoor air temperature, Extract air temperature, Supply air temperature
+  # Indoor air temperature
