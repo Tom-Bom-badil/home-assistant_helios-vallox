@@ -1,8 +1,0 @@
-# No need to copy this file - just add the following line to your configuration.yaml in HA Config Root; the logger entries below are optional:
-
-helios_vallox_ventilation:  !include custom_components/helios_vallox_ventilation/configuration.yaml
-
-# uncomment if you want to have debug logs
-# logger:
-#   logs:
-#     custom_components.helios_vallox_ventilation: debug
