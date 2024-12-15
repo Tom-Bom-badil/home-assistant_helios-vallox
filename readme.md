@@ -24,9 +24,9 @@ This is the HA-adaption of my Python script that used to work in my previous hom
 - Vallox Digit SE
 - Vallox 130D (not all registers reported working or with same number, see see wiki)
 
-The protocol we are utilizing for reading and writing is Modbus-like; however, it is not exactly Modbus, so an individual implementation is required (pyModbus or the standard HA modbus implemetation simply don't work for this).
+The proprietary protocol of the ventilation devices on the RS-485 bus is Modbus-like; however - it is not EXACTLY Modbus, so an individual implementation is required (pyModbus or the standard HA modbus implemetation simply don't work here).
 
-The HA implementation is now socket-based and doesn't need anymore serial tools like socat, netcat etc for communicating with a RS485-LAN/Wifi adaptor.
+The previous version of my main script was based on serial communication through a virtual serial port, which was doing fine for years for many users. However, in the early stages of the project, I tinkered around and found it quite hard to add the necessary standard UNIX/Linux tools like *socat* or *netcat* to HAOS (there is a way, but I would call it an `ugly hack` by utilizing ssh and command line - nothing the default end user would prefer to do). So, this HA version has been implemented with socket-based communication instead of reading/writing through virtual COM ports, resulting in a direct network connection between the integration and the RS485-LAN/Wifi adaptor (no additional tools needed).
 
 ### Installation
 
