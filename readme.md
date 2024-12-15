@@ -28,7 +28,56 @@ The proprietary protocol of the ventilation devices on the RS-485 bus is Modbus-
 
 The previous version of my main script was based on serial communication through a virtual serial port, which was doing fine for years for many users. However, in the early stages of the project, I tinkered around and found it quite hard to add the necessary standard UNIX/Linux tools like *socat* or *netcat* to HAOS (there is a way, but I would call it an `ugly hack` by utilizing ssh and command line - nothing the default end user would prefer to do). So, this HA version has been implemented with socket-based communication instead of reading/writing through virtual COM ports, resulting in a direct network connection between the integration and the RS485-LAN/Wifi adaptor (no additional tools needed).
 
-### Installation
+### What does this Integration do?
+
+The integration creates a bunch of sensors, binary_sensors and switches to control you ventilation. All those entities are prefixed with `ventilation_`, so you can really filter them all in the developer tools.
+
+Also, the integration will install a writing service for use in your automations:
+```yaml
+action: helios_vallox_ventilation.write_value
+data:
+  variable: "fanspeed" # entity name after ventilation_ prefix
+  value: 1             # the value
+```
+
+If you want to test the write service by hand in the developer tools: Choose `Helios Pro / Vallox SE Ventilation: write_value` and copy/paste the yaml above.
+
+Please note that most registers and coils are read-only, and many limit the valid values (the integration will take care of that - look up it's attributes in the developer tools before writing to an entity).
+
+### Installation through HACS
+
+*Pro tip: Please do not restart until finished. Finished means 'finished finished'.*
+
+Launch HACS and click the 3 dots top right corner, then choose `Custom repositories`.
+
+You will see 2 fields you have to fill out:
+
+- Repository: **https://github.com/Tom-Bom-badil/home-assistant_helios-vallox**
+- Type: **Integration**
+
+Click add, read the pro tip above again - do not restart yet in order to avoid another restart lateron.
+
+Add this to your secrets.yaml (adjust IP and Port of your LAN/Wifi-RS485 adaptor as needed):
+```yaml
+helios_vallox_ip:   192.168.178.38
+helios_vallox_port: 8234
+```
+
+Add this to your configuration.yaml:
+```yaml
+helios_vallox_ventilation:  !include custom_components/helios_vallox_ventilation/configuration.yaml
+```
+
+Optionally: If you want to have detailed debug logs at the beginning, you can also add this to your configuration.yaml:
+```yaml
+logger:
+  logs:
+    custom_components.helios_vallox_ventilation: debug
+```
+
+This is the point where you have 'finished finished' - you can now restart HA and enjoy the integration!
+
+### Manual installation
 
 Upload the directories and files with original pathes to your HA.
 
