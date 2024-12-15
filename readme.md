@@ -5,7 +5,7 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-## Integration for Helios / Vallox central house ventilation devices with RS-485<br/>(pre-EasyControls aka pre-2014 models)
+## Integration for Helios / Vallox central house ventilation devices with RS-485<br/><smnall>(pre-EasyControls aka pre-2014 models)</small>
 
 
 > **Please note: This software is still under development - we hit the end of the Alpha stage, and it is working well for me, so I made it available to the public. Lot's of features are yet to come, including a graphical configuration (although it's only IP and Port that need to be configured). Also, a default lovelace card will be part of this project. Working on this right now.**
