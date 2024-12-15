@@ -30,7 +30,7 @@ The previous version of my main script was based on serial communication through
 
 ### What does this Integration do?
 
-The integration creates a bunch of sensors, binary_sensors and switches to control you ventilation. All those entities are prefixed with `ventilation_`, so you can really filter them all in the developer tools.
+The integration creates a bunch of sensors, binary_sensors and switches to control your ventilation. All those entities are prefixed with `ventilation_`, so you can easily filter all of them at once in the developer tools.
 
 Also, the integration will install a writing service for use in your automations:
 ```yaml
