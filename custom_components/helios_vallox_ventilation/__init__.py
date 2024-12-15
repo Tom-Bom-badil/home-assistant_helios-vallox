@@ -32,13 +32,12 @@ class HeliosData:
     # fetch and cache
     def update(self):
         try:
-            # ["python3", "/config/scripts/helios_vallox_ventilation.py", "--json"],
             result = subprocess.run(
                 [
-                    "python3", "/config/scripts/helios_vallox_ventilation.py",
-                    "--json",
+                    "python3", "/config/custom_components/helios_vallox_ventilation/ventcontrol.py",
                     "--ip", self.ip_address,
                     "--port", str(self.port),
+                    "--json",
                 ],
                 capture_output=True,
                 text=True,
@@ -71,10 +70,10 @@ def write_value(variable: str, value: int) -> bool:
         port = HELIOS_DATA.port
         result = subprocess.run(
             [
-                "python3", "/config/scripts/helios_vallox_ventilation.py",
-                "--write_value", variable, str(value),
+                "python3", "/config/custom_components/helios_vallox_ventilation/ventcontrol.py",
                 "--ip", ip_address,
                 "--port", str(port),
+                "--write_value", variable, str(value),
             ],
             capture_output=True,
             text=True,
