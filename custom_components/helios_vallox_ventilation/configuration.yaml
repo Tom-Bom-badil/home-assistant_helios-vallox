@@ -7,8 +7,8 @@
   # Therefore, there should be no need to add or remove entities in this file.
   # All entities are automatically prefixed with 'ventilation_'.
 
-  ip_address: 192.168.178.38
-  port: 8234
+  ip_address: !secret helios_vallox_ip
+  port: !secret helios_vallox_port
 
   sensors:
 
