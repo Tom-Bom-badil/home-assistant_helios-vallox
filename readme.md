@@ -2,7 +2,7 @@
 [![Custom integration](https://img.shields.io/badge/custom%20integration-%2341BDF5.svg)](https://www.home-assistant.io/getting-started/concepts-terminology)
 [![HACS](https://img.shields.io/badge/HACS%20listed-not_yet-red.svg)](https://github.com/hacs)
 [![HACS](https://img.shields.io/badge/HACS%20manual%20install-verified-green.svg)](https://github.com/hacs)
-[![Version](https://img.shields.io/badge/Version-v2024.12.4%2Dbeta-green.svg)](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/releases)
+[![Version](https://img.shields.io/badge/Version-v2024.12.4&2Dbeta-green.svg)](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/releases)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Tom-Bom-badil/home-assistant_helios-vallox/graphs/commit-activity)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
