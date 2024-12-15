@@ -73,7 +73,7 @@ logger:
     custom_components.helios_vallox_ventilation: debug
 ```
 
-This is the point where you have 'finished finished' - you can now restart HA and enjoy the integration!
+This is the point where you are 'finished finished' - you can now restart HA once and enjoy the integration!
 
 ## Manual installation
 
