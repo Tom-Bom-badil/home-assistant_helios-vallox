@@ -2,7 +2,7 @@
 [![Custom integration](https://img.shields.io/badge/custom%20integration-%2341BDF5.svg)](https://www.home-assistant.io/getting-started/concepts-terminology)
 [![HACS](https://img.shields.io/badge/HACS%20listed-not_yet-red.svg)](https://github.com/hacs)
 [![HACS](https://img.shields.io/badge/HACS%20manual%20install-verified-green.svg)](https://github.com/hacs)
-[![Version](https://img.shields.io/badge/Version-v2024.12.01beta-green.svg)](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/releases)
+[![Version](https://img.shields.io/badge/Version-v2024.12.02beta-green.svg)](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/releases)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Tom-Bom-badil/home-assistant_helios-vallox/graphs/commit-activity)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
@@ -39,9 +39,9 @@ data:
   value: 1             # the value
 ```
 
-If you want to test the write service by hand in the developer tools: Choose `Helios Pro / Vallox SE Ventilation: write_value` and copy/paste the yaml above.
+If you want to test the write service by hand in the developer tools: Choose `Helios Pro / Vallox SE Ventilation: write_value` and copy/paste the yaml above into the text field.
 
-Please note that most registers and coils are read-only, and many limit the valid values (the integration will take care of that - look up it's attributes in the developer tools before writing to an entity).
+Please note that most registers and coils are read-only, and many have only a few valid values. The integration will take care of that - so better look up it's attributes in the developer tools before writing to an entity, I have included all valid options as far as known to me or stated in the manuals / docs.
 
 ## Installation through HACS
 
