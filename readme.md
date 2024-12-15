@@ -1,4 +1,4 @@
-## Home Assistant: Integration for Helios / Vallox devices with RS485 Ports (pre-EasyControls aka pre-2014 models)
+## Home Assistant: Integration for Helios / Vallox devices with RS485 bus (pre-EasyControls aka pre-2014 models)
 
 
 > **Please note: This software is still under development - we hit the end of the Alpha stage, and it is working well for me, so I made it available to the public. Lot's of features are yet to come, including a graphical configuration (although it's only IP and Port that need to be configured). Also, a default lovelace card will be part of this project. Working on this right now.**
