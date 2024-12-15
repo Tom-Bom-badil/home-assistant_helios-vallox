@@ -2,6 +2,6 @@
   "name": "Helios Pro / Vallox SE Ventilation",
   "content_in_root": false,
   "domains": ["helios_vallox_ventilation"],
-  "homeassistant": "2024.12.4-beta",
+  "homeassistant": "2024.12.4",
   "iot_class": "local_polling"
 }
