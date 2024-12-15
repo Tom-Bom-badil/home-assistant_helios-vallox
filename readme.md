@@ -6,10 +6,9 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Tom-Bom-badil/home-assistant_helios-vallox/graphs/commit-activity)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-# Integration for Helios / Vallox central house ventilation devices with RS-485 bus (pre-EasyControls aka pre-2014 models)
+# Integration for Helios / Vallox central house ventilation systems with RS-485 bus (pre-EasyControls aka pre-2014 models)
 
-> **Please note: This software is still under development - we hit the end of the Alpha stage, and it is working well for me, so I made it available to the public. Lot's of features are yet to come, including a graphical configuration (although it's only IP and Port that need to be configured). Also, a default lovelace card will be part of this project. Working on this right now.**
-
+*Please note: This software is still under development - we hit the end of the Alpha stage, and it is working well for me, so I made it available to the public. Lot's of features are yet to come, including a graphical configuration (although it's only IP and Port that need to be configured). Also, a default lovelace card will be part of this project. Working on this right now.*
 
 This is the HA adaption of my Python script that used to work in my previous home automation system for >10 years (see [here](https://github.com/Tom-Bom-badil/helios/wiki), also for Wiki/docs/how-to's - it will take a bit until I have translated and moved everything over here). Users have confirmed that the following models are compatible to the proprietary protocol implemented in this custom component:
 
