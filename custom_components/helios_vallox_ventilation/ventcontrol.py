@@ -598,36 +598,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-                
-                # Testszenario: Werte schreiben
-
-                # ok:  type temperature - 10 (default) / 12
-                #helios.writeValue("bypass_setpoint", 10)
-                #time.sleep(2)
-                
-                # ok:  type fanspeed - 2 / 4
-                #helios.writeValue("fanspeed", 4)
-                #time.sleep(2)
-                
-                # ok: type dec - 0 / 2
-                #helios.writeValue("service_due_months", 0)
-                #time.sleep(2)
-
-                # ok: dec_special 3 (default) / 2
-                #helios.writeValue("defrost_hysteresis", 2)
-                #time.sleep(2)
-
-                # ok: bit 0 / 1 (default)
-                # helios.writeValue("boost_mode", 1)
-                # time.sleep(2)
-
-                # ok - Beispiel: Lesen aller Werte
-                #helios.readAllValues()
-                #GLOBAL_VALUES = helios.get_global_values()
-                #logger.debug(f"Global values: {GLOBAL_VALUES}")
-
-                # nur zur Kontrolle:
-                #print(f"Global values: {GLOBAL_VALUES}")
