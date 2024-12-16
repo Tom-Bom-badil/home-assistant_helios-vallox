@@ -1,12 +1,21 @@
 write_value:
-  name: "write_value"
-  description: "Writes a value to the ventilation system."
+  name: Write a value to a variable
+  description: Writes a value to the ventilation system.
+  
   fields:
     variable:
-      name: "variable"
-      description: "The variable to write to (e.g., fanspeed, boost_mode)."
-      example: "fanspeed"
+      name: variable
+      description: The variable to write to (e.g., fanspeed, boost_mode).
+      example: fanspeed
+      selector:
+        device:
+          filter:
+            - integration: helios_vallox_ventilation
     value:
-      name: "value"
-      description: "The value to set for the variable."
+      name: value
+      description: The value to set for the variable.
       example: 5
+      selector:
+        device:
+          filter:
+            - integration: helios_vallox_ventilation
