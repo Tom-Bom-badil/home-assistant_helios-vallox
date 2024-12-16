@@ -1,6 +1,7 @@
 {
     "domain": "helios_vallox_ventilation",
     "name": "Helios Pro / Vallox SE Ventilation",
+    "iot_class": "local_polling",
     "documentation": "https://github.com/Tom-Bom-badil/helios/wiki",
     "requirements": [],
     "dependencies": [],
