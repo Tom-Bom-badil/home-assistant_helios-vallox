@@ -1,4 +1,5 @@
 write_value:
+  name: "write_value"
   description: "Writes a value to the ventilation system."
   fields:
     variable:
