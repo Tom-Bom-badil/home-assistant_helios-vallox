@@ -1,0 +1,16 @@
+{
+    "write_value": {
+        "name": "Write Value",
+        "description": "Writes a value to the ventilation system.",
+        "fields": {
+            "variable": {
+                "name": "Variable",
+                "description": "The variable to write to (e.g., fanspeed, boost_mode)."
+            },
+            "value": {
+                "name": "Value",
+                "description": "The value to set for the variable."
+            }
+        }
+    }
+}
