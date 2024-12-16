@@ -9,7 +9,7 @@
             },
             "value": {
                 "name": "Value",
-                "description": "The value to set for the variable."
+                "description": "The value to write to the variable."
             }
         }
     }
