@@ -1,10 +1,10 @@
 {
     "domain": "helios_vallox_ventilation",
     "name": "Helios Pro / Vallox SE Ventilation",
-    "iot_class": "local_polling",
-    "documentation": "https://github.com/Tom-Bom-badil/helios/wiki",
-    "requirements": [],
-    "dependencies": [],
     "codeowners": ["@Tom-Bom-badil"],
+    "dependencies": [],
+    "documentation": "https://github.com/Tom-Bom-badil/helios/wiki",
+    "iot_class": "local_polling",
+    "requirements": [],
     "version": "2024.12.4-beta"
 }
