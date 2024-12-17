@@ -1,33 +1,20 @@
-from homeassistant.core import ServiceCall
-from homeassistant.helpers import config_validation as cv
-from homeassistant.helpers.discovery import async_load_platform
-from homeassistant.helpers.event import async_track_time_interval
-from datetime import timedelta
-import voluptuous as vol
 import logging
 import subprocess
 import json
+from datetime import timedelta
+from homeassistant.core import ServiceCall
+from homeassistant.helpers.discovery import async_load_platform
+from homeassistant.helpers.event import async_track_time_interval
+from homeassistant.const import CONF_IP_ADDRESS, CONF_PORT
+from .schema import CONFIG_SCHEMA, SERVICE_WRITE_VALUE_SCHEMA
 
 
-# todo after brand registration
-# import voluptuous as vol
-# from homeassistant.helpers import config_validation as cv
-## Configuration through platforms or config entries
-# DOMAIN = "helios_vallox_ventilation"
-# CONFIG_SCHEMA = cv.platform_only_config_schema(DOMAIN)
-
-
+# preparations
 _LOGGER = logging.getLogger(__name__)
+DOMAIN = "helios_vallox_ventilation"
 
 
-# Schema
-SERVICE_WRITE_VALUE_SCHEMA = vol.Schema({
-    vol.Required("variable"): cv.string,
-    vol.Required("value"): vol.Coerce(int),
-})
-
-
-# Shared class - fetch and cache data from the python script
+# shared class - fetch and cache data from the python script
 class HeliosData:
 
     def __init__(self, config):
@@ -35,7 +22,6 @@ class HeliosData:
         self.ip_address = config.get("ip_address", "192.168.178.38")
         self.port = config.get("port", 8234)
         _LOGGER.debug(f"Initialized HeliosData with IP: {self.ip_address} and Port: {self.port}")
-
 
     # fetch and cache
     def update(self):
@@ -64,9 +50,6 @@ class HeliosData:
         if self.data:
             return self.data.get(variable, None)
         return None
-
-
-# HELIOS_DATA = HeliosData()
 
 
 # write a specific variable to ventilation
@@ -194,6 +177,12 @@ def create_write_service_handler(hass):
 
 # set up the integration
 async def async_setup(hass, config):
+
+    conf = config[DOMAIN]
+    ip_address = conf[CONF_IP_ADDRESS]
+    port = conf[CONF_PORT]
+
+    hass.data[DOMAIN] = {"ip_address": ip_address, "port": port}
 
     _LOGGER.debug("Starting setup of Helios Pro / Vallox SE Integration")
     try:
