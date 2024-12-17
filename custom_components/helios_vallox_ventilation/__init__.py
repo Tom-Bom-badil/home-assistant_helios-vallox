@@ -8,6 +8,14 @@ import logging
 import subprocess
 import json
 
+import voluptuous as vol
+from homeassistant.helpers import config_validation as cv
+
+
+# Configuration through platforms or config entries
+DOMAIN = "helios_vallox_ventilation"
+CONFIG_SCHEMA = cv.platform_only_config_schema(DOMAIN)
+
 
 _LOGGER = logging.getLogger(__name__)
 
