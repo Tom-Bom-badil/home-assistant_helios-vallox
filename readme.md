@@ -4,7 +4,6 @@
 [![HACS](https://img.shields.io/badge/HACS%20manual%20install-verified-green.svg)](https://github.com/hacs)
 [![Version](https://img.shields.io/badge/Version-v2024.12.4%20beta-green.svg)](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/releases)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Tom-Bom-badil/home-assistant_helios-vallox/graphs/commit-activity)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # Integration for Helios / Vallox central house ventilation systems with RS-485 bus (pre-EasyControls aka pre-2014 models)
 
@@ -100,3 +99,4 @@ logger:
 Finally restart HA and enjoy! :)
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
