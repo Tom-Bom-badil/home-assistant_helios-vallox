@@ -7,8 +7,6 @@
 
 # Integration for Helios / Vallox central house ventilation systems with RS-485 bus (pre-EasyControls aka pre-2014 models)
 
-*Please note: This software is still under development - we hit the end of the Alpha stage, and it is working well for me, so I made it available to the public. Lot's of features are yet to come, including a graphical configuration (although it's only IP and Port that need to be configured). Also, a default lovelace card will be part of this project. Working on this right now.*
-
 This is the HA adaption of my Python script that used to work in my previous home automation system for >10 years (see [here](https://github.com/Tom-Bom-badil/helios/wiki), also for Wiki/docs/how-to's - it will take a bit until I have translated and moved everything over here). Users have confirmed that the following models are compatible to the proprietary protocol implemented in this custom component:
 
 - Helios EC 200 Pro R/L
@@ -23,7 +21,7 @@ This is the HA adaption of my Python script that used to work in my previous hom
 
 The proprietary protocol of the ventilation devices on the RS-485 bus is Modbus-like; however - it is not EXACTLY Modbus, so an individual implementation is required (pyModbus or the standard HA modbus implemetation simply don't work here).
 
-The previous version of my main script was based on serial communication through a virtual serial port, which was doing fine for years for many users. However, in the early stages of the project, I tinkered around and found it quite hard to add the necessary standard UNIX/Linux tools like *socat* or *netcat* to HAOS (there is a way, but I would call it an `ugly hack` by utilizing ssh and command line - nothing the default end user would prefer to do). So, this HA version has been implemented with socket-based communication instead of reading/writing through virtual COM ports, resulting in a direct network connection between the integration and the RS485-LAN/Wifi adaptor (no additional tools needed).
+The previous version of my main script was based on serial communication through a virtual serial port, which was doing fine for years for many users. However, in the early stages of the HA adoption, I tinkered around and found it quite hard to add the necessary standard UNIX/Linux tools like *socat* or *netcat* to HAOS (there is a way, but I would call it an `ugly hack` by utilizing ssh and command line - nothing the default end user would prefer to do). So, this HA version has been implemented with socket-based communication instead of reading/writing through virtual COM ports, resulting in a direct network connection between the integration and the RS485-LAN/Wifi adaptor (no additional tools needed).
 
 ## What does this Integration do?
 
