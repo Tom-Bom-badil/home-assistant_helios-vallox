@@ -1,6 +1,6 @@
 {
   "name": "Helios Pro / Vallox SE Ventilation",
   "content_in_root": false,
-  "homeassistant": "2024.12.3",
+  "homeassistant": "2024.12.4",
   "render_readme": true
 }
