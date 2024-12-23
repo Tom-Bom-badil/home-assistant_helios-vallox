@@ -60,7 +60,8 @@ helios_vallox_port: 8234
 
 Add this to your configuration.yaml:
 ```yaml
-helios_vallox_ventilation:  !include custom_components/helios_vallox_ventilation/configuration.yaml
+helios_vallox_ventilation:
+  !include custom_components/helios_vallox_ventilation/configuration.yaml
 ```
 
 Optionally: If you want to have detailed debug logs at the beginning, you can also add this to your configuration.yaml:
@@ -84,7 +85,8 @@ helios_vallox_port: 8234
 
 Add this to your configuration.yaml:
 ```yaml
-helios_vallox_ventilation:  !include custom_components/helios_vallox_ventilation/configuration.yaml
+helios_vallox_ventilation:
+  !include custom_components/helios_vallox_ventilation/configuration.yaml
 ```
 
 Optionally: If you want to have detailed debug logs at the beginning, you can also add this to your configuration.yaml:
