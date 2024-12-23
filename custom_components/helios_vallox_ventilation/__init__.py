@@ -7,23 +7,21 @@ from homeassistant.helpers.discovery import async_load_platform
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.const import CONF_IP_ADDRESS, CONF_PORT
 from .schema import CONFIG_SCHEMA, SERVICE_WRITE_VALUE_SCHEMA
+from .const import DOMAIN
 
 
-# preparations
 _LOGGER = logging.getLogger(__name__)
-DOMAIN = "helios_vallox_ventilation"
 
 
 # shared class - fetch and cache data from the python script
 class HeliosData:
-
-    def __init__(self, config):
+    def __init__(self, ip_address, port):
         self.data = None
-        self.ip_address = config.get("ip_address", "192.168.178.38")
-        self.port = config.get("port", 8234)
+        self.ip_address = ip_address
+        self.port = port
         _LOGGER.debug(f"Initialized HeliosData with IP: {self.ip_address} and Port: {self.port}")
 
-    # fetch and cache
+    # fetch and cache all
     def update(self):
         try:
             result = subprocess.run(
@@ -35,7 +33,7 @@ class HeliosData:
                 ],
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
             )
             self.data = json.loads(result.stdout)
         except subprocess.CalledProcessError as e:
@@ -45,7 +43,7 @@ class HeliosData:
             _LOGGER.error(f"Unexpected error reading Helios data: {e}")
             self.data = None
 
-    # return value for a specific variable
+    # fetch and cache one specific
     def get_value(self, variable):
         if self.data:
             return self.data.get(variable, None)
@@ -176,67 +174,54 @@ def create_write_service_handler(hass):
 
 
 # set up the integration
+
 async def async_setup(hass, config):
-
-    conf = config[DOMAIN]
-    ip_address = conf[CONF_IP_ADDRESS]
-    port = conf[CONF_PORT]
-
-    hass.data[DOMAIN] = {"ip_address": ip_address, "port": port}
-
-    _LOGGER.debug("Starting setup of Helios Pro / Vallox SE Integration")
-    try:
-        # ventilation_config = config.get("helios_vallox_ventilation")
-        ventilation_config = config.get("helios_vallox_ventilation", {})
-        if not ventilation_config:
-            _LOGGER.error("No configuration found for Helios Pro / Vallox SE.")
-            return False
-
-        global HELIOS_DATA
-        HELIOS_DATA = HeliosData(ventilation_config)
-
-        # IP adress and port for writing
-        ip_address = ventilation_config.get("ip_address", "192.168.178.38")
-        port = ventilation_config.get("port", 8234)
-
-        _LOGGER.debug(f"Loaded configuration: {ventilation_config}")
-
-        # load platforms for entities
-        hass.async_create_task(
-            async_load_platform(hass, "sensor", "helios_vallox_ventilation", {"sensors": ventilation_config.get("sensors", [])}, config)
-        )
-        hass.async_create_task(
-            async_load_platform(hass, "binary_sensor", "helios_vallox_ventilation", {"binary_sensors": ventilation_config.get("binary_sensors", [])}, config)
-        )
-        hass.async_create_task(
-            async_load_platform(hass, "switch", "helios_vallox_ventilation", {"switches": ventilation_config.get("switches", [])}, config)
-        )
-
-        # refresh entities in regular intervals
-        async def update_data(_):
-            _LOGGER.debug("Updating Helios data")
-            HELIOS_DATA.update()
-
-        # set the interval
-        async_track_time_interval(hass, update_data, timedelta(minutes=1))
-
-        # register write service
-        try:
-            hass.services.async_register(
-                "helios_vallox_ventilation",
-                "write_value",
-                create_write_service_handler(hass),
-                schema=SERVICE_WRITE_VALUE_SCHEMA
-            )
-            _LOGGER.debug("Service write_value registered successfully")
-            
-        except Exception as e:
-            _LOGGER.error(f"Failed to register service write_value: {e}", exc_info=True)
-            return False
-
-        _LOGGER.debug("Helios Pro / Vallox SE Integration setup completed successfully")
-        return True
-        
-    except Exception as e:
-        _LOGGER.error(f"Error during setup: {e}", exc_info=True)
+    # check for config
+    ventilation_config = config.get(DOMAIN, {})
+    if not ventilation_config:
+        _LOGGER.error("No configuration found for Helios Pro / Vallox SE.")
         return False
+
+    # read IP and port from config
+    ip_address = ventilation_config.get("ip_address", "192.168.178.38")
+    port = ventilation_config.get("port", 8234)
+    _LOGGER.debug(f"Loaded configuration: IP={ip_address}, Port={port}")
+
+    # create HeliosData instance
+    global HELIOS_DATA
+    HELIOS_DATA = HeliosData(ip_address, port)
+
+    # load platforms for entities
+    hass.async_create_task(
+        async_load_platform(hass, "sensor", "helios_vallox_ventilation", {"sensors": ventilation_config.get("sensors", [])}, config)
+    )
+    hass.async_create_task(
+        async_load_platform(hass, "binary_sensor", "helios_vallox_ventilation", {"binary_sensors": ventilation_config.get("binary_sensors", [])}, config)
+    )
+    hass.async_create_task(
+        async_load_platform(hass, "switch", "helios_vallox_ventilation", {"switches": ventilation_config.get("switches", [])}, config)
+    )
+
+    # refresh in intervals
+    async def update_data(_):
+        _LOGGER.debug("Updating Helios data")
+        HELIOS_DATA.update()
+
+    # define the interval
+    async_track_time_interval(hass, update_data, timedelta(minutes=1))
+
+    # register service
+    try:
+        hass.services.async_register(
+            DOMAIN,
+            "write_value",
+            create_write_service_handler(hass),
+            schema=SERVICE_WRITE_VALUE_SCHEMA,
+        )
+        _LOGGER.debug("Service write_value registered successfully")
+    except Exception as e:
+        _LOGGER.error(f"Failed to register service write_value: {e}", exc_info=True)
+        return False
+
+    _LOGGER.debug("Helios Pro / Vallox SE Integration setup completed successfully")
+    return True
