@@ -1,8 +1,7 @@
 import voluptuous as vol
 from homeassistant.const import CONF_IP_ADDRESS, CONF_PORT
 from homeassistant.helpers import config_validation as cv
-
-DOMAIN = "helios_vallox_ventilation"
+from .const import DOMAIN
 
 # Configuration schema
 CONFIG_SCHEMA = vol.Schema(
