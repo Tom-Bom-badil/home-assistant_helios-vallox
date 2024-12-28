@@ -327,11 +327,76 @@ class HeliosBase():
         return results
 
 
+    def calculate_derived_values(self, measured_values):
+
+        try:
+
+            # get temperatures
+            temp_outside = measured_values.get("temperature_outside")
+            temp_inlet = measured_values.get("temperature_inlet")
+            temp_outlet = measured_values.get("temperature_outlet")
+            temp_exhaust = measured_values.get("temperature_exhaust")
+
+            # calculate reduction / gain / (dis-)balance
+            temperature_reduction = (
+                temp_outlet - temp_exhaust
+                if temp_outlet is not None and temp_exhaust is not None
+                else None
+            )
+            temperature_gain = (
+                temp_inlet - temp_outside
+                if temp_inlet is not None and temp_outside is not None
+                else None
+            )
+            temperature_balance = (
+                temperature_reduction - temperature_gain
+                if temperature_reduction is not None and temperature_gain is not None
+                else None
+            )
+
+            # calculate efficientcy
+            efficiency = None
+            if (
+                temp_inlet is not None
+                and temp_outside is not None
+                and temp_outlet is not None
+            ):
+                delta_outside = temp_outlet - temp_outside
+                if delta_outside == 0:
+                    # temp_outlet == temp_outside would lead to div/0
+                    efficiency = 0
+                elif delta_outside > 0:
+                    efficiency = (temperature_gain / delta_outside) * 100
+                else:
+                    efficiency = 0
+                # limit to 0..100%
+                if efficiency is not None:
+                    efficiency = int(max(0, min(efficiency, 100)))
+
+            return {
+                "temperature_reduction": temperature_reduction,
+                "temperature_gain": temperature_gain,
+                "temperature_balance": temperature_balance,
+                "efficiency": efficiency,
+            }
+
+        except Exception as e:
+            logger.error(f"Fehler bei der Berechnung der abgeleiteten Werte: {e}")
+            return {
+                "temperature_reduction": None,
+                "temperature_gain": None,
+                "temperature_balance": None,
+                "efficiency": None,
+            }
+
+
     def readAllValues(self, textoutput=True):
 
         logger.debug("Helios: Reading values of all registers and coils ...")
 
         varid_groups = {}  # prevent double handling of coil bytes
+        measured_values = {}
+
         for varname, details in REGISTERS_AND_COILS.items():
             varid = details["varid"]
             if varid not in varid_groups:
@@ -351,6 +416,13 @@ class HeliosBase():
                         logger.debug(f"{var_name}: {var_value}")
                         if textoutput==True:
                             print(f"{var_name}: {var_value}")
+
+# neu
+                        # store some values for later calculation
+                        if var_name in ["temperature_outside", "temperature_inlet", "temperature_outlet", "temperature_exhaust"]:
+                            measured_values[var_name] = var_value
+# neu
+
                         if var_name == "fault_number":
                             error_text = COMPONENT_FAULTS.get(var_value, "none")
                             if textoutput==True:
@@ -359,6 +431,19 @@ class HeliosBase():
                     else:
                         logger.warning(f"Failed to resolve value for variable: {var_name}")
                         print(f"{var_name}: Failed to resolve value")
+                
+
+# neu
+                    if all(key in measured_values for key in ["temperature_outside", "temperature_inlet", "temperature_outlet", "temperature_exhaust"]):
+                        calculated_values = self.calculate_derived_values(measured_values)
+                        for calc_name, calc_value in calculated_values.items():
+                            if calc_value is not None:
+                                self.GLOBAL_VALUES[calc_name] = calc_value
+                                logger.debug(f"{calc_name}: {calc_value}")
+                                if textoutput:
+                                    print(f"{calc_name}: {calc_value}")
+# neu
+
             else:
                 logger.warning(f"Failed to read value for varid: {varid:02X}")
                 for varname in varnames:
