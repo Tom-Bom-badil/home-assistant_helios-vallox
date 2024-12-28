@@ -34,25 +34,25 @@
       default_value: 8
       icon: "mdi:speedometer"
 
-    - name: "outside_temp"
+    - name: "temperature_outside"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"   # this means "read-only"
       icon: "mdi:thermometer"
 
-    - name: "inlet_temp"
+    - name: "temperature_inlet"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"
       icon: "mdi:thermometer"
 
-    - name: "outlet_temp"
+    - name: "temperature_outlet"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"
       icon: "mdi:thermometer"
 
-    - name: "exhaust_temp"
+    - name: "temperature_exhaust"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"
@@ -133,6 +133,36 @@
       state_class: "measurement"
       icon: "mdi:alert"
 
+    # calculated by ventcontrol.py
+    - name: "temperature_reduction"
+      friendly_name: "Heat recovery - reduction of outgoing air temperature"
+      unit_of_measurement: "°C"
+      device_class: "temperature"
+      state_class: "measurement"
+      icon: "mdi:thermometer"
+
+    # calculated by ventcontrol.py
+    - name: "temperature_gain"
+      friendly_name: "Heat recovery - gain of incoming air temperature"
+      unit_of_measurement: "°C"
+      device_class: "temperature"
+      state_class: "measurement"
+      icon: "mdi:thermometer"
+
+    # calculated by ventcontrol.py
+    - name: "temperature_balance"
+      friendly_name: "Difference temperature reduction ./. temperature gain"
+      unit_of_measurement: "°C"
+      device_class: "temperature"
+      state_class: "measurement"
+      icon: "mdi:thermometer"
+
+    # calculated by ventcontrol.py
+    - name: "efficiency"
+      unit_of_measurement: "%"
+      state_class: "measurement"
+      icon: "mdi:percent"
+
     - name: "preheat_status" # ??????????????? --> binary_sensor???
       min_value: 0
       max_value: 1
@@ -184,7 +214,3 @@
     - name: "output_fan_off"
       device_class: "power"
       icon: "mdi:fan-off"
-
-  # Internal developer note / todo:
-  # Outdoor air temperature, Extract air temperature, Supply air temperature
-  # Indoor air temperature
