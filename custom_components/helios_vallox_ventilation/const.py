@@ -66,13 +66,13 @@ REGISTERS_AND_COILS = {
     # Maximum settable fanspeed
     "max_fanspeed"      : {"varid" : 0xA5, 'type': 'fanspeed',     'bitposition': -1, 'read': True, 'write': True  },
     # NTC5K sensors: outside air temperature
-    "outside_temp"      : {"varid" : 0x32, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
+    "temperature_outside"      : {"varid" : 0x32, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
     # NTC5K sensors: supply air temperature
-    "inlet_temp"        : {"varid" : 0x35, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
+    "temperature_inlet"        : {"varid" : 0x35, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
     # NTC5K sensors: extract / inside air temperature
-    "outlet_temp"       : {"varid" : 0x34, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
+    "temperature_outlet"       : {"varid" : 0x34, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
     # NTC5K sensors: exhaust air temperature
-    "exhaust_temp"      : {"varid" : 0x33, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
+    "temperature_exhaust"      : {"varid" : 0x33, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
     # various coils in register 0xA3 that are displayed on the remote controls (0..3 read/write, 4..7 readonly)
     # FB LED1: on/off Caution: Remotes will not be switched back on automatically; initial_fanspeed set if done manually.
     "powerstate"        : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  0, 'read': True, 'write': True  },
