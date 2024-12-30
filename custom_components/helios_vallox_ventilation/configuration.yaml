@@ -34,25 +34,30 @@
       default_value: 8
       icon: "mdi:speedometer"
 
-    - name: "temperature_outside"
+    # now using the ISO names for temperatures
+    # DE: Außenlufttemperatur 
+    - name: "temperature_outdoor_air"
       unit_of_measurement: "°C"
       device_class: "temperature"
-      state_class: "measurement"   # this means "read-only"
+      state_class: "measurement"   # ="read-only"
       icon: "mdi:thermometer"
 
-    - name: "temperature_inlet"
-      unit_of_measurement: "°C"
-      device_class: "temperature"
-      state_class: "measurement"
-      icon: "mdi:thermometer"
-
-    - name: "temperature_outlet"
+    # DE: Zulufttemperatur
+    - name: "temperature_supply_air"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"
       icon: "mdi:thermometer"
 
-    - name: "temperature_exhaust"
+    # DE: Ablufttemperatur
+    - name: "temperature_extract_air"
+      unit_of_measurement: "°C"
+      device_class: "temperature"
+      state_class: "measurement"
+      icon: "mdi:thermometer"
+
+    # DE: Fortlufttemperatur
+    - name: "temperature_exhaust_air"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"
@@ -170,11 +175,11 @@
 
   binary_sensors:
 
-    - name: "powerstate"     # switch ???? --> wirft zZ Fehler
+    - name: "powerstate"     # switch ???? --> throws errors on writing
       device_class: "power"
       icon: "mdi:power-settings"
 
-    - name: "post_heating_on" # Vallox only
+    - name: "post_heating_on" # Vallox only?
       device_class: "heat"
       icon: "mdi:heating-coil"
 
