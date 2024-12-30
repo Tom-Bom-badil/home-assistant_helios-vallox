@@ -122,7 +122,7 @@ class HeliosBase():
                 data = self._socket.recv(6)
                 if len(data) == 6:
                     buffer = data
-                    if buffer[0] != 0x01:       # lots of noise on the RS485
+                    if buffer[0] != 0x01:       # sometimes lots of noise on the RS485
                         logger.debug(f"Ignoring jitter data: {' '.join(f'{byte:02X}' for byte in buffer)}")
                         continue
                     if (buffer[0] == 0x01 and
@@ -332,10 +332,10 @@ class HeliosBase():
         try:
 
             # get temperatures
-            temp_outside = measured_values.get("temperature_outside")
-            temp_inlet = measured_values.get("temperature_inlet")
-            temp_outlet = measured_values.get("temperature_outlet")
-            temp_exhaust = measured_values.get("temperature_exhaust")
+            temp_outside = measured_values.get("temperature_outdoor_air")
+            temp_inlet = measured_values.get("temperature_supply_air")
+            temp_outlet = measured_values.get("temperature_extract_air")
+            temp_exhaust = measured_values.get("temperature_exhaust_air")
 
             # calculate reduction / gain / (dis-)balance
             temperature_reduction = (
@@ -363,7 +363,7 @@ class HeliosBase():
             ):
                 delta_outside = temp_outlet - temp_outside
                 if delta_outside == 0:
-                    # temp_outlet == temp_outside would lead to div/0
+                    # temp_extract == temp_outdoor would lead to div/0
                     efficiency = 0
                 elif delta_outside > 0:
                     efficiency = (temperature_gain / delta_outside) * 100
@@ -381,7 +381,7 @@ class HeliosBase():
             }
 
         except Exception as e:
-            logger.error(f"Fehler bei der Berechnung der abgeleiteten Werte: {e}")
+            logger.error(f"Error in temperature/efficiency calculations: {e}")
             return {
                 "temperature_reduction": None,
                 "temperature_gain": None,
@@ -417,14 +417,11 @@ class HeliosBase():
                         if textoutput==True:
                             print(f"{var_name}: {var_value}")
 
-# neu
-                        # store some values for later calculation
-                        if var_name in ["temperature_outside", "temperature_inlet", "temperature_outlet", "temperature_exhaust"]:
+                        if var_name in ["temperature_outdoor_air", "temperature_supply_air", "temperature_extract_air", "temperature_exhaust_air"]:
                             measured_values[var_name] = var_value
-# neu
 
                         if var_name == "fault_number":
-                            error_text = COMPONENT_FAULTS.get(var_value, "none")
+                            error_text = COMPONENT_FAULTS.get(var_value, "")
                             if textoutput==True:
                                 print(f"fault_text: {error_text}")
                             self.GLOBAL_VALUES['fault_text'] = error_text
@@ -433,8 +430,7 @@ class HeliosBase():
                         print(f"{var_name}: Failed to resolve value")
                 
 
-# neu
-                    if all(key in measured_values for key in ["temperature_outside", "temperature_inlet", "temperature_outlet", "temperature_exhaust"]):
+                    if all(key in measured_values for key in ["temperature_outdoor_air", "temperature_supply_air", "temperature_extract_air", "temperature_exhaust_air"]):
                         calculated_values = self.calculate_derived_values(measured_values)
                         for calc_name, calc_value in calculated_values.items():
                             if calc_value is not None:
@@ -442,7 +438,8 @@ class HeliosBase():
                                 logger.debug(f"{calc_name}: {calc_value}")
                                 if textoutput:
                                     print(f"{calc_name}: {calc_value}")
-# neu
+                    else:
+                        logger.warning(f"Failed to calculate temperatures/efficiency - not all temps available.")
 
             else:
                 logger.warning(f"Failed to read value for varid: {varid:02X}")

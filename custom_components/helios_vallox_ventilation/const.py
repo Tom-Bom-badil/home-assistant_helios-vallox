@@ -49,12 +49,12 @@ FANSPEEDS = {
 
 # mapping error messages / faults
 COMPONENT_FAULTS = {
-    5: 'Inlet air sensor fault',
+    5: 'Supply air sensor fault',
     6: 'CO2 Alarm',
-    7: 'Outside air sensor fault',
+    7: 'Outdoor air sensor fault',
     8: 'Exhaust air sensor fault',
     9: 'Water coil frost warning',
-    10: 'Outlet air sensor fault'
+    10: 'Extract air sensor fault'
 }
 
 # mapping for registers and coils
@@ -66,13 +66,13 @@ REGISTERS_AND_COILS = {
     # Maximum settable fanspeed
     "max_fanspeed"      : {"varid" : 0xA5, 'type': 'fanspeed',     'bitposition': -1, 'read': True, 'write': True  },
     # NTC5K sensors: outside air temperature
-    "temperature_outside"      : {"varid" : 0x32, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
+    "temperature_outdoor_air"      : {"varid" : 0x32, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
     # NTC5K sensors: supply air temperature
-    "temperature_inlet"        : {"varid" : 0x35, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
-    # NTC5K sensors: extract / inside air temperature
-    "temperature_outlet"       : {"varid" : 0x34, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
-    # NTC5K sensors: exhaust air temperature
-    "temperature_exhaust"      : {"varid" : 0x33, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
+    "temperature_supply_air"        : {"varid" : 0x35, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
+    # NTC5K sensors: return air temperature
+    "temperature_extract_air"       : {"varid" : 0x34, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
+    # NTC5K sensors: discharge air temperature
+    "temperature_exhaust_air"      : {"varid" : 0x33, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
     # various coils in register 0xA3 that are displayed on the remote controls (0..3 read/write, 4..7 readonly)
     # FB LED1: on/off Caution: Remotes will not be switched back on automatically; initial_fanspeed set if done manually.
     "powerstate"        : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  0, 'read': True, 'write': True  },
