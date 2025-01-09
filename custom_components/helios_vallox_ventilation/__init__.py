@@ -1,7 +1,7 @@
 import logging
 import subprocess
 import json
-from datetime import timedelta
+from datetime import timedelta, datetime
 from homeassistant.core import ServiceCall
 from homeassistant.helpers.discovery import async_load_platform
 from homeassistant.helpers.event import async_track_time_interval
@@ -15,6 +15,7 @@ _LOGGER = logging.getLogger(__name__)
 
 # shared class - fetch and cache data from the python script
 class HeliosData:
+
     def __init__(self, ip_address, port):
         self.data = None
         self.ip_address = ip_address
@@ -37,13 +38,13 @@ class HeliosData:
             )
             self.data = json.loads(result.stdout)
         except subprocess.CalledProcessError as e:
-            _LOGGER.error(f"Helios script error: {e.stderr}")
+            _LOGGER.error(f"ventcontrol script returned an error: {e.stderr}")
             self.data = None
         except Exception as e:
             _LOGGER.error(f"Unexpected error reading Helios data: {e}")
             self.data = None
 
-    # fetch and cache one specific
+    # get value from cache
     def get_value(self, variable):
         if self.data:
             return self.data.get(variable, None)
@@ -137,7 +138,7 @@ def create_write_service_handler(hass):
 
                     # read-only variable?
                     if getattr(entity, "state_class", None) == "measurement":
-                        _LOGGER.error(f"Attempt to write to read-only variable: {variable}")
+                        _LOGGER.error(f"Attempted to write to read-only variable: {variable}")
                         return
 
                     # outside min_value .. max_value?
@@ -157,8 +158,6 @@ def create_write_service_handler(hass):
             success = await hass.async_add_executor_job(write_value, variable, value)
 
             if success:
-                _LOGGER.debug(f"Successfully wrote {value} to {variable}")
-
                 # update entity
                 for entity in hass.data.get("ventilation_entities", []):
                     if entity.name == variable:
@@ -174,8 +173,8 @@ def create_write_service_handler(hass):
 
 
 # set up the integration
-
 async def async_setup(hass, config):
+
     # check for config
     ventilation_config = config.get(DOMAIN, {})
     if not ventilation_config:
@@ -204,11 +203,18 @@ async def async_setup(hass, config):
 
     # refresh in intervals
     async def update_data(_):
-        _LOGGER.debug("Updating Helios data")
-        HELIOS_DATA.update()
+        start_time = datetime.now()
+        if hass.data.get("ventilation_entities"):
+            HELIOS_DATA.update()
+            for entity in hass.data["ventilation_entities"]:
+                entity.async_schedule_update_ha_state(force_refresh=True)
+        end_time = datetime.now()
+        duration = (end_time - start_time).total_seconds()
+        _LOGGER.debug(f"Updating data took {duration:.2f} seconds.")
 
     # define the interval
     async_track_time_interval(hass, update_data, timedelta(minutes=1))
+    _LOGGER.debug(f"Updating data once a minute.")
 
     # register service
     try:
@@ -218,10 +224,19 @@ async def async_setup(hass, config):
             create_write_service_handler(hass),
             schema=SERVICE_WRITE_VALUE_SCHEMA,
         )
-        _LOGGER.debug("Service write_value registered successfully")
+        _LOGGER.debug("Service write_value registered.")
     except Exception as e:
         _LOGGER.error(f"Failed to register service write_value: {e}", exc_info=True)
         return False
 
-    _LOGGER.debug("Helios Pro / Vallox SE Integration setup completed successfully")
+    # shutdown handler - explicitly write all entities to database
+    async def shutdown_handler(event):
+        for entity in hass.data.get("ventilation_entities", []):
+            entity.async_write_ha_state()
+        await hass.async_block_till_done()
+
+    # register the handler
+    hass.bus.async_listen_once("homeassistant_stop", shutdown_handler)
+
+    _LOGGER.debug("async_setup completed successfully.")
     return True
