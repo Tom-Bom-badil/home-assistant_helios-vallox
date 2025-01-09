@@ -430,22 +430,26 @@ class HeliosBase():
                         print(f"{var_name}: Failed to resolve value")
                 
 
-                    if all(key in measured_values for key in ["temperature_outdoor_air", "temperature_supply_air", "temperature_extract_air", "temperature_exhaust_air"]):
-                        calculated_values = self.calculate_derived_values(measured_values)
-                        for calc_name, calc_value in calculated_values.items():
-                            if calc_value is not None:
-                                self.GLOBAL_VALUES[calc_name] = calc_value
-                                logger.debug(f"{calc_name}: {calc_value}")
-                                if textoutput:
-                                    print(f"{calc_name}: {calc_value}")
-                    else:
-                        logger.warning(f"Failed to calculate temperatures/efficiency - not all temps available.")
-
             else:
                 logger.warning(f"Failed to read value for varid: {varid:02X}")
-                for varname in varnames:
-                    print(f"{varname}: Failed to read value")
-                    
+                # for varname in varnames:
+                #    print(f"{varname}: Failed to read value")
+
+
+        if all(key in measured_values for key in ["temperature_outdoor_air", "temperature_supply_air", "temperature_extract_air", "temperature_exhaust_air"]):
+            calculated_values = self.calculate_derived_values(measured_values)
+            for calc_name, calc_value in calculated_values.items():
+                if calc_value is not None:
+                    self.GLOBAL_VALUES[calc_name] = calc_value
+                    logger.debug(f"{calc_name}: {calc_value}")
+                    if textoutput:
+                        print(f"{calc_name}: {calc_value}")
+
+        else:
+            logger.warning(f"Failed to calculate temperatures/efficiency - not all temps available.")
+
+
+
     def get_global_values(self):
             return self.GLOBAL_VALUES
 
