@@ -1,102 +1,96 @@
-from homeassistant.components.sensor import SensorEntity
-from custom_components.helios_vallox_ventilation import HELIOS_DATA
 import logging
-
-
+from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.components.sensor import SensorEntity
+from .const import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 
-# set up sensors
+# platform setup
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
-    HELIOS_DATA.update() 
-    sensor_config = discovery_info.get("sensors", []) if discovery_info else []
-    sensors = []
+    if discovery_info is None:
+        return
+
+    coordinator = hass.data[DOMAIN]["coordinator"]
+    entities = []
+    sensor_config = discovery_info.get("sensors", [])
 
     for sensor in sensor_config:
         name = sensor.get("name")
         if not name:
+            _LOGGER.warning("Sensor configuration missing 'name'. Skipping entry.")
             continue
-        sensors.append(
+        entities.append(
             HeliosSensor(
                 name=name,
                 variable=name,
-                data_provider=HELIOS_DATA,
+                coordinator=coordinator,
+                description=sensor.get("description"),
                 unit_of_measurement=sensor.get("unit_of_measurement"),
                 device_class=sensor.get("device_class"),
+                state_class=sensor.get("state_class"),
                 icon=sensor.get("icon"),
                 min_value=sensor.get("min_value"),
                 max_value=sensor.get("max_value"),
                 default_value=sensor.get("default_value"),
+                unique_id=f"ventilation_{name}",
             )
         )
-    async_add_entities(sensors)
-    hass.data.setdefault("ventilation_entities", []).extend(sensors)
-    _LOGGER.debug("Ventilation sensors successfully set up.")
 
+    async_add_entities(entities)
+    hass.data.setdefault("ventilation_entities", []).extend(entities)
+    _LOGGER.debug(f"Added {len(entities)} sensors for Helios/Vallox and registered it with coordinator {coordinator.coordinator}.")
 
-# representation of a sensor
-class HeliosSensor(SensorEntity):
-
+# sensor class
+class HeliosSensor(CoordinatorEntity, SensorEntity):
     def __init__(
         self,
         name,
         variable,
-        data_provider,
+        coordinator,
+        description=None,
         unit_of_measurement=None,
         device_class=None,
+        state_class=None,
         icon=None,
         min_value=None,
         max_value=None,
         default_value=None,
+        unique_id=None,
     ):
-        self._name = f"ventilation_{name}"
+        super().__init__(coordinator.coordinator)
+        self._attr_name = f"Ventilation {name}"
         self._variable = variable
-        self._state = None
-        self._unit_of_measurement = unit_of_measurement
-        self._device_class = device_class
-        self._icon = icon
+        self._attr_native_unit_of_measurement = unit_of_measurement
+        self._attr_device_class = device_class
+        self._attr_state_class = state_class
+        self._attr_icon = icon
+        self._attr_unique_id = unique_id
+        self._description = description
         self._min_value = min_value
         self._max_value = max_value
         self._default_value = default_value
-        self._data_provider = data_provider
+        # _LOGGER.debug(f"Registering sensor '{name}' with coordinator: {coordinator.coordinator}")
 
     @property
-    def name(self):
-        return self._name
+    def native_value(self):
+        return self.coordinator.data.get(self._variable)
 
-    @property
-    def state(self):
-        return self._state
-
-    @property
-    def unit_of_measurement(self):
-        return self._unit_of_measurement
-
-    @property
-    def device_class(self):
-        return self._device_class
-
-    @property
-    def icon(self):
-        return self._icon
-
-    # additional (non-default) state attributes
+    # additional state attributes
     @property
     def extra_state_attributes(self):
+        return {
+            "min_value": self._min_value,
+            "max_value": self._max_value,
+            "default_value": self._default_value,
+            "description": self._description,
+        }
 
-        attributes = {}
+    # add entity
+    async def async_added_to_hass(self):
+        await super().async_added_to_hass()
+        self.async_write_ha_state()
 
-        if self._min_value is not None:
-            attributes["min_value"] = self._min_value
-
-        if self._max_value is not None:
-            attributes["max_value"] = self._max_value
-
-        if self._default_value is not None:
-            attributes["default_value"] = self._default_value
-
-        return attributes
-
-    def update(self):
-        value = self._data_provider.get_value(self._variable)
-        self._state = value
+    # update entity
+    def _handle_coordinator_update(self):
+        super()._handle_coordinator_update()
