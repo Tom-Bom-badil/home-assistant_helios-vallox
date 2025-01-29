@@ -45,7 +45,7 @@ async def async_setup(hass: HomeAssistant, config: dict):
             await coordinator._coordinator.async_request_refresh()
         except Exception as e:
             _LOGGER.error(f"Error during data refresh: {e}", exc_info=True)
-    async_track_time_interval(hass, update_data, timedelta(seconds=23))
+    async_track_time_interval(hass, update_data, timedelta(seconds=58))
 
     # Register the write service
     async def handle_write_service(call):
