@@ -1,65 +1,80 @@
-from homeassistant.components.binary_sensor import BinarySensorEntity
-from custom_components.helios_vallox_ventilation import HELIOS_DATA
 import logging
-
-
+from homeassistant.components.binary_sensor import BinarySensorEntity
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from .const import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
-
-# set up binary_sensors
+# platform setup
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
+    if discovery_info is None:
+        return
 
-    data_provider = HELIOS_DATA
-    data_provider.update()
-
-    binary_sensor_config = discovery_info.get("binary_sensors", []) if discovery_info else []
-    binary_sensors = []
+    coordinator = hass.data[DOMAIN]["coordinator"]
+    entities = []
+    binary_sensor_config = discovery_info.get("binary_sensors", [])
 
     for sensor in binary_sensor_config:
         name = sensor.get("name")
         if not name:
+            _LOGGER.warning("Binary sensor configuration missing 'name'. Skipping entry.")
             continue
-        binary_sensors.append(
+
+        entities.append(
             HeliosBinarySensor(
                 name=name,
                 variable=name,
-                data_provider=data_provider,
+                coordinator=coordinator,
+                description=sensor.get("description"),
                 device_class=sensor.get("device_class"),
-                icon=sensor.get("icon")
+                icon=sensor.get("icon"),
+                unique_id=f"ventilation_{name}",
             )
         )
-    async_add_entities(binary_sensors)
-    hass.data.setdefault("ventilation_entities", []).extend(binary_sensors)
-    _LOGGER.debug("Ventilation binary_sensors successfully set up.")
+
+    async_add_entities(entities)
+    hass.data.setdefault("ventilation_entities", []).extend(entities)
+    _LOGGER.debug(f"Added {len(entities)} binary sensors for Helios/Vallox and registered it with coordinator {coordinator.coordinator}.")
 
 
-# representation of a binary_sensor
-class HeliosBinarySensor(BinarySensorEntity):
-
-    def __init__(self, name, variable, data_provider, device_class=None, icon=None):
-        self._name = f"ventilation_{name}"
+# binary_sensor class
+class HeliosBinarySensor(CoordinatorEntity, BinarySensorEntity):
+    def __init__(
+        self,
+        name,
+        variable,
+        coordinator,
+        description=None,
+        device_class=None,
+        icon=None,
+        unique_id=None,
+    ):
+        super().__init__(coordinator.coordinator)
+        self._attr_name = f"Ventilation {name}"
         self._variable = variable
-        self._state = None
-        self._device_class = device_class
-        self._icon = icon
-        self._data_provider = data_provider
-
-    @property
-    def name(self):
-        return self._name
+        self._attr_description = description
+        self._attr_device_class = device_class
+        self._attr_icon = icon
+        self._attr_unique_id = unique_id
+        self._attr_is_on = None
+        #_LOGGER.debug(f"Registering binary sensor '{name}' with coordinator: {coordinator.coordinator}")
 
     @property
     def is_on(self):
-        return bool(self._data_provider.get_value(self._variable))
+        return self.coordinator.data.get(self._variable)
 
+    # additional state attributes
     @property
-    def device_class(self):
-        return self._device_class
+    def extra_state_attributes(self):
+        attributes = {
+            "description": self._attr_description,
+        }
+        return {k: v for k, v in attributes.items() if v is not None}
 
-    @property
-    def icon(self):
-        return self._icon
+    # add entity
+    async def async_added_to_hass(self):
+        await super().async_added_to_hass()
+        self.async_write_ha_state()
 
-    def update(self):
-        value = self._data_provider.get_value(self._variable)
-        self._state = bool(value)
+    # update entity
+    def _handle_coordinator_update(self):
+        super()._handle_coordinator_update()
