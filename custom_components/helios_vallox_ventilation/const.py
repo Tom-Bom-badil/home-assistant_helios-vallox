@@ -37,89 +37,90 @@ BUS_ADDRESSES = {
 
 # mapping bits to fan speeds
 FANSPEEDS = {
-    1: 1,
-    3: 2,
-    7: 3,
-    15: 4,
-    31: 5,
-    63: 6,
+    1:   1,
+    3:   2,
+    7:   3,
+    15:  4,
+    31:  5,
+    63:  6,
     127: 7,
     255: 8
 }
 
 # mapping error messages / faults
 COMPONENT_FAULTS = {
-    5: 'Supply air sensor fault',
-    6: 'CO2 Alarm',
-    7: 'Outdoor air sensor fault',
-    8: 'Exhaust air sensor fault',
-    9: 'Water coil frost warning',
+    0:  '-',
+    5:  'Supply air sensor fault',
+    6:  'CO2 Alarm',
+    7:  'Outdoor air sensor fault',
+    8:  'Exhaust air sensor fault',
+    9:  'Water coil frost warning',
     10: 'Extract air sensor fault'
 }
 
 # mapping for registers and coils
 REGISTERS_AND_COILS = {
     # Current fanspeed (EC300Pro: 1..8)
-    "fanspeed"          : {"varid" : 0x29, 'type': 'fanspeed',     'bitposition': -1, 'read': True, 'write': True  },
+    "fanspeed":                {"varid": 0x29, 'type': 'fanspeed',    'bitposition': -1, 'read': True, 'write': True },
     # Fanspeed after switching on
-    "initial_fanspeed"  : {"varid" : 0xA9, 'type': 'fanspeed',     'bitposition': -1, 'read': True, 'write': True  },
+    "initial_fanspeed":        {"varid": 0xA9, 'type': 'fanspeed',    'bitposition': -1, 'read': True, 'write': True },
     # Maximum settable fanspeed
-    "max_fanspeed"      : {"varid" : 0xA5, 'type': 'fanspeed',     'bitposition': -1, 'read': True, 'write': True  },
+    "max_fanspeed":            {"varid": 0xA5, 'type': 'fanspeed',    'bitposition': -1, 'read': True, 'write': True },
     # NTC5K sensors: outside air temperature
-    "temperature_outdoor_air"      : {"varid" : 0x32, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
+    "temperature_outdoor_air": {"varid": 0x32, 'type': 'temperature', 'bitposition': -1, 'read': True, 'write': False},
     # NTC5K sensors: supply air temperature
-    "temperature_supply_air"        : {"varid" : 0x35, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
+    "temperature_supply_air":  {"varid": 0x35, 'type': 'temperature', 'bitposition': -1, 'read': True, 'write': False},
     # NTC5K sensors: return air temperature
-    "temperature_extract_air"       : {"varid" : 0x34, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
+    "temperature_extract_air": {"varid": 0x34, 'type': 'temperature', 'bitposition': -1, 'read': True, 'write': False},
     # NTC5K sensors: discharge air temperature
-    "temperature_exhaust_air"      : {"varid" : 0x33, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': False },
+    "temperature_exhaust_air": {"varid": 0x33, 'type': 'temperature', 'bitposition': -1, 'read': True, 'write': False},
     # various coils in register 0xA3 that are displayed on the remote controls (0..3 read/write, 4..7 readonly)
     # FB LED1: on/off Caution: Remotes will not be switched back on automatically; initial_fanspeed set if done manually.
-    "powerstate"        : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  0, 'read': True, 'write': True  },
+    "powerstate":              {"varid": 0xA3, 'type': 'bit',         'bitposition':  0, 'read': True, 'write': True },
     # FB LED2: CO2 warning
-    "co2_indicator"     : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  1, 'read': True, 'write': False },
+    "co2_indicator":           {"varid": 0xA3, 'type': 'bit',         'bitposition':  1, 'read': True, 'write': False},
     # FB LED3: Humidity warning
-    "rh_indicator"      : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  2, 'read': True, 'write': False },
+    "rh_indicator":            {"varid": 0xA3, 'type': 'bit',         'bitposition':  2, 'read': True, 'write': False},
     # FB LED4: 0 = summer mode with bypass, 1 = wintermode with heat regeneration (LED is on in winter mode)
-    "summer_winter_mode": {"varid" : 0xA3, 'type': 'bit',          'bitposition':  3, 'read': True, 'write': False },
+    "summer_winter_mode":      {"varid": 0xA3, 'type': 'bit',         'bitposition':  3, 'read': True, 'write': False},
     # FB icon 1: "Clean filter" warning
-    "clean_filter"      : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  4, 'read': True, 'write': False },
+    "clean_filter":            {"varid": 0xA3, 'type': 'bit',         'bitposition':  4, 'read': True, 'write': False},
     # FB icon 2 2: Pre-/Post heating active
-    "post_heating_on"   : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  5, 'read': True, 'write': False },
+    "post_heating_on":         {"varid": 0xA3, 'type': 'bit',         'bitposition':  5, 'read': True, 'write': False},
     # FB icon 3: Error / fault
-    "fault_detected"    : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  6, 'read': True, 'write': False },
+    "fault_detected":          {"varid": 0xA3, 'type': 'bit',         'bitposition':  6, 'read': True, 'write': False},
     # FB icon 4: Service request
-    "service_requested" : {"varid" : 0xA3, 'type': 'bit',          'bitposition':  7, 'read': True, 'write': False },
+    "service_requested":       {"varid": 0xA3, 'type': 'bit',         'bitposition':  7, 'read': True, 'write': False},
     # Summer mode: Activate bypass from this temperature onwards if fresh air °C (outside) < extract air °C (inside)
-    "bypass_setpoint"   : {"varid" : 0xAF, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': True  },
+    "bypass_setpoint":         {"varid": 0xAF, 'type': 'temperature', 'bitposition': -1, 'read': True, 'write': True },
     # Activation temperature for pre / post heating
-    "preheat_setpoint"  : {"varid" : 0xA7, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': True  },
+    "preheat_setpoint":        {"varid": 0xA7, 'type': 'temperature', 'bitposition': -1, 'read': True, 'write': True },
     # Pre / post heating is off (0) / on (1)
-    "preheat_status"    : {"varid" : 0x70, 'type': 'bit',          'bitposition':  7, 'read': True, 'write': True  },
+    "preheat_status":          {"varid": 0x70, 'type': 'bit',         'bitposition':  7, 'read': True, 'write': True },
     # Frost protection - switch off fresh air ventilator and heating below this temperature; -6 ... +15°C
-    "defrost_setpoint"  : {"varid" : 0xA8, 'type': 'temperature',  'bitposition': -1, 'read': True, 'write': True  },
+    "defrost_setpoint":        {"varid": 0xA8, 'type': 'temperature', 'bitposition': -1, 'read': True, 'write': True },
     # Frost protection hysteresis - when to switch it on again (defrost_setpoint + (this_value/3)) --> 0x03 = 1°C
-    "defrost_hysteresis": {"varid" : 0xB2, 'type': 'dec_special',  'bitposition': -1, 'read': True, 'write': True  },
+    "defrost_hysteresis":      {"varid": 0xB2, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },
     # Boost mode: 0=fireplace  (ignition - no exhaust air in the first 15 minutes of boost); 1=normal boost mode
-    "boost_mode"        : {"varid" : 0xAA, 'type': 'bit',          'bitposition':  5, 'read': True, 'write': True  },
+    "boost_mode":              {"varid": 0xAA, 'type': 'bit',         'bitposition':  5, 'read': True, 'write': True },
     # Switch boost on for 45 minutes (set to 1; will be reset automatically)
-    "boost_on_switch"   : {"varid" : 0x71, 'type': 'bit',          'bitposition':  5, 'read': True, 'write': True  },
+    "boost_on_switch":         {"varid": 0x71, 'type': 'bit',         'bitposition':  5, 'read': True, 'write': True },
     # Current boost status (off/on)
-    "boost_status"      : {"varid" : 0x71, 'type': 'bit',          'bitposition':  6, 'read': True, 'write': False },
+    "boost_status":            {"varid": 0x71, 'type': 'bit',         'bitposition':  6, 'read': True, 'write': False},
     # Remaining minutes of boost if on
-    "boost_remaining"   : {"varid" : 0x79, 'type': 'dec',          'bitposition': -1, 'read': True, 'write': False },
+    "boost_remaining":         {"varid": 0x79, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
     # Fresh air vetilator off; set to 1 to switch off; requires to be set twice
-    "input_fan_off"     : {"varid" : 0x08, 'type': 'bit',          'bitposition':  3, 'read': True, 'write': True  },
+    "input_fan_off":           {"varid": 0x08, 'type': 'bit',         'bitposition':  3, 'read': True, 'write': True },
     # Exhaust air vetilator off; set to 1 to switch off; requires to be set twice
-    "output_fan_off"    : {"varid" : 0x08, 'type': 'bit',          'bitposition':  5, 'read': True, 'write': True  },
-	# rpm of fresh air ventilator (65...100% - pneumatic calibration; default=100)
-    "input_fan_percent" : {"varid" : 0xB0, 'type': 'dec',          'bitposition': -1, 'read': True, 'write': True  },
-	# rpm of exhaust air ventilator (65...100% - pneumatic calibration; default=100)
-    "output_fan_percent": {"varid" : 0xB1, 'type': 'dec',          'bitposition': -1, 'read': True, 'write': True  },   
+    "output_fan_off":          {"varid": 0x08, 'type': 'bit',         'bitposition':  5, 'read': True, 'write': True },
+    # rpm of fresh air ventilator (65...100% - pneumatic calibration; default=100)
+    "input_fan_percent":       {"varid": 0xB0, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },
+    # rpm of exhaust air ventilator (65...100% - pneumatic calibration; default=100)
+    "output_fan_percent":      {"varid": 0xB1, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },   
     # Service reminder interval in months (used after reset f service reminder)
-    "service_interval"  : {"varid" : 0xA6, 'type': 'dec',          'bitposition': -1, 'read': True, 'write': True  },
+    "service_interval":        {"varid": 0xA6, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },
     # Remaining months for current service reminder
-    "service_due_months": {"varid" : 0xAB, 'type': 'dec',          'bitposition': -1, 'read': True, 'write': True  },
-    # Error / fault register. 0 = no fault. see COMPONENT_FAULTS below
-    "fault_number"      : {"varid" : 0x36, 'type': 'dec',          'bitposition': -1, 'read': True, 'write': False }
+    "service_due_months":      {"varid": 0xAB, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },
+    # Error / fault register. 0 = no fault. see COMPONENT_FAULTS above
+    "fault_number":            {"varid": 0x36, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False}
 }

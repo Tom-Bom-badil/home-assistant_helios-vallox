@@ -2,7 +2,7 @@
 [![Custom integration](https://img.shields.io/badge/custom%20integration-%2341BDF5.svg)](https://www.home-assistant.io/getting-started/concepts-terminology)
 [![HACS](https://img.shields.io/badge/HACS%20listed-not_yet-red.svg)](https://github.com/hacs)
 [![HACS](https://img.shields.io/badge/HACS%20install-verified-green.svg)](https://github.com/hacs)
-[![Version](https://img.shields.io/badge/Version-v2024.12.9-green.svg)](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/releases)
+[![Version](https://img.shields.io/badge/Version-v2025.01.1-green.svg)](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/releases)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Tom-Bom-badil/home-assistant_helios-vallox/graphs/commit-activity)
 
 # Integration for Helios / Vallox central house ventilation systems with RS-485 bus (pre-EasyControls aka pre-2014 models)
@@ -73,14 +73,14 @@ helios_vallox_port: 8234
 Add this to your configuration.yaml:
 ```yaml
 helios_vallox_ventilation:
-  !include custom_components/helios_vallox_ventilation/configuration.yaml
+  !include custom_components/helios_vallox_ventilation/vent_conf.yaml
 ```
 
 Optionally: If you want to have detailed debug logs at the beginning, you can also add this to your configuration.yaml:
 ```yaml
 logger:
   logs:
-    custom_components.helios_vallox_ventilation: debug
+    custom_components.helios_vallox_ventilation: error
 ```
 
 This is the point where you are 'finished finished' - you can now restart HA once and enjoy the integration!
@@ -98,14 +98,14 @@ helios_vallox_port: 8234
 Add this to your configuration.yaml:
 ```yaml
 helios_vallox_ventilation:
-  !include custom_components/helios_vallox_ventilation/configuration.yaml
+  !include custom_components/helios_vallox_ventilation/vent_conf.yaml
 ```
 
 Optionally: If you want to have detailed debug logs at the beginning, you can also add this to your configuration.yaml:
 ```yaml
 logger:
   logs:
-    custom_components.helios_vallox_ventilation: debug
+    custom_components.helios_vallox_ventilation: error
 ```
 
 Finally restart HA and enjoy! :)

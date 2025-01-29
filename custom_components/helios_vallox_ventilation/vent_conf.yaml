@@ -13,13 +13,13 @@
   sensors:
 
     - name: fanspeed
-      friendly_name: Fan speed
+      description: "Fan speed"
       min_value: 1
       max_value: 8
       icon: "mdi:speedometer-medium"
 
     - name: "initial_fanspeed"
-      friendly_name: Initial fan speed after switching on
+      description: "Initial fan speed after switching on"
       unit_of_measurement: "level"
       min_value: 1
       max_value: 8
@@ -27,7 +27,7 @@
       icon: "mdi:speedometer-slow"
 
     - name: "max_fanspeed"
-      friendly_name: Maximum fan speed availabe to remotes
+      description: "Maximum fan speed availabe to remotes"
       unit_of_measurement: "level"
       min_value: 1
       max_value: 8
@@ -135,12 +135,12 @@
       icon: "mdi:alert"
 
     - name: "fault_text"
-      state_class: "measurement"
+      # state_class: "measurement"
       icon: "mdi:alert"
 
     # calculated by ventcontrol.py
     - name: "temperature_reduction"
-      friendly_name: "Heat recovery - reduction of outgoing air temperature"
+      description: "Heat recovery - reduction of outgoing air temperature"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"
@@ -148,7 +148,7 @@
 
     # calculated by ventcontrol.py
     - name: "temperature_gain"
-      friendly_name: "Heat recovery - gain of incoming air temperature"
+      description: "Heat recovery - gain of incoming air temperature"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"
@@ -156,7 +156,7 @@
 
     # calculated by ventcontrol.py
     - name: "temperature_balance"
-      friendly_name: "Difference temperature reduction ./. temperature gain"
+      description: "Difference temperature reduction ./. temperature gain"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"

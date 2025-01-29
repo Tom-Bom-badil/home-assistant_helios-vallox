@@ -16,7 +16,7 @@ CONFIG_SCHEMA = vol.Schema(
                         vol.Schema(
                             {
                                 vol.Required("name"): cv.string,
-                                vol.Optional("friendly_name"): cv.string,
+                                vol.Optional("description"): cv.string,
                                 vol.Optional("unit_of_measurement"): cv.string,
                                 vol.Optional("device_class"): cv.string,
                                 vol.Optional("state_class"): cv.string,
@@ -34,7 +34,7 @@ CONFIG_SCHEMA = vol.Schema(
                         vol.Schema(
                             {
                                 vol.Required("name"): cv.string,
-                                vol.Optional("friendly_name"): cv.string,
+                                vol.Optional("description"): cv.string,
                                 vol.Optional("device_class"): cv.string,
                                 vol.Optional("icon"): cv.icon,
                             }
@@ -47,7 +47,7 @@ CONFIG_SCHEMA = vol.Schema(
                         vol.Schema(
                             {
                                 vol.Required("name"): cv.string,
-                                vol.Optional("friendly_name"): cv.string,
+                                vol.Optional("description"): cv.string,
                                 vol.Optional("device_class"): cv.string,
                                 vol.Optional("icon"): cv.icon,
                             }
