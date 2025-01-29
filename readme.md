@@ -98,14 +98,14 @@ helios_vallox_port: 8234
 Add this to your configuration.yaml:
 ```yaml
 helios_vallox_ventilation:
-  !include custom_components/helios_vallox_ventilation/configuration.yaml
+  !include custom_components/helios_vallox_ventilation/vent_conf.yaml
 ```
 
 Optionally: If you want to have detailed debug logs at the beginning, you can also add this to your configuration.yaml:
 ```yaml
 logger:
   logs:
-    custom_components.helios_vallox_ventilation: debug
+    custom_components.helios_vallox_ventilation: error
 ```
 
 Finally restart HA and enjoy! :)
