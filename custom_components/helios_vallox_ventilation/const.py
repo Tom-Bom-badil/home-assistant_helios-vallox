@@ -31,7 +31,7 @@ BUS_ADDRESSES = {
     "FB*": 0x20,  # alle remote controls
     "FB1": 0x21,  # remote control 1
     "LON": 0x28,  # LON bus module (if any)
-    "_HA": 0x2E,  # this HA Python script; we are simulating a remote
+    "_HA": 0x2D,  # this HA Python script; we are simulating a remote
     "_SH": 0x2F   # SmartHomeNG Python script; also simulating a remote
 }
 
@@ -78,11 +78,11 @@ REGISTERS_AND_COILS = {
     # FB LED1: on/off Caution: Remotes will not be switched back on automatically; initial_fanspeed set if done manually.
     "powerstate":              {"varid": 0xA3, 'type': 'bit',         'bitposition':  0, 'read': True, 'write': True },
     # FB LED2: CO2 warning
-    "co2_indicator":           {"varid": 0xA3, 'type': 'bit',         'bitposition':  1, 'read': True, 'write': False},
+    "co2_indicator":           {"varid": 0xA3, 'type': 'bit',         'bitposition':  1, 'read': True, 'write': True },
     # FB LED3: Humidity warning
-    "rh_indicator":            {"varid": 0xA3, 'type': 'bit',         'bitposition':  2, 'read': True, 'write': False},
+    "rh_indicator":            {"varid": 0xA3, 'type': 'bit',         'bitposition':  2, 'read': True, 'write': True },
     # FB LED4: 0 = summer mode with bypass, 1 = wintermode with heat regeneration (LED is on in winter mode)
-    "summer_winter_mode":      {"varid": 0xA3, 'type': 'bit',         'bitposition':  3, 'read': True, 'write': False},
+    "winter_mode":             {"varid": 0xA3, 'type': 'bit',         'bitposition':  3, 'read': True, 'write': True },
     # FB icon 1: "Clean filter" warning
     "clean_filter":            {"varid": 0xA3, 'type': 'bit',         'bitposition':  4, 'read': True, 'write': False},
     # FB icon 2 2: Pre-/Post heating active
@@ -103,8 +103,8 @@ REGISTERS_AND_COILS = {
     "defrost_hysteresis":      {"varid": 0xB2, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },
     # Boost mode: 0=fireplace  (ignition - no exhaust air in the first 15 minutes of boost); 1=normal boost mode
     "boost_mode":              {"varid": 0xAA, 'type': 'bit',         'bitposition':  5, 'read': True, 'write': True },
-    # Switch boost on for 45 minutes (set to 1; will be reset automatically)
-    "boost_on_switch":         {"varid": 0x71, 'type': 'bit',         'bitposition':  5, 'read': True, 'write': True },
+    # Switch boost on for 45 minutes (set to 1; will be reset by mainboard automatically)
+    "activate_boost":          {"varid": 0x71, 'type': 'bit',         'bitposition':  5, 'read': True, 'write': True },
     # Current boost status (off/on)
     "boost_status":            {"varid": 0x71, 'type': 'bit',         'bitposition':  6, 'read': True, 'write': False},
     # Remaining minutes of boost if on
