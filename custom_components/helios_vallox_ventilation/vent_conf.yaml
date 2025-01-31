@@ -12,12 +12,14 @@
 
   sensors:
 
+    # DE Lüftungsstufe
     - name: fanspeed
       description: "Fan speed"
       min_value: 1
       max_value: 8
       icon: "mdi:speedometer-medium"
 
+    # DE Einschaltstufe
     - name: "initial_fanspeed"
       description: "Initial fan speed after switching on"
       unit_of_measurement: "level"
@@ -26,6 +28,7 @@
       default_value: 1
       icon: "mdi:speedometer-slow"
 
+    # DE Maximalstufe
     - name: "max_fanspeed"
       description: "Maximum fan speed availabe to remotes"
       unit_of_measurement: "level"
@@ -34,7 +37,6 @@
       default_value: 8
       icon: "mdi:speedometer"
 
-    # now using the ISO names for temperatures
     # DE: Außenlufttemperatur 
     - name: "temperature_outdoor_air"
       unit_of_measurement: "°C"
@@ -70,18 +72,20 @@
       default_value: 10
       icon: "mdi:thermometer"
 
+    # set to +5 to activate with pre-heating with defrost defaults below
     - name: "preheat_setpoint"
       unit_of_measurement: "°C"
-      min_value: -10      # none according to manual, but limiting input options
-      max_value: 10       # none according to manual, but limiting input options
-      default_value: -3   # set to +5 to activate with defrost defaults below
+      min_value: -10
+      max_value: 10
+      default_value: -3
       icon: "mdi:thermometer"
 
+    # can be reduced below 0 in case of enthalpy exchanger
     - name: "defrost_setpoint"
       unit_of_measurement: "°C"
       min_value: -6
       max_value: 15
-      default_value: 3   # can be reduced below 0 in case of enthalpy exchanger
+      default_value: 3
       icon: "mdi:thermometer"
 
     - name: "defrost_hysteresis"
@@ -90,12 +94,6 @@
       max_value: 10
       default_value: 3
       icon: "mdi:thermometer"
-
-    - name: "boost_mode"
-      min_value: 0  # Fireplace mode
-      max_value: 1  # Boost mode
-      default_value: 1
-      icon: "mdi:fan-speed-2"
 
     - name: "boost_remaining"
       device_class: "duration"
@@ -134,11 +132,11 @@
       unit_of_measurement: ""
       icon: "mdi:alert"
 
+    # no reading - set by vent_functions.py, see also const.py
     - name: "fault_text"
-      # state_class: "measurement"
       icon: "mdi:alert"
 
-    # calculated by ventcontrol.py
+    # no reading - calculated by vent_functions.py
     - name: "temperature_reduction"
       description: "Heat recovery - reduction of outgoing air temperature"
       unit_of_measurement: "°C"
@@ -146,7 +144,7 @@
       state_class: "measurement"
       icon: "mdi:thermometer"
 
-    # calculated by ventcontrol.py
+    # no reading - calculated by vent_functions.py
     - name: "temperature_gain"
       description: "Heat recovery - gain of incoming air temperature"
       unit_of_measurement: "°C"
@@ -154,7 +152,7 @@
       state_class: "measurement"
       icon: "mdi:thermometer"
 
-    # calculated by ventcontrol.py
+    # no reading - calculated by vent_functions.py
     - name: "temperature_balance"
       description: "Difference temperature reduction ./. temperature gain"
       unit_of_measurement: "°C"
@@ -162,29 +160,39 @@
       state_class: "measurement"
       icon: "mdi:thermometer"
 
-    # calculated by ventcontrol.py
+    # no reading - calculated by vent_functions.py
     - name: "efficiency"
       unit_of_measurement: "%"
       state_class: "measurement"
       icon: "mdi:percent"
 
-    - name: "preheat_status" # ??????????????? --> binary_sensor???
-      min_value: 0
-      max_value: 1
-      icon: "mdi:tooltip-question"
-
   binary_sensors:
-
-    - name: "powerstate"     # switch ???? --> throws errors on writing
-      device_class: "power"
-      icon: "mdi:power-settings"
-
-    - name: "post_heating_on" # Vallox only?
-      device_class: "heat"
-      icon: "mdi:heating-coil"
 
     - name: "boost_status"
       icon: "mdi:tooltip-question"
+
+    - name: "fault_detected"
+      device_class: "problem"
+      icon: "mdi:alert"
+
+    - name: "clean_filter"
+      device_class: "problem"
+      icon: "mdi:alert"
+
+    - name: "service_requested"
+      device_class: "problem"
+      icon: "mdi:alert"
+
+    - name: "post_heating_on"
+      device_class: "heat"
+      icon: "mdi:heating-coil"
+
+  switches:
+
+    # ???? --> throws errors on writing
+    - name: "powerstate"
+      device_class: "power"
+      icon: "mdi:power-settings"
 
     - name: "co2_indicator"
       device_class: "problem"
@@ -194,21 +202,20 @@
       device_class: "problem"
       icon: "mdi:alert"
 
-    - name: "clean_filter"
-      device_class: "problem"
+    - name: "winter_mode"
+      device_class: "switch"
       icon: "mdi:alert"
 
-    - name: "fault_detected"
-      device_class: "problem"
-      icon: "mdi:alert"
+    - name: "preheat_status"
+      device_class: "switch"
+      icon: "mdi:tooltip-question"
 
-    - name: "service_requested"
-      device_class: "problem"
-      icon: "mdi:alert"
+    # 0=Fireplace mode, 1=Normal boost
+    - name: "boost_mode"
+      device_class: "switch"
+      icon: "mdi:fan-speed-2"
 
-  switches:
-
-    - name: "boost_on_switch"
+    - name: "activate_boost"
       device_class: "switch"
       icon: "mdi:fan"
 
