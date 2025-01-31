@@ -38,6 +38,7 @@ class HeliosBase:
         self._socket = None
         self._lock = threading.Lock()
         self._cache = {}
+        self._all_values = {}
 
 
     ###### Exposed functions (read from outside) ###############################
@@ -60,56 +61,43 @@ class HeliosBase:
             return None
         try:
             start_time = time.time()
-            all_values = {}
+            self._all_values = {}
             self._cache = {}
-            multiple_reads = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             for varname in REGISTERS_AND_COILS.keys():
                 value = self._readVal(varname)
                 if value is not None:
-                    all_values[varname] = value
+                    self._all_values[varname] = value
                 else:
                     self.logger.error(f"Failed to read value for '{varname}'")
-            all_values = self._add_calculations(all_values)
+            self._all_values = self._add_calculations(self._all_values)
             end_time = time.time()
             self.logger.info("Full read took {:.2f}s.".format(end_time - start_time))
+            self.logger.debug(f"Cache contains: {self._cache}. All read values: {self._all_values}.")
         finally:
             self._disconnect()
-        return all_values
+        return self._all_values
 
 
     def writeValue(self, varname, value):
         if not self._connect():
-            self.logger.error(f"Helios: Could not connect to the device.")
+            self.logger.error(f"Could not connect to the ventilation device.")
             return None
-        if not self._validate_value(varname, value):
-            self.logger.error(f"Invalid value {value} for variable: {varname}.")
+        if not self._check_value(varname, value):
+            self.logger.error(f"Write operation cancelled, invalid value.")
             return False
-
+        if REGISTERS_AND_COILS.get(varname) is None:
+            self.logger.error(f"Write operation cancelled, invalid variable.")
+            return False
         try:
-
+            self.logger.info("Writing {0} to {1}".format(value, varname))
             success = False
             self._lock.acquire()
             try:
-                self.logger.info("Writing {0} to {1}".format(value, varname))
-                
                 rawvalue = None
                 if REGISTERS_AND_COILS[varname]["type"] == "bit":
-                    currentval = None
-                    if self._syncWithRS485():
-                        telegram = self._createTelegram(
-                            BUS_ADDRESSES["_HA"],
-                            BUS_ADDRESSES["MB1"], 
-                            0, 
-                            REGISTERS_AND_COILS[varname]["varid"]
-                        )
-                        self._sendTelegram(telegram)
-                        currentval = self._readTelegram(
-                            BUS_ADDRESSES["MB1"], 
-                            BUS_ADDRESSES["_HA"], 
-                            REGISTERS_AND_COILS[varname]["varid"]
-                        )
+                    currentval = self._cache[REGISTERS_AND_COILS[varname]["varid"]]
                     if currentval is None:
-                        self.logger.error("Writing failed. Cannot read '{0}'.".format(varname))
+                        self.logger.error("Writing failed. Cannot read {varname} from cache.")
                         return False
                     rawvalue = self._convertToRaw(varname, value, currentval)
                 else:
@@ -117,13 +105,16 @@ class HeliosBase:
                 if self._syncWithRS485():
                     if rawvalue is not None:
                         telegram = self._createTelegram(
-                            BUS_ADDRESSES["_HA"],
-                            BUS_ADDRESSES["MB1"], 
-                            REGISTERS_AND_COILS[varname]["varid"], 
-                            rawvalue
+                            BUS_ADDRESSES["_HA"], BUS_ADDRESSES["MB1"], 
+                            REGISTERS_AND_COILS[varname]["varid"], rawvalue
                         )
                         self._sendTelegram(telegram)
                         self.logger.debug("Telegram sent: {0}".format(self._telegramToString(telegram)))
+
+                        self._all_values[varname] = value
+                        if REGISTERS_AND_COILS[varname]["type"] == "bit":
+                            self._cache[REGISTERS_AND_COILS[varname]["varid"]] = rawvalue
+
                         success = True
                     else:
                         self.logger.error("Writing failed. Cannot convert value '{0}'.".format(value))
@@ -188,7 +179,7 @@ class HeliosBase:
         elif vardef["type"] == "fanspeed":
             return int(FANSPEEDS.get(rawvalue))
         elif vardef["type"] == "bit":
-            return rawvalue >> vardef["bitposition"] & 0x01
+            return bool(rawvalue >> vardef["bitposition"] & 0x01)
         elif vardef["type"] == "dec":
             if varname == "defrost_hysteresis":
                 rawvalue = rawvalue // 3
@@ -196,7 +187,7 @@ class HeliosBase:
         return None
 
 
-    def _convertToRaw(self, varname, value, prevvalue):
+    def _convertToRaw(self, varname, value, currentval):
         vardef = REGISTERS_AND_COILS[varname]
         if vardef['type'] == "temperature":
             return int(NTC5K_TEMPERATURES.index(int(value)))
@@ -204,12 +195,11 @@ class HeliosBase:
             return int({v: k for k, v in FANSPEEDS.items()}.get(int(value)))
         elif vardef["type"] == "bit":
             if value in (True, 1, "true", "True", "1", "On", "on"):
-                return prevvalue | (1 << vardef["bitposition"])
-            return prevvalue & ~(1 << vardef["bitposition"])
+                return currentval | (1 << vardef["bitposition"])
+            return currentval & ~(1 << vardef["bitposition"])
         elif vardef["type"] == "dec":
             if varname == "defrost_hysteresis":
-                rawvalue = rawvalue * 3
-            return int(rawvalue)
+                return int(value*3)
         return None
 
 
@@ -254,7 +244,6 @@ class HeliosBase:
                 except socket.timeout:
                     self.logger.info("Communication error - socket timeout.")
                     return None
-        # without a successful read
         self.logger.debug("Timeout while awaiting answer - bus busy.")
         self.logger.debug("Protocols received: '{0}'".format(self._telegramToString(all_bytes_received)))
         return None
@@ -277,9 +266,6 @@ class HeliosBase:
             else:  # silence on bus
                 gotSlot = True
                 break
-        #strong debugging only
-        #elapsed_time = (time.time() - start_time) * 1000
-        #self.logger.info(f"Got free sending slot in ({elapsed_time:.2f} ms).")
         return gotSlot
 
 
@@ -287,14 +273,10 @@ class HeliosBase:
         varid = REGISTERS_AND_COILS[varname]["varid"]
         value = None
         if REGISTERS_AND_COILS[varname]["type"] == "bit" and varid in self._cache:
-            rawvalue = self._cache[varid]
-            value = (rawvalue >> REGISTERS_AND_COILS[varname]["bitposition"]) & 0x01
-            self.logger.debug("Value for {} retrieved from cache: {}".format(varname, value))
-            return value
+            return self._convertFromRaw(varname, self._cache[varid])
         def attempt_read():
             max_retries = 10
             for attempt in range(max_retries-1):
-                self.logger.debug("Reading value: {0} (Attempt {1})".format(varname, attempt + 1))
                 if self._syncWithRS485():
                     telegram = self._createTelegram(
                         BUS_ADDRESSES["_HA"], BUS_ADDRESSES["MB1"], 0, varid
@@ -312,57 +294,52 @@ class HeliosBase:
                         self.logger.info(f"Reading '{varname}' again ({attempt + 1})")
                         time.sleep(0.05)
                 else:
-                    self.logger.warning("Reading failed. No free slot to send poll request.")
+                    self.logger.warning("Reading failed. No free sending slot found.")
             return None
         self._lock.acquire()
         try:
             value = attempt_read()
             if value is None:
                 self.logger.error(f"Failed to read value for '{varname}'.")
-        except:
-            self.logger.error("Exception in _readVal() occurred")
+        except Exception as e:
+            self.logger.error("Exception in _readVal(): {0}".format(e))
         finally:
             self._lock.release()
         return value
 
 
-    def _validate_value(self, varname, value):
-        # Prevent writing to register 06h
+    def _check_value(self, varname, value):
+        # Prevent writing to register 06h (may cause irrepairable damage)
         if REGISTERS_AND_COILS[varname]["varid"] == 0x06:
             self.logger.critical("Writing to register 06h is prohibited. Write operation aborted.")
             return False
-        # Check if the variable is read-only
+        # Prevent writing read-only variables
         if REGISTERS_AND_COILS[varname]["write"] != True:
-            self.logger.critical("Variable {0} is read-only and cannot be written to. Write operation aborted.".format(varname))
+            self.logger.critical(f"Variable {varname} is read-only and cannot be written to.")
             return False
-        # Make sure value is an integer
+        # Make sure value is int or bool
         if not isinstance(value, int):
-            if value in [1, '1', True, true, 'True', 'true', 'On', 'on', 'ON']:
-                value = 1
-            elif value in [0, '0', False, false, 'False', 'false', 'Off', 'off', 'OFF']:
-                value = 0
+            if REGISTERS_AND_COILS[varname] ["type"] == "bit":
+                if  value in [1, '1', True, true, 'True', 'true', 'On', 'on', 'ON'] or \
+                    value in [0, '0', False, false, 'False', 'false', 'Off', 'off', 'OFF']:
+                    self.logger.debug(f"Valid bool {value} for {varname} detected.")
+                else:
+                    self.logger.error(f"Value {value} for {varname} is not a valid binary.")
+                    return False
             else:
-                self.logger.error(f"Value {value} for {varname} is not a valid integer or binary representation.")
+                self.logger.error(f"Invalid value {value} for {varname}, expected an integer.")
                 return False
-        # min/max
+        # Check for value limits min/max
         entity = self._get_entity(varname)
         min_value = getattr(entity, 'min_value', None)
-        max_value = getattr(entity, 'max_value', None)
         if min_value is not None and value < min_value:
-            self.logger.error(f"Value {value} for {varname} is below the minimum allowed value of {min_value}.")
+            self.logger.error(f"Value {value} for {varname} is below the minimum of {min_value}.")
             return False
+        max_value = getattr(entity, 'max_value', None)
         if max_value is not None and value > max_value:
-            self.logger.error(f"Value {value} for {varname} is above the maximum allowed value of {max_value}.")
+            self.logger.error(f"Value {value} for {varname} is above the maximum of {max_value}.")
             return False
-        # return value
-        vardef = REGISTERS_AND_COILS[varname]
-        if vardef["type"] == "bit":
-            return value in (0, 1)
-        # elif vardef["type"] in ["temperature", "fanspeed", "dec"]:
-        else:
-            return int(value)
-        # just in case it didn't meet any pattern
-        return False
+        return True
 
 
     def _add_calculations(self, all_values):
