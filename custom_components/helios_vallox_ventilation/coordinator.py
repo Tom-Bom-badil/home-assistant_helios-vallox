@@ -88,3 +88,11 @@ class HeliosCoordinator:
             return False
         finally:
             self.disconnect()
+
+
+    async def turn_on(self, variable):
+        self._hass.async_add_executor_job(self.write_value, variable, 1)
+
+
+    async def turn_off(self, variable):
+        self._hass.async_add_executor_job(self.write_value, variable, 0)
