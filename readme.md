@@ -7,11 +7,11 @@
 
 ## HA Integration for Helios Pro / Vallox SE ventilation systems (pre-EasyControls / pre-2014 models with RS-485)
 
-This is the Home Assistant adaption of my Python script that used to work 24/7 in my previous home automation system since 2014 (see [here](https://github.com/Tom-Bom-badil/helios/wiki)).
+This is the Home Assistant adaptation of my Python script, which has been running 24/7 in my previous home automation system since 2014 (see [here](https://github.com/Tom-Bom-badil/helios/wiki)).
 
-By default, the integration reads out more than 30 common variables of the ventilation unit in regular intervals. It can be extended by further variables (e.g. for individual humidity / CO2 sensor setup) by just editing the configuration files; no programming is needed.
+By default, the integration reads more than 30 common variables from the ventilation unit at regular intervals. It can be extended to include additional variables (e.g., for individual humidity or CO₂ sensor setups) by simply editing the configuration files — no programming is required.
 
-The integrations also implements a writing service, which can be used for ANY writeable register of the ventilation, including plausibility checks of registers id's as well as values before the actual write:
+The integration also implements a writing service, which can be used for ANY writable register of the ventilation system, including plausibility checks for register IDs and values before the actual write:
 ```yaml
 action: helios_vallox_ventilation.write_value
 data:
@@ -19,36 +19,35 @@ data:
   value: 5
 ```
 
-The integration has been tested with various RS485-LAN/Wifi adaptors - no soldering together of small boards required, just use the screw terminals or plugin-ports of your LAN / Wifi adaptor. For specific adaptors, you can even remove the external power supply and use the bus power. For in-depth insights, how-to's and adaptor setup / configuration, please check out the [detailed Wiki](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki).
+The integration has been tested with various RS485-LAN/Wi-Fi adapters—no soldering of small boards is required. Simply use the screw terminals or plugin ports of your LAN/Wi-Fi adapter. For specific adapters, you can even remove the external power supply and use bus power. For in-depth insights, how-to's, and adapter setup/configuration, please check out the [detailed Wiki](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki).
 
 ## Compatible devices
 
-If your ventilation has this remote control board, it is almost sure that it is compatible:<br/><br/>
+If your ventilation system has this remote control board, it is almost certainly compatible:<br/><br/>
 ![fb1_small](https://github.com/user-attachments/assets/57bbe02d-9086-4028-849f-c43d699e2aed)
 
 Users have confirmed the installation on the following models:
-- Helios EC 200 Pro R/L, Helios EC 300 Pro R/L, Helios EC 500 Pro R/L, Vallox 090 SE, Vallox 910 SE, Vallox Digit SE, Vallo Plus 350 SE, Vallo Plus 510 SE, Vallox 130D (this one requires changing a few register numbers due to different addresses, see [old wiki](https://github.com/Tom-Bom-badil/SmartHomeNG-Helios/wiki))
+- Helios EC 200 Pro R/L, Helios EC 300 Pro R/L, Helios EC 500 Pro R/L, Vallox 090 SE, Vallox 910 SE, Vallox Digit SE, Vallo Plus 350 SE, Vallo Plus 510 SE, Vallox 130D (this one requires changing a few register numbers due to different addresses; see [old wiki](https://github.com/Tom-Bom-badil/SmartHomeNG-Helios/wiki))
 
-Reportedly, the following models are also using the propriety Helios/Vallox protocol:
+Reportedly, the following models also use the proprietary Helios/Vallox protocol:
 - Vallox 096 SE, Vallox 110 SE, Vallox 121 SE (both versions with and without front heating module), Vallox 150 SE, Vallox 270 SE, Vallox Digit SE 2, Vallox ValloPlus SE 500.
-
 
 ## Installation through HACS
 
-Launch HACS and click the 3 dots top right corner, then choose `Custom repositories`. You will see 2 fields you have to fill out:
+Launch HACS and click the 3 dots in the top right corner, then choose `Custom repositories`. You will see 2 fields to fill out:
 
 - Repository: _**https://github.com/Tom-Bom-badil/home-assistant_helios-vallox**_
 - Type: _**Integration**_
 
-Click add and download it. Do not restart yet in order to avoid another restart lateron.
+Click add and download the integration. Do NOT restart yet to avoid restarting twice.
 
-Add this to the `secrets.yaml` file in your HA root (adjust IP and Port of your LAN/Wifi-RS485 adaptor as needed):
+Add this to your `secrets.yaml` file in the HA root (adjust the IP and port of your LAN/Wifi-RS485 adaptor as needed):
 ```yaml
 helios_vallox_ip:   192.168.178.38
 helios_vallox_port: 8234
 ```
 
-Now add this to your `configuration.yaml` to setup the integration and its log level:
+Now add this to your `configuration.yaml` to set up the integration and its log level:
 ```yaml
 logger:
   logs:
@@ -57,19 +56,19 @@ logger:
 helios_vallox_ventilation:
   !include custom_components/helios_vallox_ventilation/vent_conf.yaml
 ```
-Restart HA for loading the integration, and enjoy! :)
+Restart HA to load the integration, and enjoy! :)
 
 ## Manual installation
 
 Upload the directories and files with original pathes to your HA.
 
-Add this to the `secrets.yaml` file in your HA root (adjust IP and Port of your LAN/Wifi-RS485 adaptor as needed):
+Add this to your `secrets.yaml` file in the HA root (adjust the IP and port of your LAN/Wifi-RS485 adaptor as needed):
 ```yaml
 helios_vallox_ip:   192.168.178.38
 helios_vallox_port: 8234
 ```
 
-Now add this to your `configuration.yaml` to setup the integration and its log level:
+Now add this to your `configuration.yaml` to set up the integration and its log level:
 ```yaml
 logger:
   logs:
@@ -79,7 +78,7 @@ helios_vallox_ventilation:
   !include custom_components/helios_vallox_ventilation/vent_conf.yaml
 ```
 
-Restart HA for loading the integration, and enjoy! :)
+Restart HA to load the integration, and enjoy! :)
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
