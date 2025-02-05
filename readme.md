@@ -9,7 +9,7 @@
 
 This is the Home Assistant adaptation of my Python script, which has been running 24/7 in my previous home automation system since 2014 (see [here](https://github.com/Tom-Bom-badil/helios/wiki)).
 
-By default, the integration reads more than 30 common variables from the ventilation unit at regular intervals. It can be extended to include additional variables (e.g., for individual humidity or CO₂ sensor setups) by simply editing the configuration files — no programming is required.
+By default, the integration reads more than 30 common variables from the ventilation unit at regular intervals. It can be extended to include additional variables (e.g., for individual humidity or CO₂ sensor setups) by simply editing the configuration files - no programming is required.
 
 The integration also implements a writing service, which can be used for ANY writable register of the ventilation system, including plausibility checks for register IDs and values before the actual write:
 ```yaml
@@ -19,7 +19,7 @@ data:
   value: 5
 ```
 
-The integration has been tested with various RS485-LAN/Wi-Fi adapters—no soldering of small boards is required. Simply use the screw terminals or plugin ports of your LAN/Wi-Fi adapter. For specific adapters, you can even remove the external power supply and use bus power. For in-depth insights, how-to's, and adapter setup/configuration, please check out the [detailed Wiki](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki).
+The integration has been tested with various RS485-LAN/Wi-Fi adapters - no soldering around on small boards is required. Simply use the screw terminals or plugin ports of your LAN/Wi-Fi adapter. For specific adapters, you can even remove the external power supply and use bus power. For in-depth insights, how-to's, and adapter setup/configuration, please check out the [detailed Wiki](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki).
 
 ## Compatible devices
 
