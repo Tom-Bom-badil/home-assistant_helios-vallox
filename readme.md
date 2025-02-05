@@ -19,7 +19,9 @@ data:
   value: 5
 ```
 
-The integration has been tested with various RS485-LAN/Wi-Fi adapters - no soldering around on small boards is required. Simply use the screw terminals or plugin ports of your LAN/Wi-Fi adapter. For specific adapters, you can even remove the external power supply and use bus power. For in-depth insights, how-to's, and adapter setup/configuration, please check out the [detailed Wiki](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki).
+The integration has been tested with various RS485-LAN/Wi-Fi adapters - no soldering of oard together, no additional voltage / stepdown boards etc required. Simply use the screw terminals or plugin ports of your LAN/Wi-Fi adapter for the wires. For specific adapters, you can even remove the external power supply and use bus power.
+
+In-depth insights, how-to's, installation instructions and adapter setup/configuration can be checked out [here in the detailed Wiki](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki).
 
 ## Compatible devices
 
