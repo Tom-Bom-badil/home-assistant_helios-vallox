@@ -32,7 +32,7 @@ Users have reported the successful use on the following models:
 - Helios EC 200 Pro R/L, Helios EC 300 Pro R/L, Helios EC 500 Pro R/L, Vallox 090 SE, Vallox 910 SE, Vallox Digit SE, Vallo Plus 350 SE, Vallo Plus 510 SE, Vallox 130D (this one requires changing a few register numbers due to different addresses; see [old wiki](https://github.com/Tom-Bom-badil/SmartHomeNG-Helios/wiki))
 
 Documentations show that the following models also use the proprietary Helios/Vallox protocol, therefore they should also work:
-- Vallox 096 SE, Vallox 110 SE, Vallox 121 SE (both versions with and without front heating module), Vallox 150 SE, Vallox 270 SE, Vallox Digit SE 2, Vallox ValloPlus SE 500.
+- Vallox 096 SE, Vallox 110 SE, Vallox 121 SE (both versions with and without front heating module), Vallox 150 SE, Vallox 270 SE, Vallox Digit SE 2, Vallox ValloPlus SE 500. (Please report back if you got the integration running on one of these models, thanks in advance!)
 
 ## Installation through HACS
 
@@ -46,7 +46,7 @@ Click add and download the integration. Do NOT restart yet to avoid restarting t
 Add this to your `secrets.yaml` file in the HA root (adjust the IP and port of your LAN/Wifi-RS485 adaptor as needed):
 ```yaml
 helios_vallox_ip:   192.168.178.38
-helios_vallox_port: 8234
+helios_vallox_port: 502
 ```
 
 Now add this to your `configuration.yaml` to set up the integration and its log level:
