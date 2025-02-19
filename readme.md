@@ -74,7 +74,7 @@ Now add this to your `configuration.yaml` to set up the integration and its log 
 ```yaml
 logger:
   logs:
-    custom_components.helios_vallox_ventilation: error
+    custom_components.helios_vallox_ventilation: error      # set to 'info' for more details
 
 helios_vallox_ventilation:
   !include custom_components/helios_vallox_ventilation/vent_conf.yaml
