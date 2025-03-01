@@ -7,21 +7,18 @@
 
 ## HA Integration for Helios Pro / Vallox SE ventilation systems (pre-EasyControls / pre-2014 models with RS-485)
 
-This is the Home Assistant adaptation of my Python script, which has been running 24/7 in my previous home automation system since 2014 (see [here](https://github.com/Tom-Bom-badil/helios/wiki)).
+This is the Home Assistant adaptation of my Python script, which has been running 24/7 in my previous home automation system since 2014 (see [here](https://github.com/Tom-Bom-badil/helios/wiki)). In-depth insights, how-to's, installation instructions,  adapter setup / configuration and a brief project history of the last 10 years of programming are documented in detail [on the Wiki](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki).
 
 By default, the integration reads more than 30 common variables from the ventilation unit at regular intervals. It can be extended to include additional variables (e.g., for individual humidity or CO₂ sensor setups) by simply editing the configuration files - no programming is required.
 
-The integration also implements a writing service, which can be used for ANY writable register of the ventilation system, including plausibility checks for register IDs and values before the actual write:
+The integration also implements writing to ANY writable register in the ventilation unit, including plausibility and safety checks before the actual write. This can be used e.g. in your automations, in the Lovelace GUI on buttons / sliders / dropdowns, or directly from the developer tools:
 ```yaml
 action: helios_vallox_ventilation.write_value
 data:
   variable: fanspeed
   value: 5
 ```
-
-The integration has been tested with various RS485-LAN/Wi-Fi adapters - no soldering, no additional voltage / stepdown boards etc required. Simply use the screw terminals or plugin ports of your LAN/Wi-Fi adapter for the wires. For specific adapters, you can even remove the external power supply and use bus power.
-
-In-depth insights, how-to's, installation instructions and adapter setup/configuration can be checked out [here in the detailed Wiki](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki).
+The integration has been tested with various RS485-LAN/Wi-Fi adapters - no soldering, no additional voltage or stepdown boards etc required. Simply use the screw / plugin terminals of your LAN/Wi-Fi adapter. For specific adapters, you can even remove the external power supply and run everything from bus power (see wiki).
 
 ## Compatible devices
 
