@@ -8,7 +8,8 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.discovery import async_load_platform
 from homeassistant.helpers.event import async_track_time_interval
 
-_LOGGER = logging.getLogger(__name__)
+# _LOGGER = logging.getLogger(__name__)   # too long, shortening
+_LOGGER = logging.getLogger("helios_vallox.__init__")
 
 async def async_setup(hass: HomeAssistant, config: dict):
 
@@ -39,7 +40,6 @@ async def async_setup(hass: HomeAssistant, config: dict):
             await coordinator._coordinator.async_request_refresh()
         except Exception as e:
             _LOGGER.error(f"Error during data refresh: {e}", exc_info=True)
-    async_track_time_interval(hass, update_data, timedelta(seconds=57))
 
     # Register and manage the write service
     async def handle_write_service(call):
@@ -52,7 +52,7 @@ async def async_setup(hass: HomeAssistant, config: dict):
     # Initialization done
     return True
 
-# Setup integration from config
+# Setup from config
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     return await async_setup(hass, entry.data)
 
