@@ -31,7 +31,7 @@ BUS_ADDRESSES = {
     "FB*": 0x20,  # alle remote controls
     "FB1": 0x21,  # remote control 1
     "LON": 0x28,  # LON bus module (if any)
-    "_HA": 0x2D,  # this HA Python script; we are simulating a remote
+    "_HA": 0x2E,  # this HA Python script; we are simulating a remote
     "_SH": 0x2F   # SmartHomeNG Python script; also simulating a remote
 }
 
