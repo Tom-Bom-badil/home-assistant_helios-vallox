@@ -22,7 +22,7 @@ CONFIG_SCHEMA = vol.Schema(
                                 vol.Optional("state_class"): cv.string,
                                 vol.Optional("min_value"): vol.Coerce(float),
                                 vol.Optional("max_value"): vol.Coerce(float),
-                                vol.Optional("default_value"): vol.Coerce(float),
+                                vol.Optional("factory_setting"): vol.Coerce(float),
                                 vol.Optional("icon"): cv.icon,
                             }
                         )

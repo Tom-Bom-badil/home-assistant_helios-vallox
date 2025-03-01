@@ -5,384 +5,345 @@ import time
 import argparse
 import select
 
-try: # HA
-    from .const import (
+try:
+    from .const import ( # HA
         REGISTERS_AND_COILS,
         NTC5K_TEMPERATURES,
         BUS_ADDRESSES,
         FANSPEEDS,
         DEFAULT_IP,
         DEFAULT_PORT,
-        COMPONENT_FAULTS )
-
-except ImportError: # shell / command line
-    from const import (
+        COMPONENT_FAULTS
+    )
+except ImportError:
+    from const import ( # Shell / CLI for testing
         REGISTERS_AND_COILS,
         NTC5K_TEMPERATURES,
         BUS_ADDRESSES,
         FANSPEEDS,
         DEFAULT_IP,
         DEFAULT_PORT,
-        COMPONENT_FAULTS )
-
+        COMPONENT_FAULTS
+    )
 
 class HeliosBase:
 
-    ###### Init
+    ###### Init ################################################################
 
-    def __init__(self, ip, port):
-        self.logger = logging.getLogger(__name__)
+    def __init__(self, hass=None, ip=None, port=None, coordinator=None):
+        # self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger("helios_vallox.vent_functions")
+        self._hass = hass
         self._ip = ip
         self._port = port
-        self._is_connected = False
+        self._coordinator = coordinator
         self._socket = None
         self._lock = threading.Lock()
-        self._cache = {}
-        self._all_values = {}
+        self._all_values, self._cache = {}, {}
 
+    ###### Exposed functions (used from outside) ###############################
 
-    ###### Exposed functions (read from outside) ###############################
-
-
-    def readValue(self, varname):
+    # reads a single variable from the ventilation
+    def readSingleValue(self, varname):
         if not self._connect():
-            self.logger.error(f"Helios: Could not connect to the device.")
-            return None
-        value = self._readVal(varname)
-        self._disconnect()
-        if value is not None:
+            return {}
+        self._lock.acquire()
+        self._cache.pop(REGISTERS_AND_COILS[varname]["varid"], None)
+        try:
+            value = self._performRead(varname)
             return {varname: value}
-        return None
+        except Exception as e:
+            self.logger.error(f"Exception in _readSingleValue(): {e}")
+        finally:
+            self._lock.release()
+            self._disconnect()
 
-
+    # reads all known variables from the ventilation
     def readAllValues(self):
         if not self._connect():
-            self.logger.error(f"Helios: Could not connect to the device.")
-            return None
+            return {}
+        self._lock.acquire()
+        self._all_values, self._cache = {}, {}
         try:
             start_time = time.time()
-            self._all_values = {}
-            self._cache = {}
-            for varname in REGISTERS_AND_COILS.keys():
-                value = self._readVal(varname)
-                if value is not None:
-                    self._all_values[varname] = value
-                else:
-                    self.logger.error(f"Failed to read value for '{varname}'")
-            self._all_values = self._add_calculations(self._all_values)
-            end_time = time.time()
-            self.logger.info("Full read took {:.2f}s.".format(end_time - start_time))
-            self.logger.debug(f"Cache contains: {self._cache}. All read values: {self._all_values}.")
+            for varname in REGISTERS_AND_COILS:
+                value = self._performRead(varname)
+                self._all_values[varname] = value
+            self._all_values = self._addCalculationsToReadings(self._all_values)
+            self.logger.info(f"Full read took {time.time() - start_time:.2f}s.")
+            return self._all_values
+        except Exception as e:
+            self.logger.error(f"Exception in _readAllValues(): {e}")
         finally:
+            self._lock.release()
             self._disconnect()
-        return self._all_values
 
-
+    # writes a single variable to the ventilation, including plausability checks
     def writeValue(self, varname, value):
-        if not self._connect():
-            self.logger.error(f"Could not connect to the ventilation device.")
-            return None
-        if not self._check_value(varname, value):
-            self.logger.error(f"Write operation cancelled, invalid value.")
+        if not self._connect() or not self._validateBeforeWrite(varname, value):
             return False
-        if REGISTERS_AND_COILS.get(varname) is None:
-            self.logger.error(f"Write operation cancelled, invalid variable.")
-            return False
+        self._lock.acquire()
         try:
-            self.logger.info("Writing {0} to {1}".format(value, varname))
-            success = False
-            self._lock.acquire()
-            try:
-                rawvalue = None
-                if REGISTERS_AND_COILS[varname]["type"] == "bit":
-                    currentval = self._cache[REGISTERS_AND_COILS[varname]["varid"]]
-                    if currentval is None:
-                        self.logger.error("Writing failed. Cannot read {varname} from cache.")
-                        return False
-                    rawvalue = self._convertToRaw(varname, value, currentval)
-                else:
-                    rawvalue = self._convertToRaw(varname, value, None)
-                if self._syncWithRS485():
-                    if rawvalue is not None:
-                        telegram = self._createTelegram(
-                            BUS_ADDRESSES["_HA"], BUS_ADDRESSES["MB1"], 
-                            REGISTERS_AND_COILS[varname]["varid"], rawvalue
-                        )
-                        self._sendTelegram(telegram)
-                        self.logger.debug("Telegram sent: {0}".format(self._telegramToString(telegram)))
-
-                        self._all_values[varname] = value
-                        if REGISTERS_AND_COILS[varname]["type"] == "bit":
-                            self._cache[REGISTERS_AND_COILS[varname]["varid"]] = rawvalue
-
-                        success = True
-                    else:
-                        self.logger.error("Writing failed. Cannot convert value '{0}'.".format(value))
-                        success = False
-                else:
-                    self.logger.error("Writing failed. No free slot for sending telegrams.")
-                    success = False
-            except Exception as e:
-                self.logger.error("Exception in writeValue(): {0}".format(e))
-            finally:
-                self._lock.release()
+            return self._performWrite(varname, value)
+        except Exception as e:
+            self.logger.error(f"Exception in _writeValue(): {e}")
         finally:
+            self._lock.release()
             self._disconnect()
-        return success
 
+    ###### Internal functions (higher layers) ##################################
 
-    ###### Internally used functions ###########################################
-
-
-    def _connect(self):
-        if self._is_connected:
-            return True
+    # read from a single register, cache registers containing single bits ('coils')
+    def _performRead(self, varname):
+        varid = REGISTERS_AND_COILS[varname]["varid"]
+        if REGISTERS_AND_COILS[varname]["type"] == "bit" and varid in self._cache:
+            return self._convertFromRaw(varname, self._cache[varid])
         try:
-            self.logger.debug("Connecting to {}:{}".format(self._ip, self._port))
-            self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self._socket.settimeout(10)
-            self._socket.connect((self._ip, self._port))
-            self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
-            self._is_connected = True
+            sender, receiver = BUS_ADDRESSES["_HA"], BUS_ADDRESSES["MB1"]
+            retry_count, max_retries = 0, 10
+            while retry_count < max_retries:
+                if not self._syncWithRS485():
+                    return None
+                self._sendTelegram(sender, receiver, 0, varid)  # request register
+                value = self._receiveTelegram(receiver, sender, varid) # read response
+                if value is not None:
+                    if REGISTERS_AND_COILS[varname]["type"] == "bit":
+                        self._cache[varid] = value
+                    if retry_count > 1: # log multiple re-reads (a single one is ok)
+                        self.logger.info(f"Retries for {varname}: {retry_count}.")
+                    return self._convertFromRaw(varname, value)
+                retry_count += 1
+            # give up, too many re-reads
+            self.logger.error(f"Failed to read '{varname}' after {retry_count} attempts.")
+            return None
+        except Exception as e:
+            self.logger.error(f"Exception in _performRead(): {e}")
+            return None
+
+    def _addCalculationsToReadings(self, all_values):
+        # add fault text (if any)
+        fault_number = all_values.get('fault_number')
+        if fault_number is not None:
+            all_values['fault_text'] = COMPONENT_FAULTS.get(fault_number, "-")
+        # add heat recovery and efficiency values (all temps required for this)
+        keys = {
+            'temperature_outdoor_air', 'temperature_supply_air',
+            'temperature_extract_air', 'temperature_exhaust_air'
+        }
+        if keys.issubset(all_values) and all(all_values[k] is not None for k in keys):  
+            outdoor_air = all_values['temperature_outdoor_air']
+            supply_air = all_values['temperature_supply_air']
+            extract_air = all_values['temperature_extract_air']
+            exhaust_air = all_values['temperature_exhaust_air']
+            temperature_reduction = extract_air - exhaust_air
+            temperature_gain = supply_air - outdoor_air
+            temperature_balance = temperature_reduction - temperature_gain
+            efficiency = 0
+            delta = extract_air - outdoor_air
+            if delta != 0:  # prevent div/0 if temeperatures are the same
+                efficiency = (temperature_gain / delta) * 100
+                efficiency = int(max(0, min(efficiency, 100))) # limit to 0..100
+            all_values.update({
+                'temperature_reduction': temperature_reduction,
+                'temperature_gain': temperature_gain,
+                'temperature_balance': temperature_balance,
+                'efficiency': efficiency
+            })
+        return all_values
+
+    # write to a single register
+    def _performWrite(self, varname, value):
+        try:
+            # preparations
+            vardef = REGISTERS_AND_COILS[varname]
+            if vardef["type"] == "bit":
+                currentval = self._cache.get(vardef["varid"])
+            else:
+                currentval = None
+            rawvalue = self._convertToRaw(varname, value, currentval)
+            if rawvalue is None:
+                self.logger.error(f"Writing failed: Cannot convert {value}.")
+                return False
+            sender, receiver = BUS_ADDRESSES["_HA"], BUS_ADDRESSES["MB1"]
+            register = vardef["varid"]
+            # the actual write
+            self.logger.info(f"Writing {value} to {varname}")
+            self._sendTelegram(sender, receiver, register, rawvalue)
+            self._all_values[varname] = value   # update entities and bitcache
+            if vardef["type"] == "bit":
+                self._cache[vardef["varid"]] = rawvalue
             return True
         except Exception as e:
-            self.logger.error("Could not connect to {}:{}. Error: {}".format(self._ip, self._port, e))
+            self.logger.error(f"Exception in _performWrite(): {e}")
             return False
 
+    ###### Internal functions (lower layers) ###################################
 
+    # connect to bus upon start and re-connect if needed
+    def _connect(self):
+        if self._socket:
+            try:
+                self._socket.recv(1, socket.MSG_PEEK) # check for active socket
+                return True
+            except socket.error:
+                self.logger.debug("(Re-)connecting to RS485.")
+                self._socket.close()
+                self._socket = None
+        try:
+            self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self._socket.settimeout(1.5)
+            self._socket.connect((self._ip, self._port))
+            self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+            self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024)
+            self._socket.setsockopt(socket.SOL_TCP, socket.TCP_USER_TIMEOUT, 1500)
+            self._socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+            return True
+        except Exception as e:
+            self.logger.error(f"Connection failed: {e}")
+            self._socket = None
+            return False
+
+    # disconnect from bus
     def _disconnect(self):
-        if self._is_connected and self._socket:
+        if self._socket is not None:
             self.logger.debug("Disconnecting.")
             self._socket.close()
-            self._is_connected = False
+            self._socket = None
 
+    # discover bus silence, return a free sending slot or a timeout
+    def _syncWithRS485(self):
+        gotSlot = False
+        silence_time = 0.007  # free sending slot length
+        timeout = time.time() + 1
+        while time.time() < timeout:
+            ready = select.select([self._socket], [], [], silence_time)
+            if ready[0]:
+                try:
+                    chars = self._socket.recv(1)
+                    if chars:  # data received, bus busy
+                        continue  # try again
+                except socket.error as e:
+                    self.logger.error(f"Socket error in _syncWithRS485: {e}")
+                    return False
+            else:  # bus is quiet, we have a sending slot
+                gotSlot = True
+                break
+        return gotSlot
 
-    def _get_entity(self, varname):
-        pass
+    # return entity value from a raw int received from the bus
+    def _convertFromRaw(self, varname, rawvalue):
+        vardef = REGISTERS_AND_COILS[varname]
+        conversion_map = {
+            "temperature": lambda v: int(NTC5K_TEMPERATURES[v]),
+            "fanspeed": lambda v: int(FANSPEEDS.get(v, 1)),
+            "bit": lambda v: bool(v >> vardef["bitposition"] & 0x01),
+            "dec": lambda v: int(v // 3) if varname == "defrost_hysteresis" else int(v)
+        }
+        return conversion_map.get(vardef["type"], lambda _: None)(rawvalue)
 
+    # return a raw value from int/bool for writing to the bus
+    def _convertToRaw(self, varname, value, currentval):
+        vardef = REGISTERS_AND_COILS[varname]
+        conversion_map = {
+            "temperature": lambda v: int(NTC5K_TEMPERATURES.index(int(v))),
+            "fanspeed": lambda v: int({v: k for k, v in FANSPEEDS.items()}.get(int(v), 0)),
+            "bit": lambda v: currentval | (1 << vardef["bitposition"]) if str(v).lower() in {"true", "1", "on"} 
+                else currentval & ~(1 << vardef["bitposition"]),
+            "dec": lambda v: int(v * 3) if varname == "defrost_hysteresis" else int(v)
+        }
+        return conversion_map.get(vardef["type"], lambda _: None)(value)
 
+    # calculate a telegram checksum (last byte / byte 6 of each telegram)
     def _calculateCRC(self, telegram):
         sum = 0
         for c in telegram[:-1]:
             sum = sum + c
         return sum % 256
 
-
-    def _telegramToString(self, telegram):
-        return ' '.join(['0x%0*X' % (2, c) for c in telegram])
-
-
-    def _convertFromRaw(self, varname, rawvalue):
-        vardef = REGISTERS_AND_COILS[varname]
-        if vardef["type"] == "temperature":
-            return int(NTC5K_TEMPERATURES[rawvalue])
-        elif vardef["type"] == "fanspeed":
-            return int(FANSPEEDS.get(rawvalue))
-        elif vardef["type"] == "bit":
-            return bool(rawvalue >> vardef["bitposition"] & 0x01)
-        elif vardef["type"] == "dec":
-            if varname == "defrost_hysteresis":
-                rawvalue = rawvalue // 3
-            return int(rawvalue)
-        return None
-
-
-    def _convertToRaw(self, varname, value, currentval):
-        vardef = REGISTERS_AND_COILS[varname]
-        if vardef['type'] == "temperature":
-            return int(NTC5K_TEMPERATURES.index(int(value)))
-        elif vardef["type"] == "fanspeed":
-            return int({v: k for k, v in FANSPEEDS.items()}.get(int(value)))
-        elif vardef["type"] == "bit":
-            if value in (True, 1, "true", "True", "1", "On", "on"):
-                return currentval | (1 << vardef["bitposition"])
-            return currentval & ~(1 << vardef["bitposition"])
-        elif vardef["type"] == "dec":
-            if varname == "defrost_hysteresis":
-                return int(value*3)
-        return None
-
-
-    def _createTelegram(self, sender, receiver, function, value):
-        telegram = [1, sender, receiver, function, value, 0]
+    # send a telegram to the RS485 (=register read request or register write)
+    def _sendTelegram(self, sender, receiver, register, value):
+        telegram = [ 0x01, sender, receiver, register, value, 0 ]
         telegram[5] = self._calculateCRC(telegram)
-        return telegram
-
-
-    def _sendTelegram(self, telegram):
-        if not self._is_connected:
+        if not self._syncWithRS485():
+            self.logger.error("Writing failed: No proper connection available.")
+        try:
+            self._socket.sendall(bytearray(telegram))
+            # time.sleep(0.001)
+            # self._socket.sendall(bytearray(telegram))
+            return True
+        except socket.error as e:
+            self.logger.error(f"Socket error during send: {e}")
             return False
-        self.logger.debug("Helios: Sending telegram '{0}'".format(self._telegramToString(telegram)))
-        self._socket.sendall(bytearray(telegram))
-        return True
 
-
-    def _readTelegram(self, sender, receiver, datapoint):
-        timeout = time.time() + 0.03     # Stellschraube für lange re-reads
-        telegram = [0, 0, 0, 0, 0, 0]
-        all_bytes_received = []
-        protocol_count = 0
-        max_count = 16
-        while time.time() < timeout and protocol_count < max_count:
-            telegram = [0, 0, 0, 0, 0, 0]
-            while self._is_connected and time.time() < timeout:
-                try:
-                    char = self._socket.recv(1)
-                    if len(char) > 0:
-                        byte = bytearray(char)[0]
-                        all_bytes_received.append(byte)
-                        telegram.pop(0)
-                        telegram.append(byte)
-                        if telegram[0] == 0x01:
-                            protocol_count += 1
-                            if (telegram[1] == sender and 
-                                telegram[2] == receiver and 
-                                telegram[3] == datapoint and 
-                                telegram[5] == self._calculateCRC(telegram)):
-                                self.logger.debug("Telegram received '{0}'".format(self._telegramToString(telegram)))
-                                return telegram[4]
-                except socket.timeout:
-                    self.logger.info("Communication error - socket timeout.")
-                    return None
-        self.logger.debug("Timeout while awaiting answer - bus busy.")
-        self.logger.debug("Protocols received: '{0}'".format(self._telegramToString(all_bytes_received)))
+    # read a telegram from RS485 (called after sending a register read request)
+    def _receiveTelegram(self, sender, receiver, register):
+        telegram = [0, 0, 0, 0, 0, 0] # FIFO ring buffer
+        timeout = time.time() + 1.5
+        while time.time() < timeout:
+            try:
+                char = self._socket.recv(1) # parse each byte received from bus
+                if not char:
+                    continue
+                byte = char[0]
+                telegram.pop(0) # delete oldest byte from the left
+                telegram.append(byte) # add newly read byte to the right
+                if telegram[0] == 0x01: # compare and return value if successful
+                    if (telegram[1] == sender and
+                        telegram[2] == receiver and
+                        telegram[3] == register and
+                        telegram[5] == self._calculateCRC(telegram)):
+                        return telegram[4]
+            except socket.timeout:
+                continue
+        self.logger.debug("Read timeout.")
         return None
 
-
-    def _syncWithRS485(self):
-        start_time = time.time()
-        gotSlot = False
-        end = time.time() + 3
-        while time.time() < end:
-            ready = select.select([self._socket], [], [], 0.007)
-            if ready[0]:
-                try:
-                    chars = self._socket.recv(1)
-                    if len(chars) > 0:   # bus busy
-                        end = time.time() + 3
-                except socket.error as e:
-                    self.logger.error(f"Socket error occurred: {e}")
-                    break
-            else:  # silence on bus
-                gotSlot = True
-                break
-        return gotSlot
-
-
-    def _readVal(self, varname):
-        varid = REGISTERS_AND_COILS[varname]["varid"]
-        value = None
-        if REGISTERS_AND_COILS[varname]["type"] == "bit" and varid in self._cache:
-            return self._convertFromRaw(varname, self._cache[varid])
-        def attempt_read():
-            max_retries = 10
-            for attempt in range(max_retries-1):
-                if self._syncWithRS485():
-                    telegram = self._createTelegram(
-                        BUS_ADDRESSES["_HA"], BUS_ADDRESSES["MB1"], 0, varid
-                    )
-                    self._sendTelegram(telegram)
-                    value = self._readTelegram(
-                        BUS_ADDRESSES["MB1"], BUS_ADDRESSES["_HA"], varid
-                    )
-                    if value is not None:
-                        # Cache bit values:
-                        if REGISTERS_AND_COILS[varname]["type"] == "bit":
-                            self._cache[varid] = value
-                        return self._convertFromRaw(varname, value)
-                    else:
-                        self.logger.info(f"Reading '{varname}' again ({attempt + 1})")
-                        time.sleep(0.05)
-                else:
-                    self.logger.warning("Reading failed. No free sending slot found.")
-            return None
-        self._lock.acquire()
-        try:
-            value = attempt_read()
-            if value is None:
-                self.logger.error(f"Failed to read value for '{varname}'.")
-        except Exception as e:
-            self.logger.error("Exception in _readVal(): {0}".format(e))
-        finally:
-            self._lock.release()
-        return value
-
-
-    def _check_value(self, varname, value):
+    # Plausibility checks before writing to the bus
+    def _validateBeforeWrite(self, varname, value):
+        # Check for valid variable name
+        if REGISTERS_AND_COILS.get(varname) is None:
+            self.logger.error(f"Writing stopped: Invalid variable '{varname}'.")
+            return False
         # Prevent writing to register 06h (may cause irrepairable damage)
         if REGISTERS_AND_COILS[varname]["varid"] == 0x06:
-            self.logger.critical("Writing to register 06h is prohibited. Write operation aborted.")
+            self.logger.critical("Writing stopped: 06h writes are prohibited.")
             return False
         # Prevent writing read-only variables
         if REGISTERS_AND_COILS[varname]["write"] != True:
-            self.logger.critical(f"Variable {varname} is read-only and cannot be written to.")
+            self.logger.error(f"Writing stopped: '{varname}' is read-only.")
             return False
         # Make sure value is int or bool
-        if not isinstance(value, int):
-            if REGISTERS_AND_COILS[varname] ["type"] == "bit":
-                if  value in [1, '1', True, true, 'True', 'true', 'On', 'on', 'ON'] or \
-                    value in [0, '0', False, false, 'False', 'false', 'Off', 'off', 'OFF']:
-                    self.logger.debug(f"Valid bool {value} for {varname} detected.")
+        if not isinstance(value, (int, bool)):
+            if REGISTERS_AND_COILS[varname]["type"] == "bit":
+                if value in ['1', True, 'True', 'true', 'On', 'on', 'ON'] or \
+                value in ['0', False, 'False', 'false', 'Off', 'off', 'OFF']:
+                    self.logger.debug(f"Valid bool '{value}' detected.")
                 else:
-                    self.logger.error(f"Value {value} for {varname} is not a valid binary.")
+                    self.logger.error(f"Writing stopped: '{value}' is not a bool.")
                     return False
             else:
-                self.logger.error(f"Invalid value {value} for {varname}, expected an integer.")
+                self.logger.error(f"Writing stopped: '{value}' is not an integer.")
                 return False
-        # Check for value limits min/max
-        entity = self._get_entity(varname)
-        min_value = getattr(entity, 'min_value', None)
-        if min_value is not None and value < min_value:
-            self.logger.error(f"Value {value} for {varname} is below the minimum of {min_value}.")
-            return False
-        max_value = getattr(entity, 'max_value', None)
-        if max_value is not None and value > max_value:
-            self.logger.error(f"Value {value} for {varname} is above the maximum of {max_value}.")
-            return False
+        # Check if value is within allowed limits (HA only, not at CLI!)
+        if self._hass:
+            entity = self._hass.states.get(f"sensor.ventilation_{varname}")
+            if entity:
+                min_value = entity.attributes.get("min_value")
+                max_value = entity.attributes.get("max_value")
+                min_value = int(min_value) if isinstance(min_value, (int, float)) else None
+                max_value = int(max_value) if isinstance(max_value, (int, float)) else None
+                self.logger.debug(f"Validating '{varname}': value={value}, min={min_value}, max={max_value}")
+                if min_value is not None and int(value) < min_value:
+                    self.logger.error(f"Writing stopped: {value} below min of {min_value}.")
+                    return False
+                if max_value is not None and int(value) > max_value:
+                    self.logger.error(f"Writing stopped: {value} above max of {max_value}.")
+                    return False
         return True
 
 
-    def _add_calculations(self, all_values):
-        fault_number = all_values.get('fault_number')
-        if fault_number is not None:
-            all_values['fault_text'] = COMPONENT_FAULTS.get(fault_number, "-")
+###### for CLI (command line) testing only #####################################
 
-        required_temps = [
-            'temperature_outdoor_air', 
-            'temperature_supply_air', 
-            'temperature_extract_air', 
-            'temperature_exhaust_air'
-        ]
-        if all(temp in all_values for temp in required_temps):
-            outdoor_air = all_values['temperature_outdoor_air']
-            supply_air = all_values['temperature_supply_air']
-            extract_air = all_values['temperature_extract_air']
-            exhaust_air = all_values['temperature_exhaust_air']
-
-            # Perform calculations
-            temperature_reduction = extract_air - exhaust_air
-            temperature_gain = supply_air - outdoor_air
-            temperature_balance = temperature_reduction - temperature_gain
-            efficiency = None
-            delta = extract_air - outdoor_air
-            if delta == 0: # would div/0
-                efficiency = 0
-            elif delta > 0:
-                efficiency = (temperature_gain / delta) * 100
-            else:
-                efficiency = 0
-            if efficiency is not None:
-                efficiency = int(max(0, min(efficiency, 100)))
-
-            all_values['temperature_reduction'] = temperature_reduction
-            all_values['temperature_gain'] = temperature_gain
-            all_values['temperature_balance'] = temperature_balance
-            all_values['efficiency'] = efficiency
-
-        return all_values
-
-
-# command line testing only
 def main():
     parser = argparse.ArgumentParser(description="Test HeliosBase functions")
     parser.add_argument("--ip", type=str, default=DEFAULT_IP, help="IP address of the device")
@@ -393,7 +354,7 @@ def main():
     args = parser.parse_args()
     helios = HeliosBase(args.ip, args.port)
     if args.read:
-        value = helios.readValue(args.read)
+        value = helios.readSingleValue(args.read)
         print(value)
     elif args.readall:
         values = helios.readAllValues()
@@ -410,7 +371,6 @@ def main():
             print(f"Successfully wrote {value} to {varname}")
         else:
             print(f"Failed to write {value} to {varname}")
-
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)

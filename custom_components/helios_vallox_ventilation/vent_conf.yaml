@@ -10,7 +10,7 @@
   ip_address: !secret helios_vallox_ip
   port: !secret helios_vallox_port
 
-  sensors:
+  sensors:    # state_class: "measurement" ---> "read-only" register
 
     # DE Lüftungsstufe
     - name: fanspeed
@@ -25,7 +25,7 @@
       unit_of_measurement: "level"
       min_value: 1
       max_value: 8
-      default_value: 1
+      factory_setting: 1
       icon: "mdi:speedometer-slow"
 
     # DE Maximalstufe
@@ -34,14 +34,14 @@
       unit_of_measurement: "level"
       min_value: 1
       max_value: 8
-      default_value: 8
+      factory_setting: 8
       icon: "mdi:speedometer"
 
     # DE: Außenlufttemperatur 
     - name: "temperature_outdoor_air"
       unit_of_measurement: "°C"
       device_class: "temperature"
-      state_class: "measurement"   # ="read-only"
+      state_class: "measurement"
       icon: "mdi:thermometer"
 
     # DE: Zulufttemperatur
@@ -69,7 +69,7 @@
       unit_of_measurement: "°C"
       min_value: 0
       max_value: 25
-      default_value: 10
+      factory_setting: 10
       icon: "mdi:thermometer"
 
     # set to +5 to activate with pre-heating with defrost defaults below
@@ -77,22 +77,22 @@
       unit_of_measurement: "°C"
       min_value: -10
       max_value: 10
-      default_value: -3
+      factory_setting: -3
       icon: "mdi:thermometer"
 
-    # can be reduced below 0 in case of enthalpy exchanger
+    # can be reduced below 0 in case of enthalpy heat exchanger
     - name: "defrost_setpoint"
       unit_of_measurement: "°C"
       min_value: -6
       max_value: 15
-      default_value: 3
+      factory_setting: 3
       icon: "mdi:thermometer"
 
     - name: "defrost_hysteresis"
       unit_of_measurement: "°C"
       min_value: 1
       max_value: 10
-      default_value: 3
+      factory_setting: 3
       icon: "mdi:thermometer"
 
     - name: "boost_remaining"
@@ -105,21 +105,21 @@
       unit_of_measurement: "%"
       min_value: 65
       max_value: 100
-      default_value: 100
+      factory_setting: 100
       icon: "mdi:percent"
 
     - name: "output_fan_percent"
       unit_of_measurement: "%"
       min_value: 65
       max_value: 100
-      default_value: 100
+      factory_setting: 100
       icon: "mdi:percent"
 
     - name: "service_interval"
       unit_of_measurement: "months"
       min_value: 1
       max_value: 12
-      default_value: 4
+      factory_setting: 4
       icon: "mdi:calendar-multiple"
 
     - name: "service_due_months"
@@ -189,7 +189,7 @@
 
   switches:
 
-    # ???? --> throws errors on writing
+    # ???? --> validate switching on / off
     - name: "powerstate"
       device_class: "power"
       icon: "mdi:power-settings"
