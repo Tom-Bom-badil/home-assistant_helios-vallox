@@ -9,7 +9,7 @@
 
 This is the Home Assistant adaptation of my Python script, which has been running 24/7 in my previous home automation system since 2014 (see [here](https://github.com/Tom-Bom-badil/helios/wiki)). In-depth insights, how-to's, installation instructions,  adapter setup / configuration and a brief project history of the last 10 years of programming are documented in detail [on the Wiki](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki).
 
-By default, the integration reads more than 30 common variables from the ventilation unit at regular intervals. It can be extended to include additional variables (e.g., for individual humidity or CO₂ sensor setups) by simply editing the configuration files - no programming is required.
+By default, the integration reads more than 30 common variables from the ventilation unit at regular intervals (60s, adjustable). You can optionally add further variables which my own ventilation doesn't have by simply editing the configuration files (useful if you have additional humidity or CO₂ sensors) - no programming skills are required for that, just amend the integration's configuration files.
 
 The integration also implements writing to ANY writable register in the ventilation unit, including plausibility and safety checks before the actual write. This can be used e.g. in your automations, in the Lovelace GUI on buttons / sliders / dropdowns, or directly from the developer tools:
 ```yaml
