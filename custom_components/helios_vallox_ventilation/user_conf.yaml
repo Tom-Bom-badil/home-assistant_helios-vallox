@@ -1,0 +1,170 @@
+  ################# Your configuration here (for house and ventilation model) ##
+  
+  input_text:
+
+    ventilation_conf_house_area:
+      name: The living area of your house (airflow relevant m²; DIN ISO = Ane)
+      # My house:
+      initial: 143
+
+    ventilation_conf_house_volume:
+      name: The volume of your house (airflow relevant m³)
+      # My house:
+      initial: 384
+
+    ventilation_conf_isolation_factor:
+      name: 0.3 for a well heat isolated house, else 0.4 (DIN ISO = fWS)
+      # My house:
+      initial: 0.3
+
+    ventilation_conf_airflow_per_mode:
+      name: Airflow according to the ventilator curves in the manual
+      # My Helios EC300Pro:
+      initial: '0,105,165,195,240,270,305,335,360'
+
+    ventilation_conf_max_airflow:
+      name: Maximum airflow according to the ventilator curves in the manual
+      # My Helios EC300Pro:
+      initial: 360
+
+    ventilation_conf_power_per_mode:
+      name: Power consumption according to the ventilator curves in the manual
+      # My Helios EC300Pro:
+      initial: '0,20,36,50,72,92,130,160,194'
+
+    ventilation_conf_max_power:
+      name: Maximum airflow according to the ventilator curves in the manual
+      # My Helios EC300Pro:
+      initial: 194
+
+    ventilation_heating_power:
+      name: Electrical power consumtion of your pre-/post heating (if installed)
+      # My Helios EC300Pro:
+      initial: 1000
+
+  ################# no need to change anything below this ######################
+
+  input_number:
+
+    # only used internally for remote control display on lovelace dashboard
+    ventilation_display_index:
+      min: 0
+      max: 3
+      step: 1
+      initial: 0
+
+    # only used internally for manual boost mode
+    ventilation_manual_boost_level:
+      icon: mdi:fan
+      min: 1
+      max: 8
+      step: 1
+      initial: 8
+      mode: box
+
+    # only used internally for manual boost mode
+    ventilation_manual_boost_time:
+      icon: mdi:clock
+      min: 15
+      max: 90
+      step: 15
+      initial: 90
+      mode: box
+
+  input_boolean:
+
+    # only used internally for manual boost mode
+    ventilation_manual_boost_active:
+      icon: mdi:fan
+
+  timer:
+
+    # only used internally for manual boost mode
+    ventilation_manual_boost_remaining:
+      name: "Manual boost remaing"
+      icon: mdi:clock
+      duration: "00:30:00"
+
+  template: # calculations
+
+    - sensor:
+
+        # Recommended airflow for your house in m³/h, as per DIN Norm 1946-6
+        # (DIN = Deutsches Institut für Normung / German Institute for Standardization)
+        # DIN defines 4 different ventilation levels
+        # =============================================================================
+        #
+        # > Notes to self (in German): <
+        #
+        # Die KWL sollte so ausgelegt sein, dass der Luftaustausch zwischen
+        # Feuchteschutz (min) und Intensivlüftung (max) gewährleistet ist.
+        # 
+        # Beispiel für eine Gebäudefläche von 280 m² in einem gedämmten Gebäude:
+        # Feuchteschutz = 0,3 *(-0,001*280² + 1,15*280+20) = 79,08
+        # Reduzierte Lüftung = 0,7 *(-0,001*280² + 1,15*280+20) = 184,52
+        # Nennlüftung = 1,0 * (-0,001*280² + 1,15*280+20) = 263,6
+        # Intensivlüftung = 1,15 *(-0,001*280² + 1,15*280+20) = 303,14
+        # Für die Auslegung nach DIN muss die KWL also 80...300 m³/h liefern.
+
+        - # fWS * (-0,001 * Ane² + 1,15 * Ane + 20)
+          name: "Ventilation DIN airflow (moisture protection)"
+          unit_of_measurement: "m³/h"
+          state: >
+            {% set fWS = states('input_text.ventilation_conf_isolation_factor') | float(0) %}
+            {% set Ane = states('input_text.ventilation_conf_house_area') | float(0) %}
+            {{ (fWS * (-0.001 * (Ane ** 2) + 1.15 * Ane + 20)) | int(0) }}
+
+        - # 0,7 * (-0,001 * Ane² + 1,15 * Ane + 20)
+          name: "Ventilation DIN airflow (reduced exchange)"
+          unit_of_measurement: "m³/h"
+          state: >
+            {% set Ane = states('input_text.ventilation_conf_house_area') | float(0) %}
+            {{ (0.7 * (-0.001 * (Ane **2) + 1.15 * Ane + 20)) | int(0) }}
+          
+
+        - # 1.0 * (-0,001 * Ane² + 1,15 * Ane + 20)
+          name: "Ventilation DIN airflow (normal exchange)"
+          unit_of_measurement: "m³/h"
+          state: >
+            {% set Ane = states('input_text.ventilation_conf_house_area') | float(0) %}
+            {{ (1.0 * (-0.001 * (Ane **2) + 1.15 * Ane + 20)) | int(0) }}
+          
+
+        - # 1,15 * (-0,001 * Ane² + 1,15 * Ane + 20)
+          name: "Ventilation DIN airflow (boost exchange)"
+          unit_of_measurement: "m³/h"
+          state: >
+            {% set Ane = states('input_text.ventilation_conf_house_area') | float(0) %}
+            {{ (1.15 * (-0.001 * (Ane **2) + 1.15 * Ane + 20)) | int(0) }}
+
+        # Other calculations. Always keep in mind: These are theoretical values, based
+        # on generic ventilator curves and not considering condition of your filters!!
+        # =============================================================================
+
+        # airflow
+        - name: "Ventilation effective airflow"
+          unit_of_measurement: "m³/h"
+          state: >
+            {% set all_flows = states('input_text.ventilation_conf_airflow_per_mode').split(',') %}
+            {% set fanspeed = states('sensor.ventilation_fanspeed') | int(0) %}
+            {% set default_airflow = all_flows[fanspeed] | int(0) %}
+            {% set input_fan_percent = states('sensor.ventilation_input_fan_percent') | int(0) %}
+            {% set output_fan_percent = states('sensor.ventilation_output_fan_percent') | int(0) %}
+            {% set fan_percentage = min(input_fan_percent, output_fan_percent) | int(0) %}
+            {% set current_airflow = (default_airflow * fan_percentage / 100) | int(0) %}
+            {# test/validation: {{ all_flows }} -> {{ fanspeed }} -> {{ default_airflow }}m³/h | {{ fan_percentage }}% -> {{ current_airflow }}m³/h #}
+            {{ current_airflow }}
+
+        # electrical power (normal operating mode, motors only - pre-/post-heating not considered)
+        - name: "Ventilation electrical power"
+          unit_of_measurement: "W"
+          state: >
+            {% set all_power_levels = states('input_text.ventilation_conf_power_per_mode').split(',') %}
+            {% set fanspeed = states('sensor.ventilation_fanspeed') | int(0) %}
+            {% set default_power = all_power_levels[fanspeed] | int(0) %}
+            {% set input_fan_percent = states('sensor.ventilation_input_fan_percent') | int(0) %}
+            {% set output_fan_percent = states('sensor.ventilation_output_fan_percent') | int(0) %}
+            {% set fan_percentage = min(input_fan_percent, output_fan_percent) | int(0) %}
+            {% set current_power = (default_power * fan_percentage / 100) | int(0) %}
+            {{ current_power }}
+
