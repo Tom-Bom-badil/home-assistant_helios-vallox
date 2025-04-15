@@ -98,7 +98,7 @@
     - name: "boost_remaining"
       device_class: "duration"
       state_class: "measurement"
-      unit_of_measurement: "minutes"
+      unit_of_measurement: "min"
       icon: "mdi:fan-clock"
     
     - name: "input_fan_percent"
