@@ -1,0 +1,245 @@
+#
+# Please note: This requires cardmod and custom:button-card to be installed!
+# To install: Copy the code below, create a new card of type 'manual', then paste the code into the YAML of the new card.
+#
+
+type: picture-elements
+name: Remote_Control
+show_state: false
+show_name: false
+panel: true
+image: /local/helios_vallox_ventilation/1px.png
+card_mod:
+  style: |
+    ha-card { 
+      background: transparent;
+      --ha-card-border-color: rgba(0,0,0,0);
+      --ha-card-border-radius: 0px;
+      --ha-card-border-width: 0px;
+    }
+elements:
+  - type: image
+    image: /local/helios_vallox_ventilation/remote_control.png
+    card_mod: null
+    tap_action:
+      action: null
+    style:
+      top: 50%
+      left: 50%
+      width: 80%
+      transform: translate(-50%, -50%)
+  - type: image
+    image: /local/helios_vallox_ventilation/LED_aus.png
+    state_image:
+      "off": /local/helios_vallox_ventilation/LED_aus.png
+      "on": /local/helios_vallox_ventilation/LED_an.png
+    entity: switch.ventilation_powerstate
+    tap_action:
+      action: more-info
+    card_mod: null
+    style:
+      top: 47%
+      left: 28.5%
+      width: 5%
+      transform: translate(-50%, -50%)
+  - type: image
+    image: /local/helios_vallox_ventilation/LED_aus.png
+    entity: switch.ventilation_co2_indicator
+    state_image:
+      "off": /local/helios_vallox_ventilation/LED_aus.png
+      "on": /local/helios_vallox_ventilation/LED_an.png
+    tap_action:
+      action: more-info
+    card_mod: null
+    style:
+      top: 47%
+      left: 43%
+      width: 5%
+      transform: translate(-50%, -50%)
+  - type: image
+    entity: switch.ventilation_rh_indicator
+    image: /local/helios_vallox_ventilation/LED_aus.png
+    state_image:
+      "off": /local/helios_vallox_ventilation/LED_aus.png
+      "on": /local/helios_vallox_ventilation/LED_an.png
+    tap_action:
+      action: more-info
+    card_mod: null
+    style:
+      top: 47%
+      left: 57%
+      width: 5%
+      transform: translate(-50%, -50%)
+  - type: image
+    entity: switch.ventilation_winter_mode
+    image: /local/helios_vallox_ventilation/LED_aus.png
+    state_image:
+      "off": /local/helios_vallox_ventilation/LED_aus.png
+      "on": /local/helios_vallox_ventilation/LED_an.png
+    tap_action:
+      action: toggle
+    card_mod: null
+    style:
+      top: 47%
+      left: 71.5%
+      width: 5%
+      transform: translate(-50%, -50%)
+  - type: custom:button-card
+    title: btn_up
+    square: true
+    icon: mdi:circle
+    style:
+      left: 28.5%
+      top: 86%
+    styles:
+      card:
+        - background: transparent
+        - height: 4vh
+        - width: 4vh
+      icon:
+        - color: black
+        - width: 60%
+        - height: 60%
+    tap_action:
+      action: call-service
+      service: input_number.set_value
+      target:
+        entity_id: input_number.ventilation_display_index
+      data:
+        value: |
+          [[[
+            let index = parseInt(states['input_number.ventilation_display_index'].state);
+            let max_index = 3;
+            let newlevel = 0;
+            if (index < max_index) { newlevel = index + 1 };
+            return newlevel;
+          ]]]
+  - type: custom:button-card
+    title: btn_down
+    square: true
+    icon: mdi:circle
+    style:
+      left: 43%
+      top: 86%
+    styles:
+      card:
+        - background: transparent
+        - height: 4vh
+        - width: 4vh
+      icon:
+        - color: black
+        - width: 60%
+        - height: 60%
+    tap_action:
+      action: call-service
+      service: input_number.set_value
+      target:
+        entity_id: input_number.ventilation_display_index
+      data:
+        value: |
+          [[[
+            let index = parseInt(states['input_number.ventilation_display_index'].state);
+            let min_index = 0;
+            let newlevel = 3;
+            if (index > min_index) { newlevel = index - 1 };
+            return newlevel;
+          ]]]
+  - type: custom:button-card
+    title: btn_plus
+    square: true
+    icon: mdi:circle
+    style:
+      left: 57%
+      top: 86%
+    styles:
+      card:
+        - background: transparent
+        - height: 4vh
+        - width: 4vh
+      icon:
+        - color: black
+        - width: 60%
+        - height: 60%
+    tap_action:
+      action: call-service
+      service: helios_vallox_ventilation.write_value
+      service_data:
+        variable: fanspeed
+        value: |
+          [[[
+            let current_speed = parseInt(states['sensor.ventilation_fanspeed'].state);
+            if (current_speed < 8) {
+              return current_speed + 1
+            } else {
+              return current_speed
+            }
+          ]]]
+  - type: custom:button-card
+    title: btn_minus
+    square: true
+    icon: mdi:circle
+    style:
+      left: 71.5%
+      top: 86%
+    styles:
+      card:
+        - background: transparent
+        - height: 4vh
+        - width: 4vh
+      icon:
+        - color: black
+        - width: 60%
+        - height: 60%
+    tap_action:
+      action: call-service
+      service: helios_vallox_ventilation.write_value
+      service_data:
+        variable: fanspeed
+        value: |
+          [[[
+            let current_speed = parseInt(states['sensor.ventilation_fanspeed'].state);
+            if (current_speed > 1) {
+              return current_speed - 1
+            } else {
+              return current_speed
+            }
+          ]]]
+  - type: custom:button-card
+    title: display
+    aspect_ratio: 5/1
+    name: |
+      [[[
+        let index = parseInt(states['input_number.ventilation_display_index'].state);
+        let titles = ['Aussenluft', 'Zuluft', 'Abluft', 'Fortluft'];
+        let entities = [
+          'sensor.ventilation_temperature_outdoor_air',
+          'sensor.ventilation_temperature_supply_air',
+          'sensor.ventilation_temperature_extract_air',
+          'sensor.ventilation_temperature_exhaust_air'
+        ]
+        let zeile1 = titles[index]
+        let zeile2 = states[entities[index]].state;
+        return `<div>${zeile1}<br/>${zeile2} °C</div>`
+      ]]]
+    style:
+      left: 22.5%
+      top: 60%
+    styles:
+      card:
+        - width: 12.5vw
+        - padding: 0
+        - margin: 0
+        - height: 6vh !important
+        - color: black
+        - background-color: "#5CCA03"
+        - border: 2px inset
+        - display: |
+            [[[
+               if(states['switch.ventilation_powerstate'].state != 'on')
+               return 'none';
+            ]]]
+      name:
+        - padding: 0
+        - margin: 0
+    tap_action:
+      action: null
