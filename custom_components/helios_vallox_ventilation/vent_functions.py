@@ -4,6 +4,7 @@ import threading
 import time
 import argparse
 import select
+import random
 
 try:
     from .const import ( # HA
@@ -113,6 +114,10 @@ class HeliosBase:
                         self.logger.info(f"Retries for {varname}: {retry_count}.")
                     return self._convertFromRaw(varname, value)
                 retry_count += 1
+                # if there are several HA instances running, reads may overlap each other
+                # this blocking results in read times >300s and more - so lets de-sync them
+                if retry_count == 5:
+                    time.sleep(random.randint(1, 5))
             # give up, too many re-reads
             self.logger.error(f"Failed to read '{varname}' after {retry_count} attempts.")
             return None
@@ -340,7 +345,6 @@ class HeliosBase:
                     self.logger.error(f"Writing stopped: {value} above max of {max_value}.")
                     return False
         return True
-
 
 ###### for CLI (command line) testing only #####################################
 
