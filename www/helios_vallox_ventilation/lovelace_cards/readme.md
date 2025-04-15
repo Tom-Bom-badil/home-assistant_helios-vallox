@@ -16,7 +16,7 @@ Please note: Only the remote control (the top item) is in the yaml; the 2 cards 
 
 ## Air exchange gauge
 
-This gauge displays the current air exchange. It requires the optional features in `user_conf.yaml`to be enabled and filled out properly. Also, you might need to adjust the yaml to you individual device.
+[This gauge](gauge_air_exchange.yaml) displays the current air exchange. It requires the optional features in `user_conf.yaml` to be enabled and filled out properly. Also, you might need to adjust the yaml to you individual device.
 
 ![image](https://github.com/user-attachments/assets/f110379d-4c1f-4d32-a07b-e31d3fc4ac4f)
 
