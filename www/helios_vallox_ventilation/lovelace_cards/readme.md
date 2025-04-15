@@ -13,3 +13,10 @@ https://github.com/user-attachments/assets/61a7da07-2e30-4184-b3d3-079c99e9cbc1
 To install it, you will need to create a new manual / user-defined card on your dashboard and paste the YAML into it. Both cardmod and the custom:button-card are requirements for it.
 
 Please note: Only the remote control (the top item) is in the yaml; the 2 cards below are still work-in-progress.
+
+## Air exchange gauge
+
+This gauge displays the current air exchange. It requires the optional features in `user_conf.yaml`to be enabled and filled out properly. Also, you might need to adjust the yaml to you individual device.
+
+![image](https://github.com/user-attachments/assets/f110379d-4c1f-4d32-a07b-e31d3fc4ac4f)
+
