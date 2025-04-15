@@ -6,7 +6,7 @@ This directory contains various Lovelace cards for the ventilation.
 
 ## Remote control card
 
-In [remote_control.yaml](./remote_control.yaml) you can find a simulated remote control. I have successfully tested it in a 1/4 screen column of a `sections`dashboard both on my PC (WQHD) and on my mobile phone.
+In [remote_control.yaml](./remote_control.yaml) you can find a simulated remote control. I have successfully tested it in a 1/4 screen column of a `sections`dashboard both on my PC (WQHD) and on my mobile phone; although I am still struggeling a bit with the HA companion app (iOS).
 
 https://github.com/user-attachments/assets/61a7da07-2e30-4184-b3d3-079c99e9cbc1
 
