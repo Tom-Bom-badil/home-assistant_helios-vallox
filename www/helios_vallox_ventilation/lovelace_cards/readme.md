@@ -11,3 +11,5 @@ In [remote_control.yaml](./remote_control.yaml) you can find a simulated remote 
 https://github.com/user-attachments/assets/61a7da07-2e30-4184-b3d3-079c99e9cbc1
 
 To install it, you will need to create a new manual / user-defined card on your dashboard and paste the YAML into it. Both cardmod and the custom:button-card are requirements for it.
+
+Please note: Only the remote control (the top item) is in the yaml; the 2 cards below are still work-in-progress.
