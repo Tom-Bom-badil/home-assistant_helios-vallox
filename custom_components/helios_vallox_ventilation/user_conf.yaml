@@ -5,42 +5,42 @@
     ventilation_conf_house_area:
       name: The living area of your house (airflow relevant m²; DIN ISO = Ane)
       # My house:
-      initial: 143
+      initial: !secret helios_vallox_house_area
 
     ventilation_conf_house_volume:
       name: The volume of your house (airflow relevant m³)
       # My house:
-      initial: 384
+      initial: !secret helios_vallox_house_volume
 
     ventilation_conf_isolation_factor:
       name: 0.3 for a well heat isolated house, else 0.4 (DIN ISO = fWS)
       # My house:
-      initial: 0.3
+      initial: !secret helios_vallox_isolation_factor
 
     ventilation_conf_airflow_per_mode:
       name: Airflow according to the ventilator curves in the manual
       # My Helios EC300Pro:
-      initial: '0,105,165,195,240,270,305,335,360'
+      initial: !secret helios_vallox_airflow_per_mode
 
     ventilation_conf_max_airflow:
       name: Maximum airflow according to the ventilator curves in the manual
       # My Helios EC300Pro:
-      initial: 360
+      initial: !secret helios_vallox_max_airflow
 
     ventilation_conf_power_per_mode:
       name: Power consumption according to the ventilator curves in the manual
       # My Helios EC300Pro:
-      initial: '0,20,36,50,72,92,130,160,194'
+      initial: !secret helios_vallox_power_per_mode
 
     ventilation_conf_max_power:
       name: Maximum airflow according to the ventilator curves in the manual
       # My Helios EC300Pro:
-      initial: 194
+      initial: !secret helios_vallox_max_power
 
-    ventilation_heating_power:
+    ventilation_conf_heating_power:
       name: Electrical power consumtion of your pre-/post heating (if installed)
       # My Helios EC300Pro:
-      initial: 1000
+      initial: !secret helios_vallox_heating_power
 
   ################# no need to change anything below this ######################
 
