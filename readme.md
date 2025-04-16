@@ -31,73 +31,11 @@ Users have reported the successful use on the following models:
 Documentations show that the following models also use the proprietary Helios/Vallox protocol, therefore they should also work:
 - Vallox 096 SE, Vallox 110 SE, Vallox 121 SE (both versions with and without front heating module), Vallox 150 SE, Vallox 270 SE, Vallox Digit SE 2, Vallox ValloPlus SE 500. (Please report back if you got the integration running on one of these models, thanks in advance!)
 
-## Installation through HACS
+## Installation (either through HACS or manually)
 
-Launch HACS and click the 3 dots in the top right corner, then choose `Custom repositories`. You will see 2 fields to fill out:
+Please check [this Wiki page](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki/Installation-and-setup-within-HA) for detailed installation and configuration options.
 
-- Repository: _**https://github.com/Tom-Bom-badil/home-assistant_helios-vallox**_
-- Type: _**Integration**_
-
-Click add and download the integration. Do NOT restart yet to avoid restarting twice.
-
-Add this to your `secrets.yaml` file in the HA root (adjust the IP and port of your LAN/Wifi-RS485 adaptor as needed):
-```yaml
-# ventilation: mandatory settings
-helios_vallox_ip:   192.168.178.38
-helios_vallox_port: 8234
-# ventilation: optional settings for dasboard cards
-helios_vallox_house_area: 143              # m²
-helios_vallox_house_volume: 384            # m³
-helios_vallox_isolation_factor: 0.3        # no unit
-helios_vallox_airflow_per_mode: '0,105,165,195,240,270,305,335,360'  # m³/h
-helios_vallox_max_airflow: 360             # m³/h
-helios_vallox_power_per_mode: '0,20,36,50,72,92,130,160,194'  # W
-helios_vallox_max_power: 194               # W
-helios_vallox_heating_power: 1000          # W
-```
-
-Now add this to your `configuration.yaml` to set up the integration and its log level:
-```yaml
-logger:
-  logs:
-    helios_vallox: error      # set to 'info' or even 'debug' for more details
-
-helios_vallox_ventilation:
-  !include custom_components/helios_vallox_ventilation/vent_conf.yaml
-```
-Restart HA to load the integration, and enjoy! :)
-
-## Manual installation
-
-Upload the directories and files with original pathes to your HA.
-
-Add this to your `secrets.yaml` file in the HA root (adjust the IP and port of your LAN/Wifi-RS485 adaptor as needed):
-```yaml
-# ventilation: mandatory settings
-helios_vallox_ip:   192.168.178.38
-helios_vallox_port: 8234
-# ventilation: optional settings for dasboard cards
-helios_vallox_house_area: 143              # m²
-helios_vallox_house_volume: 384            # m³
-helios_vallox_isolation_factor: 0.3        # no unit
-helios_vallox_airflow_per_mode: '0,105,165,195,240,270,305,335,360'  # m³/h
-helios_vallox_max_airflow: 360             # m³/h
-helios_vallox_power_per_mode: '0,20,36,50,72,92,130,160,194'  # W
-helios_vallox_max_power: 194               # W
-helios_vallox_heating_power: 1000          # W
-```
-
-Now add this to your `configuration.yaml` to set up the integration and its log level:
-```yaml
-logger:
-  logs:
-    helios_vallox: error      # set to 'info' or even 'debug' for more details
-
-helios_vallox_ventilation:
-  !include custom_components/helios_vallox_ventilation/vent_conf.yaml
-```
-
-Restart HA to load the integration, and enjoy! :)
+Thanks for downloading, and please leave a star and report back in the discussions section if you find this of any use for you or run into any problems - enjoy! :)
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
