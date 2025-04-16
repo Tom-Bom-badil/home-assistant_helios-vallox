@@ -23,7 +23,7 @@ The integration has been tested with various RS485-LAN/Wi-Fi adapters - no solde
 ## Compatible devices
 
 If your ventilation system has this remote control board, it is almost certainly compatible:<br/><br/>
-![fb1_small](https://github.com/user-attachments/assets/57bbe02d-9086-4028-849f-c43d699e2aed)
+![image](https://github.com/user-attachments/assets/9ab43b78-0f58-494b-a876-656de4c8cb8b)
 
 Users have reported the successful use on the following models:
 - Helios EC 200 Pro R/L, Helios EC 300 Pro R/L, Helios EC 500 Pro R/L, Vallox 090 SE, Vallox 910 SE, Vallox Digit SE, Vallo Plus 350 SE, Vallo Plus 510 SE, Vallox 130D (this one requires changing a few register numbers due to different addresses; see [old wiki](https://github.com/Tom-Bom-badil/SmartHomeNG-Helios/wiki))
