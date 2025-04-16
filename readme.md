@@ -42,8 +42,18 @@ Click add and download the integration. Do NOT restart yet to avoid restarting t
 
 Add this to your `secrets.yaml` file in the HA root (adjust the IP and port of your LAN/Wifi-RS485 adaptor as needed):
 ```yaml
+# ventilation: mandatory settings
 helios_vallox_ip:   192.168.178.38
-helios_vallox_port: 502
+helios_vallox_port: 8234
+# ventilation: optional settings for dasboard cards
+helios_vallox_house_area: 143              # m²
+helios_vallox_house_volume: 384            # m³
+helios_vallox_isolation_factor: 0.3        # no unit
+helios_vallox_airflow_per_mode: '0,105,165,195,240,270,305,335,360'  # m³/h
+helios_vallox_max_airflow: 360             # m³/h
+helios_vallox_power_per_mode: '0,20,36,50,72,92,130,160,194'  # W
+helios_vallox_max_power: 194               # W
+helios_vallox_heating_power: 1000          # W
 ```
 
 Now add this to your `configuration.yaml` to set up the integration and its log level:
@@ -63,8 +73,18 @@ Upload the directories and files with original pathes to your HA.
 
 Add this to your `secrets.yaml` file in the HA root (adjust the IP and port of your LAN/Wifi-RS485 adaptor as needed):
 ```yaml
+# ventilation: mandatory settings
 helios_vallox_ip:   192.168.178.38
 helios_vallox_port: 8234
+# ventilation: optional settings for dasboard cards
+helios_vallox_house_area: 143              # m²
+helios_vallox_house_volume: 384            # m³
+helios_vallox_isolation_factor: 0.3        # no unit
+helios_vallox_airflow_per_mode: '0,105,165,195,240,270,305,335,360'  # m³/h
+helios_vallox_max_airflow: 360             # m³/h
+helios_vallox_power_per_mode: '0,20,36,50,72,92,130,160,194'  # W
+helios_vallox_max_power: 194               # W
+helios_vallox_heating_power: 1000          # W
 ```
 
 Now add this to your `configuration.yaml` to set up the integration and its log level:
