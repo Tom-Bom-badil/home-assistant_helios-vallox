@@ -1,26 +1,17 @@
-name: Air exchange
 type: gauge
+name: Air exchange
 entity: sensor.ventilation_effective_airflow
 needle: true
 min: 0
 max: 360
-comment: |
-  [[[
-    /**
-    I have been desparetly searching for a HA gradient gauge.
-    Didn't find any. :(
-    
-    Below numbers/colors are for a Helios EC300 Pro.
-    To adjust the gradient to different models:
-
-    open in Browser:
-    https://ha.labtool.pl/en.lims?e=JmZjQ1M2EiLCJmZWQ3MDkiLCI0NGEwNDciLCJmZWQ3MDkiLCJmNzg2M2IiLCJmZjAwMDAiXSwic3RlcHMiOlsxMCwxMCwxMCwxMCwxMF0sInJhbmdlIjpbIjAiLCI0OSIsIjExNCIsIjE2NCIsIjE4OCIsIjM2MCJdfQ
-
-    paste the result of the web page into the segments: section below
-
-    That is as close as I could get to a 'real' gradient gauge.
-    **/
-  ]]]
+card_mod:
+  style: |
+    ha-card {
+      --ha-card-background: transparent;
+      --ha-card-border-color: rgba(0,0,0,0);
+      --ha-card-border-radius: 0px;
+      --ha-card-border-width: 0px;
+    }
 segments:
   - from: 0
     color: "#FF0000"
@@ -132,11 +123,3 @@ segments:
     color: "#FF150B"
   - from: 360
     color: "#FF0000"
-card_mod:
-  style: |
-    ha-card {
-      --ha-card-background: transparent;
-      --ha-card-border-color: rgba(0,0,0,0);
-      --ha-card-border-radius: 0px;
-      --ha-card-border-width: 0px;
-    }
