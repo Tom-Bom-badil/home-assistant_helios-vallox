@@ -206,11 +206,10 @@ elements:
           ]]]
   - type: custom:button-card
     title: display
-    aspect_ratio: 5/1
     name: |
       [[[
         let index = parseInt(states['input_number.ventilation_display_index'].state);
-        let titles = ['Aussenluft', 'Zuluft', 'Abluft', 'Fortluft'];
+        let titles = ['Außen', 'Zuluft', 'Abluft', 'Fortluft'];
         let entities = [
           'sensor.ventilation_temperature_outdoor_air',
           'sensor.ventilation_temperature_supply_air',
@@ -222,14 +221,14 @@ elements:
         return `<div>${zeile1}<br/>${zeile2} °C</div>`
       ]]]
     style:
-      left: 22.5%
-      top: 60%
+      left: 50%
+      top: 67%
     styles:
       card:
-        - width: 12.5vw
+        - width: 250px
+        - height: 60px
         - padding: 0
         - margin: 0
-        - height: 6vh !important
         - color: black
         - background-color: "#5CCA03"
         - border: 2px inset
