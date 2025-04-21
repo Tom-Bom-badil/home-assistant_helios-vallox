@@ -1,0 +1,11 @@
+name: Efficiency
+type: gauge
+entity: sensor.ventilation_efficiency
+card_mod:
+  style: |
+    ha-card {
+      --ha-card-background: transparent;
+      --ha-card-border-color: rgba(0,0,0,0);
+      --ha-card-border-radius: 0px;
+      --ha-card-border-width: 0px;
+    }
