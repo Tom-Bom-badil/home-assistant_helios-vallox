@@ -10,7 +10,7 @@ In [remote_control.yaml](./remote_control.yaml) you can find a simulated remote 
 
 The card has been tested both in a 1/4 screen column of a `sections`dashboard both on a PC (WQHD) and on the cell phone (HA companion app).
 
-https://github.com/user-attachments/assets/61a7da07-2e30-4184-b3d3-079c99e9cbc1
+![image](https://github.com/user-attachments/assets/e679360f-599d-40e4-9f23-2ac57fa088ff)
 
 To install it, you will need to create a new manual / user-defined card on your dashboard and paste the YAML into it. Both cardmod and the custom:button-card are requirements for it.
 
