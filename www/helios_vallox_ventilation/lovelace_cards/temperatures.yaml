@@ -1,0 +1,73 @@
+type: picture-elements
+name: temperatures
+show_state: false
+show_name: false
+image: /local/helios_vallox_ventilation/airflow.png
+card_mod:
+  style: |
+    ha-card { 
+      background: transparent;
+      --ha-card-border-color: rgba(0,0,0,0);
+      --ha-card-border-radius: 0px;
+      --ha-card-border-width: 0px;
+      padding-top: 3vh;
+      padding-bottom: 3vh;
+    }
+elements:
+  - type: image
+    image: /local/helios_vallox_ventilation/1px.png
+    card_mod: null
+    tap_action:
+      action: null
+    style:
+      top: 10%
+      left: 50%
+      width: 100%
+      transform: translate(-50%, -25%)
+  - type: state-label
+    title: KWL-Stufe
+    entity: sensor.ventilation_fanspeed
+    style:
+      font-size: 150%
+      font-style: bold
+      color: white
+      left: 43.5%
+      top: 49.5%
+    tap_action:
+      action: more-info
+  - type: state-label
+    title: KWL-Fortluft
+    entity: sensor.ventilation_temperature_exhaust_air
+    style:
+      color: white
+      left: 80%
+      top: 85%
+    tap_action:
+      action: more-info
+  - type: state-label
+    title: KWL-Aussen
+    entity: sensor.ventilation_temperature_outdoor_air
+    style:
+      color: white
+      left: 80%
+      top: 25%
+    tap_action:
+      action: more-info
+  - type: state-label
+    title: KWL-Zuluft
+    entity: sensor.ventilation_temperature_supply_air
+    style:
+      color: white
+      left: 18%
+      top: 45%
+    tap_action:
+      action: more-info
+  - type: state-label
+    title: KWL-Abluft
+    entity: sensor.ventilation_temperature_extract_air
+    style:
+      color: white
+      left: 18%
+      top: 25%
+    tap_action:
+      action: more-info
