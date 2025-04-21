@@ -6,13 +6,13 @@ This directory contains various Lovelace cards for the ventilation. Some are sti
 
 ## Remote control
 
-In [remote_control.yaml](./remote_control.yaml) you can find a simulated remote control. I have successfully tested it in a 1/4 screen column of a `sections`dashboard both on my PC (WQHD) and on my mobile phone; although I am still struggeling a bit with the HA companion app (iOS).
+In [remote_control.yaml](./remote_control.yaml) you can find a simulated remote control. All buttons are fully functional.
+
+The card has been tested both in a 1/4 screen column of a `sections`dashboard both on a PC (WQHD) and on the cell phone (HA companion app).
 
 https://github.com/user-attachments/assets/61a7da07-2e30-4184-b3d3-079c99e9cbc1
 
 To install it, you will need to create a new manual / user-defined card on your dashboard and paste the YAML into it. Both cardmod and the custom:button-card are requirements for it.
-
-Please note: Only the remote control (the top item) is in the yaml; the 2 cards below are still work-in-progress.
 
 ## Fanspeed control (work in progress!!!)
 
