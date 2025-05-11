@@ -1,0 +1,336 @@
+#
+# Please note: This requires cardmod and custom:button-card to be installed!
+# To install: Copy the code below, create a new card of type 'manual', then paste the code into the YAML of the new card.
+#
+
+type: custom:button-card
+entity: none
+card_mod:
+  style: |
+    ha-card { 
+      background: transparent;
+      --ha-card-border-color: rgba(0,0,0,0);
+      --ha-card-border-radius: 10px;
+      --ha-card-border-width: 1px;
+      width: 80% !important;
+      margin-left: 10%
+    }
+styles:
+  card:
+    - background-color: "#DFE7EF"
+    - border-radius: 5
+    - padding: 5%
+    - margin-top: 1vh
+  grid:
+    - grid-template-areas: |
+        'speed_header speed_header'
+        'speed_buttons speed_buttons'
+        'boost_header boost_header'
+        'boost_settings boost_settings'
+        'fireplace start_stop'
+    - gap: .5em
+  custom_fields:
+    speed_header:
+      - justify-self: start
+      - align-self: start
+      - background-color: transparent
+      - margin-top: "-15px"
+      - margin-bottom: "-5px"
+    speed_buttons:
+      - align-self: mid
+      - background-color: transparent
+      - border: none
+    boost_header:
+      - justify-self: start
+      - align-self: start
+      - background-color: transparent
+      - margin-bottom: "-15px"
+    boost_settings:
+      - background-color: transparent
+      - margin-bottom: 10px
+    fireplace:
+      - justify-self: start
+      - align-self: center
+      - margin-top: "-10px"
+      - margin-bottom: "-10px"
+    start_stop:
+      - justify-self: end
+      - align-self: center
+      - margin-right: 5px
+      - margin-top: "-10px"
+      - margin-bottom: "-10px"
+      - background-color: transparent
+custom_fields:
+  speed_header:
+    card:
+      type: custom:button-card
+      name: Current fan speed
+      styles:
+        card:
+          - color: black
+          - background: transparent
+        name:
+          - font-weight: bold
+  speed_buttons:
+    card:
+      type: grid
+      columns: 4
+      cards:
+        - type: custom:button-card
+          template: fan_speed_button
+          variables:
+            value: 1
+        - type: custom:button-card
+          template: fan_speed_button
+          variables:
+            value: 2
+        - type: custom:button-card
+          template: fan_speed_button
+          variables:
+            value: 3
+        - type: custom:button-card
+          template: fan_speed_button
+          variables:
+            value: 4
+        - type: custom:button-card
+          template: fan_speed_button
+          variables:
+            value: 5
+        - type: custom:button-card
+          template: fan_speed_button
+          variables:
+            value: 6
+        - type: custom:button-card
+          template: fan_speed_button
+          variables:
+            value: 7
+        - type: custom:button-card
+          template: fan_speed_button
+          variables:
+            value: 8
+  boost_header:
+    card:
+      type: custom:button-card
+      name: Timed boost air
+      styles:
+        card:
+          - color: black
+          - background: transparent
+        name:
+          - font-weight: bold
+  boost_settings:
+    card:
+      type: custom:button-card
+      name: |
+        [[[
+          if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+            return '<h1 style="margin-top: -0.2em; margin-bottom: 0.25em;">Active</h1>' +
+                   '<div style="color: black">Back to fan speed "' +
+                    parseInt(states['input_number.ventilation_manual_boost_original_fanspeed'].state) +
+                    '" in'
+          else
+            return ' ';;
+        ]]]
+      styles:
+        grid:
+          - grid-template-areas: |
+              "fanspeed"
+              "duration"
+              "timer"
+          - height: 7em
+        card:
+          - background: none
+          - border-radius: 12px
+          - box-shadow: |
+              [[[
+                if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+                  return 'inset 0px 0px 10px 2px #5CCA03'
+                else
+                  return 'none';
+              ]]]          
+          - color: black
+          - border: 1px lightgrey solid
+          - margin-top: 10px
+        name:
+          - color: "#5CCA03"
+          - position: absolute
+          - top: 20px
+        custom_fields:
+          fanspeed:
+            - background-color: transparent
+            - display: |
+                [[[
+                  if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+                    return 'none';
+                ]]]
+            - margin-left: 10px
+            - margin-right: 10px
+          duration:
+            - background-color: transparent
+            - margin-top: 10px
+            - display: |
+                [[[
+                  if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+                    return 'none';
+                ]]]
+            - margin-left: 10px
+            - margin-right: 10px
+          timer:
+            - color: black
+            - background: "#5CCA03"
+            - border-radius: 12px
+            - margin-left: 30px
+            - margin-right: 30px
+            - font-size: 2em
+            - display: |
+                [[[
+                  if(states['input_boolean.ventilation_manual_boost_active'].state === 'off')
+                    return 'none';
+                ]]]
+      custom_fields:
+        fanspeed:
+          card:
+            name: Fan speed
+            type: tile
+            entity: input_number.ventilation_manual_boost_level
+            show_entity_picture: true
+            hide_state: true
+            features_position: inline
+            features:
+              - type: numeric-input
+                style: buttons
+            card_mod:
+              style: |
+                ha-card { 
+                    background: #5CCA03;
+                    color: black;
+                    --primary-text-color: black;
+                    --ha-card-border-radius: 12px;
+                }
+                ha-state-icon {
+                  color: black;
+                }
+                ha-tile-icon {}
+        duration:
+          card:
+            name: Minutes
+            type: tile
+            entity: input_number.ventilation_manual_boost_time
+            show_entity_picture: true
+            hide_state: true
+            features_position: inline
+            features:
+              - type: numeric-input
+                style: buttons
+            card_mod:
+              style: |
+                ha-card { 
+                    background: #5CCA03;
+                    color: black;
+                    --primary-text-color: black;
+                    --ha-card-border-radius: 12px;
+                }
+                ha-state-icon {
+                  color: black;
+                }
+                ha-tile-icon {}
+        timer:
+          card:
+            type: tile
+            entity: timer.ventilation_manual_boost_timer
+            name: " "
+            show_entity_picture: false
+            show_name: false
+            card_mod:
+              style: |
+                ha-card {
+                  color: black;
+                  background: none;
+                  border: none;
+                  box-shadow: none;
+                  padding: 0;
+                  display: flex;
+                  text-align: center;
+                  justify-content: center;
+                  align-items: center;
+                }
+                ha-state-icon,
+                ha-tile-icon,
+                ha-tile-name,
+                ha-progress-bar {
+                  display: none !important;
+                }
+  fireplace:
+    card:
+      type: custom:button-card
+      name: Fireplace mode
+      entity: input_boolean.ventilation_manual_boost_fireplace_mode
+      show_icon: true
+      show_name: true
+      show_state: false
+      state:
+        - value: "on"
+          styles:
+            icon:
+              - color: "#5CCA03"
+        - value: "off"
+          styles:
+            icon:
+              - color: lightgrey
+      tap_action:
+        action: toggle
+      styles:
+        card:
+          - background: transparent
+          - border: none
+          - box-shadow: none
+          - padding: 0px
+          - margin: 0px
+          - display: |
+              [[[
+                if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+                  return 'none';
+              ]]]
+        grid:
+          - grid-template-areas: "\"i n\""
+          - grid-template-columns: min-content auto
+          - align-items: center
+        icon:
+          - width: 30px
+          - margin-left: 10px
+          - margin-right: 5px;
+        name:
+          - justify-self: start
+          - align-self: center
+          - font-weight: bold
+          - color: black
+          - line-height: 1
+          - padding-top: 2px
+          - font-size: 14px
+  start_stop:
+    card:
+      type: custom:button-card
+      show_name: true
+      show_icon: false
+      icon: mdi:play
+      tap_action:
+        action: call-service
+        service: |
+          [[[
+            return (states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+              ? 'script.ventilation_stop_manual_boost'
+              : 'script.ventilation_start_manual_boost';
+          ]]]        
+      name: |
+        [[[
+          /* const timer = states['timer.ventilation_manual_boost_remaining'];
+          timer.attributes.remaining
+          return (timer && timer.state === 'active') */
+          return (states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+            ? '⏹ Stop'
+            : 'Start ⏵';
+        ]]]
+      styles:
+        card:
+          - color: black
+          - background: transparent
