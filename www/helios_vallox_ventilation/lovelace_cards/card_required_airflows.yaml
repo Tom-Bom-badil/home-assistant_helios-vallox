@@ -1,3 +1,8 @@
+#
+# Please note: This requires cardmod to be installed!
+# To install: Copy the code below, create a new card of type 'manual', then paste the code into the YAML of the new card.
+#
+
 type: markdown
 card_mod:
   style:
