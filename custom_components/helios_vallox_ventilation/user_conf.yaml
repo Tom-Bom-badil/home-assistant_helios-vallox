@@ -46,6 +46,13 @@
       initial: 0
 
     # only used internally for manual boost mode
+    ventilation_manual_boost_original_fanspeed:
+      icon: mdi:fan
+      min: 1
+      max: 8
+      step: 1
+
+    # only used internally for manual boost mode
     ventilation_manual_boost_level:
       icon: mdi:fan
       min: 1
@@ -69,11 +76,15 @@
     ventilation_manual_boost_active:
       icon: mdi:fan
 
+    # only used internally for manual boost mode
+    ventilation_manual_boost_fireplace_mode:
+      icon: mdi:fire
+
   timer:
 
     # only used internally for manual boost mode
-    ventilation_manual_boost_remaining:
-      name: "Manual boost remaing"
+    ventilation_manual_boost_timer:
+      name: "Manual boost timer"
       icon: mdi:clock
       duration: "00:30:00"
 
@@ -160,3 +171,100 @@
             {% set current_power = (default_power * fan_percentage / 100) | int(0) %}
             {{ current_power }}
 
+  script:
+
+    ventilation_start_manual_boost:
+
+      alias: "Activate boost mode"
+
+      sequence:
+
+        # store the current fanspeed
+        - service: input_number.set_value
+          data:
+            entity_id: input_number.ventilation_manual_boost_original_fanspeed
+            value: "{{ states('sensor.ventilation_fanspeed') | int }}"
+
+        # switch off output fan in case fireplace is set
+        - service: helios_vallox_ventilation.write_value
+          data:
+            variable: output_fan_off
+            value: >-
+              {% set fireplace = is_state('input_boolean.ventilation_manual_boost_fireplace_mode', 'on')| int(0) %}
+              {% if fireplace %}
+                {{ 1 }}
+              {% else %}
+                {{ 0 }}
+              {% endif %}
+
+        # write the boost fanspeed to the ventilation
+        - service: helios_vallox_ventilation.write_value
+          data:
+            variable: fanspeed
+            value: "{{ states('input_number.ventilation_manual_boost_level') | int }}"
+
+        # start the timer that will switch off boost at the end
+        - service: timer.start
+          data:
+            entity_id: timer.ventilation_manual_boost_timer
+            duration: "{{ (states('input_number.ventilation_manual_boost_time') | int) * 60 }}"
+
+        # turn on boost indicator (e.g. used for lovelace card displaying)
+        - service: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.ventilation_manual_boost_active
+
+        # wait for ~15 minutes
+        - delay: '00:14:55'
+
+        # switch on output fan (no matter if fireplace mode or not)
+        - service: helios_vallox_ventilation.write_value
+          data:
+            variable: output_fan_off
+            value: "{{ 0 }}"
+
+    ventilation_stop_manual_boost:
+
+      alias: "Stop boost mode"
+
+      sequence:
+
+        # cancel the timer (in case end was triggered manually with 'Stop' button)
+        - service: timer.cancel
+          target:
+            entity_id: timer.ventilation_manual_boost_timer
+
+        # switch on outpu fan (if switched off for fireplace mode)
+        - service: helios_vallox_ventilation.write_value
+          data:
+            variable: output_fan_off
+            value: "{{ 0 }}"
+
+        # write original fanspeed to ventilation
+        - service: helios_vallox_ventilation.write_value
+          data:
+            variable: fanspeed
+            value: "{{ states('input_number.ventilation_manual_boost_original_fanspeed') | int }}"
+
+        # turn off fire place mode setting
+        - service: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.ventilation_manual_boost_fireplace_mode
+
+        # turn off boost indicator
+        - service: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.ventilation_manual_boost_active
+
+  automation:
+
+    - alias: "Boost timer expired regularly"
+
+      trigger:
+        - platform: event
+          event_type: timer.finished
+          event_data:
+            entity_id: timer.ventilation_manual_boost_timer
+
+      action:
+        - service: script.ventilation_stop_manual_boost
