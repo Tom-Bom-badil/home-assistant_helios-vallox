@@ -1,8 +1,3 @@
-#
-# Please note: This requires cardmod and custom:button-card to be installed!
-# To install: Copy the code below, create a new card of type 'manual', then paste the code into the YAML of the new card.
-#
-
 type: picture-elements
 name: Remote_Control
 show_state: false
@@ -29,10 +24,10 @@ elements:
       width: 80%
       transform: translate(-50%, -50%)
   - type: image
-    image: /local/helios_vallox_ventilation/LED_aus.png
+    image: /local/helios_vallox_ventilation/LED_off.png
     state_image:
-      "off": /local/helios_vallox_ventilation/LED_aus.png
-      "on": /local/helios_vallox_ventilation/LED_an.png
+      "off": /local/helios_vallox_ventilation/LED_off.png
+      "on": /local/helios_vallox_ventilation/LED_on.png
     entity: switch.ventilation_powerstate
     tap_action:
       action: more-info
@@ -43,11 +38,11 @@ elements:
       width: 5%
       transform: translate(-50%, -50%)
   - type: image
-    image: /local/helios_vallox_ventilation/LED_aus.png
+    image: /local/helios_vallox_ventilation/LED_off.png
     entity: switch.ventilation_co2_indicator
     state_image:
-      "off": /local/helios_vallox_ventilation/LED_aus.png
-      "on": /local/helios_vallox_ventilation/LED_an.png
+      "off": /local/helios_vallox_ventilation/LED_off.png
+      "on": /local/helios_vallox_ventilation/LED_on.png
     tap_action:
       action: more-info
     card_mod: null
@@ -58,10 +53,10 @@ elements:
       transform: translate(-50%, -50%)
   - type: image
     entity: switch.ventilation_rh_indicator
-    image: /local/helios_vallox_ventilation/LED_aus.png
+    image: /local/helios_vallox_ventilation/LED_off.png
     state_image:
-      "off": /local/helios_vallox_ventilation/LED_aus.png
-      "on": /local/helios_vallox_ventilation/LED_an.png
+      "off": /local/helios_vallox_ventilation/LED_off.png
+      "on": /local/helios_vallox_ventilation/LED_on.png
     tap_action:
       action: more-info
     card_mod: null
@@ -72,10 +67,10 @@ elements:
       transform: translate(-50%, -50%)
   - type: image
     entity: switch.ventilation_winter_mode
-    image: /local/helios_vallox_ventilation/LED_aus.png
+    image: /local/helios_vallox_ventilation/LED_off.png
     state_image:
-      "off": /local/helios_vallox_ventilation/LED_aus.png
-      "on": /local/helios_vallox_ventilation/LED_an.png
+      "off": /local/helios_vallox_ventilation/LED_off.png
+      "on": /local/helios_vallox_ventilation/LED_on.png
     tap_action:
       action: toggle
     card_mod: null
@@ -242,4 +237,3 @@ elements:
         - margin: 0
     tap_action:
       action: null
-
