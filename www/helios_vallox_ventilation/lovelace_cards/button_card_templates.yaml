@@ -1,4 +1,4 @@
-# line 1 is the title of your dashboard; this code needs to go exactly underneath to lines 2 ff.
+# Line 1 is the title of your dashboard - KEEP IT! The code below needs to go exactly to lines 2 ff., no extra indentation!
 button_card_templates:
   fan_speed_button:
     entity: sensor.ventilation_fanspeed
