@@ -4,11 +4,13 @@ EXPERIMENTAL FEATURES!!!!
 
 This directory contains various Lovelace cards for the ventilation. Some are still under developemnt.
 
-## Remote control
+## Interactive remote control (e.g. for use on smartphones)
 
-In [remote_control.yaml](./remote_control.yaml) you can find a simulated remote control. All buttons are fully functional.
+In [remote_control.yaml](./remote_control.yaml) you can find a simulated remote control. All buttons are fully functional - they are working like in the physical remote control at your wall.
 
 The card has been tested both in a 1/4 screen column of a `sections`dashboard both on a PC (WQHD) and on the cell phone (HA companion app).
+
+_ToDo / note to self: The green display background still needs some proper / different positioning._
 
 ![image](https://github.com/user-attachments/assets/e679360f-599d-40e4-9f23-2ac57fa088ff)
 
