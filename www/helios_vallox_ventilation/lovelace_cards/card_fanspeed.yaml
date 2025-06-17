@@ -1,8 +1,3 @@
-#
-# Please note: This requires cardmod and custom:button-card to be installed!
-# To install: Copy the code below, create a new card of type 'manual', then paste the code into the YAML of the new card.
-#
-
 type: custom:button-card
 entity: none
 card_mod:
