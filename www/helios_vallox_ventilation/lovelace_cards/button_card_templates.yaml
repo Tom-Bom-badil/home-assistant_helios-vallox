@@ -1,0 +1,41 @@
+# line 1 is the title of your dashboard; this code needs to go exactly underneath to lines 2 ff.
+button_card_templates:
+  fan_speed_button:
+    entity: sensor.ventilation_fanspeed
+    show_name: false
+    show_icon: true
+    show_state: false
+    aspect_ratio: 1/1
+    tap_action:
+      action: none
+    hold_action:
+      action: call-service
+      service: helios_vallox_ventilation.write_value
+      data:
+        variable: fanspeed
+        value: |
+          [[[ return parseInt(variables.value); ]]]
+    styles:
+      card:
+        - background-color: rgba(0,0,0,0)
+        - color: black
+        - border-radius: 12px
+        - box-shadow: none
+        - border: 0.5px solid
+        - border-color: lightgrey
+      icon:
+        - color: black
+    state:
+      - operator: template
+        value: |
+          [[[ return parseInt(entity.state) === variables.value; ]]]
+        styles:
+          card:
+            - box-shadow: '0px 0px 10px 2px #5CCA03'
+            - border-color: lightgrey
+          icon:
+            - color: black
+        icon: |
+          [[[ return `mdi:numeric-${variables.value}-box-multiple`; ]]]
+    icon: |
+      [[[ return `mdi:numeric-${variables.value}-circle-outline`; ]]]
