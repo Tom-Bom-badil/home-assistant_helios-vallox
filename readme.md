@@ -1,7 +1,7 @@
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-%2341BDF5.svg)](https://www.home-assistant.io)
 [![Custom integration](https://img.shields.io/badge/custom%20integration-%2341BDF5.svg)](https://www.home-assistant.io/getting-started/concepts-terminology)
 [![HACS](https://img.shields.io/badge/HACS-default-green.svg)](https://github.com/hacs)
-[![Version](https://img.shields.io/badge/Version-v2025.05.1-green.svg)](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/releases)
+[![Version](https://img.shields.io/badge/Version-v2025.06.1-green.svg)](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/releases)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Tom-Bom-badil/home-assistant_helios-vallox/graphs/commit-activity)
 
 ## HA Integration for Helios Pro / Vallox SE ventilation systems (pre-EasyControls / pre-2014 models with RS-485)
