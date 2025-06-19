@@ -1,5 +1,5 @@
 
-**Requires version 2025.06.1 or newer+<br/>
+**Requires version 2025.06.1 or newer<br/>
 SOME FEATURES ARE STILL EXPERIMENTAL!!!!**
 
 # Custom ventilation cards
