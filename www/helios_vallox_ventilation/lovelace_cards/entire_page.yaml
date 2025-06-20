@@ -1,1 +1,1227 @@
+title: Helios Vallox
+type: sections
+path: ventilation
+badges: []
+layout:
+  grid-template-columns: 1fr 1fr
+  grid-template-rows: auto
+  grid-gap: 16px
+cards: []
+max_columns: 4
+sections:
+  - type: grid
+    cards:
+      - type: picture-elements
+        name: Remote_Control
+        show_state: false
+        show_name: false
+        panel: true
+        image: /local/helios_vallox_ventilation/1px.png
+        card_mod:
+          style: |
+            ha-card { 
+              background: transparent;
+              --ha-card-border-color: rgba(0,0,0,0);
+              --ha-card-border-radius: 0px;
+              --ha-card-border-width: 0px;
+            }
+        elements:
+          - type: image
+            image: /local/helios_vallox_ventilation/remote_control.png
+            card_mod: null
+            tap_action:
+              action: null
+            style:
+              top: 50%
+              left: 50%
+              width: 80%
+              transform: translate(-50%, -50%)
+          - type: image
+            image: /local/helios_vallox_ventilation/LED_off.png
+            state_image:
+              "off": /local/helios_vallox_ventilation/LED_off.png
+              "on": /local/helios_vallox_ventilation/LED_on.png
+            entity: switch.ventilation_powerstate
+            tap_action:
+              action: more-info
+            card_mod: null
+            style:
+              top: 47%
+              left: 28.5%
+              width: 5%
+              transform: translate(-50%, -50%)
+          - type: image
+            image: /local/helios_vallox_ventilation/LED_off.png
+            entity: switch.ventilation_co2_indicator
+            state_image:
+              "off": /local/helios_vallox_ventilation/LED_off.png
+              "on": /local/helios_vallox_ventilation/LED_on.png
+            tap_action:
+              action: more-info
+            card_mod: null
+            style:
+              top: 47%
+              left: 43%
+              width: 5%
+              transform: translate(-50%, -50%)
+          - type: image
+            entity: switch.ventilation_rh_indicator
+            image: /local/helios_vallox_ventilation/LED_off.png
+            state_image:
+              "off": /local/helios_vallox_ventilation/LED_off.png
+              "on": /local/helios_vallox_ventilation/LED_on.png
+            tap_action:
+              action: more-info
+            card_mod: null
+            style:
+              top: 47%
+              left: 57%
+              width: 5%
+              transform: translate(-50%, -50%)
+          - type: image
+            entity: switch.ventilation_winter_mode
+            image: /local/helios_vallox_ventilation/LED_off.png
+            state_image:
+              "off": /local/helios_vallox_ventilation/LED_off.png
+              "on": /local/helios_vallox_ventilation/LED_on.png
+            tap_action:
+              action: toggle
+            card_mod: null
+            style:
+              top: 47%
+              left: 71.5%
+              width: 5%
+              transform: translate(-50%, -50%)
+          - type: custom:button-card
+            title: btn_up
+            square: true
+            icon: mdi:circle
+            style:
+              left: 28.5%
+              top: 86%
+            styles:
+              card:
+                - background: transparent
+                - height: 4vh
+                - width: 4vh
+              icon:
+                - color: black
+                - width: 60%
+                - height: 60%
+            tap_action:
+              action: call-service
+              service: input_number.set_value
+              target:
+                entity_id: input_number.ventilation_display_index
+              data:
+                value: |
+                  [[[
+                    let index = parseInt(states['input_number.ventilation_display_index'].state);
+                    let max_index = 3;
+                    let newlevel = 0;
+                    if (index < max_index) { newlevel = index + 1 };
+                    return newlevel;
+                  ]]]
+          - type: custom:button-card
+            title: btn_down
+            square: true
+            icon: mdi:circle
+            style:
+              left: 43%
+              top: 86%
+            styles:
+              card:
+                - background: transparent
+                - height: 4vh
+                - width: 4vh
+              icon:
+                - color: black
+                - width: 60%
+                - height: 60%
+            tap_action:
+              action: call-service
+              service: input_number.set_value
+              target:
+                entity_id: input_number.ventilation_display_index
+              data:
+                value: |
+                  [[[
+                    let index = parseInt(states['input_number.ventilation_display_index'].state);
+                    let min_index = 0;
+                    let newlevel = 3;
+                    if (index > min_index) { newlevel = index - 1 };
+                    return newlevel;
+                  ]]]
+          - type: custom:button-card
+            title: btn_plus
+            square: true
+            icon: mdi:circle
+            style:
+              left: 57%
+              top: 86%
+            styles:
+              card:
+                - background: transparent
+                - height: 4vh
+                - width: 4vh
+              icon:
+                - color: black
+                - width: 60%
+                - height: 60%
+            tap_action:
+              action: call-service
+              service: helios_vallox_ventilation.write_value
+              service_data:
+                variable: fanspeed
+                value: |
+                  [[[
+                    let current_speed = parseInt(states['sensor.ventilation_fanspeed'].state);
+                    if (current_speed < 8) {
+                      return current_speed + 1
+                    } else {
+                      return current_speed
+                    }
+                  ]]]
+          - type: custom:button-card
+            title: btn_minus
+            square: true
+            icon: mdi:circle
+            style:
+              left: 71.5%
+              top: 86%
+            styles:
+              card:
+                - background: transparent
+                - height: 4vh
+                - width: 4vh
+              icon:
+                - color: black
+                - width: 60%
+                - height: 60%
+            tap_action:
+              action: call-service
+              service: helios_vallox_ventilation.write_value
+              service_data:
+                variable: fanspeed
+                value: |
+                  [[[
+                    let current_speed = parseInt(states['sensor.ventilation_fanspeed'].state);
+                    if (current_speed > 1) {
+                      return current_speed - 1
+                    } else {
+                      return current_speed
+                    }
+                  ]]]
+          - type: custom:button-card
+            title: display
+            name: |
+              [[[
+                let index = parseInt(states['input_number.ventilation_display_index'].state);
+                let titles = ['Outside air', 'Supply air', 'Extract Air', 'Exhaust air'];
+                let entities = [
+                  'sensor.ventilation_temperature_outdoor_air',
+                  'sensor.ventilation_temperature_supply_air',
+                  'sensor.ventilation_temperature_extract_air',
+                  'sensor.ventilation_temperature_exhaust_air'
+                ]
+                let zeile1 = titles[index]
+                let zeile2 = states[entities[index]].state;
+                return `<div>${zeile1}<br/>${zeile2} °C</div>`
+              ]]]
+            style:
+              left: 50%
+              top: 67%
+            styles:
+              card:
+                - width: 250px
+                - height: 60px
+                - padding: 0
+                - margin: 0
+                - color: black
+                - background-color: "#5CCA03"
+                - border: 2px inset
+                - display: |
+                    [[[
+                       if(states['switch.ventilation_powerstate'].state != 'on')
+                       return 'none';
+                    ]]]
+              name:
+                - padding: 0
+                - margin: 0
+            tap_action:
+              action: null
+      - type: custom:button-card
+        entity: none
+        card_mod:
+          style: |
+            ha-card { 
+              background: transparent;
+              --ha-card-border-color: rgba(0,0,0,0);
+              --ha-card-border-radius: 10px;
+              --ha-card-border-width: 1px;
+              width: 80% !important;
+              margin-left: 10%
+            }
+        styles:
+          card:
+            - background-color: "#DFE7EF"
+            - border-radius: 5
+            - padding: 5%
+            - margin-top: 1vh
+          grid:
+            - grid-template-areas: |
+                'speed_header speed_header'
+                'speed_buttons speed_buttons'
+                'boost_header boost_header'
+                'boost_settings boost_settings'
+                'fireplace start_stop'
+            - gap: .5em
+          custom_fields:
+            speed_header:
+              - justify-self: start
+              - align-self: start
+              - background-color: transparent
+              - margin-top: "-15px"
+              - margin-bottom: "-5px"
+            speed_buttons:
+              - align-self: mid
+              - background-color: transparent
+              - border: none
+            boost_header:
+              - justify-self: start
+              - align-self: start
+              - background-color: transparent
+              - margin-bottom: "-15px"
+            boost_settings:
+              - background-color: transparent
+              - margin-bottom: 10px
+            fireplace:
+              - justify-self: start
+              - align-self: center
+              - margin-top: "-10px"
+              - margin-bottom: "-10px"
+            start_stop:
+              - justify-self: end
+              - align-self: center
+              - margin-right: 5px
+              - margin-top: "-10px"
+              - margin-bottom: "-10px"
+              - background-color: transparent
+        custom_fields:
+          speed_header:
+            card:
+              type: custom:button-card
+              name: Current fan speed
+              styles:
+                card:
+                  - color: black
+                  - background: transparent
+                name:
+                  - font-weight: bold
+          speed_buttons:
+            card:
+              type: grid
+              columns: 4
+              cards:
+                - type: custom:button-card
+                  template: fan_speed_button
+                  variables:
+                    value: 1
+                - type: custom:button-card
+                  template: fan_speed_button
+                  variables:
+                    value: 2
+                - type: custom:button-card
+                  template: fan_speed_button
+                  variables:
+                    value: 3
+                - type: custom:button-card
+                  template: fan_speed_button
+                  variables:
+                    value: 4
+                - type: custom:button-card
+                  template: fan_speed_button
+                  variables:
+                    value: 5
+                - type: custom:button-card
+                  template: fan_speed_button
+                  variables:
+                    value: 6
+                - type: custom:button-card
+                  template: fan_speed_button
+                  variables:
+                    value: 7
+                - type: custom:button-card
+                  template: fan_speed_button
+                  variables:
+                    value: 8
+          boost_header:
+            card:
+              type: custom:button-card
+              name: Timed boost air
+              styles:
+                card:
+                  - color: black
+                  - background: transparent
+                name:
+                  - font-weight: bold
+          boost_settings:
+            card:
+              type: custom:button-card
+              name: |
+                [[[
+                  if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+                    return '<h1 style="margin-top: -0.2em; margin-bottom: 0.25em;">Active</h1>' +
+                           '<div style="color: black">Back to fan speed "' +
+                            parseInt(states['input_number.ventilation_manual_boost_original_fanspeed'].state) +
+                            '" in'
+                  else
+                    return ' ';;
+                ]]]
+              styles:
+                grid:
+                  - grid-template-areas: |
+                      "fanspeed"
+                      "duration"
+                      "timer"
+                  - height: 7em
+                card:
+                  - background: none
+                  - border-radius: 12px
+                  - box-shadow: |
+                      [[[
+                        if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+                          return 'inset 0px 0px 10px 2px #5CCA03'
+                        else
+                          return 'none';
+                      ]]]          
+                  - color: black
+                  - border: 1px lightgrey solid
+                  - margin-top: 10px
+                name:
+                  - color: "#5CCA03"
+                  - position: absolute
+                  - top: 20px
+                custom_fields:
+                  fanspeed:
+                    - background-color: transparent
+                    - display: |
+                        [[[
+                          if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+                            return 'none';
+                        ]]]
+                    - margin-left: 10px
+                    - margin-right: 10px
+                  duration:
+                    - background-color: transparent
+                    - margin-top: 10px
+                    - display: |
+                        [[[
+                          if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+                            return 'none';
+                        ]]]
+                    - margin-left: 10px
+                    - margin-right: 10px
+                  timer:
+                    - color: black
+                    - background: "#5CCA03"
+                    - border-radius: 12px
+                    - margin-left: 30px
+                    - margin-right: 30px
+                    - font-size: 2em
+                    - display: |
+                        [[[
+                          if(states['input_boolean.ventilation_manual_boost_active'].state === 'off')
+                            return 'none';
+                        ]]]
+              custom_fields:
+                fanspeed:
+                  card:
+                    name: Fan speed
+                    type: tile
+                    entity: input_number.ventilation_manual_boost_level
+                    show_entity_picture: true
+                    hide_state: true
+                    features_position: inline
+                    features:
+                      - type: numeric-input
+                        style: buttons
+                    card_mod:
+                      style: |
+                        ha-card { 
+                            background: #5CCA03;
+                            color: black;
+                            --primary-text-color: black;
+                            --ha-card-border-radius: 12px;
+                        }
+                        ha-state-icon {
+                          color: black;
+                        }
+                        ha-tile-icon {}
+                duration:
+                  card:
+                    name: Minutes
+                    type: tile
+                    entity: input_number.ventilation_manual_boost_time
+                    show_entity_picture: true
+                    hide_state: true
+                    features_position: inline
+                    features:
+                      - type: numeric-input
+                        style: buttons
+                    card_mod:
+                      style: |
+                        ha-card { 
+                            background: #5CCA03;
+                            color: black;
+                            --primary-text-color: black;
+                            --ha-card-border-radius: 12px;
+                        }
+                        ha-state-icon {
+                          color: black;
+                        }
+                        ha-tile-icon {}
+                timer:
+                  card:
+                    type: tile
+                    entity: timer.ventilation_manual_boost_timer
+                    name: " "
+                    show_entity_picture: false
+                    show_name: false
+                    card_mod:
+                      style: |
+                        ha-card {
+                          color: black;
+                          background: none;
+                          border: none;
+                          box-shadow: none;
+                          padding: 0;
+                          display: flex;
+                          text-align: center;
+                          justify-content: center;
+                          align-items: center;
+                        }
+                        ha-state-icon,
+                        ha-tile-icon,
+                        ha-tile-name,
+                        ha-progress-bar {
+                          display: none !important;
+                        }
+          fireplace:
+            card:
+              type: custom:button-card
+              name: Fireplace mode
+              entity: input_boolean.ventilation_manual_boost_fireplace_mode
+              show_icon: true
+              show_name: true
+              show_state: false
+              state:
+                - value: "on"
+                  styles:
+                    icon:
+                      - color: "#5CCA03"
+                - value: "off"
+                  styles:
+                    icon:
+                      - color: lightgrey
+              tap_action:
+                action: toggle
+              styles:
+                card:
+                  - background: transparent
+                  - border: none
+                  - box-shadow: none
+                  - padding: 0px
+                  - margin: 0px
+                  - display: |
+                      [[[
+                        if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+                          return 'none';
+                      ]]]
+                grid:
+                  - grid-template-areas: "\"i n\""
+                  - grid-template-columns: min-content auto
+                  - align-items: center
+                icon:
+                  - width: 30px
+                  - margin-left: 10px
+                  - margin-right: 5px;
+                name:
+                  - justify-self: start
+                  - align-self: center
+                  - font-weight: bold
+                  - color: black
+                  - line-height: 1
+                  - padding-top: 2px
+                  - font-size: 14px
+          start_stop:
+            card:
+              type: custom:button-card
+              show_name: true
+              show_icon: false
+              icon: mdi:play
+              tap_action:
+                action: call-service
+                service: |
+                  [[[
+                    return (states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+                      ? 'script.ventilation_stop_manual_boost'
+                      : 'script.ventilation_start_manual_boost';
+                  ]]]        
+              name: |
+                [[[
+                  /* const timer = states['timer.ventilation_manual_boost_remaining'];
+                  timer.attributes.remaining
+                  return (timer && timer.state === 'active') */
+                  return (states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+                    ? '⏹ Stop'
+                    : 'Start ⏵';
+                ]]]
+              styles:
+                card:
+                  - color: black
+                  - background: transparent
+    column_span: 1
+  - type: grid
+    cards:
+      - type: picture-elements
+        name: temperatures
+        show_state: false
+        show_name: false
+        image: /local/helios_vallox_ventilation/airflow.png
+        card_mod:
+          style: |
+            ha-card { 
+              background: transparent;
+              --ha-card-border-color: rgba(0,0,0,0);
+              --ha-card-border-radius: 0px;
+              --ha-card-border-width: 0px;
+              padding-top: 3vh;
+              padding-bottom: 3vh;
+            }
+        elements:
+          - type: image
+            image: /local/helios_vallox_ventilation/1px.png
+            card_mod: null
+            tap_action:
+              action: null
+            style:
+              top: 10%
+              left: 50%
+              width: 100%
+              transform: translate(-50%, -25%)
+          - type: state-label
+            title: KWL-Stufe
+            entity: sensor.ventilation_fanspeed
+            style:
+              font-size: 150%
+              font-style: bold
+              color: white
+              left: 43.5%
+              top: 49.5%
+            tap_action:
+              action: more-info
+          - type: state-label
+            title: KWL-Fortluft
+            entity: sensor.ventilation_temperature_exhaust_air
+            style:
+              color: white
+              left: 80%
+              top: 85%
+            tap_action:
+              action: more-info
+          - type: state-label
+            title: KWL-Aussen
+            entity: sensor.ventilation_temperature_outdoor_air
+            style:
+              color: white
+              left: 80%
+              top: 25%
+            tap_action:
+              action: more-info
+          - type: state-label
+            title: KWL-Zuluft
+            entity: sensor.ventilation_temperature_supply_air
+            style:
+              color: white
+              left: 18%
+              top: 45%
+            tap_action:
+              action: more-info
+          - type: state-label
+            title: KWL-Abluft
+            entity: sensor.ventilation_temperature_extract_air
+            style:
+              color: white
+              left: 18%
+              top: 25%
+            tap_action:
+              action: more-info
+      - type: markdown
+        card_mod:
+          style:
+            .: |
+              ha-card {
+                background: transparent;
+                --ha-card-border-color: rgba(0,0,0,0);
+                --ha-card-border-radius: 0px;
+                --ha-card-border-width: 0px;
+              }
+            ha-markdown $: |
+              /**
+              th {
+                background-color: orange;
+                color: white;
+                padding: 4px;
+              }
+              th:last-child {
+                border-top-right-radius: 6px;
+              }
+              tbody tr:nth-child(even) {
+                background-color: grey;
+              }
+              tbody tr:nth-child(odd) {
+                background-color: cyan;
+              }
+              **/
+              table {
+                width: 100%;
+              }
+              td {
+                padding: 4px;
+              }
+              tbody tr:nth-child(2) {
+                background-color: #FF5F15;
+              }
+              tbody tr:nth-child(3) {
+                background-color: #DAA520;
+              }
+              tbody tr:nth-child(4) {
+                background-color: #228B22;
+              }
+              tbody tr:nth-child(5) {
+                background-color: #DAA520;
+              }
+              th:first-child {
+                border-top-left-radius: 6px;
+              }
+              tbody tr:last-child :first-child {
+                border-bottom-left-radius: 6px;
+              }
+              tbody tr:last-child :last-child {
+                border-bottom-right-radius: 6px;
+              }
+        content: >-
+          <div style="height:12vh !important; font-size:200%;"> <table
+          height="100%" width="100%">
+
+           <colgroup>
+              <col width=70%>
+              <col width=30% align=char char=".">
+           </colgroup>
+
+            <small>
+            <tr align=right>
+              <th align=left><small>&nbsp;DIN ventilation mode</small></th>
+              <th><small>Required airflow&nbsp;</small></th>
+            </tr>
+            </small>
+            
+            <tr align=right>
+              <td align=left>Moisture protection</td>
+              <td>{{ states('sensor.ventilation_din_airflow_moisture_protection') }} m³/h</td>
+            </tr>
+            
+            <tr align=right>
+              <td align=left>Reduced air exchange</td>
+              <td>{{ states('sensor.ventilation_din_airflow_reduced_exchange') }} m³/h</td>
+            </tr>
+            
+            <tr align=right>
+              <td align=left>Normal air exchange</td>
+              <td>{{ states('sensor.ventilation_din_airflow_normal_exchange') }} m³/h</td>
+            </tr>
+            
+            <tr align=right>
+              <td align=left>Boost air</td>
+              <td>{{ states('sensor.ventilation_din_airflow_boost_exchange') }} m³/h</td>
+            </tr>
+            
+          </table> </div>
+      - square: false
+        type: grid
+        grid_options:
+          columns: 12
+          rows: auto
+        columns: 2
+        cards:
+          - name: Lüftungsstufe
+            type: gauge
+            entity: sensor.ventilation_fanspeed
+            needle: true
+            min: 0
+            max: 9
+            segments:
+              - from: 0
+                color: "#3899E1"
+              - from: 0.5
+                color: white
+              - from: 1.5
+                color: "#3899E1"
+              - from: 2.5
+                color: white
+              - from: 3.5
+                color: "#3899E1"
+              - from: 4.5
+                color: white
+              - from: 5.5
+                color: "#3899E1"
+              - from: 6.5
+                color: white
+              - from: 7.5
+                color: "#3899E1"
+              - from: 8.5
+                color: white
+            card_mod:
+              style: |
+                ha-gauge $: |
+                    .needle {
+                      fill: red !important;
+                    }
+                ha-card {
+                  --ha-card-background: transparent;
+                  --ha-card-border-color: rgba(0,0,0,0);
+                  --ha-card-border-radius: 0px;
+                  --ha-card-border-width: 0px;
+          - square: true
+            type: grid
+            grid_options:
+              columns: 12
+              rows: auto
+            columns: 1
+            cards:
+              - name: Luftaustausch
+                type: gauge
+                entity: sensor.ventilation_effective_airflow
+                needle: true
+                min: 0
+                max: 360
+                segments:
+                  - from: 0
+                    color: "#FF0000"
+                  - from: 5.56
+                    color: "#FF150B"
+                  - from: 11.11
+                    color: "#FF2A16"
+                  - from: 16.67
+                    color: "#FF3F22"
+                  - from: 22.22
+                    color: "#FF542D"
+                  - from: 27.78
+                    color: "#FF6A38"
+                  - from: 33.33
+                    color: "#FF7F44"
+                  - from: 38.89
+                    color: "#FF944F"
+                  - from: 44.44
+                    color: "#FFA95A"
+                  - from: 50
+                    color: "#FFBF66"
+                  - from: 57.78
+                    color: "#FFC562"
+                  - from: 65.56
+                    color: "#FFCB5E"
+                  - from: 73.33
+                    color: "#FFD25A"
+                  - from: 81.11
+                    color: "#FFD856"
+                  - from: 88.89
+                    color: "#FFDF52"
+                  - from: 96.67
+                    color: "#FFE54E"
+                  - from: 104.44
+                    color: "#FFEC4A"
+                  - from: 112.22
+                    color: "#FFF246"
+                  - from: 120
+                    color: "#FFF942"
+                  - from: 124.44
+                    color: "#E2F93A"
+                  - from: 128.89
+                    color: "#C6FA33"
+                  - from: 133.33
+                    color: "#AAFB2C"
+                  - from: 137.78
+                    color: "#8DFB24"
+                  - from: 142.22
+                    color: "#71FC1D"
+                  - from: 146.67
+                    color: "#55FD16"
+                  - from: 151.11
+                    color: "#38FD0E"
+                  - from: 155.56
+                    color: "#1CFE07"
+                  - from: 160
+                    color: "#00FF00"
+                  - from: 163.33
+                    color: "#1BFE01"
+                  - from: 166.67
+                    color: "#37FE03"
+                  - from: 170
+                    color: "#53FE05"
+                  - from: 173.33
+                    color: "#6FFE07"
+                  - from: 176.67
+                    color: "#8AFE08"
+                  - from: 180
+                    color: "#A6FE0A"
+                  - from: 183.33
+                    color: "#C2FE0C"
+                  - from: 186.67
+                    color: "#DEFE0E"
+                  - from: 190
+                    color: "#FAFE10"
+                  - from: 198.89
+                    color: "#FAF619"
+                  - from: 207.78
+                    color: "#FBEF22"
+                  - from: 216.67
+                    color: "#FBE82C"
+                  - from: 225.56
+                    color: "#FCE135"
+                  - from: 234.44
+                    color: "#FCDA3E"
+                  - from: 243.33
+                    color: "#FDD348"
+                  - from: 252.22
+                    color: "#FDCC51"
+                  - from: 261.11
+                    color: "#FEC55A"
+                  - from: 270
+                    color: "#FFBE64"
+                  - from: 280
+                    color: "#FFA858"
+                  - from: 290
+                    color: "#FF934D"
+                  - from: 300
+                    color: "#FF7E42"
+                  - from: 310
+                    color: "#FF6937"
+                  - from: 320
+                    color: "#FF542C"
+                  - from: 330
+                    color: "#FF3F21"
+                  - from: 340
+                    color: "#FF2A16"
+                  - from: 350
+                    color: "#FF150B"
+                  - from: 360
+                    color: "#FF0000"
+                card_mod:
+                  style: |
+                    ha-card {
+                      --ha-card-background: transparent;
+                      --ha-card-border-color: rgba(0,0,0,0);
+                      --ha-card-border-radius: 0px;
+                      --ha-card-border-width: 0px;
+                    }
+          - name: Effizienz
+            type: gauge
+            entity: sensor.ventilation_efficiency
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: transparent;
+                  --ha-card-border-color: rgba(0,0,0,0);
+                  --ha-card-border-radius: 0px;
+                  --ha-card-border-width: 0px;
+                }
+          - type: custom:button-card
+            aspect_ratio: 1
+            custom_fields:
+              gauge:
+                card:
+                  type: gauge
+                  name: Energieverbrauch
+                  entity: sensor.ventilation_electrical_power
+                  min: 0
+                  max: |
+                    [[[
+                      let all = JSON.parse("[" + states['input_text.ventilation_conf_power_per_mode'].state + "]");
+                      let mode = parseInt(states['sensor.ventilation_fanspeed'].state);
+                      return all[8];
+                    ]]]
+                  needle: true
+                  severity:
+                    green: 0
+                    yellow: 100
+                    red: 150
+            styles:
+              custom_fields:
+                gauge:
+                  - position: absolute
+                  - top: 50%
+                  - left: 50%
+                  - width: 100%
+                  - height: 100%
+                  - transform: translate(-50%, -50%)
+              card:
+                - overflow: hidden
+                - box-shadow: none
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: transparent;
+                  --ha-card-border-color: rgba(0,0,0,0);
+                  --ha-card-border-radius: 0px;
+                  --ha-card-border-width: 0px;
+                }
+  - type: grid
+    cards:
+      - square: false
+        type: grid
+        columns: 1
+        cards:
+          - type: custom:plotly-graph
+            hours_to_show: 168
+            refresh_interval: 60
+            autosize: true
+            card_mod:
+              style:
+                .: |
+                  ha-card { 
+                    --ha-card-border-width: 0px;
+                    --ha-card-border-radius: 0px; 
+                    --ha-card-border-color: #grey;
+                    --card-mod-icon-color: white;
+                    padding: 0;
+                    height: 30vh;
+                    margin-left: 2%;
+                    width: 100%;
+                    background: transparent;
+                    transform: scale(0.9);
+                  }
+            defaults:
+              yaxes:
+                fixedrange: true
+            config:
+              displaylogo: false
+              responsive: true
+            layout:
+              title:
+                text: Temperaturen °C
+                x: 0.5
+                "y": 1
+                font:
+                  color: white
+                  size: 18
+              paper_bgcolor: transparent
+              plot_bgcolor: transparent
+              margin:
+                t: 0
+                l: 0
+                r: 0
+                b: 5
+                pad: 0
+              xaxis:
+                showlegend: true
+                rangeselector:
+                  x: 0.8
+                  "y": 1.05
+                  buttons:
+                    - count: 12
+                      step: hour
+                    - count: 1
+                      step: day
+                    - count: 2
+                      step: day
+                    - count: 7
+                      step: day
+              yaxis:
+                type: number
+                title: ""
+                titlefont:
+                  color: white
+                tickfont:
+                  color: white
+                fixedrange: false
+                linecolor: grey
+                linewidth: 0
+                mirror: true
+                ticklabelposition: inside
+            entities:
+              - name: Außenluft
+                entity: sensor.ventilation_temperature_outdoor_air
+                fillcolor: rgba(168, 216, 234, 0.1)
+                fill: tozeroy
+                line:
+                  shape: spline
+                  color: grey
+                  width: 1
+                  smoothing: 1
+                yaxis: y1
+              - name: Abluft
+                entity: sensor.ventilation_temperature_extract_air
+                line:
+                  shape: spline
+                  color: "#FF5F15"
+                  width: 2
+                  smoothing: 0.3
+                yaxis: y1
+              - name: Zuluft
+                entity: sensor.ventilation_temperature_supply_air
+                line:
+                  shape: spline
+                  color: "#4BA602"
+                  smoothing: 0.3
+                  width: 2
+              - name: Fortluft
+                entity: sensor.ventilation_temperature_exhaust_air
+                line:
+                  shape: spline
+                  color: "#DAA520"
+                  smoothing: 0.31
+                  width: 2
+          - type: custom:plotly-graph
+            hours_to_show: 168
+            refresh_interval: 60
+            autosize: true
+            card_mod:
+              style:
+                .: |
+                  ha-card { 
+                    --ha-card-border-width: 0px;
+                    --ha-card-border-radius: 0px; 
+                    --ha-card-border-color: #grey;
+                    --card-mod-icon-color: white;
+                    padding: 0;
+                    height: 30vh;
+                    margin-left: 2%;
+                    width: 100%;
+                    background: transparent;
+                    transform: scale(0.9);
+                  }
+            defaults:
+              yaxes:
+                fixedrange: true
+            config:
+              displaylogo: false
+              responsive: true
+            layout:
+              title:
+                text: Effizienz %
+                x: 0.5
+                "y": 1
+                font:
+                  color: white
+                  size: 18
+              paper_bgcolor: transparent
+              plot_bgcolor: transparent
+              margin:
+                t: 0
+                l: 0
+                r: 0
+                b: 5
+                pad: 0
+              xaxis:
+                showlegend: true
+              yaxis:
+                type: number
+                title: ""
+                titlefont:
+                  color: white
+                tickfont:
+                  color: white
+                fixedrange: false
+                linecolor: grey
+                linewidth: 0
+                mirror: true
+                ticklabelposition: inside
+                range:
+                  - 60
+                  - 100
+            entities:
+              - name: Effizienz
+                entity: sensor.ventilation_efficiency
+                layout:
+                  xaxis:
+                    showlegend: true
+                line:
+                  shape: spline
+                  color: "#4BA602"
+                  smoothing: 0.2
+                  width: 0
+                fill: tozeroy
+          - type: custom:plotly-graph
+            hours_to_show: 168
+            refresh_interval: 60
+            autosize: true
+            card_mod:
+              style:
+                .: |
+                  ha-card { 
+                    --ha-card-border-width: 0px;
+                    --ha-card-border-radius: 0px; 
+                    --ha-card-border-color: #grey;
+                    --card-mod-icon-color: white;
+                    padding: 0;
+                    height: 30vh;
+                    margin-left: 2%;
+                    width: 100%;
+                    background: transparent;
+                    transform: scale(0.9);
+                  }
+            defaults:
+              yaxes:
+                fixedrange: true
+            config:
+              displaylogo: false
+              responsive: true
+            layout:
+              title:
+                text: Lüftungsstufe
+                x: 0.5
+                "y": 0.95
+                font:
+                  color: white
+                  size: 18
+              paper_bgcolor: transparent
+              plot_bgcolor: transparent
+              margin:
+                t: 0
+                l: 0
+                r: 0
+                b: 5
+                pad: 0
+              xaxis:
+                showlegend: true
+                title: ""
+              yaxis:
+                titlefont:
+                  color: white
+                tickfont:
+                  color: white
+                fixedrange: true
+                linecolor: grey
+                linewidth: 1
+                mirror: true
+                ticklabelposition: inside
+                type: scatter
+                range:
+                  - 0
+                  - 8
+            entities:
+              - name: Lüftungsstufe
+                entity: sensor.ventilation_fanspeed
+                type: scatter
+                line:
+                  color: "#DAA520"
+                  width: 2
+                fill: tozeroy
+        grid_options:
+          columns: 24
+          rows: auto
+    column_span: 2
+theme: red-theme
+dense_section_placement: true
 
