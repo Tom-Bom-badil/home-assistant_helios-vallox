@@ -22,6 +22,7 @@ The integration has been tested with various RS485-LAN/Wi-Fi adapters - no solde
 ## Compatible devices
 
 If your ventilation system has this remote control board, it is almost certainly compatible:<br/><br/>
+
 ![image](https://github.com/user-attachments/assets/9e7d9699-751b-4856-8c68-797182ef8303)
 
 Users have reported the successful use on the following models:
