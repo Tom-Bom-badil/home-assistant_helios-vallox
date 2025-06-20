@@ -1,1 +1,243 @@
-
+square: false
+type: grid
+columns: 1
+cards:
+  - type: custom:plotly-graph
+    hours_to_show: 168
+    refresh_interval: 60
+    autosize: true
+    card_mod:
+      style:
+        .: |
+          ha-card { 
+            --ha-card-border-width: 0px;
+            --ha-card-border-radius: 0px; 
+            --ha-card-border-color: #grey;
+            --card-mod-icon-color: white;
+            padding: 0;
+            height: 30vh;
+            margin-left: 2%;
+            width: 100%;
+            background: transparent;
+            transform: scale(0.9);
+          }
+    defaults:
+      yaxes:
+        fixedrange: true
+    config:
+      displaylogo: false
+      responsive: true
+    layout:
+      title:
+        text: Temperaturen °C
+        x: 0.5
+        "y": 1
+        font:
+          color: white
+          size: 18
+      paper_bgcolor: transparent
+      plot_bgcolor: transparent
+      margin:
+        t: 0
+        l: 0
+        r: 0
+        b: 5
+        pad: 0
+      xaxis:
+        showlegend: true
+        rangeselector:
+          x: 0.8
+          "y": 1.05
+          buttons:
+            - count: 12
+              step: hour
+            - count: 1
+              step: day
+            - count: 2
+              step: day
+            - count: 7
+              step: day
+      yaxis:
+        type: number
+        title: ""
+        titlefont:
+          color: white
+        tickfont:
+          color: white
+        fixedrange: false
+        linecolor: grey
+        linewidth: 0
+        mirror: true
+        ticklabelposition: inside
+    entities:
+      - name: Außenluft
+        entity: sensor.ventilation_temperature_outdoor_air
+        fillcolor: rgba(168, 216, 234, 0.1)
+        fill: tozeroy
+        line:
+          shape: spline
+          color: grey
+          width: 1
+          smoothing: 1
+        yaxis: y1
+      - name: Abluft
+        entity: sensor.ventilation_temperature_extract_air
+        line:
+          shape: spline
+          color: "#FF5F15"
+          width: 2
+          smoothing: 0.3
+        yaxis: y1
+      - name: Zuluft
+        entity: sensor.ventilation_temperature_supply_air
+        line:
+          shape: spline
+          color: "#4BA602"
+          smoothing: 0.3
+          width: 2
+      - name: Fortluft
+        entity: sensor.ventilation_temperature_exhaust_air
+        line:
+          shape: spline
+          color: "#DAA520"
+          smoothing: 0.31
+          width: 2
+  - type: custom:plotly-graph
+    hours_to_show: 168
+    refresh_interval: 60
+    autosize: true
+    card_mod:
+      style:
+        .: |
+          ha-card { 
+            --ha-card-border-width: 0px;
+            --ha-card-border-radius: 0px; 
+            --ha-card-border-color: #grey;
+            --card-mod-icon-color: white;
+            padding: 0;
+            height: 30vh;
+            margin-left: 2%;
+            width: 100%;
+            background: transparent;
+            transform: scale(0.9);
+          }
+    defaults:
+      yaxes:
+        fixedrange: true
+    config:
+      displaylogo: false
+      responsive: true
+    layout:
+      title:
+        text: Effizienz %
+        x: 0.5
+        "y": 1
+        font:
+          color: white
+          size: 18
+      paper_bgcolor: transparent
+      plot_bgcolor: transparent
+      margin:
+        t: 0
+        l: 0
+        r: 0
+        b: 5
+        pad: 0
+      xaxis:
+        showlegend: true
+      yaxis:
+        type: number
+        title: ""
+        titlefont:
+          color: white
+        tickfont:
+          color: white
+        fixedrange: false
+        linecolor: grey
+        linewidth: 0
+        mirror: true
+        ticklabelposition: inside
+        range:
+          - 60
+          - 100
+    entities:
+      - name: Effizienz
+        entity: sensor.ventilation_efficiency
+        layout:
+          xaxis:
+            showlegend: true
+        line:
+          shape: spline
+          color: "#4BA602"
+          smoothing: 0.2
+          width: 0
+        fill: tozeroy
+  - type: custom:plotly-graph
+    hours_to_show: 168
+    refresh_interval: 60
+    autosize: true
+    card_mod:
+      style:
+        .: |
+          ha-card { 
+            --ha-card-border-width: 0px;
+            --ha-card-border-radius: 0px; 
+            --ha-card-border-color: #grey;
+            --card-mod-icon-color: white;
+            padding: 0;
+            height: 30vh;
+            margin-left: 2%;
+            width: 100%;
+            background: transparent;
+            transform: scale(0.9);
+          }
+    defaults:
+      yaxes:
+        fixedrange: true
+    config:
+      displaylogo: false
+      responsive: true
+    layout:
+      title:
+        text: Lüftungsstufe
+        x: 0.5
+        "y": 0.95
+        font:
+          color: white
+          size: 18
+      paper_bgcolor: transparent
+      plot_bgcolor: transparent
+      margin:
+        t: 0
+        l: 0
+        r: 0
+        b: 5
+        pad: 0
+      xaxis:
+        showlegend: true
+        title: ""
+      yaxis:
+        titlefont:
+          color: white
+        tickfont:
+          color: white
+        fixedrange: true
+        linecolor: grey
+        linewidth: 1
+        mirror: true
+        ticklabelposition: inside
+        type: scatter
+        range:
+          - 0
+          - 8
+    entities:
+      - name: Lüftungsstufe
+        entity: sensor.ventilation_fanspeed
+        type: scatter
+        line:
+          color: "#DAA520"
+          width: 2
+        fill: tozeroy
+grid_options:
+  columns: 24
+  rows: auto
