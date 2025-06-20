@@ -92,23 +92,6 @@
 
     - sensor:
 
-        # Recommended airflow for your house in m³/h, as per DIN Norm 1946-6
-        # (DIN = Deutsches Institut für Normung / German Institute for Standardization)
-        # DIN defines 4 different ventilation levels
-        # =============================================================================
-        #
-        # > Notes to self (in German): <
-        #
-        # Die KWL sollte so ausgelegt sein, dass der Luftaustausch zwischen
-        # Feuchteschutz (min) und Intensivlüftung (max) gewährleistet ist.
-        # 
-        # Beispiel für eine Gebäudefläche von 280 m² in einem gedämmten Gebäude:
-        # Feuchteschutz = 0,3 *(-0,001*280² + 1,15*280+20) = 79,08
-        # Reduzierte Lüftung = 0,7 *(-0,001*280² + 1,15*280+20) = 184,52
-        # Nennlüftung = 1,0 * (-0,001*280² + 1,15*280+20) = 263,6
-        # Intensivlüftung = 1,15 *(-0,001*280² + 1,15*280+20) = 303,14
-        # Für die Auslegung nach DIN muss die KWL also 80...300 m³/h liefern.
-
         - # fWS * (-0,001 * Ane² + 1,15 * Ane + 20)
           name: "Ventilation DIN airflow (moisture protection)"
           unit_of_measurement: "m³/h"
