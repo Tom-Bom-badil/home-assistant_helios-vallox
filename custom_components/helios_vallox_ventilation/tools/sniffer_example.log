@@ -1,0 +1,875 @@
+2025-03-01 23:04:01,975       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:01,975       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:01,975       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:04:01,975       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:04:01,975       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:04:01,975       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:04:01,975       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:01,975       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:01,975       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:04:01,975       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:04,834       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:04:04,940       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:04:05,046       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:04:05,153       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:04:05,259       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:04:05,366       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:04:05,471       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:04:07,134       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:07,135       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:07,135       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:04:07,135       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:04:07,135       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:04:07,135       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:04:07,135       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:07,136       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:07,136       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:04:07,136       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:12,294       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:12,295       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:12,295       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:04:12,295       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:04:12,295       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:04:12,295       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:04:12,295       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:12,296       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:12,296       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:04:12,296       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:17,454       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:17,455       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:17,455       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:04:17,455       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:04:17,455       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:04:17,455       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:04:17,455       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:17,455       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:17,456       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:04:17,456       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:19,895       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:04:20,001       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:04:20,107       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:04:20,214       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:04:20,320       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:04:20,426       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:04:20,533       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:04:22,614       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:22,614       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:22,614       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:04:22,614       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:04:22,614       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:04:22,614       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:04:22,615       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:22,615       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:22,615       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:04:22,615       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:27,773       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:27,773       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:27,774       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:04:27,774       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:04:27,774       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:04:27,774       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:04:27,774       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:27,774       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:27,774       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:04:27,774       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:32,932       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:32,933       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:32,933       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:04:32,933       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:04:32,933       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:04:32,933       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:04:32,933       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:32,933       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:32,933       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:04:32,933       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:34,956       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:04:35,062       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:04:35,169       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:04:35,275       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:04:35,382       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:04:35,488       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:04:35,594       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:04:36,873       01 11 2e 29 01 6a    MB1>HA2   fanspeed: 1
+2025-03-01 23:04:36,907       01 11 2e a9 01 ea    MB1>HA2   initial_fanspeed: 1
+2025-03-01 23:04:36,940       01 11 2e a5 ff e4    MB1>HA2   max_fanspeed: 8
+2025-03-01 23:04:36,973       01 11 2e 32 68 da    MB1>HA2   temperature_outdoor_air: 1°C
+2025-03-01 23:04:37,006       01 11 2e 35 98 0d    MB1>HA2   temperature_supply_air: 17°C
+2025-03-01 23:04:37,039       01 11 2e 34 a2 16    MB1>HA2   temperature_extract_air: 21°C
+2025-03-01 23:04:37,072       01 11 2e 33 7d f0    MB1>HA2   temperature_exhaust_air: 8°C
+2025-03-01 23:04:37,106       01 11 2e a3 09 ec    MB1>HA2   powerstate (Bit 0): 1
+2025-03-01 23:04:37,139       01 11 2e af 84 73    MB1>HA2   bypass_setpoint: 10°C
+2025-03-01 23:04:37,172       01 11 2e a7 5a 41    MB1>HA2   preheat_setpoint: -3°C
+2025-03-01 23:04:37,205       01 11 2e 70 00 b0    MB1>HA2   preheat_status (Bit 7): 0
+2025-03-01 23:04:37,238       01 11 2e a8 6e 56    MB1>HA2   defrost_setpoint: 3°C
+2025-03-01 23:04:37,271       01 11 2e b2 09 fb    MB1>HA2   defrost_hysteresis: 9
+2025-03-01 23:04:37,309       01 11 2e aa 0a f4    MB1>HA2   boost_mode (Bit 5): 0
+2025-03-01 23:04:37,342       01 11 2e 71 00 b1    MB1>HA2   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:37,375       01 11 2e 79 00 b9    MB1>HA2   boost_remaining: 0
+2025-03-01 23:04:37,408       01 11 2e 08 01 49    MB1>HA2   input_fan_off (Bit 3): 0
+2025-03-01 23:04:37,441       01 11 2e b0 64 54    MB1>HA2   input_fan_percent: 100
+2025-03-01 23:04:37,474       01 11 2e b1 64 55    MB1>HA2   output_fan_percent: 100
+2025-03-01 23:04:37,507       01 11 2e a6 04 ea    MB1>HA2   service_interval: 4
+2025-03-01 23:04:37,540       01 11 2e ab 02 ed    MB1>HA2   service_due_months: 2
+2025-03-01 23:04:37,573       01 11 2e 36 00 76    MB1>HA2   fault_number: 0
+2025-03-01 23:04:38,025       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:38,025       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:38,091       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:04:38,092       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:04:38,092       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:04:38,092       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:04:38,092       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:38,092       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:38,092       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:04:38,093       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:43,251       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:43,251       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:43,251       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:04:43,251       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:04:43,251       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:04:43,251       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:04:43,251       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:43,251       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:43,251       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:04:43,251       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:48,412       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:48,412       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:48,412       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:04:48,412       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:04:48,412       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:04:48,412       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:04:48,413       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:48,413       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:48,413       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:04:48,413       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:50,018       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:04:50,124       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:04:50,231       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:04:50,337       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:04:50,443       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:04:50,550       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:04:50,656       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:04:53,571       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:53,571       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:53,571       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:04:53,571       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:04:53,571       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:04:53,572       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:04:53,572       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:53,572       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:53,572       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:04:53,572       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:58,730       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:58,730       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:58,730       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:04:58,730       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:04:58,730       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:04:58,730       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:04:58,730       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:04:58,730       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:04:58,730       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:04:58,730       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:58,889       01 11 2d 29 01 69    MB1>HA1   fanspeed: 1
+2025-03-01 23:04:58,923       01 11 2d a9 01 e9    MB1>HA1   initial_fanspeed: 1
+2025-03-01 23:04:58,957       01 11 2d a5 ff e3    MB1>HA1   max_fanspeed: 8
+2025-03-01 23:04:58,991       01 11 2d 32 68 d9    MB1>HA1   temperature_outdoor_air: 1°C
+2025-03-01 23:04:59,027       01 11 2d 35 98 0c    MB1>HA1   temperature_supply_air: 17°C
+2025-03-01 23:04:59,061       01 11 2d 34 a2 15    MB1>HA1   temperature_extract_air: 21°C
+2025-03-01 23:04:59,095       01 11 2d 33 7d ef    MB1>HA1   temperature_exhaust_air: 8°C
+2025-03-01 23:04:59,129       01 11 2d a3 09 eb    MB1>HA1   powerstate (Bit 0): 1
+2025-03-01 23:04:59,163       01 11 2d af 84 72    MB1>HA1   bypass_setpoint: 10°C
+2025-03-01 23:04:59,198       01 11 2d a7 5a 40    MB1>HA1   preheat_setpoint: -3°C
+2025-03-01 23:04:59,240       01 11 2d 70 00 af    MB1>HA1   preheat_status (Bit 7): 0
+2025-03-01 23:04:59,274       01 11 2d a8 6e 55    MB1>HA1   defrost_setpoint: 3°C
+2025-03-01 23:04:59,308       01 11 2d b2 09 fa    MB1>HA1   defrost_hysteresis: 9
+2025-03-01 23:04:59,342       01 11 2d aa 0a f3    MB1>HA1   boost_mode (Bit 5): 0
+2025-03-01 23:04:59,376       01 11 2d 71 00 b0    MB1>HA1   boost_on_switch (Bit 5): 0
+2025-03-01 23:04:59,410       01 11 2d 79 00 b8    MB1>HA1   boost_remaining: 0
+2025-03-01 23:04:59,444       01 11 2d 08 01 48    MB1>HA1   input_fan_off (Bit 3): 0
+2025-03-01 23:04:59,478       01 11 2d b0 64 53    MB1>HA1   input_fan_percent: 100
+2025-03-01 23:04:59,512       01 11 2d b1 64 54    MB1>HA1   output_fan_percent: 100
+2025-03-01 23:04:59,546       01 11 2d a6 04 e9    MB1>HA1   service_interval: 4
+2025-03-01 23:04:59,580       01 11 2d ab 02 ec    MB1>HA1   service_due_months: 2
+2025-03-01 23:04:59,614       01 11 2d 36 00 75    MB1>HA1   fault_number: 0
+2025-03-01 23:05:03,890       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:03,890       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:03,891       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:05:03,891       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:05:03,891       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:05:03,891       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:05:03,891       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:03,891       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:03,891       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:05:03,892       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:05:05,079       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:05:05,186       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:05:05,292       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:05:05,399       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:05:05,505       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:05:05,612       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:05:05,718       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:05:09,050       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:09,050       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:09,050       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:05:09,050       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:05:09,050       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:05:09,051       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:05:09,051       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:09,051       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:09,051       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:05:09,051       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:05:14,209       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:14,209       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:14,209       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:05:14,210       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:05:14,210       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:05:14,210       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:05:14,210       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:14,210       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:14,210       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:05:14,211       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:05:19,368       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:19,369       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:19,369       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:05:19,369       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:05:19,369       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:05:19,369       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:05:19,369       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:19,369       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:19,370       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:05:19,370       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:05:20,140       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:05:20,247       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:05:20,353       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:05:20,459       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:05:20,566       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:05:20,672       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:05:20,779       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:05:24,461       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:24,462       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:24,528       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:05:24,528       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:05:24,528       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:05:24,528       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:05:24,528       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:24,529       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:24,529       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:05:24,529       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:05:29,688       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:29,688       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:29,688       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:05:29,688       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:05:29,688       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:05:29,689       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:05:29,689       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:29,689       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:29,689       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:05:29,689       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:05:34,847       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:34,847       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:34,848       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:05:34,848       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:05:34,848       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:05:34,848       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:05:34,848       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:34,848       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:34,848       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:05:34,848       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:05:35,201       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:05:35,308       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:05:35,415       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:05:35,521       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:05:35,627       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:05:35,733       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:05:35,840       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:05:36,875       01 11 2e 29 01 6a    MB1>HA2   fanspeed: 1
+2025-03-01 23:05:36,909       01 11 2e a9 01 ea    MB1>HA2   initial_fanspeed: 1
+2025-03-01 23:05:36,942       01 11 2e a5 ff e4    MB1>HA2   max_fanspeed: 8
+2025-03-01 23:05:36,975       01 11 2e 32 68 da    MB1>HA2   temperature_outdoor_air: 1°C
+2025-03-01 23:05:37,008       01 11 2e 35 98 0d    MB1>HA2   temperature_supply_air: 17°C
+2025-03-01 23:05:37,041       01 11 2e 34 a2 16    MB1>HA2   temperature_extract_air: 21°C
+2025-03-01 23:05:37,074       01 11 2e 33 7d f0    MB1>HA2   temperature_exhaust_air: 8°C
+2025-03-01 23:05:37,107       01 11 2e a3 09 ec    MB1>HA2   powerstate (Bit 0): 1
+2025-03-01 23:05:37,140       01 11 2e af 84 73    MB1>HA2   bypass_setpoint: 10°C
+2025-03-01 23:05:37,173       01 11 2e a7 5a 41    MB1>HA2   preheat_setpoint: -3°C
+2025-03-01 23:05:37,206       01 11 2e 70 00 b0    MB1>HA2   preheat_status (Bit 7): 0
+2025-03-01 23:05:37,239       01 11 2e a8 6e 56    MB1>HA2   defrost_setpoint: 3°C
+2025-03-01 23:05:37,272       01 11 2e b2 09 fb    MB1>HA2   defrost_hysteresis: 9
+2025-03-01 23:05:37,306       01 11 2e aa 0a f4    MB1>HA2   boost_mode (Bit 5): 0
+2025-03-01 23:05:37,339       01 11 2e 71 00 b1    MB1>HA2   boost_on_switch (Bit 5): 0
+2025-03-01 23:05:37,372       01 11 2e 79 00 b9    MB1>HA2   boost_remaining: 0
+2025-03-01 23:05:37,406       01 11 2e 08 01 49    MB1>HA2   input_fan_off (Bit 3): 0
+2025-03-01 23:05:37,440       01 11 2e b0 64 54    MB1>HA2   input_fan_percent: 100
+2025-03-01 23:05:37,472       01 11 2e b1 64 55    MB1>HA2   output_fan_percent: 100
+2025-03-01 23:05:37,505       01 11 2e a6 04 ea    MB1>HA2   service_interval: 4
+2025-03-01 23:05:37,538       01 11 2e ab 02 ed    MB1>HA2   service_due_months: 2
+2025-03-01 23:05:37,571       01 11 2e 36 00 76    MB1>HA2   fault_number: 0
+2025-03-01 23:05:40,006       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:40,006       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:40,006       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:05:40,006       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:05:40,006       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:05:40,006       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:05:40,006       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:40,006       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:40,006       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:05:40,007       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:05:45,166       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:45,167       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:45,167       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:05:45,167       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:05:45,167       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:05:45,167       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:05:45,167       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:45,167       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:45,168       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:05:45,168       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:05:50,269       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:50,269       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:50,269       01 11 20 01 21 11    MB1>FB*   unknown variable 0x01
+2025-03-01 23:05:50,373       00 29 5c             jitter
+2025-03-01 23:05:50,373       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:05:50,479       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:05:50,594       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:05:50,595       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:05:50,595       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:05:50,595       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:05:50,595       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:50,595       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:50,595       01 11 20 54 21 11    MB1>FB*   unknown variable 0x54
+2025-03-01 23:05:50,698       00 71 a4             jitter
+2025-03-01 23:05:50,698       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:05:50,804       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:05:50,910       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:05:50,938       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:05:50,938       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:05:55,485       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:55,486       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:55,486       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:05:55,486       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:05:55,486       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:05:55,486       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:05:55,486       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:05:55,487       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:05:55,487       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:05:55,487       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:05:58,890       01 11 2d 29 01 69    MB1>HA1   fanspeed: 1
+2025-03-01 23:05:58,923       01 11 2d a9 01 e9    MB1>HA1   initial_fanspeed: 1
+2025-03-01 23:05:58,957       01 11 2d a5 ff e3    MB1>HA1   max_fanspeed: 8
+2025-03-01 23:05:58,991       01 11 2d 32 68 d9    MB1>HA1   temperature_outdoor_air: 1°C
+2025-03-01 23:05:59,025       01 11 2d 35 98 0c    MB1>HA1   temperature_supply_air: 17°C
+2025-03-01 23:05:59,059       01 11 2d 34 a2 15    MB1>HA1   temperature_extract_air: 21°C
+2025-03-01 23:05:59,093       01 11 2d 33 7d ef    MB1>HA1   temperature_exhaust_air: 8°C
+2025-03-01 23:05:59,127       01 11 2d a3 09 eb    MB1>HA1   powerstate (Bit 0): 1
+2025-03-01 23:05:59,161       01 11 2d af 84 72    MB1>HA1   bypass_setpoint: 10°C
+2025-03-01 23:05:59,195       01 11 2d a7 5a 40    MB1>HA1   preheat_setpoint: -3°C
+2025-03-01 23:05:59,231       01 11 2d 70 00 af    MB1>HA1   preheat_status (Bit 7): 0
+2025-03-01 23:05:59,265       01 11 2d a8 6e 55    MB1>HA1   defrost_setpoint: 3°C
+2025-03-01 23:05:59,299       01 11 2d b2 09 fa    MB1>HA1   defrost_hysteresis: 9
+2025-03-01 23:05:59,333       01 11 2d aa 0a f3    MB1>HA1   boost_mode (Bit 5): 0
+2025-03-01 23:05:59,368       01 11 2d 71 00 b0    MB1>HA1   boost_on_switch (Bit 5): 0
+2025-03-01 23:05:59,402       01 11 2d 79 00 b8    MB1>HA1   boost_remaining: 0
+2025-03-01 23:05:59,436       01 11 2d 08 01 48    MB1>HA1   input_fan_off (Bit 3): 0
+2025-03-01 23:05:59,470       01 11 2d b0 64 53    MB1>HA1   input_fan_percent: 100
+2025-03-01 23:05:59,504       01 11 2d b1 64 54    MB1>HA1   output_fan_percent: 100
+2025-03-01 23:05:59,538       01 11 2d a6 04 e9    MB1>HA1   service_interval: 4
+2025-03-01 23:05:59,572       01 11 2d ab 02 ec    MB1>HA1   service_due_months: 2
+2025-03-01 23:05:59,606       01 11 2d 36 00 75    MB1>HA1   fault_number: 0
+2025-03-01 23:06:00,644       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:00,645       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:00,645       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:06:00,645       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:06:00,645       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:06:00,645       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:06:00,646       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:00,646       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:00,646       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:06:00,646       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:05,313       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:06:05,420       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:06:05,526       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:06:05,632       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:06:05,748       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:05,749       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:05,749       01 11 20 b2 40 48    MB1>FB*   defrost_hysteresis: 64
+2025-03-01 23:06:05,851       44 29 5c             jitter
+2025-03-01 23:06:05,851       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:06:05,957       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:06:06,150       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:06:06,151       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:06:06,151       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:06:06,151       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:06:06,151       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:06,151       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:06,151       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:06:06,151       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:10,964       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:10,964       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:10,965       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:06:10,965       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:06:10,965       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:06:10,965       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:06:10,965       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:10,965       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:10,965       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:06:10,966       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:16,124       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:16,124       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:16,124       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:06:16,124       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:06:16,124       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:06:16,125       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:06:16,125       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:16,125       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:16,125       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:06:16,125       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:20,370       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:06:20,476       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:06:20,583       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:06:20,689       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:06:20,796       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:06:20,902       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:06:21,009       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:06:21,283       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:21,283       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:21,284       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:06:21,284       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:06:21,284       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:06:21,284       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:06:21,284       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:21,284       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:21,284       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:06:21,285       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:26,443       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:26,443       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:26,443       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:06:26,443       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:06:26,443       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:06:26,443       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:06:26,443       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:26,444       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:26,444       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:06:26,444       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:31,602       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:31,602       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:31,602       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:06:31,603       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:06:31,603       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:06:31,603       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:06:31,603       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:31,603       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:31,603       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:06:31,603       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:35,432       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:06:35,538       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:06:35,644       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:06:35,751       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:06:35,857       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:06:35,963       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:06:36,069       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:06:36,761       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:36,762       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:36,762       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:06:36,762       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:06:36,762       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:06:36,762       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:06:36,762       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:36,763       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:36,763       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:06:36,763       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:36,880       01 11 2e 29 01 6a    MB1>HA2   fanspeed: 1
+2025-03-01 23:06:36,913       01 11 2e a9 01 ea    MB1>HA2   initial_fanspeed: 1
+2025-03-01 23:06:36,946       01 11 2e a5 ff e4    MB1>HA2   max_fanspeed: 8
+2025-03-01 23:06:36,979       01 11 2e 32 68 da    MB1>HA2   temperature_outdoor_air: 1°C
+2025-03-01 23:06:37,012       01 11 2e 35 98 0d    MB1>HA2   temperature_supply_air: 17°C
+2025-03-01 23:06:37,045       01 11 2e 34 a2 16    MB1>HA2   temperature_extract_air: 21°C
+2025-03-01 23:06:37,079       01 11 2e 33 7d f0    MB1>HA2   temperature_exhaust_air: 8°C
+2025-03-01 23:06:37,113       01 11 2e a3 09 ec    MB1>HA2   powerstate (Bit 0): 1
+2025-03-01 23:06:37,145       01 11 2e af 84 73    MB1>HA2   bypass_setpoint: 10°C
+2025-03-01 23:06:37,178       01 11 2e a7 5a 41    MB1>HA2   preheat_setpoint: -3°C
+2025-03-01 23:06:37,211       01 11 2e 70 00 b0    MB1>HA2   preheat_status (Bit 7): 0
+2025-03-01 23:06:37,244       01 11 2e a8 6e 56    MB1>HA2   defrost_setpoint: 3°C
+2025-03-01 23:06:37,278       01 11 2e b2 09 fb    MB1>HA2   defrost_hysteresis: 9
+2025-03-01 23:06:37,310       01 11 2e aa 0a f4    MB1>HA2   boost_mode (Bit 5): 0
+2025-03-01 23:06:37,343       01 11 2e 71 00 b1    MB1>HA2   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:37,377       01 11 2e 79 00 b9    MB1>HA2   boost_remaining: 0
+2025-03-01 23:06:37,410       01 11 2e 08 01 49    MB1>HA2   input_fan_off (Bit 3): 0
+2025-03-01 23:06:37,442       01 11 2e b0 64 54    MB1>HA2   input_fan_percent: 100
+2025-03-01 23:06:37,475       01 11 2e b1 64 55    MB1>HA2   output_fan_percent: 100
+2025-03-01 23:06:37,509       01 11 2e a6 04 ea    MB1>HA2   service_interval: 4
+2025-03-01 23:06:37,542       01 11 2e ab 02 ed    MB1>HA2   service_due_months: 2
+2025-03-01 23:06:37,576       01 11 2e 36 00 76    MB1>HA2   fault_number: 0
+2025-03-01 23:06:41,855       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:41,855       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:41,921       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:06:41,921       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:06:41,922       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:06:41,922       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:06:41,922       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:41,922       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:41,922       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:06:41,922       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:47,080       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:47,080       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:47,080       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:06:47,081       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:06:47,081       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:06:47,081       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:06:47,081       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:47,081       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:47,081       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:06:47,081       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:50,493       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:06:50,599       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:06:50,706       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:06:50,812       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:06:50,918       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:06:51,025       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:06:51,131       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:06:52,240       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:52,240       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:52,240       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:06:52,240       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:06:52,241       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:06:52,241       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:06:52,241       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:52,241       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:52,241       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:06:52,241       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:57,400       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:57,400       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:57,400       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:06:57,400       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:06:57,400       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:06:57,401       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:06:57,401       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:06:57,401       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:06:57,401       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:06:57,401       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:58,886       01 11 2d 29 01 69    MB1>HA1   fanspeed: 1
+2025-03-01 23:06:58,919       01 11 2d a9 01 e9    MB1>HA1   initial_fanspeed: 1
+2025-03-01 23:06:58,953       01 11 2d a5 ff e3    MB1>HA1   max_fanspeed: 8
+2025-03-01 23:06:58,987       01 11 2d 32 68 d9    MB1>HA1   temperature_outdoor_air: 1°C
+2025-03-01 23:06:59,021       01 11 2d 35 98 0c    MB1>HA1   temperature_supply_air: 17°C
+2025-03-01 23:06:59,055       01 11 2d 34 a2 15    MB1>HA1   temperature_extract_air: 21°C
+2025-03-01 23:06:59,090       01 11 2d 33 7d ef    MB1>HA1   temperature_exhaust_air: 8°C
+2025-03-01 23:06:59,124       01 11 2d a3 09 eb    MB1>HA1   powerstate (Bit 0): 1
+2025-03-01 23:06:59,158       01 11 2d af 84 72    MB1>HA1   bypass_setpoint: 10°C
+2025-03-01 23:06:59,194       01 11 2d a7 5a 40    MB1>HA1   preheat_setpoint: -3°C
+2025-03-01 23:06:59,228       01 11 2d 70 00 af    MB1>HA1   preheat_status (Bit 7): 0
+2025-03-01 23:06:59,262       01 11 2d a8 6e 55    MB1>HA1   defrost_setpoint: 3°C
+2025-03-01 23:06:59,296       01 11 2d b2 09 fa    MB1>HA1   defrost_hysteresis: 9
+2025-03-01 23:06:59,330       01 11 2d aa 0a f3    MB1>HA1   boost_mode (Bit 5): 0
+2025-03-01 23:06:59,364       01 11 2d 71 00 b0    MB1>HA1   boost_on_switch (Bit 5): 0
+2025-03-01 23:06:59,399       01 11 2d 79 00 b8    MB1>HA1   boost_remaining: 0
+2025-03-01 23:06:59,433       01 11 2d 08 01 48    MB1>HA1   input_fan_off (Bit 3): 0
+2025-03-01 23:06:59,467       01 11 2d b0 64 53    MB1>HA1   input_fan_percent: 100
+2025-03-01 23:06:59,501       01 11 2d b1 64 54    MB1>HA1   output_fan_percent: 100
+2025-03-01 23:06:59,536       01 11 2d a6 04 e9    MB1>HA1   service_interval: 4
+2025-03-01 23:06:59,571       01 11 2d ab 02 ec    MB1>HA1   service_due_months: 2
+2025-03-01 23:06:59,604       01 11 2d 36 00 75    MB1>HA1   fault_number: 0
+2025-03-01 23:07:02,559       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:02,559       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:02,559       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:07:02,559       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:07:02,559       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:07:02,559       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:07:02,559       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:02,559       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:02,559       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:07:02,559       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:07:05,554       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:07:05,661       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:07:05,768       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:07:05,873       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:07:05,979       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:07:06,086       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:07:06,193       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:07:07,718       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:07,719       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:07,719       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:07:07,719       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:07:07,719       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:07:07,719       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:07:07,720       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:07,720       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:07,720       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:07:07,720       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:07:12,878       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:12,878       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:12,878       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:07:12,878       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:07:12,878       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:07:12,878       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:07:12,878       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:12,878       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:12,878       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:07:12,878       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:07:18,038       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:18,038       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:18,039       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:07:18,039       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:07:18,039       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:07:18,039       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:07:18,039       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:18,039       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:18,039       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:07:18,040       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:07:20,616       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:07:20,722       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:07:20,828       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:07:20,935       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:07:21,041       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:07:21,147       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:07:21,254       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:07:23,198       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:23,198       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:23,198       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:07:23,198       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:07:23,198       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:07:23,198       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:07:23,199       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:23,199       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:23,199       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:07:23,199       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:07:28,357       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:28,358       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:28,358       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:07:28,358       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:07:28,358       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:07:28,358       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:07:28,359       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:28,359       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:28,359       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:07:28,359       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:07:33,516       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:33,517       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:33,517       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:07:33,517       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:07:33,517       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:07:33,517       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:07:33,518       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:33,518       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:33,518       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:07:33,518       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:07:35,677       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:07:35,783       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:07:35,889       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:07:35,996       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:07:36,102       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:07:36,208       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:07:36,315       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:07:36,870       01 11 2e 29 01 6a    MB1>HA2   fanspeed: 1
+2025-03-01 23:07:36,903       01 11 2e a9 01 ea    MB1>HA2   initial_fanspeed: 1
+2025-03-01 23:07:36,936       01 11 2e a5 ff e4    MB1>HA2   max_fanspeed: 8
+2025-03-01 23:07:36,969       01 11 2e 32 68 da    MB1>HA2   temperature_outdoor_air: 1°C
+2025-03-01 23:07:37,002       01 11 2e 35 98 0d    MB1>HA2   temperature_supply_air: 17°C
+2025-03-01 23:07:37,035       01 11 2e 34 a2 16    MB1>HA2   temperature_extract_air: 21°C
+2025-03-01 23:07:37,068       01 11 2e 33 7d f0    MB1>HA2   temperature_exhaust_air: 8°C
+2025-03-01 23:07:37,101       01 11 2e a3 09 ec    MB1>HA2   powerstate (Bit 0): 1
+2025-03-01 23:07:37,134       01 11 2e af 84 73    MB1>HA2   bypass_setpoint: 10°C
+2025-03-01 23:07:37,167       01 11 2e a7 5a 41    MB1>HA2   preheat_setpoint: -3°C
+2025-03-01 23:07:37,200       01 11 2e 70 00 b0    MB1>HA2   preheat_status (Bit 7): 0
+2025-03-01 23:07:37,232       01 11 2e a8 6e 56    MB1>HA2   defrost_setpoint: 3°C
+2025-03-01 23:07:37,266       01 11 2e b2 09 fb    MB1>HA2   defrost_hysteresis: 9
+2025-03-01 23:07:37,299       01 11 2e aa 0a f4    MB1>HA2   boost_mode (Bit 5): 0
+2025-03-01 23:07:37,338       01 11 2e 71 00 b1    MB1>HA2   boost_on_switch (Bit 5): 0
+2025-03-01 23:07:37,372       01 11 2e 79 00 b9    MB1>HA2   boost_remaining: 0
+2025-03-01 23:07:37,406       01 11 2e 08 01 49    MB1>HA2   input_fan_off (Bit 3): 0
+2025-03-01 23:07:37,439       01 11 2e b0 64 54    MB1>HA2   input_fan_percent: 100
+2025-03-01 23:07:37,472       01 11 2e b1 64 55    MB1>HA2   output_fan_percent: 100
+2025-03-01 23:07:37,505       01 11 2e a6 04 ea    MB1>HA2   service_interval: 4
+2025-03-01 23:07:37,538       01 11 2e ab 02 ed    MB1>HA2   service_due_months: 2
+2025-03-01 23:07:37,571       01 11 2e 36 00 76    MB1>HA2   fault_number: 0
+2025-03-01 23:07:38,676       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:38,676       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:38,676       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:07:38,677       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:07:38,677       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:07:38,677       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:07:38,677       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:38,677       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:38,677       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:07:38,678       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:07:43,835       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:43,835       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:43,835       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:07:43,835       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:07:43,835       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:07:43,835       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:07:43,835       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:43,835       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:43,835       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:07:43,835       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:07:48,995       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:48,995       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:48,996       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:07:48,996       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:07:48,996       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:07:48,996       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:07:48,996       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:48,996       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:48,997       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:07:48,997       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:07:50,738       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:07:50,844       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:07:50,951       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:07:51,058       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:07:51,164       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:07:51,270       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:07:51,377       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:07:54,088       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:54,088       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:54,155       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:07:54,155       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:07:54,155       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:07:54,156       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:07:54,156       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:54,156       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:54,156       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:07:54,157       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:07:58,887       01 11 2d 29 01 69    MB1>HA1   fanspeed: 1
+2025-03-01 23:07:58,920       01 11 2d a9 01 e9    MB1>HA1   initial_fanspeed: 1
+2025-03-01 23:07:58,954       01 11 2d a5 ff e3    MB1>HA1   max_fanspeed: 8
+2025-03-01 23:07:58,989       01 11 2d 32 68 d9    MB1>HA1   temperature_outdoor_air: 1°C
+2025-03-01 23:07:59,023       01 11 2d 35 98 0c    MB1>HA1   temperature_supply_air: 17°C
+2025-03-01 23:07:59,056       01 11 2d 34 a2 15    MB1>HA1   temperature_extract_air: 21°C
+2025-03-01 23:07:59,091       01 11 2d 33 7d ef    MB1>HA1   temperature_exhaust_air: 8°C
+2025-03-01 23:07:59,124       01 11 2d a3 09 eb    MB1>HA1   powerstate (Bit 0): 1
+2025-03-01 23:07:59,158       01 11 2d af 84 72    MB1>HA1   bypass_setpoint: 10°C
+2025-03-01 23:07:59,192       01 11 2d a7 5a 40    MB1>HA1   preheat_setpoint: -3°C
+2025-03-01 23:07:59,227       01 11 2d 70 00 af    MB1>HA1   preheat_status (Bit 7): 0
+2025-03-01 23:07:59,248       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:59,248       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:59,262       80 4a 09 cd ab fd    jitter
+2025-03-01 23:07:59,585       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:07:59,585       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:07:59,585       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:07:59,585       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:07:59,585       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:07:59,586       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:07:59,586       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:07:59,586       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:08:01,121       01 11 2d a8 6e 55    MB1>HA1   defrost_setpoint: 3°C
+2025-03-01 23:08:01,154       01 11 2d b2 09 fa    MB1>HA1   defrost_hysteresis: 9
+2025-03-01 23:08:01,188       01 11 2d aa 0a f3    MB1>HA1   boost_mode (Bit 5): 0
+2025-03-01 23:08:01,222       01 11 2d 71 00 b0    MB1>HA1   boost_on_switch (Bit 5): 0
+2025-03-01 23:08:01,256       01 11 2d 79 00 b8    MB1>HA1   boost_remaining: 0
+2025-03-01 23:08:01,290       01 11 2d 08 01 48    MB1>HA1   input_fan_off (Bit 3): 0
+2025-03-01 23:08:01,324       01 11 2d b0 64 53    MB1>HA1   input_fan_percent: 100
+2025-03-01 23:08:01,358       01 11 2d b1 64 54    MB1>HA1   output_fan_percent: 100
+2025-03-01 23:08:01,393       01 11 2d a6 04 e9    MB1>HA1   service_interval: 4
+2025-03-01 23:08:01,428       01 11 2d ab 02 ec    MB1>HA1   service_due_months: 2
+2025-03-01 23:08:01,461       01 11 2d 36 00 75    MB1>HA1   fault_number: 0
+2025-03-01 23:08:04,474       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:04,474       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:04,474       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:08:04,474       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:08:04,475       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:08:04,475       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:08:04,475       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:04,475       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:04,475       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:08:04,475       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:08:05,799       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:08:05,905       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:08:06,012       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:08:06,119       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:08:06,225       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:08:06,331       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:08:06,438       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:08:09,633       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:09,633       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:09,633       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:08:09,633       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:08:09,633       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:08:09,633       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:08:09,633       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:09,633       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:09,633       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:08:09,633       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:08:14,792       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:14,792       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:14,792       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:08:14,793       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:08:14,793       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:08:14,793       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:08:14,793       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:14,793       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:14,793       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:08:14,793       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:08:19,952       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:19,952       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:19,953       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:08:19,953       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:08:19,953       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:08:19,953       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:08:19,953       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:19,953       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:19,953       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:08:19,953       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:08:20,861       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:08:20,967       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:08:21,074       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:08:21,180       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:08:21,287       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:08:21,392       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:08:21,499       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:08:25,112       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:25,112       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:25,112       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:08:25,112       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:08:25,113       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:08:25,113       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:08:25,113       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:25,113       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:25,113       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:08:25,113       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:08:30,272       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:30,272       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:30,272       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:08:30,272       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:08:30,272       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:08:30,272       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:08:30,273       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:30,273       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:30,273       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:08:30,273       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:08:35,431       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:35,431       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:35,431       01 21 11 00 29 5c    FB1>MB1   request fanspeed
+2025-03-01 23:08:35,432       01 11 21 29 01 5d    MB1>FB1   fanspeed: 1
+2025-03-01 23:08:35,432       01 21 11 00 35 68    FB1>MB1   request temperature_supply_air
+2025-03-01 23:08:35,432       01 11 21 35 98 00    MB1>FB1   temperature_supply_air: 17°C
+2025-03-01 23:08:35,432       01 21 11 00 a3 d6    FB1>MB1   request powerstate
+2025-03-01 23:08:35,432       01 11 21 a3 09 df    MB1>FB1   powerstate (Bit 0): 1
+2025-03-01 23:08:35,432       01 21 11 00 71 a4    FB1>MB1   request boost_on_switch
+2025-03-01 23:08:35,432       01 11 21 71 00 a4    MB1>FB1   boost_on_switch (Bit 5): 0
+2025-03-01 23:08:35,922       01 11 20 2b 00 5d    MB1>FB*   unknown variable 0x2b
+2025-03-01 23:08:36,028       01 11 20 2c 00 5e    MB1>FB*   unknown variable 0x2c
+2025-03-01 23:08:36,135       01 11 20 35 98 ff    MB1>FB*   temperature_supply_air: 17°C
+2025-03-01 23:08:36,241       01 11 20 34 a2 08    MB1>FB*   temperature_extract_air: 21°C
+2025-03-01 23:08:36,348       01 11 20 32 68 cc    MB1>FB*   temperature_outdoor_air: 1°C
+2025-03-01 23:08:36,454       01 11 20 33 7d e2    MB1>FB*   temperature_exhaust_air: 8°C
+2025-03-01 23:08:36,560       01 11 20 2a 28 84    MB1>FB*   unknown variable 0x2a
+2025-03-01 23:08:36,871       01 11 2e 29 01 6a    MB1>HA2   fanspeed: 1
+2025-03-01 23:08:36,905       01 11 2e a9 01 ea    MB1>HA2   initial_fanspeed: 1
+2025-03-01 23:08:36,938       01 11 2e a5 ff e4    MB1>HA2   max_fanspeed: 8
+2025-03-01 23:08:36,971       01 11 2e 32 68 da    MB1>HA2   temperature_outdoor_air: 1°C
+2025-03-01 23:08:37,004       01 11 2e 35 98 0d    MB1>HA2   temperature_supply_air: 17°C
+2025-03-01 23:08:37,037       01 11 2e 34 a2 16    MB1>HA2   temperature_extract_air: 21°C
+2025-03-01 23:08:37,070       01 11 2e 33 7d f0    MB1>HA2   temperature_exhaust_air: 8°C
+2025-03-01 23:08:37,103       01 11 2e a3 09 ec    MB1>HA2   powerstate (Bit 0): 1
+2025-03-01 23:08:37,136       01 11 2e af 84 73    MB1>HA2   bypass_setpoint: 10°C
+2025-03-01 23:08:37,169       01 11 2e a7 5a 41    MB1>HA2   preheat_setpoint: -3°C
+2025-03-01 23:08:37,202       01 11 2e 70 00 b0    MB1>HA2   preheat_status (Bit 7): 0
+2025-03-01 23:08:37,235       01 11 2e a8 6e 56    MB1>HA2   defrost_setpoint: 3°C
+2025-03-01 23:08:37,269       01 11 2e b2 09 fb    MB1>HA2   defrost_hysteresis: 9
+2025-03-01 23:08:37,303       01 11 2e aa 0a f4    MB1>HA2   boost_mode (Bit 5): 0
+2025-03-01 23:08:37,336       01 11 2e 71 00 b1    MB1>HA2   boost_on_switch (Bit 5): 0
+2025-03-01 23:08:37,369       01 11 2e 79 00 b9    MB1>HA2   boost_remaining: 0
+2025-03-01 23:08:37,402       01 11 2e 08 01 49    MB1>HA2   input_fan_off (Bit 3): 0
+2025-03-01 23:08:37,435       01 11 2e b0 64 54    MB1>HA2   input_fan_percent: 100
+2025-03-01 23:08:37,468       01 11 2e b1 64 55    MB1>HA2   output_fan_percent: 100
+2025-03-01 23:08:37,501       01 11 2e a6 04 ea    MB1>HA2   service_interval: 4
+2025-03-01 23:08:37,534       01 11 2e ab 02 ed    MB1>HA2   service_due_months: 2
+2025-03-01 23:08:37,567       01 11 2e 36 00 76    MB1>HA2   fault_number: 0

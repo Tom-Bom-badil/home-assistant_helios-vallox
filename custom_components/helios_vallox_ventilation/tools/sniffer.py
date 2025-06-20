@@ -4,7 +4,6 @@
 # Then run the file at a command line (press Ctrl-C when done):
 #    python3 sniffer.py
 
-
 import logging
 import socket
 import array
@@ -13,14 +12,14 @@ import array
 # log settings
 logging.basicConfig(
     filename='hex.log',  # file
-    # level=logging.DEBUG,  # level
-    level=logging.INFO,     # level
-    format='%(asctime)s       %(message)s'  # format
+    # level=logging.DEBUG,  # uncomment to set alternative log level
+    level=logging.INFO,     # set log level
+    format='%(asctime)s       %(message)s'  # set log format
 )
 logger = logging.getLogger("")
 
 
-# Mapping für Sender und Empfänger
+# Mapping: Sender & receiver
 SENDER_MAP = {
     0x11: "MB1",
     0x21: "FB1",
@@ -123,7 +122,7 @@ CONST_TEMPERATURE = array.array(
     ]
 )
 
-# Mapping für fanspeed
+# Mapping: fanspeed
 CONST_FANSPEED = {
     1: 1,
     3: 2,
@@ -136,7 +135,7 @@ CONST_FANSPEED = {
 }
 
 def adjust_abbreviations(text):
-    """Ersetzt lange Namen mit Abkürzungen im Kommentar."""
+    # replace long names with abbreviations
     return (
         text.replace("Mainboard_1", "MB1")
         .replace("Remote_1", "FB1")
@@ -146,7 +145,7 @@ def adjust_abbreviations(text):
     )
 
 def resolve_variable(varid, data_byte):
-    """Ermittelt die Variable basierend auf der ID und interpretiert sie."""
+    # get variables based on ID
     for var_name, details in CONST_MAP_VARIABLES_TO_ID.items():
         if details["varid"] == varid:
             var_type = details["type"]
@@ -168,13 +167,14 @@ def resolve_variable(varid, data_byte):
     return f"unknown variable 0x{varid:02x}"
 
 def find_variable_name(varid):
-    """Gibt den Namen der Variablen oder 'Unbekannt' zurück."""
+    # return variable name or 'Unbekannt / unknown'
     for var_name, details in CONST_MAP_VARIABLES_TO_ID.items():
         if details["varid"] == varid:
             return var_name
-    return f"Unbekannt 0x{varid:02x}"
+    return f"Unknown variable 0x{varid:02x}"
 
 def connect_and_receive(ip, port):
+    # make connection to device and start reveiving data
     try:
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client_socket.connect((ip, port))
@@ -185,10 +185,10 @@ def connect_and_receive(ip, port):
                 break
             buffer += data
 
-            while len(buffer) >= 6:  # Normales Format sind 6 Bytes
+            while len(buffer) >= 6:  # standard telegram: 6 Bytes
                 if buffer[0] != 0x01:
-                    # Entferne ungültige Daten (Jitter)
-                    jitter_end = buffer.find(b'\x01')  # Finde nächstes 0x01
+                    # remove invalid data (jitter)
+                    jitter_end = buffer.find(b'\x01')  # find next 0x01 = telegram start
                     if jitter_end == -1:
                         jitter_end = len(buffer)
                     jitter = buffer[:jitter_end]
@@ -202,26 +202,6 @@ def connect_and_receive(ip, port):
                 receiver = buffer[2]
                 variable_id = buffer[3]
                 data_byte = buffer[4]
-
-                # if sender in SENDER_MAP and receiver in RECEIVER_MAP:
-                    # sender_text = SENDER_MAP[sender]
-                    # receiver_text = RECEIVER_MAP[receiver]
-
-                    # sender_receiver = f"{sender_text}>{receiver_text}".ljust(10)
-
-                    # if variable_id == 0x00:
-                        # # Anfrage mit Variablenname und Nummer (Byte 5 als Variable)
-                        # variable_name = find_variable_name(data_byte)
-                        # formatted_line = " ".join(f"{byte:02x}" for byte in buffer[:6])
-                        # print(f"{formatted_line.ljust(20)} {sender_receiver}Anfrage {variable_name}")
-                        # logger.info(f"{formatted_line.ljust(20)} {sender_receiver}Anfrage {variable_name}")
-                    # else:
-                        # # Variablenbezeichner
-                        # variable_text = resolve_variable(variable_id, data_byte).replace(",", "")
-                        # formatted_line = " ".join(f"{byte:02x}" for byte in buffer[:6])
-                        # print(f"{formatted_line.ljust(20)} {sender_receiver}{variable_text}")
-                        # logger.info(f"{formatted_line.ljust(20)} {sender_receiver}{variable_text}")
-                        
                         
                 try:
                     sender_text = SENDER_MAP[sender]
@@ -236,13 +216,13 @@ def connect_and_receive(ip, port):
                 sender_receiver = f"{sender_text}>{receiver_text}".ljust(10)
 
                 if variable_id == 0x00:
-                    # Anfrage mit Variablenname und Nummer (Byte 5 als Variable)
+                    # its a read request (byte 5 = variable)
                     variable_name = find_variable_name(data_byte)
                     formatted_line = " ".join(f"{byte:02x}" for byte in buffer[:6])
                     print(f"{formatted_line.ljust(20)} {sender_receiver}request {variable_name}")
                     logger.info(f"{formatted_line.ljust(20)} {sender_receiver}request {variable_name}")
                 else:
-                    # Variablenbezeichner
+                    # its data
                     variable_text = resolve_variable(variable_id, data_byte).replace(",", "")
                     formatted_line = " ".join(f"{byte:02x}" for byte in buffer[:6])
                     print(f"{formatted_line.ljust(20)} {sender_receiver}{variable_text}")
@@ -250,7 +230,7 @@ def connect_and_receive(ip, port):
 
                 buffer = buffer[6:]
     except Exception as e:
-        print(f"Fehler: {e}")
+        print(f"Error: {e}")
     finally:
         client_socket.close()
 

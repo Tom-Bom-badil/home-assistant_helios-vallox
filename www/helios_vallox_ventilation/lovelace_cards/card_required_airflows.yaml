@@ -1,0 +1,35 @@
+<div style="height:12vh !important; font-size:200%;"> <table height="100%" width="100%">
+
+ <colgroup>
+    <col width=70%>
+    <col width=30% align=char char=".">
+ </colgroup>
+
+  <small>
+  <tr align=right>
+    <th align=left><small>&nbsp;DIN ventilation mode</small></th>
+    <th><small>Required airflow&nbsp;</small></th>
+  </tr>
+  </small>
+  
+  <tr align=right>
+    <td align=left>Moisture protection</td>
+    <td>{{ states('sensor.ventilation_din_airflow_moisture_protection') }} m³/h</td>
+  </tr>
+  
+  <tr align=right>
+    <td align=left>Reduced air exchange</td>
+    <td>{{ states('sensor.ventilation_din_airflow_reduced_exchange') }} m³/h</td>
+  </tr>
+  
+  <tr align=right>
+    <td align=left>Normal air exchange</td>
+    <td>{{ states('sensor.ventilation_din_airflow_normal_exchange') }} m³/h</td>
+  </tr>
+  
+  <tr align=right>
+    <td align=left>Boost air</td>
+    <td>{{ states('sensor.ventilation_din_airflow_boost_exchange') }} m³/h</td>
+  </tr>
+  
+</table> </div>

@@ -1,8 +1,7 @@
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-%2341BDF5.svg)](https://www.home-assistant.io)
 [![Custom integration](https://img.shields.io/badge/custom%20integration-%2341BDF5.svg)](https://www.home-assistant.io/getting-started/concepts-terminology)
-[![HACS](https://img.shields.io/badge/HACS%20listing-applied-red.svg)](https://github.com/hacs)
-[![HACS](https://img.shields.io/badge/HACS%20install-verified-green.svg)](https://github.com/hacs)
-[![Version](https://img.shields.io/badge/Version-v2025.03.1-green.svg)](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/releases)
+[![HACS](https://img.shields.io/badge/HACS-default-green.svg)](https://github.com/hacs)
+[![Version](https://img.shields.io/badge/Version-v2025.06.1-green.svg)](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/releases)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Tom-Bom-badil/home-assistant_helios-vallox/graphs/commit-activity)
 
 ## HA Integration for Helios Pro / Vallox SE ventilation systems (pre-EasyControls / pre-2014 models with RS-485)
@@ -23,61 +22,20 @@ The integration has been tested with various RS485-LAN/Wi-Fi adapters - no solde
 ## Compatible devices
 
 If your ventilation system has this remote control board, it is almost certainly compatible:<br/><br/>
-![image](https://github.com/user-attachments/assets/9362c985-681c-407f-a0da-a253ed3407dc)
+
+![image](https://github.com/user-attachments/assets/9e7d9699-751b-4856-8c68-797182ef8303)
 
 Users have reported the successful use on the following models:
-- Helios EC 200 Pro R/L, Helios EC 300 Pro R/L, Helios EC 500 Pro R/L, Vallox 090 SE, Vallox 910 SE, Vallox Digit SE, Vallo Plus 350 SE, Vallo Plus 510 SE, Vallox 130D (this one requires changing a few register numbers due to different addresses; see [old wiki](https://github.com/Tom-Bom-badil/SmartHomeNG-Helios/wiki))
+- Helios EC 200 Pro R/L, Helios EC 300 Pro R/L, Helios EC 500 Pro R/L, Vallox 080 SE, Vallox 090 SE, Vallox 910 SE, Vallox Digit SE, Vallo Plus 350 SE, Vallo Plus 510 SE, Vallox 130D (this one requires changing a few register numbers due to different addresses; see [old wiki](https://github.com/Tom-Bom-badil/SmartHomeNG-Helios/wiki))
 
 Documentations show that the following models also use the proprietary Helios/Vallox protocol, therefore they should also work:
 - Vallox 096 SE, Vallox 110 SE, Vallox 121 SE (both versions with and without front heating module), Vallox 150 SE, Vallox 270 SE, Vallox Digit SE 2, Vallox ValloPlus SE 500. (Please report back if you got the integration running on one of these models, thanks in advance!)
 
-## Installation through HACS
+## Installation (either through HACS or manually)
 
-Launch HACS and click the 3 dots in the top right corner, then choose `Custom repositories`. You will see 2 fields to fill out:
+Please check [this Wiki page](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki/Installation-and-setup-within-HA) for detailed installation and configuration options.
 
-- Repository: _**https://github.com/Tom-Bom-badil/home-assistant_helios-vallox**_
-- Type: _**Integration**_
-
-Click add and download the integration. Do NOT restart yet to avoid restarting twice.
-
-Add this to your `secrets.yaml` file in the HA root (adjust the IP and port of your LAN/Wifi-RS485 adaptor as needed):
-```yaml
-helios_vallox_ip:   192.168.178.38
-helios_vallox_port: 502
-```
-
-Now add this to your `configuration.yaml` to set up the integration and its log level:
-```yaml
-logger:
-  logs:
-    helios_vallox: error      # set to 'info' or even 'debug' for more details
-
-helios_vallox_ventilation:
-  !include custom_components/helios_vallox_ventilation/vent_conf.yaml
-```
-Restart HA to load the integration, and enjoy! :)
-
-## Manual installation
-
-Upload the directories and files with original pathes to your HA.
-
-Add this to your `secrets.yaml` file in the HA root (adjust the IP and port of your LAN/Wifi-RS485 adaptor as needed):
-```yaml
-helios_vallox_ip:   192.168.178.38
-helios_vallox_port: 8234
-```
-
-Now add this to your `configuration.yaml` to set up the integration and its log level:
-```yaml
-logger:
-  logs:
-    helios_vallox: error      # set to 'info' or even 'debug' for more details
-
-helios_vallox_ventilation:
-  !include custom_components/helios_vallox_ventilation/vent_conf.yaml
-```
-
-Restart HA to load the integration, and enjoy! :)
+Thanks for downloading, and please leave a star and report back in the discussions section if you find this of any use for you or run into any problems - enjoy! :)
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
