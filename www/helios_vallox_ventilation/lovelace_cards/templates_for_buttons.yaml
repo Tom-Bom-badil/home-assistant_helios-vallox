@@ -1,4 +1,4 @@
-# Line 1 has to remain as title of your dashboard - KEEP IT! The code below needs to go exactly to lines 2 ff., no extra indentation, no other changes - just copy/paste as is (unless you have already other button-card templates)!
+# Line 1 has to remain as title of your dashboard - KEEP IT! The code below needs to go exactly to lines 2 ff., no extra indentation, no other changes - just copy/paste as is (unless you have already other custom:button-card templates)!
 button_card_templates:
   fan_speed_button:
     entity: sensor.ventilation_fanspeed
