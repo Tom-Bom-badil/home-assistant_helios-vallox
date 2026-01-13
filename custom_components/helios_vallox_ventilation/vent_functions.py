@@ -142,11 +142,11 @@ class HeliosBase:
             exhaust_air = all_values['temperature_exhaust_air']
             temperature_reduction = extract_air - exhaust_air
             temperature_gain = supply_air - outdoor_air
-            temperature_balance = temperature_reduction - temperature_gain
-            efficiency = 0
+            temperature_balance = temperature_gain - temperature_reduction
+            efficiency = 100
             delta = extract_air - outdoor_air
             if delta != 0:  # prevent div/0 if temeperatures are the same
-                efficiency = (temperature_gain / delta) * 100
+                efficiency = (temperature_gain / delta ) * 100
                 efficiency = int(max(0, min(efficiency, 100))) # limit to 0..100
             all_values.update({
                 'temperature_reduction': temperature_reduction,
