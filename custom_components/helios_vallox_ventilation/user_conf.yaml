@@ -39,6 +39,13 @@
   input_number:
 
     # only used internally for remote control display on lovelace dashboard
+    ventilation_display_select:
+      min: 1
+      max: 3
+      step: 1
+      initial: 1
+
+    # only used internally for remote control display on lovelace dashboard
     ventilation_display_index:
       min: 0
       max: 3
