@@ -219,16 +219,26 @@
 
       sequence:
 
-        # cancel the timer (in case end was triggered manually with 'Stop' button)
+        # stop the start script
+        - service: script.turn_off
+          target:
+            entity_id: script.ventilation_start_manual_boost
+
+        # stop the timer (in case end was triggered manually with 'Stop' button)
         - service: timer.cancel
           target:
             entity_id: timer.ventilation_manual_boost_timer
 
-        # switch on outpu fan (if switched off for fireplace mode)
+        # switch on output fan (if fireplace mode was selected)
         - service: helios_vallox_ventilation.write_value
           data:
             variable: output_fan_off
             value: "{{ 0 }}"
+
+        # turn off fire place mode setting
+        - service: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.ventilation_manual_boost_fireplace_mode
 
         # write original fanspeed to ventilation
         - service: helios_vallox_ventilation.write_value
@@ -236,15 +246,11 @@
             variable: fanspeed
             value: "{{ states('input_number.ventilation_manual_boost_original_fanspeed') | int }}"
 
-        # turn off fire place mode setting
-        - service: input_boolean.turn_off
-          target:
-            entity_id: input_boolean.ventilation_manual_boost_fireplace_mode
-
         # turn off boost indicator
         - service: input_boolean.turn_off
           target:
             entity_id: input_boolean.ventilation_manual_boost_active
+
 
   automation:
 
