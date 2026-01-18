@@ -36,7 +36,7 @@ _`Vallox 096 SE`, `Vallox 110 SE`, `Vallox 121 SE` (both versions with and witho
 
 ## ⚙️ Installation
 
-Installation can be done either through HACS (recommended) or manually. Please check [this Wiki page](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki/Installation-and-setup-within-HA) for detailed installation and configuration options.
+Installation can be done either through HACS (recommended) or manually. Please check [this Wiki page](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki/Installation-and-setup) for detailed installation and configuration options.
 
 ## 📝 Notes & Feedback
 
