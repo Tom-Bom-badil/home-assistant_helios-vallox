@@ -4,7 +4,7 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Tom-Bom-badil/home-assistant_helios-vallox/graphs/commit-activity)
 [![HA Analytics](https://img.shields.io/badge/dynamic/json?url=https://analytics.home-assistant.io/custom_integrations.json&query=$.helios_vallox_ventilation.total&label=HA%20Analytics%20%2A&suffix=%20active%20installations&color=gold)](https://analytics.home-assistant.io/)
 
-## 📝 Helios Pro / Vallox SE ventilation control (pre-EasyControls / pre-2014 models)
+## 📝 Helios Pro / Vallox SE ventilation control (older RS485 models)
 
 👉 This is the `Home Assistant` adaptation of my `SmartHomeNG Helios Plugin`, which has been running 24/7 since 2014 on my [previous home automation system](https://github.com/Tom-Bom-badil/helios/wiki). The plugin used to be the very first “unofficial” community-made software for these ventilation models. Over the years, it became the basis for many other system adaptations. As I switched to Home Assistant a while ago, it was a logical step to migrate the plugin to a HA custom integration.
 
