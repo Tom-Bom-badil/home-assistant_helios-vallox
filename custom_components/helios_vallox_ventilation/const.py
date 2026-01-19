@@ -122,5 +122,9 @@ REGISTERS_AND_COILS = {
     # Remaining months for current service reminder
     "service_due_months":      {"varid": 0xAB, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },
     # Error / fault register. 0 = no fault. see COMPONENT_FAULTS above
-    "fault_number":            {"varid": 0x36, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False}
+    "fault_number":            {"varid": 0x36, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
+    # Humidity reading sensor 1. 33H = 0% RH FFH = 100% RH
+    "rh_sensor1_raw":          {"varid": 0x2F, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
+    # Humidity reading sensor 2. 33H = 0% RH FFH = 100% RH
+    "rh_sensor2_raw":          {"varid": 0x30, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False}
 }

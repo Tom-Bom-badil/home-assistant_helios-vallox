@@ -1,0 +1,135 @@
+button_card_templates:
+  ventilation_fan_speed_buttons:
+    entity: sensor.ventilation_fanspeed
+    show_name: false
+    show_icon: true
+    show_state: false
+    aspect_ratio: 1/1
+    tap_action:
+      action: none
+    hold_action:
+      action: call-service
+      service: helios_vallox_ventilation.write_value
+      data:
+        variable: fanspeed
+        value: |
+          [[[ return parseInt(variables.value); ]]]
+    styles:
+      card:
+        - background-color: rgba(0,0,0,0)
+        - color: black
+        - border-radius: 12px
+        - box-shadow: none
+        - border: 0.5px solid
+        - border-color: lightgrey
+      icon:
+        - color: black
+    state:
+      - operator: template
+        value: |
+          [[[ return parseInt(entity.state) === variables.value; ]]]
+        styles:
+          card:
+            - box-shadow: '0px 0px 10px 2px #5CCA03'
+            - border-color: lightgrey
+          icon:
+            - color: black
+        icon: |
+          [[[ return `mdi:numeric-${variables.value}-box-multiple`; ]]]
+    icon: |
+      [[[ return `mdi:numeric-${variables.value}-circle-outline`; ]]]
+  ventilation_remote_control_leds:
+    show_icon: true
+    show_name: false
+    show_state: false
+    icon: mdi:circle
+    state:
+      - value: 'on'
+        styles:
+          icon:
+            - background-image: >-
+                url("/local/community/helios_vallox_ventilation/btn_green_on.png")
+      - value: 'off'
+        styles:
+          icon:
+            - background-image: >-
+                url("/local/community/helios_vallox_ventilation/btn_green_off.png")
+    styles:
+      card:
+        - background: transparent
+        - box-shadow: none
+        - width: 200%
+        - color: black
+      icon:
+        - width: 100%
+        - color: rgba(255,0,0,0)
+        - background-size: contain
+        - background-repeat: no-repeat
+        - background-position: center
+  ventilation_remote_control_displayselect:
+    show_name: false
+    show_state: false
+    show_label: false
+    show_icon: true
+    entity: input_number.ventilation_display_select
+    tap_action:
+      action: call-service
+      service: input_number.set_value
+      service_data:
+        entity_id: input_number.ventilation_display_select
+        value: '[[[ return variables.value; ]]]'
+    card_mod:
+      style: |
+        :host {
+          display: block;
+          width: 100% !important;
+          height: 100% !important;
+        }
+        ha-card {
+          width: 100% !important;
+          height: 100% !important;
+        }
+    styles:
+      card:
+        - justify-self: center
+        - background: transparent
+        - padding: 0
+        - margin-top: 0px
+        - border: 3px outset
+        - border-color: '#e0e0e0'
+        - border-radius: 6px
+        - box-shadow: 0 1px 2px rgba(0,0,0,0.12)
+      icon:
+        - width: 28px
+        - height: 28px
+        - color: black
+    state:
+      - operator: template
+        value: |
+          [[[ return parseInt(entity.state) === parseInt(variables.value); ]]]
+        styles:
+          card:
+            - border: 3px inset
+            - border-color: '#e0e0e0'
+            - margin-top: 1px
+            - box-shadow: >
+                inset 0 1px 2px rgba(0,0,0,0.15), inset 0 -1px 0
+                rgba(255,255,255,0.5)
+  ventilation_remote_control_buttons:
+    show_icon: true
+    show_name: false
+    show_state: false
+    icon: mdi:circle
+    styles:
+      card:
+        - background: transparent
+        - box-shadow: none
+        - width: 200%
+        - color: black
+      icon:
+        - width: 100%
+        - color: rgba(255,0,0,0)
+        - background-image: url("/local/community/helios_vallox_ventilation/btn_black.png")
+        - background-size: contain
+        - background-repeat: no-repeat
+        - background-position: center
