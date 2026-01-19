@@ -132,7 +132,17 @@
       unit_of_measurement: ""
       icon: "mdi:alert"
 
-    # no reading - set by vent_functions.py, see also const.py
+    # relative humidity sensor 1 raw value
+    - name: "rh_sensor1_raw"
+      icon: "mdi:water-percent"
+      unit_of_measurement: ""
+
+    # relative humidity sensor 2 raw value
+    - name: "rh_sensor2_raw"
+      icon: "mdi:water-percent"
+      unit_of_measurement: ""
+
+    # no reading - calculated by vent_functions.py, see also const.py
     - name: "fault_text"
       icon: "mdi:alert"
 
