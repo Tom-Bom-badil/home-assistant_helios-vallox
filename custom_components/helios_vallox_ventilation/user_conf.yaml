@@ -99,6 +99,60 @@
 
     - sensor:
 
+    # # DE: Fortlufttemperatur
+    # - name: "temperature_exhaust_air"
+    #   unit_of_measurement: "°C"
+    #   device_class: "temperature"
+    #   state_class: "measurement"
+    #   icon: "mdi:thermometer"
+
+    # # relative humidity sensor 1 raw value
+    # - name: "rh_sensor1_raw"
+    #   icon: "mdi:water-percent"
+    #   unit_of_measurement: ""
+
+    # # relative humidity sensor 2 raw value
+    # - name: "rh_sensor2_raw"
+    #   icon: "mdi:water-percent"
+    #   unit_of_measurement: ""
+
+
+        - # Humidity sensor 1
+          name: "Ventilation rH Sensor 1"
+          state_class: "measurement"
+          device_class: "humidity"
+          unit_of_measurement: "%"
+          state: >-
+            {% set raw = states('sensor.ventilation_rh_sensor1_raw') %}
+            {% if raw in ['unknown', 'unavailable'] %}
+              -1
+            {% else %}
+              {% set reading = raw | int(0) %}
+              {% if reading < 0x33 %}
+                -1
+              {% else %}
+                {{ ((reading - 51) / 2.04) | int }}
+              {% endif %}
+            {% endif %}
+
+        - # Humidity sensor 2
+          name: "Ventilation rH Sensor 2"
+          state_class: "measurement"
+          device_class: "humidity"
+          unit_of_measurement: "%"
+          state: >-
+            {% set raw = states('sensor.ventilation_rh_sensor2_raw') %}
+            {% if raw in ['unknown', 'unavailable'] %}
+              -1
+            {% else %}
+              {% set reading = raw | int(0) %}
+              {% if reading < 0x33 %}
+                -1
+              {% else %}
+                {{ ((reading - 51) / 2.04) | int }}
+              {% endif %}
+            {% endif %}
+
         - # fWS * (-0,001 * Ane² + 1,15 * Ane + 20)
           name: "Ventilation DIN airflow (moisture protection)"
           unit_of_measurement: "m³/h"
