@@ -8,7 +8,7 @@
 
 👉 This is the `Home Assistant` adaptation of my `SmartHomeNG Helios Plugin`, which has been running 24/7 since 2014 on my [previous home automation system](https://github.com/Tom-Bom-badil/helios/wiki). The plugin used to be the very first “unofficial” community-made software for these ventilation models. Over the years, it became the basis for many other system adaptations. As I switched to Home Assistant a while ago, it was a logical step to migrate the plugin to a HA custom integration.
 
-<img width=100% alt="image1" src="https://github.com/user-attachments/assets/d8b97a5a-9df6-4e28-9e1a-657fe4616ce9" />
+<img width=80% alt="pic2" src="https://github.com/user-attachments/assets/73d53c99-5a01-43ab-8190-f305bbff503c" />
 
 <br/>👉 Main features of the integration are:
 - more than 30 predefined entities (common ventilation variables and settings),
