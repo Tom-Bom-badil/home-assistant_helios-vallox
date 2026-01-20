@@ -10,7 +10,7 @@
   ip_address: !secret helios_vallox_ip
   port: !secret helios_vallox_port
 
-  sensors:    # state_class: "measurement" ---> "read-only" register
+  sensors:    # state_class: "measurement" ---> ="read-only" register
 
     # DE Lüftungsstufe
     - name: fanspeed
@@ -65,6 +65,7 @@
       state_class: "measurement"
       icon: "mdi:thermometer"
 
+    # DE: Bypass Aktivierungstemperatur
     - name: "bypass_setpoint"
       unit_of_measurement: "°C"
       min_value: 0
@@ -72,6 +73,7 @@
       factory_setting: 10
       icon: "mdi:thermometer"
 
+    # DE: Heizung Einschalttemperatur
     # set to +5 to activate with pre-heating with defrost defaults below
     - name: "preheat_setpoint"
       unit_of_measurement: "°C"
@@ -80,6 +82,7 @@
       factory_setting: -3
       icon: "mdi:thermometer"
 
+    # DE: Frostmodus Aktivierungstemperatur
     # can be reduced below 0 in case of enthalpy heat exchanger
     - name: "defrost_setpoint"
       unit_of_measurement: "°C"
@@ -88,6 +91,7 @@
       factory_setting: 3
       icon: "mdi:thermometer"
 
+    # DE: Frostmodus Hysterese (Abschaltung)
     - name: "defrost_hysteresis"
       unit_of_measurement: "°C"
       min_value: 1
@@ -95,12 +99,14 @@
       factory_setting: 3
       icon: "mdi:thermometer"
 
+    # DE: Restzeit Stoßlüftung
     - name: "boost_remaining"
       device_class: "duration"
       state_class: "measurement"
       unit_of_measurement: "min"
       icon: "mdi:fan-clock"
     
+    # DE: Zuluftmotor Drehzahl SOLL%
     - name: "input_fan_percent"
       unit_of_measurement: "%"
       min_value: 65
@@ -108,6 +114,7 @@
       factory_setting: 100
       icon: "mdi:percent"
 
+    # DE: Fortluftmotor Drehzahl SOLL%
     - name: "output_fan_percent"
       unit_of_measurement: "%"
       min_value: 65
@@ -115,6 +122,7 @@
       factory_setting: 100
       icon: "mdi:percent"
 
+    # DE: Warnintervall Filter
     - name: "service_interval"
       unit_of_measurement: "months"
       min_value: 1
@@ -122,30 +130,36 @@
       factory_setting: 4
       icon: "mdi:calendar-multiple"
 
+    # DE: Aktuelle Restzeit Filterwarnung
     - name: "service_due_months"
       unit_of_measurement: "months"
       min_value: 0
       icon: "mdi:calendar-end"
 
+    # DE: Fehler-/Störungsnummer
     - name: "fault_number"
       state_class: "measurement"
       unit_of_measurement: ""
       icon: "mdi:alert"
 
-    # relative humidity sensor 1 raw value
+    # DE: Übersetzung Fehlernummer -> Fehlertext
+    # no reading, just definition - calculated by vent_functions.py from const.py
+    - name: "fault_text"
+      icon: "mdi:alert"
+
+    # DE: Feuchtesensor 1 (Rohwert)
+    # relative humidity sensor 1 raw value - thanks to @ragg987
     - name: "rh_sensor1_raw"
       icon: "mdi:water-percent"
       unit_of_measurement: ""
 
-    # relative humidity sensor 2 raw value
+    # DE: Feuchtesensor 2 (Rohwert)
+    # relative humidity sensor 2 raw value - thanks to @ragg987
     - name: "rh_sensor2_raw"
       icon: "mdi:water-percent"
       unit_of_measurement: ""
 
-    # no reading - calculated by vent_functions.py, see also const.py
-    - name: "fault_text"
-      icon: "mdi:alert"
-
+    # DE: Temperaturabfall ausgehend
     # no reading - calculated by vent_functions.py
     - name: "temperature_reduction"
       description: "Heat recovery - reduction of outgoing air temperature"
@@ -154,6 +168,7 @@
       state_class: "measurement"
       icon: "mdi:thermometer"
 
+    # DE: Temperaturgewinn eingehend
     # no reading - calculated by vent_functions.py
     - name: "temperature_gain"
       description: "Heat recovery - gain of incoming air temperature"
@@ -162,6 +177,7 @@
       state_class: "measurement"
       icon: "mdi:thermometer"
 
+    # DE: Temperaturbalance (=eingehend-ausgehend)
     # no reading - calculated by vent_functions.py
     - name: "temperature_balance"
       description: "Difference temperature reduction ./. temperature gain"
@@ -170,6 +186,7 @@
       state_class: "measurement"
       icon: "mdi:thermometer"
 
+    # DE: Effizienz
     # no reading - calculated by vent_functions.py
     - name: "efficiency"
       unit_of_measurement: "%"
@@ -178,61 +195,74 @@
 
   binary_sensors:
 
+    # DE: Indikator Stoßlüftung
     - name: "boost_status"
       icon: "mdi:tooltip-question"
 
+    # DE: Indikator Fehler
     - name: "fault_detected"
       device_class: "problem"
       icon: "mdi:alert"
 
+    # DE: Indikator Filterwarnung
     - name: "clean_filter"
       device_class: "problem"
       icon: "mdi:alert"
 
+    # DE: Indikator Service
     - name: "service_requested"
       device_class: "problem"
       icon: "mdi:alert"
 
+    # DE: Indikator Heizung aktiv
     - name: "post_heating_on"
       device_class: "heat"
       icon: "mdi:heating-coil"
 
   switches:
 
-    # ???? --> validate switching on / off
+    # DE: KWL an / aus
     - name: "powerstate"
       device_class: "power"
       icon: "mdi:power-settings"
 
+    # DE: Warnung CO2
     - name: "co2_indicator"
       device_class: "problem"
       icon: "mdi:alert"
 
+    # DE: Warnung Luftfeuchte
     - name: "rh_indicator"
       device_class: "problem"
       icon: "mdi:alert"
 
+    # DE: Wintermodus / WRG aktiv
     - name: "winter_mode"
       device_class: "switch"
       icon: "mdi:alert"
 
+    # DE: Status Vorheizung
     - name: "preheat_status"
       device_class: "switch"
       icon: "mdi:tooltip-question"
 
+    # DE: Modus bei Stoßlüftung
     # 0=Fireplace mode, 1=Normal boost
     - name: "boost_mode"
       device_class: "switch"
       icon: "mdi:fan-speed-2"
 
+    # DE: Stoßlüftung aktivieren
     - name: "activate_boost"
       device_class: "switch"
       icon: "mdi:fan"
 
+    # DE: Frischluftventilator aus
     - name: "input_fan_off"
       device_class: "power"
       icon: "mdi:fan-off"
 
+    # DE: Fortluftventilator aus
     - name: "output_fan_off"
       device_class: "power"
       icon: "mdi:fan-off"
