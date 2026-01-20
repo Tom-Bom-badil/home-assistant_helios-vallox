@@ -34,6 +34,7 @@
       name: Electrical power consumtion of your pre-/post heating (if installed)
       initial: !secret helios_vallox_heating_power
 
+
   #### Do not change anything below this unless you know what you're doing #####
 
   input_number:
@@ -77,6 +78,7 @@
       initial: 90
       mode: box
 
+
   input_boolean:
 
     # only used internally for manual boost mode
@@ -87,6 +89,7 @@
     ventilation_manual_boost_fireplace_mode:
       icon: mdi:fire
 
+
   timer:
 
     # only used internally for manual boost mode
@@ -95,27 +98,10 @@
       icon: mdi:clock
       duration: "00:30:00"
 
+
   template: # calculations
 
     - sensor:
-
-    # # DE: Fortlufttemperatur
-    # - name: "temperature_exhaust_air"
-    #   unit_of_measurement: "°C"
-    #   device_class: "temperature"
-    #   state_class: "measurement"
-    #   icon: "mdi:thermometer"
-
-    # # relative humidity sensor 1 raw value
-    # - name: "rh_sensor1_raw"
-    #   icon: "mdi:water-percent"
-    #   unit_of_measurement: ""
-
-    # # relative humidity sensor 2 raw value
-    # - name: "rh_sensor2_raw"
-    #   icon: "mdi:water-percent"
-    #   unit_of_measurement: ""
-
 
         - # Humidity sensor 1
           name: "Ventilation rH Sensor 1"
@@ -214,6 +200,7 @@
             {% set fan_percentage = min(input_fan_percent, output_fan_percent) | int(0) %}
             {% set current_power = (default_power * fan_percentage / 100) | int(0) %}
             {{ current_power }}
+
 
   script:
 
