@@ -16,17 +16,17 @@ As I migrated to HA a while ago, it was a logical step to migrate the plugin to 
 
 <br/>👉 Main features of the integration are:
 
-- 30+ predefined entities for common ventilation variables and settings
-- user-defined variables without programming (e.g. CO₂ or humidity sensors)
-- configurable polling interval for all variables (default: 60 s)
+- 70+ predefined entities for common ventilation registers and derived values
+- user-defined entities without programming (e.g. for CO₂ or humidity sensors)
+- configurable polling interval for all registers (default: 60 s)
 - write access to any writable register with plausibility and validity checks
 - extensive derived calculations (airflow, power, efficiency, temperature balance)
-- optional DIN-based calculation of the required house airflow
-- ready-to-use example dashboard available in the Wiki
+- DIN-based calculation of the required 'design' airflow (individual to your house)
+- ready-to-use example dashboard, available for copy/paste in the Wiki
 - mobile-friendly, multi-language software remote replacing the wall-mounted controller
 
-The software-based remote control is especially useful if the original display<br/>
-or the wall-mounted remote is broken or no longer available.
+The software-based remote control is especially useful if your remote control display<br/>
+became unreadable, or the wall-mounted remote itself is broken or no longer available.
 
 The integration has been tested with various RS485 LAN/Wi-Fi adapters.<br/>
 No soldering, no additional voltage or step-down boards required.<br/>
