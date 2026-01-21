@@ -162,16 +162,14 @@
     # DE: CO2 Messwert 1 (Upper, Rohwert)
     # CO2 reading 1
     - name: "co2_reading_upper_byte"
-      state_class: "measurement"
-      unit_of_measurement: ""
       icon: "mdi:molecule-co2"
+      unit_of_measurement: ""
 
     # DE: CO2 Messwert 2 (Lower, Rohwert)
     # CO2 reading 2
     - name: "co2_reading_lower_byte"
-      state_class: "measurement"
-      unit_of_measurement: ""
       icon: "mdi:molecule-co2"
+      unit_of_measurement: ""
 
     # DE: CO2 Stellwert 1 (Upper, Rohwert)
     # CO2 control setpoint 1
