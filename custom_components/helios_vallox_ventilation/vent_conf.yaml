@@ -163,32 +163,32 @@
     # CO2 reading 1
     - name: "co2_reading_upper_byte"
       state_class: "measurement"
-      unit_of_measurement: "ppm"
+      unit_of_measurement: ""
       icon: "mdi:molecule-co2"
 
     # DE: CO2 Messwert 2 (Lower, Rohwert)
     # CO2 reading 2
     - name: "co2_reading_lower_byte"
       state_class: "measurement"
-      unit_of_measurement: "ppm"
+      unit_of_measurement: ""
       icon: "mdi:molecule-co2"
 
     # DE: CO2 Stellwert 1 (Upper, Rohwert)
     # CO2 control setpoint 1
     - name: "co2_setting_upper_byte"
-      unit_of_measurement: "ppm"
+      unit_of_measurement: ""
       icon: "mdi:molecule-co2"
 
     # DE: CO2 Stellwert 2 (Lower, Rohwert)
     # CO2 control setpoint 2
     - name: "co2_setting_lower_byte"
-      unit_of_measurement: "ppm"
+      unit_of_measurement: ""
       icon: "mdi:molecule-co2"
 
     # DE: Temperaturabfall ausgehend
     # no reading - calculated by vent_functions.py
     - name: "temperature_reduction"
-      description: "Heat recovery - reduction of outgoing air temperature"
+      description: "Heat recovery - temperature reduction of outgoing air"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"
@@ -197,7 +197,7 @@
     # DE: Temperaturgewinn eingehend
     # no reading - calculated by vent_functions.py
     - name: "temperature_gain"
-      description: "Heat recovery - gain of incoming air temperature"
+      description: "Heat recovery - temperature gain of incoming air"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"
@@ -206,7 +206,7 @@
     # DE: Temperaturbalance (=eingehend-ausgehend)
     # no reading - calculated by vent_functions.py
     - name: "temperature_balance"
-      description: "Difference temperature reduction ./. temperature gain"
+      description: "Difference temperature gain - temperature reduction"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"
