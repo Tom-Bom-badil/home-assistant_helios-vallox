@@ -159,6 +159,32 @@
       icon: "mdi:water-percent"
       unit_of_measurement: ""
 
+    # DE: CO2 Messwert 1 (Upper, Rohwert)
+    # CO2 reading 1
+    - name: "co2_reading_upper_byte"
+      state_class: "measurement"
+      unit_of_measurement: "ppm"
+      icon: "mdi:molecule-co2"
+
+    # DE: CO2 Messwert 2 (Lower, Rohwert)
+    # CO2 reading 2
+    - name: "co2_reading_lower_byte"
+      state_class: "measurement"
+      unit_of_measurement: "ppm"
+      icon: "mdi:molecule-co2"
+
+    # DE: CO2 Stellwert 1 (Upper, Rohwert)
+    # CO2 control setpoint 1
+    - name: "co2_setting_upper_byte"
+      unit_of_measurement: "ppm"
+      icon: "mdi:molecule-co2"
+
+    # DE: CO2 Stellwert 2 (Lower, Rohwert)
+    # CO2 control setpoint 2
+    - name: "co2_setting_lower_byte"
+      unit_of_measurement: "ppm"
+      icon: "mdi:molecule-co2"
+
     # DE: Temperaturabfall ausgehend
     # no reading - calculated by vent_functions.py
     - name: "temperature_reduction"
@@ -218,6 +244,37 @@
     - name: "post_heating_on"
       device_class: "heat"
       icon: "mdi:heating-coil"
+
+    # DE: CO2-Sensor 1 installiert
+    - name: "co2_sensor1_present"
+      device_class: "connectivity"
+      icon: "mdi:molecule-co2"
+
+    # DE: CO2-Sensor 2 installiert
+    - name: "co2_sensor2_present"
+      device_class: "connectivity"
+      icon: "mdi:molecule-co2"
+
+    # DE: CO2-Sensor 3 installiert
+    - name: "co2_sensor3_present"
+      device_class: "connectivity"
+      icon: "mdi:molecule-co2"
+
+    # DE: CO2-Sensor 4 installiert
+    - name: "co2_sensor4_present"
+      device_class: "connectivity"
+      icon: "mdi:molecule-co2"
+
+    # DE: CO2-Sensor 5 installiert
+    - name: "co2_sensor5_present"
+      device_class: "connectivity"
+      icon: "mdi:molecule-co2"
+
+    # DE: Indikator Service
+    - name: "co2_alarm"
+      device_class: "problem"
+      icon: "mdi:alert"
+
 
   switches:
 
