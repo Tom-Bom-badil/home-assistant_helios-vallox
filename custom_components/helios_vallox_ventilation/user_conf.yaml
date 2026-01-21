@@ -139,12 +139,13 @@
               {% endif %}
             {% endif %}
 
-        - # CO2 reading
+        - # CO2 reading (2 bytes combined)
           name: "Ventilation CO2 concentration"
           unique_id: ventilation_co2_concentration
           state_class: "measurement"
           device_class: "carbon_dioxide"
           unit_of_measurement: "ppm"
+          icon: mdi:molecule-co2
           state: >-
             {% set sensors_present =
               is_state('binary_sensor.ventilation_co2_sensor1_present', 'on') or
@@ -166,13 +167,13 @@
                 {{ (hib * 256 + lob) | int }}
               {% endif %}
             {% endif %}
-          icon: mdi:molecule-co2
 
-        - # CO2 setting
+        - # CO2 setting (2 bytes combined)
           name: "Ventilation CO2 setting"
           unique_id: ventilation_co2_setting
           device_class: "carbon_dioxide"
           unit_of_measurement: "ppm"
+          icon: mdi:molecule-co2
           state: >-
             {% set sensors_present =
               is_state('binary_sensor.ventilation_co2_sensor1_present', 'on') or
@@ -185,7 +186,7 @@
               -1
             {% else %}
               {% set hi = states('sensor.ventilation_co2_setting_upper_byte') %}
-              {% set lo = states('sensor.ventilation_co2_reading_lower_byte') %}
+              {% set lo = states('sensor.ventilation_co2_setting_lower_byte') %}
               {% if hi in ['unknown','unavailable'] or lo in ['unknown','unavailable'] %}
                 -1
               {% else %}
@@ -194,7 +195,6 @@
                 {{ (hib * 256 + lob) | int }}
               {% endif %}
             {% endif %}
-          icon: mdi:molecule-co2
 
         - # fWS * (-0,001 * Ane² + 1,15 * Ane + 20)
           name: "Ventilation DIN airflow (moisture protection)"
