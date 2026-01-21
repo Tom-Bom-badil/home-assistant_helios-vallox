@@ -40,14 +40,14 @@ If your ventilation system has this remote control, it is almost certainly compa
 ![image](https://github.com/user-attachments/assets/9e7d9699-751b-4856-8c68-797182ef8303)
 
 👉 Over the years, users have reported the successful installation for:<br/>
-_`Helios EC 200 Pro R/L`, `Helios EC 300 Pro R/L`, `Helios EC 500 Pro`, `Vallox 130D`,<br/>
-`Vallox 080SE`, `Vallox 090SE`, `Vallox 096SE`, `Vallox 145SE`, `Vallox 910SE`,<br/>
-`Vallox Digit SE`, `Vallo Plus 350SE`, `Vallo Plus 510SE`<br/>
-(the latter requires changing a few register numbers due to different addresses; see [old wiki](https://github.com/Tom-Bom-badil/SmartHomeNG-Helios/wiki))._
+_`Helios EC 200 Pro`, `Helios EC 300 Pro`, `Helios EC 500 Pro`, `Vallox 130D`,<br/>
+`Vallox 080SE`, `Vallox 090SE`, `Vallox 096SE`, `Vallox 121SE`, `Vallox 145SE`,<br/>
+ `Vallox 910SE`, `Vallox Digit SE`, `Vallo Plus 350SE`, `Vallo Plus 510SE`<br/>
+(the 130D requires changing a few register numbers due to different addresses; see [old wiki](https://github.com/Tom-Bom-badil/SmartHomeNG-Helios/wiki))._
 
 👉 According to docs I came across, the following models should also work:<br/>
-_`Vallox 110SE / 121SE / 150 SE / 270SE`, `Vallox Digit SE2`, `Vallox ValloPlus SE500`.<br/>
-(Please report back if you got the integration running on one of these models, thanks in advance!)_
+_`Vallox 110SE / 150 SE / 270SE`, `Vallox Digit SE2`, `Vallox ValloPlus 500SE`.<br/>
+(Please report back if you got it working on one of these models, thanks in advance!)_
 
 ## ⚙️ Installation
 
@@ -68,7 +68,7 @@ The Wiki also contains a 'Tinkerers corner' section with useful hardware and rep
 ✅ If it works for you, please let us know - it's great to hear success stories.<br/>
 📬 Pull requests, improvements and feedback in general are always appreciated!
 
-_Thank you  for using this integration, and for your feedback! 😊_
+_Thank you for using this integration, and for your feedback! 😊_
 
 ---
 
