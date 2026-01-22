@@ -159,10 +159,34 @@
       icon: "mdi:water-percent"
       unit_of_measurement: ""
 
+    # DE: CO2 Messwert 1 (Upper, Rohwert)
+    # CO2 reading 1
+    - name: "co2_reading_upper_byte"
+      icon: "mdi:molecule-co2"
+      unit_of_measurement: ""
+
+    # DE: CO2 Messwert 2 (Lower, Rohwert)
+    # CO2 reading 2
+    - name: "co2_reading_lower_byte"
+      icon: "mdi:molecule-co2"
+      unit_of_measurement: ""
+
+    # DE: CO2 Stellwert 1 (Upper, Rohwert)
+    # CO2 control setpoint 1
+    - name: "co2_setting_upper_byte"
+      unit_of_measurement: ""
+      icon: "mdi:molecule-co2"
+
+    # DE: CO2 Stellwert 2 (Lower, Rohwert)
+    # CO2 control setpoint 2
+    - name: "co2_setting_lower_byte"
+      unit_of_measurement: ""
+      icon: "mdi:molecule-co2"
+
     # DE: Temperaturabfall ausgehend
     # no reading - calculated by vent_functions.py
     - name: "temperature_reduction"
-      description: "Heat recovery - reduction of outgoing air temperature"
+      description: "Heat recovery - temperature reduction of outgoing air"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"
@@ -171,7 +195,7 @@
     # DE: Temperaturgewinn eingehend
     # no reading - calculated by vent_functions.py
     - name: "temperature_gain"
-      description: "Heat recovery - gain of incoming air temperature"
+      description: "Heat recovery - temperature gain of incoming air"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"
@@ -180,7 +204,7 @@
     # DE: Temperaturbalance (=eingehend-ausgehend)
     # no reading - calculated by vent_functions.py
     - name: "temperature_balance"
-      description: "Difference temperature reduction ./. temperature gain"
+      description: "Difference temperature gain - temperature reduction"
       unit_of_measurement: "°C"
       device_class: "temperature"
       state_class: "measurement"
@@ -218,6 +242,37 @@
     - name: "post_heating_on"
       device_class: "heat"
       icon: "mdi:heating-coil"
+
+    # DE: CO2-Sensor 1 installiert
+    - name: "co2_sensor1_present"
+      device_class: "connectivity"
+      icon: "mdi:molecule-co2"
+
+    # DE: CO2-Sensor 2 installiert
+    - name: "co2_sensor2_present"
+      device_class: "connectivity"
+      icon: "mdi:molecule-co2"
+
+    # DE: CO2-Sensor 3 installiert
+    - name: "co2_sensor3_present"
+      device_class: "connectivity"
+      icon: "mdi:molecule-co2"
+
+    # DE: CO2-Sensor 4 installiert
+    - name: "co2_sensor4_present"
+      device_class: "connectivity"
+      icon: "mdi:molecule-co2"
+
+    # DE: CO2-Sensor 5 installiert
+    - name: "co2_sensor5_present"
+      device_class: "connectivity"
+      icon: "mdi:molecule-co2"
+
+    # DE: Indikator Service
+    - name: "co2_alarm"
+      device_class: "problem"
+      icon: "mdi:alert"
+
 
   switches:
 
