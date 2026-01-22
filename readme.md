@@ -6,13 +6,14 @@
 
 ## 📝 Helios Pro / Vallox SE ventilation control (for older RS485 models)
 
-👉 This is the Home-Assistant adaptation of my _SmartHomeNG Helios Plugin_, which has been running 24/7<br/>
-since 2014 on my previous home automation system. That plugin used to be the first community-made<br/>
-software for these ventilation models. Over the years, it became the basis for many other system adaptations.<br/>
+👉 This is the Home-Assistant adaptation of my _SmartHomeNG Helios Plugin_, which<br/>
+has been running 24/7 since 2014 on my previous home automation system. That plugin<br/>
+used to be the first community-made software for these ventilation models. Over the<br/>
+years, it became the basis for many other system adaptations.<br/>
 <br/>
-As I migrated to HA a while ago, it was a logical step to migrate the plugin to a HA custom integration as well.
+As I migrated to HA a while ago, I reworked the plugin to be a HA custom integration.
 
-<img width=80% alt="pic2" src="https://github.com/user-attachments/assets/73d53c99-5a01-43ab-8190-f305bbff503c" />
+<img width=60% alt="pic2" src="https://github.com/user-attachments/assets/73d53c99-5a01-43ab-8190-f305bbff503c" />
 
 <br/>👉 Main features of the integration are:
 
@@ -72,4 +73,5 @@ _Thank you for using this integration, and for your feedback! 😊_
 
 ---
 
-<sub>* Active installations: Analytics numbers are based on HA Analytics opt-in users, estimated to represent less than ¼ of all active HA installations. Click the badge for more info.</sub>
+<sub>* Active installations: Analytics numbers are based on HA Analytics opt-in users,<br/>
+estimated to represent less than ¼ of all active HA installations. Click the badge for more info.</sub>
