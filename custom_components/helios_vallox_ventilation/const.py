@@ -126,5 +126,18 @@ REGISTERS_AND_COILS = {
     # Humidity reading sensor 1. 33H = 0% RH FFH = 100% RH
     "rh_sensor1_raw":          {"varid": 0x2F, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
     # Humidity reading sensor 2. 33H = 0% RH FFH = 100% RH
-    "rh_sensor2_raw":          {"varid": 0x30, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False}
+    "rh_sensor2_raw":          {"varid": 0x30, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
+    # CO2 - installed sensors
+    "co2_sensor1_present":     {"varid": 0x2D, 'type': 'bit',         'bitposition':  1, 'read': True, 'write': False},
+    "co2_sensor2_present":     {"varid": 0x2D, 'type': 'bit',         'bitposition':  2, 'read': True, 'write': False},
+    "co2_sensor3_present":     {"varid": 0x2D, 'type': 'bit',         'bitposition':  3, 'read': True, 'write': False},
+    "co2_sensor4_present":     {"varid": 0x2D, 'type': 'bit',         'bitposition':  4, 'read': True, 'write': False},
+    "co2_sensor5_present":     {"varid": 0x2D, 'type': 'bit',         'bitposition':  5, 'read': True, 'write': False},
+    # CO2 - measurements
+    "co2_reading_upper_byte":  {"varid": 0x2B, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
+    "co2_reading_lower_byte":  {"varid": 0x2C, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
+    "co2_setting_upper_byte":  {"varid": 0xB3, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
+    "co2_setting_lower_byte":  {"varid": 0xB4, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
+    # CO2 - alarm
+    "co2_alarm":               {"varid": 0x6D, 'type': 'bit',         'bitposition':  6, 'read': True, 'write': False}
 }

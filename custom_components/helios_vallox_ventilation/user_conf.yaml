@@ -103,7 +103,7 @@
 
     - sensor:
 
-        - # Humidity sensor 1
+        - # Humidity sensor 1 reading
           name: "Ventilation rH Sensor 1"
           state_class: "measurement"
           device_class: "humidity"
@@ -121,7 +121,7 @@
               {% endif %}
             {% endif %}
 
-        - # Humidity sensor 2
+        - # Humidity sensor 2 reading
           name: "Ventilation rH Sensor 2"
           state_class: "measurement"
           device_class: "humidity"
@@ -136,6 +136,63 @@
                 -1
               {% else %}
                 {{ ((reading - 51) / 2.04) | int }}
+              {% endif %}
+            {% endif %}
+
+        - # CO2 reading (2 bytes combined)
+          name: "Ventilation CO2 concentration"
+          unique_id: ventilation_co2_concentration
+          state_class: "measurement"
+          device_class: "carbon_dioxide"
+          unit_of_measurement: "ppm"
+          icon: mdi:molecule-co2
+          state: >-
+            {% set sensors_present =
+              is_state('binary_sensor.ventilation_co2_sensor1_present', 'on') or
+              is_state('binary_sensor.ventilation_co2_sensor2_present', 'on') or
+              is_state('binary_sensor.ventilation_co2_sensor3_present', 'on') or
+              is_state('binary_sensor.ventilation_co2_sensor4_present', 'on') or
+              is_state('binary_sensor.ventilation_co2_sensor5_present', 'on')
+            %}
+            {% if not sensors_present %}
+              -1
+            {% else %}
+              {% set hi = states('sensor.ventilation_co2_reading_upper_byte') %}
+              {% set lo = states('sensor.ventilation_co2_reading_lower_byte') %}
+              {% if hi in ['unknown','unavailable'] or lo in ['unknown','unavailable'] %}
+                -1
+              {% else %}
+                {% set hib = hi | int %}
+                {% set lob = lo | int %}
+                {{ (hib * 256 + lob) | int }}
+              {% endif %}
+            {% endif %}
+
+        - # CO2 setting (2 bytes combined)
+          name: "Ventilation CO2 setting"
+          unique_id: ventilation_co2_setting
+          device_class: "carbon_dioxide"
+          unit_of_measurement: "ppm"
+          icon: mdi:molecule-co2
+          state: >-
+            {% set sensors_present =
+              is_state('binary_sensor.ventilation_co2_sensor1_present', 'on') or
+              is_state('binary_sensor.ventilation_co2_sensor2_present', 'on') or
+              is_state('binary_sensor.ventilation_co2_sensor3_present', 'on') or
+              is_state('binary_sensor.ventilation_co2_sensor4_present', 'on') or
+              is_state('binary_sensor.ventilation_co2_sensor5_present', 'on')
+            %}
+            {% if not sensors_present %}
+              -1
+            {% else %}
+              {% set hi = states('sensor.ventilation_co2_setting_upper_byte') %}
+              {% set lo = states('sensor.ventilation_co2_setting_lower_byte') %}
+              {% if hi in ['unknown','unavailable'] or lo in ['unknown','unavailable'] %}
+                -1
+              {% else %}
+                {% set hib = hi | int %}
+                {% set lob = lo | int %}
+                {{ (hib * 256 + lob) | int }}
               {% endif %}
             {% endif %}
 
