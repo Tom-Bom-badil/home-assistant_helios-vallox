@@ -33,6 +33,9 @@ async def async_setup(hass: HomeAssistant, config: dict):
     hass.async_create_task(
         async_load_platform(hass, "switch", DOMAIN, {"switches": config[DOMAIN].get("switches", [])}, config)
     )
+    hass.async_create_task(
+        async_load_platform(hass, "number", DOMAIN, {"numbers": config[DOMAIN].get("numbers", [])}, config)
+    )
 
     # Set up periodic data refresh
     async def update_data(_):

@@ -12,31 +12,6 @@
 
   sensors:    # state_class: "measurement" ---> ="read-only" register
 
-    # DE Lüftungsstufe
-    - name: fanspeed
-      description: "Fan speed"
-      min_value: 1
-      max_value: 8
-      icon: "mdi:speedometer-medium"
-
-    # DE Einschaltstufe
-    - name: "initial_fanspeed"
-      description: "Initial fan speed after switching on"
-      unit_of_measurement: "level"
-      min_value: 1
-      max_value: 8
-      factory_setting: 1
-      icon: "mdi:speedometer-slow"
-
-    # DE Maximalstufe
-    - name: "max_fanspeed"
-      description: "Maximum fan speed availabe to remotes"
-      unit_of_measurement: "level"
-      min_value: 1
-      max_value: 8
-      factory_setting: 8
-      icon: "mdi:speedometer"
-
     # DE: Außenlufttemperatur 
     - name: "temperature_outdoor_air"
       unit_of_measurement: "°C"
@@ -65,76 +40,12 @@
       state_class: "measurement"
       icon: "mdi:thermometer"
 
-    # DE: Bypass Aktivierungstemperatur
-    - name: "bypass_setpoint"
-      unit_of_measurement: "°C"
-      min_value: 0
-      max_value: 25
-      factory_setting: 10
-      icon: "mdi:thermometer"
-
-    # DE: Heizung Einschalttemperatur
-    # set to +5 to activate with pre-heating with defrost defaults below
-    - name: "preheat_setpoint"
-      unit_of_measurement: "°C"
-      min_value: -10
-      max_value: 10
-      factory_setting: -3
-      icon: "mdi:thermometer"
-
-    # DE: Frostmodus Aktivierungstemperatur
-    # can be reduced below 0 in case of enthalpy heat exchanger
-    - name: "defrost_setpoint"
-      unit_of_measurement: "°C"
-      min_value: -6
-      max_value: 15
-      factory_setting: 3
-      icon: "mdi:thermometer"
-
-    # DE: Frostmodus Hysterese (Abschaltung)
-    - name: "defrost_hysteresis"
-      unit_of_measurement: "°C"
-      min_value: 1
-      max_value: 10
-      factory_setting: 3
-      icon: "mdi:thermometer"
-
     # DE: Restzeit Stoßlüftung
     - name: "boost_remaining"
       device_class: "duration"
       state_class: "measurement"
       unit_of_measurement: "min"
       icon: "mdi:fan-clock"
-    
-    # DE: Zuluftmotor Drehzahl SOLL%
-    - name: "input_fan_percent"
-      unit_of_measurement: "%"
-      min_value: 65
-      max_value: 100
-      factory_setting: 100
-      icon: "mdi:percent"
-
-    # DE: Fortluftmotor Drehzahl SOLL%
-    - name: "output_fan_percent"
-      unit_of_measurement: "%"
-      min_value: 65
-      max_value: 100
-      factory_setting: 100
-      icon: "mdi:percent"
-
-    # DE: Warnintervall Filter
-    - name: "service_interval"
-      unit_of_measurement: "months"
-      min_value: 1
-      max_value: 12
-      factory_setting: 4
-      icon: "mdi:calendar-multiple"
-
-    # DE: Aktuelle Restzeit Filterwarnung
-    - name: "service_due_months"
-      unit_of_measurement: "months"
-      min_value: 0
-      icon: "mdi:calendar-end"
 
     # DE: Fehler-/Störungsnummer
     - name: "fault_number"
@@ -272,6 +183,104 @@
     - name: "co2_alarm"
       device_class: "problem"
       icon: "mdi:alert"
+
+
+  numbers:
+
+    # DE Lüftungsstufe
+    - name: fanspeed
+      description: "Fan speed"
+      min_value: 1
+      max_value: 8
+      icon: "mdi:speedometer-medium"
+      mode: "slider"
+
+    # DE Einschaltstufe
+    - name: "initial_fanspeed"
+      description: "Initial fan speed after switching on"
+      unit_of_measurement: "level"
+      min_value: 1
+      max_value: 8
+      factory_setting: 1
+      icon: "mdi:speedometer-slow"
+      mode: "slider"
+
+    # DE Maximalstufe
+    - name: "max_fanspeed"
+      description: "Maximum fan speed available to remotes"
+      unit_of_measurement: "level"
+      min_value: 1
+      max_value: 8
+      factory_setting: 8
+      icon: "mdi:speedometer"
+      mode: "slider"
+
+    # DE: Bypass Aktivierungstemperatur
+    - name: "bypass_setpoint"
+      unit_of_measurement: "°C"
+      min_value: 0
+      max_value: 25
+      factory_setting: 10
+      icon: "mdi:thermometer"
+
+    # DE: Heizung Einschalttemperatur
+    # set to +5 to activate with pre-heating with defrost defaults below
+    - name: "preheat_setpoint"
+      unit_of_measurement: "°C"
+      min_value: -10
+      max_value: 10
+      factory_setting: -3
+      icon: "mdi:thermometer"
+
+    # DE: Frostmodus Aktivierungstemperatur
+    # can be reduced below 0 in case of enthalpy heat exchanger
+    - name: "defrost_setpoint"
+      unit_of_measurement: "°C"
+      min_value: -6
+      max_value: 15
+      factory_setting: 3
+      icon: "mdi:thermometer"
+
+    # DE: Frostmodus Hysterese (Abschaltung)
+    - name: "defrost_hysteresis"
+      unit_of_measurement: "°C"
+      min_value: 1
+      max_value: 10
+      factory_setting: 3
+      icon: "mdi:thermometer"
+
+    # DE: Zuluftmotor Drehzahl SOLL%
+    - name: "input_fan_percent"
+      unit_of_measurement: "%"
+      min_value: 65
+      max_value: 100
+      factory_setting: 100
+      icon: "mdi:percent"
+      mode: "slider"
+
+    # DE: Fortluftmotor Drehzahl SOLL%
+    - name: "output_fan_percent"
+      unit_of_measurement: "%"
+      min_value: 65
+      max_value: 100
+      factory_setting: 100
+      icon: "mdi:percent"
+      mode: "slider"
+
+    # DE: Warnintervall Filter
+    - name: "service_interval"
+      unit_of_measurement: "months"
+      min_value: 1
+      max_value: 12
+      factory_setting: 4
+      icon: "mdi:calendar-multiple"
+
+    # DE: Aktuelle Restzeit Filterwarnung
+    - name: "service_due_months"
+      unit_of_measurement: "months"
+      min_value: 0
+      max_value: 12
+      icon: "mdi:calendar-end"
 
 
   switches:

@@ -54,6 +54,25 @@ CONFIG_SCHEMA = vol.Schema(
                         )
                     ],
                 ),
+                vol.Optional("numbers", default=[]): vol.All(
+                    cv.ensure_list,
+                    [
+                        vol.Schema(
+                            {
+                                vol.Required("name"): cv.string,
+                                vol.Optional("description"): cv.string,
+                                vol.Optional("unit_of_measurement"): cv.string,
+                                vol.Optional("device_class"): cv.string,
+                                vol.Optional("min_value"): vol.Coerce(float),
+                                vol.Optional("max_value"): vol.Coerce(float),
+                                vol.Optional("step"): vol.Coerce(float),
+                                vol.Optional("factory_setting"): vol.Coerce(float),
+                                vol.Optional("mode"): cv.string,
+                                vol.Optional("icon"): cv.icon,
+                            }
+                        )
+                    ],
+                ),
             }
         )
     },
