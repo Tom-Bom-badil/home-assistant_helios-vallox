@@ -3,6 +3,11 @@ write_value:
   description: Writes a value to the ventilation system.
   
   fields:
+    entry_id:
+      name: Config entry ID
+      description: The config entry ID of the device to write to.
+      required: true
+      example: "abc123"
     variable:
       name: variable
       description: The variable to write to (e.g., fanspeed, boost_mode).

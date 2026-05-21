@@ -1,0 +1,47 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Helios/Vallox Ventilation",
+        "description": "Enter the IP address and port of your ventilation unit.",
+        "data": {
+          "ip_address": "IP Address",
+          "port": "Port"
+        }
+      },
+      "model": {
+        "title": "Device Model",
+        "description": "Select your ventilation model to pre-populate device parameters, or choose 'Custom' to enter them manually.",
+        "data": {
+          "device_model": "Device Model"
+        }
+      },
+      "house": {
+        "title": "House Parameters",
+        "description": "Enter the parameters for your house.",
+        "data": {
+          "house_area": "Living area (m²)",
+          "house_volume": "House volume (m³)",
+          "isolation_factor": "Isolation factor (0.3 = well insulated, 0.4 = standard)"
+        }
+      },
+      "details": {
+        "title": "Device Parameters",
+        "description": "Configure your ventilation parameters. Values have been pre-populated from the selected model.",
+        "data": {
+          "airflow_per_mode": "Airflow per fan speed (comma-separated, m³/h)",
+          "max_airflow": "Maximum airflow (m³/h)",
+          "power_per_mode": "Power per fan speed (comma-separated, W)",
+          "max_power": "Maximum power (W)",
+          "heating_power": "Pre-/post-heating power (W)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to the ventilation unit. Please check the IP address and port."
+    },
+    "abort": {
+      "already_configured": "This device is already configured."
+    }
+  }
+}

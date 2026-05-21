@@ -7,7 +7,7 @@ import select
 import random
 
 try:
-    from .const import ( # HA
+    from .constants import ( # HA
         REGISTERS_AND_COILS,
         NTC5K_TEMPERATURES,
         BUS_ADDRESSES,
@@ -17,7 +17,7 @@ try:
         COMPONENT_FAULTS
     )
 except ImportError:
-    from const import ( # Shell / CLI for testing
+    from constants import ( # Shell / CLI for testing
         REGISTERS_AND_COILS,
         NTC5K_TEMPERATURES,
         BUS_ADDRESSES,
