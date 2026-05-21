@@ -62,7 +62,6 @@ SWITCH_ENTITIES = [
     {"key": "powerstate", "icon": "mdi:power-settings"},
     {"key": "co2_indicator", "icon": "mdi:alert"},
     {"key": "rh_indicator", "icon": "mdi:alert"},
-    {"key": "winter_mode", "icon": "mdi:alert"},
     {"key": "preheat_status", "icon": "mdi:tooltip-question"},
     {"key": "activate_boost", "icon": "mdi:fan"},
     {"key": "input_fan_off", "icon": "mdi:fan-off"},
@@ -71,4 +70,5 @@ SWITCH_ENTITIES = [
 
 SELECT_ENTITIES = [
     {"key": "boost_mode", "icon": "mdi:fan-speed-2", "options": {0: "Fireplace", 1: "Normal"}},
+    {"key": "winter_mode", "icon": "mdi:snowflake-thermometer", "options": {0: "Summer", 1: "Winter"}},
 ]
