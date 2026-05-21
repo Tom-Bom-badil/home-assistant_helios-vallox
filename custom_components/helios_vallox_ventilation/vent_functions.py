@@ -331,19 +331,21 @@ class HeliosBase:
                 return False
         # Check if value is within allowed limits (HA only, not at CLI!)
         if self._hass:
-            entity = self._hass.states.get(f"sensor.ventilation_{varname}")
-            if entity:
-                min_value = entity.attributes.get("min_value")
-                max_value = entity.attributes.get("max_value")
-                min_value = int(min_value) if isinstance(min_value, (int, float)) else None
-                max_value = int(max_value) if isinstance(max_value, (int, float)) else None
-                self.logger.debug(f"Validating '{varname}': value={value}, min={min_value}, max={max_value}")
-                if min_value is not None and int(value) < min_value:
-                    self.logger.error(f"Writing stopped: {value} below min of {min_value}.")
-                    return False
-                if max_value is not None and int(value) > max_value:
-                    self.logger.error(f"Writing stopped: {value} above max of {max_value}.")
-                    return False
+            entity = self._hass.states.get(f"number.ventilation_{varname}")
+            if not entity:
+                self.logger.error(f"Writing stopped: Entity 'number.ventilation_{varname}' not found.")
+                return False
+            min_value = entity.attributes.get("min_value")
+            max_value = entity.attributes.get("max_value")
+            min_value = int(min_value) if isinstance(min_value, (int, float)) else None
+            max_value = int(max_value) if isinstance(max_value, (int, float)) else None
+            self.logger.debug(f"Validating '{varname}': value={value}, min={min_value}, max={max_value}")
+            if min_value is not None and int(value) < min_value:
+                self.logger.error(f"Writing stopped: {value} below min of {min_value}.")
+                return False
+            if max_value is not None and int(value) > max_value:
+                self.logger.error(f"Writing stopped: {value} above max of {max_value}.")
+                return False
         return True
 
 ###### for CLI (command line) testing only #####################################
