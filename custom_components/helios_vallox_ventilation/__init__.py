@@ -8,14 +8,14 @@ from .schema import SERVICE_WRITE_VALUE_SCHEMA
 
 _LOGGER = logging.getLogger("helios_vallox.__init__")
 
-PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SWITCH, Platform.NUMBER]
+PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SWITCH, Platform.NUMBER, Platform.SELECT]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     ip_address = entry.data[CONF_IP_ADDRESS]
     port = entry.data[CONF_PORT]
 
-    coordinator = HeliosCoordinator(hass, ip_address, port)
+    coordinator = HeliosCoordinator(hass, ip_address, port, config_data=entry.data)
     await coordinator.setup_coordinator()
 
     hass.data.setdefault(DOMAIN, {})

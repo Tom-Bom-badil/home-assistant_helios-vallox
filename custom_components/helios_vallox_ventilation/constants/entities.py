@@ -18,6 +18,16 @@ SENSOR_ENTITIES = [
     {"key": "temperature_gain", "unit": "°C", "device_class": "temperature", "state_class": "measurement", "icon": "mdi:thermometer", "description": "Heat recovery - temperature gain of incoming air"},
     {"key": "temperature_balance", "unit": "°C", "device_class": "temperature", "state_class": "measurement", "icon": "mdi:thermometer", "description": "Difference temperature gain - temperature reduction"},
     {"key": "efficiency", "unit": "%", "device_class": None, "state_class": "measurement", "icon": "mdi:percent"},
+    {"key": "rh_sensor1", "unit": "%", "device_class": "humidity", "state_class": "measurement", "icon": "mdi:water-percent", "description": "Relative humidity sensor 1"},
+    {"key": "rh_sensor2", "unit": "%", "device_class": "humidity", "state_class": "measurement", "icon": "mdi:water-percent", "description": "Relative humidity sensor 2"},
+    {"key": "co2_concentration", "unit": "ppm", "device_class": "carbon_dioxide", "state_class": "measurement", "icon": "mdi:molecule-co2", "description": "CO2 concentration"},
+    {"key": "co2_setting_value", "unit": "ppm", "device_class": "carbon_dioxide", "state_class": None, "icon": "mdi:molecule-co2", "description": "CO2 control setpoint"},
+    {"key": "din_airflow_moisture", "unit": "m³/h", "device_class": None, "state_class": None, "icon": "mdi:fan", "description": "DIN airflow for moisture protection"},
+    {"key": "din_airflow_reduced", "unit": "m³/h", "device_class": None, "state_class": None, "icon": "mdi:fan", "description": "DIN airflow for reduced exchange"},
+    {"key": "din_airflow_normal", "unit": "m³/h", "device_class": None, "state_class": None, "icon": "mdi:fan", "description": "DIN airflow for normal exchange"},
+    {"key": "din_airflow_boost", "unit": "m³/h", "device_class": None, "state_class": None, "icon": "mdi:fan", "description": "DIN airflow for boost exchange"},
+    {"key": "effective_airflow", "unit": "m³/h", "device_class": None, "state_class": "measurement", "icon": "mdi:fan", "description": "Current effective airflow"},
+    {"key": "electrical_power", "unit": "W", "device_class": "power", "state_class": "measurement", "icon": "mdi:flash", "description": "Current electrical power consumption"},
 ]
 
 BINARY_SENSOR_ENTITIES = [
@@ -54,8 +64,11 @@ SWITCH_ENTITIES = [
     {"key": "rh_indicator", "icon": "mdi:alert"},
     {"key": "winter_mode", "icon": "mdi:alert"},
     {"key": "preheat_status", "icon": "mdi:tooltip-question"},
-    {"key": "boost_mode", "icon": "mdi:fan-speed-2"},
     {"key": "activate_boost", "icon": "mdi:fan"},
     {"key": "input_fan_off", "icon": "mdi:fan-off"},
     {"key": "output_fan_off", "icon": "mdi:fan-off"},
+]
+
+SELECT_ENTITIES = [
+    {"key": "boost_mode", "icon": "mdi:fan-speed-2", "options": {0: "Fireplace", 1: "Normal"}},
 ]

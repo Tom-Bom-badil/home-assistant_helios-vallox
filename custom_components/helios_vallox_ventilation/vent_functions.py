@@ -31,13 +31,13 @@ class HeliosBase:
 
     ###### Init ################################################################
 
-    def __init__(self, hass=None, ip=None, port=None, coordinator=None):
+    def __init__(self, hass=None, ip=None, port=None, config_data=None):
         # self.logger = logging.getLogger(__name__)
         self.logger = logging.getLogger("helios_vallox.vent_functions")
         self._hass = hass
         self._ip = ip
         self._port = port
-        self._coordinator = coordinator
+        self._config_data = config_data or {}
         self._socket = None
         self._lock = threading.Lock()
         self._all_values, self._cache = {}, {}
@@ -154,6 +154,69 @@ class HeliosBase:
                 'temperature_balance': temperature_balance,
                 'efficiency': efficiency
             })
+
+        # Humidity sensor conversions (raw byte to %)
+        rh1_raw = all_values.get('rh_sensor1_raw')
+        if rh1_raw is not None and rh1_raw >= 0x33:
+            all_values['rh_sensor1'] = int((rh1_raw - 51) / 2.04)
+        else:
+            all_values['rh_sensor1'] = None
+
+        rh2_raw = all_values.get('rh_sensor2_raw')
+        if rh2_raw is not None and rh2_raw >= 0x33:
+            all_values['rh_sensor2'] = int((rh2_raw - 51) / 2.04)
+        else:
+            all_values['rh_sensor2'] = None
+
+        # CO2 concentration (combine upper + lower byte)
+        co2_hi = all_values.get('co2_reading_upper_byte')
+        co2_lo = all_values.get('co2_reading_lower_byte')
+        co2_sensors_present = any(
+            all_values.get(f'co2_sensor{i}_present') for i in range(1, 6)
+        )
+        if co2_sensors_present and co2_hi is not None and co2_lo is not None:
+            all_values['co2_concentration'] = co2_hi * 256 + co2_lo
+        else:
+            all_values['co2_concentration'] = None
+
+        # CO2 setting (combine upper + lower byte)
+        co2_set_hi = all_values.get('co2_setting_upper_byte')
+        co2_set_lo = all_values.get('co2_setting_lower_byte')
+        if co2_sensors_present and co2_set_hi is not None and co2_set_lo is not None:
+            all_values['co2_setting_value'] = co2_set_hi * 256 + co2_set_lo
+        else:
+            all_values['co2_setting_value'] = None
+
+        # DIN airflow calculations and effective values (require config data)
+        if self._config_data:
+            area = float(self._config_data.get('house_area', 0))
+            isolation = float(self._config_data.get('isolation_factor', 0.3))
+            base_airflow = -0.001 * (area ** 2) + 1.15 * area + 20
+            all_values['din_airflow_moisture'] = int(isolation * base_airflow)
+            all_values['din_airflow_reduced'] = int(0.7 * base_airflow)
+            all_values['din_airflow_normal'] = int(1.0 * base_airflow)
+            all_values['din_airflow_boost'] = int(1.15 * base_airflow)
+
+            # Effective airflow
+            airflow_str = self._config_data.get('airflow_per_mode', '')
+            fanspeed = all_values.get('fanspeed')
+            input_pct = all_values.get('input_fan_percent')
+            output_pct = all_values.get('output_fan_percent')
+
+            if airflow_str and fanspeed is not None and input_pct is not None and output_pct is not None:
+                airflows = [int(x) for x in airflow_str.split(',')]
+                if 0 <= fanspeed < len(airflows):
+                    fan_pct = min(input_pct, output_pct)
+                    all_values['effective_airflow'] = int(airflows[fanspeed] * fan_pct / 100)
+
+            # Electrical power
+            power_str = self._config_data.get('power_per_mode', '')
+            if power_str and fanspeed is not None and input_pct is not None and output_pct is not None:
+                powers = [int(x) for x in power_str.split(',')]
+                if 0 <= fanspeed < len(powers):
+                    fan_pct = min(input_pct, output_pct)
+                    all_values['electrical_power'] = int(powers[fanspeed] * fan_pct / 100)
+
         return all_values
 
     # write to a single register
