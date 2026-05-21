@@ -38,6 +38,7 @@ class HeliosNumber(CoordinatorEntity, NumberEntity):
         self._attr_native_step = number_def.get("step", 1)
         self._attr_icon = number_def.get("icon")
         self._attr_mode = NumberMode.SLIDER if number_def.get("mode") == "slider" else NumberMode.BOX
+        self._attr_entity_registry_enabled_default = number_def.get("enabled_default", True)
         self._description = number_def.get("description")
         self._factory_setting = number_def.get("factory_setting")
         self._entry = entry

@@ -34,6 +34,7 @@ class HeliosBinarySensor(CoordinatorEntity, BinarySensorEntity):
         self._attr_unique_id = f"{entry.entry_id}_{sensor_def['key']}"
         self._attr_device_class = sensor_def.get("device_class")
         self._attr_icon = sensor_def.get("icon")
+        self._attr_entity_registry_enabled_default = sensor_def.get("enabled_default", True)
         self._entry = entry
 
     @property

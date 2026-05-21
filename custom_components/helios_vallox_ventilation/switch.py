@@ -33,6 +33,7 @@ class HeliosSwitch(CoordinatorEntity, SwitchEntity):
         self._attr_name = switch_def["key"]
         self._attr_unique_id = f"{entry.entry_id}_{switch_def['key']}"
         self._attr_icon = switch_def.get("icon")
+        self._attr_entity_registry_enabled_default = switch_def.get("enabled_default", True)
         self._entry = entry
 
     @property

@@ -33,6 +33,7 @@ class HeliosSelect(CoordinatorEntity, SelectEntity):
         self._attr_name = select_def["key"]
         self._attr_unique_id = f"{entry.entry_id}_{select_def['key']}"
         self._attr_icon = select_def.get("icon")
+        self._attr_entity_registry_enabled_default = select_def.get("enabled_default", True)
         self._entry = entry
         # options mapping: raw int value -> display name
         self._value_to_name = select_def["options"]  # e.g. {0: "Fireplace", 1: "Normal"}

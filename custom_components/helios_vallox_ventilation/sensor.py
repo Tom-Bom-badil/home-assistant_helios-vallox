@@ -36,6 +36,7 @@ class HeliosSensor(CoordinatorEntity, SensorEntity):
         self._attr_device_class = sensor_def.get("device_class")
         self._attr_state_class = sensor_def.get("state_class")
         self._attr_icon = sensor_def.get("icon")
+        self._attr_entity_registry_enabled_default = sensor_def.get("enabled_default", True)
         self._description = sensor_def.get("description")
         self._entry = entry
 
