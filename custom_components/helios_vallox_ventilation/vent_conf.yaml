@@ -198,7 +198,6 @@
     # DE Einschaltstufe
     - name: "initial_fanspeed"
       description: "Initial fan speed after switching on"
-      unit_of_measurement: "level"
       min_value: 1
       max_value: 8
       factory_setting: 1
@@ -208,7 +207,6 @@
     # DE Maximalstufe
     - name: "max_fanspeed"
       description: "Maximum fan speed available to remotes"
-      unit_of_measurement: "level"
       min_value: 1
       max_value: 8
       factory_setting: 8
