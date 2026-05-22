@@ -30,7 +30,7 @@ class HeliosNumber(CoordinatorEntity, NumberEntity):
         super().__init__(coordinator.coordinator)
         self._coordinator = coordinator
         self._variable = number_def["key"]
-        self._attr_name = number_def["key"]
+        self._attr_translation_key = number_def["key"]
         self._attr_unique_id = f"{entry.entry_id}_{number_def['key']}"
         self._attr_native_unit_of_measurement = number_def.get("unit")
         self._attr_native_min_value = number_def.get("min", 0)

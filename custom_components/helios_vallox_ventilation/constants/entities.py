@@ -7,7 +7,9 @@ SENSOR_ENTITIES = [
     {"key": "temperature_exhaust_air", "unit": "°C", "device_class": "temperature", "state_class": "measurement", "icon": "mdi:thermometer"},
     {"key": "boost_remaining", "unit": "min", "device_class": "duration", "state_class": "measurement", "icon": "mdi:fan-clock"},
     {"key": "fault_number", "unit": None, "device_class": None, "state_class": "measurement", "icon": "mdi:alert", "enabled_default": False},
-    {"key": "fault_text", "unit": None, "device_class": None, "state_class": None, "icon": "mdi:alert"},
+    {"key": "fault_text", "unit": None, "device_class": "enum", "state_class": None, "icon": "mdi:alert",
+     "options": ["none", "supply_air_sensor_fault", "co2_alarm", "outdoor_air_sensor_fault",
+                 "exhaust_air_sensor_fault", "water_coil_frost_warning", "extract_air_sensor_fault"]},
     {"key": "rh_sensor1_raw", "unit": None, "device_class": None, "state_class": None, "icon": "mdi:water-percent", "enabled_default": False},
     {"key": "rh_sensor2_raw", "unit": None, "device_class": None, "state_class": None, "icon": "mdi:water-percent", "enabled_default": False},
     {"key": "co2_reading_upper_byte", "unit": None, "device_class": None, "state_class": None, "icon": "mdi:molecule-co2", "enabled_default": False},
@@ -69,6 +71,6 @@ SWITCH_ENTITIES = [
 ]
 
 SELECT_ENTITIES = [
-    {"key": "boost_mode", "icon": "mdi:fan-speed-2", "options": {0: "Fireplace", 1: "Normal"}},
-    {"key": "winter_mode", "icon": "mdi:snowflake-thermometer", "options": {0: "Summer", 1: "Winter"}},
+    {"key": "boost_mode", "icon": "mdi:fan-speed-2", "options": {1: "normal", 0: "fireplace"}},
+    {"key": "winter_mode", "icon": "mdi:snowflake-thermometer", "options": {0: "summer", 1: "winter"}},
 ]

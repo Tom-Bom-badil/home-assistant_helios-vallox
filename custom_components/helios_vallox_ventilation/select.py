@@ -30,7 +30,7 @@ class HeliosSelect(CoordinatorEntity, SelectEntity):
         super().__init__(coordinator.coordinator)
         self._coordinator = coordinator
         self._variable = select_def["key"]
-        self._attr_name = select_def["key"]
+        self._attr_translation_key = select_def["key"]
         self._attr_unique_id = f"{entry.entry_id}_{select_def['key']}"
         self._attr_icon = select_def.get("icon")
         self._attr_entity_registry_enabled_default = select_def.get("enabled_default", True)

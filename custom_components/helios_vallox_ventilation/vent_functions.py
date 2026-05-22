@@ -12,8 +12,6 @@ try:
         NTC5K_TEMPERATURES,
         BUS_ADDRESSES,
         FANSPEEDS,
-        DEFAULT_IP,
-        DEFAULT_PORT,
         COMPONENT_FAULTS
     )
 except ImportError:
@@ -22,8 +20,6 @@ except ImportError:
         NTC5K_TEMPERATURES,
         BUS_ADDRESSES,
         FANSPEEDS,
-        DEFAULT_IP,
-        DEFAULT_PORT,
         COMPONENT_FAULTS
     )
 
@@ -129,7 +125,7 @@ class HeliosBase:
         # add fault text (if any)
         fault_number = all_values.get('fault_number')
         if fault_number is not None:
-            all_values['fault_text'] = COMPONENT_FAULTS.get(fault_number, "-")
+            all_values['fault_text'] = COMPONENT_FAULTS.get(fault_number, "none")
         # add heat recovery and efficiency values (all temps required for this)
         keys = {
             'temperature_outdoor_air', 'temperature_supply_air',
@@ -415,8 +411,8 @@ class HeliosBase:
 
 def main():
     parser = argparse.ArgumentParser(description="Test HeliosBase functions")
-    parser.add_argument("--ip", type=str, default=DEFAULT_IP, help="IP address of the device")
-    parser.add_argument("--port", type=int, default=DEFAULT_PORT, help="Port of the device")
+    parser.add_argument("--ip", type=str, help="IP address of the device")
+    parser.add_argument("--port", type=int, help="Port of the device")
     parser.add_argument("--read", type=str, help="Variable name to read")
     parser.add_argument("--readall", action="store_true", help="Read all values")
     parser.add_argument("--write", nargs=2, metavar=("varname", "value"), help="Variable name and value to write")

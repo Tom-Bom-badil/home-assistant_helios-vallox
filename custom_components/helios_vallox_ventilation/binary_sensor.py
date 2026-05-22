@@ -30,7 +30,7 @@ class HeliosBinarySensor(CoordinatorEntity, BinarySensorEntity):
         super().__init__(coordinator.coordinator)
         self._coordinator = coordinator
         self._variable = sensor_def["key"]
-        self._attr_name = sensor_def["key"]
+        self._attr_translation_key = sensor_def["key"]
         self._attr_unique_id = f"{entry.entry_id}_{sensor_def['key']}"
         self._attr_device_class = sensor_def.get("device_class")
         self._attr_icon = sensor_def.get("icon")

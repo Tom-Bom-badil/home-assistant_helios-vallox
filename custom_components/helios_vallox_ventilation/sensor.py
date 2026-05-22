@@ -30,12 +30,14 @@ class HeliosSensor(CoordinatorEntity, SensorEntity):
         super().__init__(coordinator.coordinator)
         self._coordinator = coordinator
         self._variable = sensor_def["key"]
-        self._attr_name = sensor_def["key"]
+        self._attr_translation_key = sensor_def["key"]
         self._attr_unique_id = f"{entry.entry_id}_{sensor_def['key']}"
         self._attr_native_unit_of_measurement = sensor_def.get("unit")
         self._attr_device_class = sensor_def.get("device_class")
         self._attr_state_class = sensor_def.get("state_class")
         self._attr_icon = sensor_def.get("icon")
+        if sensor_def.get("device_class") == "enum":
+            self._attr_options = sensor_def.get("options", [])
         self._attr_entity_registry_enabled_default = sensor_def.get("enabled_default", True)
         self._description = sensor_def.get("description")
         self._entry = entry
