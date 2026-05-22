@@ -1,0 +1,157 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "1 / 4 - Helios/Vallox Ventilation",
+        "description": "Enter the IP address and port of your ventilation unit.",
+        "data": {
+          "ip_address": "IP Address",
+          "port": "Port"
+        },
+        "data_description": {
+          "ip_address": "The IP address of the Serial to Ethernet converter on your local network.",
+          "port": "The TCP port."
+        }
+      },
+      "model": {
+        "title": "2 / 4 - Device Model",
+        "description": "Select your ventilation model to pre-populate device parameters, or choose 'Custom' to enter them manually.",
+        "data": {
+          "device_model": "Device Model"
+        },
+        "data_description": {
+          "device_model": "Selecting a model will pre-fill the device parameters in the next step."
+        }
+      },
+      "details": {
+        "title": "3 / 4 - Device Parameters",
+        "description": "Configure your ventilation parameters. Values have been pre-populated from the selected model.",
+        "data": {
+          "airflow_per_mode": "Airflow per fan speed (m³/h)",
+          "power_per_mode": "Power per fan speed (W)",
+          "heating_power": "Pre-/post-heating power (W)"
+        },
+        "data_description": {
+          "airflow_per_mode": "Exactly 8 integer values separated by commas, one per fan speed level (1-8), e.g. '60,90,120,150,180,210,240,270'.",
+          "power_per_mode": "Exactly 8 integer values separated by commas, one per fan speed level (1-8), e.g. '10,18,25,34,50,75,117,185'.",
+          "heating_power": "The power of the pre-heater or post-heater element in watts."
+        }
+      },
+      "house": {
+        "title": "4 / 4 - House Parameters",
+        "description": "Enter the parameters of your house to calculate ventilation requirements.",
+        "data": {
+          "house_area": "Living area (m²)",
+          "house_volume": "House volume (m³)",
+          "isolation_factor": "Isolation factor"
+        },
+        "data_description": {
+          "house_area": "The total heated living area of your house in square meters.",
+          "house_volume": "The total air volume of your house in cubic meters.",
+          "isolation_factor": "Insulation quality factor: 0.3 = well insulated, 0.4 = standard, 0.5 = poorly insulated."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to the ventilation unit. Please check the IP address and port.",
+      "invalid_csv_count": "Exactly 8 values are required (one per fan speed level), separated by commas.",
+      "invalid_csv_values": "All values must be integers."
+    },
+    "abort": {
+      "already_configured": "This device is already configured."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature_outdoor_air": { "name": "Outdoor air temperature" },
+      "temperature_supply_air": { "name": "Supply air temperature" },
+      "temperature_extract_air": { "name": "Extract air temperature" },
+      "temperature_exhaust_air": { "name": "Exhaust air temperature" },
+      "boost_remaining": { "name": "Boost remaining" },
+      "fault_number": { "name": "Fault number" },
+      "fault_text": {
+        "name": "Fault text",
+        "state": {
+          "none": "No fault",
+          "supply_air_sensor_fault": "Supply air sensor fault",
+          "co2_alarm": "CO\u2082 alarm",
+          "outdoor_air_sensor_fault": "Outdoor air sensor fault",
+          "exhaust_air_sensor_fault": "Exhaust air sensor fault",
+          "water_coil_frost_warning": "Water coil frost warning",
+          "extract_air_sensor_fault": "Extract air sensor fault"
+        }
+      },
+      "rh_sensor1_raw": { "name": "Humidity sensor 1 (raw)" },
+      "rh_sensor2_raw": { "name": "Humidity sensor 2 (raw)" },
+      "co2_reading_upper_byte": { "name": "CO\u2082 reading (upper byte)" },
+      "co2_reading_lower_byte": { "name": "CO\u2082 reading (lower byte)" },
+      "co2_setting_upper_byte": { "name": "CO\u2082 setting (upper byte)" },
+      "co2_setting_lower_byte": { "name": "CO\u2082 setting (lower byte)" },
+      "temperature_reduction": { "name": "Temperature reduction" },
+      "temperature_gain": { "name": "Temperature gain" },
+      "temperature_balance": { "name": "Temperature balance" },
+      "efficiency": { "name": "Heat recovery efficiency" },
+      "rh_sensor1": { "name": "Humidity sensor 1" },
+      "rh_sensor2": { "name": "Humidity sensor 2" },
+      "co2_concentration": { "name": "CO\u2082 concentration" },
+      "co2_setting_value": { "name": "CO\u2082 setpoint" },
+      "din_airflow_moisture": { "name": "DIN airflow (moisture protection)" },
+      "din_airflow_reduced": { "name": "DIN airflow (reduced)" },
+      "din_airflow_normal": { "name": "DIN airflow (normal)" },
+      "din_airflow_boost": { "name": "DIN airflow (boost)" },
+      "effective_airflow": { "name": "Effective airflow" },
+      "electrical_power": { "name": "Electrical power" }
+    },
+    "binary_sensor": {
+      "boost_status": { "name": "Boost status" },
+      "fault_detected": { "name": "Fault detected" },
+      "clean_filter": { "name": "Filter cleaning required" },
+      "service_requested": { "name": "Service requested" },
+      "post_heating_on": { "name": "Post-heating active" },
+      "co2_sensor1_present": { "name": "CO\u2082 sensor 1 present" },
+      "co2_sensor2_present": { "name": "CO\u2082 sensor 2 present" },
+      "co2_sensor3_present": { "name": "CO\u2082 sensor 3 present" },
+      "co2_sensor4_present": { "name": "CO\u2082 sensor 4 present" },
+      "co2_sensor5_present": { "name": "CO\u2082 sensor 5 present" },
+      "co2_alarm": { "name": "CO\u2082 alarm" }
+    },
+    "number": {
+      "fanspeed": { "name": "Fan speed" },
+      "initial_fanspeed": { "name": "Initial fan speed" },
+      "max_fanspeed": { "name": "Maximum fan speed" },
+      "bypass_setpoint": { "name": "Bypass setpoint" },
+      "preheat_setpoint": { "name": "Pre-heat setpoint" },
+      "defrost_setpoint": { "name": "Defrost setpoint" },
+      "defrost_hysteresis": { "name": "Defrost hysteresis" },
+      "input_fan_percent": { "name": "Input fan speed" },
+      "output_fan_percent": { "name": "Output fan speed" },
+      "service_interval": { "name": "Service interval" },
+      "service_due_months": { "name": "Service due in" }
+    },
+    "switch": {
+      "powerstate": { "name": "Power" },
+      "co2_indicator": { "name": "CO\u2082 indicator" },
+      "rh_indicator": { "name": "Humidity indicator" },
+      "preheat_status": { "name": "Pre-heating" },
+      "activate_boost": { "name": "Activate boost" },
+      "input_fan_off": { "name": "Input fan off" },
+      "output_fan_off": { "name": "Output fan off" }
+    },
+    "select": {
+      "boost_mode": {
+        "name": "Boost mode",
+        "state": {
+          "fireplace": "Fireplace",
+          "normal": "Normal"
+        }
+      },
+      "winter_mode": {
+        "name": "Season mode",
+        "state": {
+          "summer": "Summer",
+          "winter": "Winter"
+        }
+      }
+    }
+  }
+}

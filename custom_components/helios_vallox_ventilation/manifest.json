@@ -2,6 +2,7 @@
     "domain": "helios_vallox_ventilation",
     "name": "Helios Pro / Vallox SE Ventilation",
     "codeowners": ["@Tom-Bom-badil"],
+    "config_flow": true,
     "dependencies": [],
     "documentation": "https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki",
     "iot_class": "local_polling",

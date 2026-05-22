@@ -11,12 +11,12 @@ _LOGGER = logging.getLogger("helios_vallox.coordinator")
 class HeliosCoordinator:
 
     # Initialize data update coordinator
-    def __init__(self, hass: HomeAssistant, ip: str, port: int):
+    def __init__(self, hass: HomeAssistant, ip: str, port: int, config_data: dict = None):
         self._hass = hass
         self._ip = ip
         self._port = port
         self._lock = asyncio.Lock()
-        self._helios = HeliosBase(hass, ip, port)
+        self._helios = HeliosBase(hass, ip, port, config_data=config_data)
         self._coordinator = DataUpdateCoordinator(
             hass,
             _LOGGER,

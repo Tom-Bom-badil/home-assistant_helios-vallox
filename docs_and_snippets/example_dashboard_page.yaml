@@ -216,10 +216,43 @@ sections:
                   transform: translate(-50%, -50%)
               - name: C Button
                 type: custom:button-card
-                template: ventilation_remote_control_leds
-                entity: switch.ventilation_winter_mode
+                entity: select.ventilation_winter_mode
+                show_icon: true
+                show_name: false
+                show_state: false
+                icon: mdi:circle
                 tap_action:
-                  action: toggle
+                  action: call-service
+                  service: select.select_option
+                  service_data:
+                    entity_id: select.ventilation_winter_mode
+                    option: |
+                      [[[
+                        return entity.state === 'Winter' ? 'Summer' : 'Winter';
+                      ]]]
+                state:
+                  - value: 'Winter'
+                    styles:
+                      icon:
+                        - background-image: >-
+                            url("/local/community/helios_vallox_ventilation/btn_green_on.png")
+                  - value: 'Summer'
+                    styles:
+                      icon:
+                        - background-image: >-
+                            url("/local/community/helios_vallox_ventilation/btn_green_off.png")
+                styles:
+                  card:
+                    - background: transparent
+                    - box-shadow: none
+                    - width: 200%
+                    - color: black
+                  icon:
+                    - width: 100%
+                    - color: rgba(255,0,0,0)
+                    - background-size: contain
+                    - background-repeat: no-repeat
+                    - background-position: center
                 style:
                   top: 45%
                   left: 78%
@@ -556,14 +589,14 @@ sections:
                     - padding: 1%
                   grid:
                     - grid-template-areas: |
-                        'boost_settings boost_settings'
-                        'fireplace start_stop'
+                        'boost_status boost_status'
+                        'boost_mode start_stop'
                     - gap: .5em
                   custom_fields:
-                    boost_settings:
+                    boost_status:
                       - background-color: transparent
                       - margin-bottom: 10px
-                    fireplace:
+                    boost_mode:
                       - justify-self: start
                       - align-self: center
                     start_stop:
@@ -572,9 +605,13 @@ sections:
                       - margin-right: 10px
                       - background-color: transparent
                 custom_fields:
-                  boost_settings:
+                  boost_status:
                     card:
                       type: custom:button-card
+                      entity: binary_sensor.ventilation_boost_status
+                      show_icon: true
+                      show_name: true
+                      icon: mdi:fan
                       name: |
                         [[[
                           const KEY="helios.i18n.display";
@@ -584,171 +621,43 @@ sections:
                             const lang = d?.lang || "de";
                             s = d?.strings?.[lang] || d?.strings?.de || {};
                           } catch (e) {}
-                          if(states['input_boolean.ventilation_manual_boost_active'].state === 'on') {
-                            const orig = parseInt(states['input_number.ventilation_manual_boost_original_fanspeed'].state);
+                          if(entity.state === 'on') {
+                            const remaining = states['sensor.ventilation_boost_remaining']?.state || '?';
                             return '<h1 style="margin-top: -0.2em; margin-bottom: 0.25em;">' +
                                     (s.boost_active || "Active") +
                                    '</h1>' +
                                    '<div style="color: black; margin-top: -0.5em;">' +
-                                    (s.boost_back_to_speed_prefix || 'Back to fan speed "') +
-                                    orig +
-                                    (s.boost_back_to_speed_suffix || '" in') +
+                                    remaining + ' ' + (s.label_minutes || "Minutes") +
                                    '</div>';
                           }
                           return ' ';
                         ]]]
                       styles:
-                        grid:
-                          - grid-template-areas: |
-                              "fanspeed"
-                              "duration"
-                              "timer"
-                          - height: 7em
                         card:
                           - background: none
                           - border-radius: 12px
                           - box-shadow: |
                               [[[
-                                if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+                                if(entity.state === 'on')
                                   return 'inset 0px 0px 10px 2px #5CCA03'
                                 else
                                   return 'none';
-                              ]]]          
+                              ]]]
                           - color: black
                           - border: 1px lightgrey solid
-                          - margin-top: 10px
+                          - height: 5em
+                        icon:
+                          - color: |
+                              [[[
+                                return entity.state === 'on' ? '#5CCA03' : 'lightgrey';
+                              ]]]
                         name:
-                          - color: "#5CCA03"
-                          - position: absolute
-                          - top: 2em
-                          - left: 0
-                          - right: 0
-                          - width: 100%
-                          - text-align: center
-                        custom_fields:
-                          fanspeed:
-                            - background-color: transparent
-                            - display: |
-                                [[[
-                                  if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
-                                    return 'none';
-                                ]]]
-                            - margin-left: 10px
-                            - margin-right: 10px
-                          duration:
-                            - background-color: transparent
-                            - margin-top: 10px
-                            - display: |
-                                [[[
-                                  if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
-                                    return 'none';
-                                ]]]
-                            - margin-left: 10px
-                            - margin-right: 10px
-                          timer:
-                            - color: black
-                            - background: "#5CCA03"
-                            - border-radius: 12px
-                            - margin-left: 0.5em
-                            - margin-right: 0.5em
-                            - font-size: 2em
-                            - display: |
-                                [[[
-                                  if(states['input_boolean.ventilation_manual_boost_active'].state === 'off')
-                                    return 'none';
-                                ]]]
-                      custom_fields:
-                        fanspeed:
-                          card:
-                            name: |
+                          - color: |
                               [[[
-                                const KEY="helios.i18n.display";
-                                try {
-                                  const d = JSON.parse(localStorage.getItem(KEY));
-                                  const lang = d?.lang || "de";
-                                  const s = d?.strings?.[lang] || d?.strings?.de || {};
-                                  return s.label_fanspeed || "Fan speed";
-                                } catch (e) { return "Fan speed"; }
+                                return entity.state === 'on' ? '#5CCA03' : 'black';
                               ]]]
-                            type: tile
-                            entity: input_number.ventilation_manual_boost_level
-                            show_entity_picture: true
-                            hide_state: true
-                            features_position: inline
-                            features:
-                              - type: numeric-input
-                                style: buttons
-                            card_mod:
-                              style: |
-                                ha-card { 
-                                    background: #5CCA03;
-                                    color: black;
-                                    --primary-text-color: black;
-                                    --ha-card-border-radius: 12px;
-                                }
-                                ha-state-icon {
-                                  color: black;
-                                }
-                                ha-tile-icon {}
-                        duration:
-                          card:
-                            name: |
-                              [[[
-                                const KEY="helios.i18n.display";
-                                try {
-                                  const d = JSON.parse(localStorage.getItem(KEY));
-                                  const lang = d?.lang || "de";
-                                  const s = d?.strings?.[lang] || d?.strings?.de || {};
-                                  return s.label_minutes || "Minutes";
-                                } catch (e) { return "Minutes"; }
-                              ]]]
-                            type: tile
-                            entity: input_number.ventilation_manual_boost_time
-                            show_entity_picture: true
-                            hide_state: true
-                            features_position: inline
-                            features:
-                              - type: numeric-input
-                                style: buttons
-                            card_mod:
-                              style: |
-                                ha-card { 
-                                    background: #5CCA03;
-                                    color: black;
-                                    --primary-text-color: black;
-                                    --ha-card-border-radius: 12px;
-                                }
-                                ha-state-icon {
-                                  color: black;
-                                }
-                                ha-tile-icon {}
-                        timer:
-                          card:
-                            type: tile
-                            entity: timer.ventilation_manual_boost_timer
-                            name: " "
-                            show_entity_picture: false
-                            show_name: false
-                            card_mod:
-                              style: |
-                                ha-card {
-                                  color: black;
-                                  background: none;
-                                  border: none;
-                                  box-shadow: none;
-                                  padding: 0;
-                                  display: flex;
-                                  text-align: center;
-                                  justify-content: center;
-                                  align-items: center;
-                                }
-                                ha-state-icon,
-                                ha-tile-icon,
-                                ha-tile-name,
-                                ha-progress-bar {
-                                  display: none !important;
-                                }
-                  fireplace:
+                          - font-weight: 600
+                  boost_mode:
                     card:
                       type: custom:button-card
                       name: |
@@ -761,21 +670,29 @@ sections:
                             return s.label_fireplace || "Fireplace mode";
                           } catch (e) { return "Fireplace mode"; }
                         ]]]
-                      entity: input_boolean.ventilation_manual_boost_fireplace_mode
+                      entity: select.ventilation_boost_mode
                       show_icon: true
                       show_name: true
                       show_state: false
+                      icon: mdi:fire
                       state:
-                        - value: "on"
+                        - value: "Fireplace"
                           styles:
                             icon:
                               - color: "#5CCA03"
-                        - value: "off"
+                        - value: "Normal"
                           styles:
                             icon:
                               - color: lightgrey
                       tap_action:
-                        action: toggle
+                        action: call-service
+                        service: select.select_option
+                        service_data:
+                          entity_id: select.ventilation_boost_mode
+                          option: |
+                            [[[
+                              return entity.state === 'Fireplace' ? 'Normal' : 'Fireplace';
+                            ]]]
                       styles:
                         card:
                           - background: transparent
@@ -783,11 +700,6 @@ sections:
                           - box-shadow: none
                           - padding: 0px
                           - margin: 0px
-                          - display: |
-                              [[[
-                                if(states['input_boolean.ventilation_manual_boost_active'].state === 'on')
-                                  return 'none';
-                              ]]]
                         grid:
                           - grid-template-areas: "\"i n\""
                           - grid-template-columns: min-content auto
@@ -807,20 +719,14 @@ sections:
                   start_stop:
                     card:
                       type: custom:button-card
+                      entity: switch.ventilation_activate_boost
                       show_name: true
                       show_icon: false
-                      icon: mdi:play
                       tap_action:
-                        action: call-service
-                        service: |
-                          [[[
-                            return (states['input_boolean.ventilation_manual_boost_active'].state === 'on')
-                              ? 'script.ventilation_stop_manual_boost'
-                              : 'script.ventilation_start_manual_boost';
-                          ]]]        
+                        action: toggle
                       name: |
                         [[[
-                          return (states['input_boolean.ventilation_manual_boost_active'].state === 'on')
+                          return entity.state === 'on'
                             ? '⏹ Stop'
                             : 'Start ⏵';
                         ]]]
@@ -1369,12 +1275,7 @@ sections:
                   name: Energieverbrauch
                   entity: sensor.ventilation_electrical_power
                   min: 0
-                  max: |
-                    [[[
-                      let all = JSON.parse("[" + states['input_text.ventilation_conf_power_per_mode'].state + "]");
-                      let mode = parseInt(states['sensor.ventilation_fanspeed'].state);
-                      return all[8];
-                    ]]]
+                  max: 300
                   needle: true
                   severity:
                     green: 0

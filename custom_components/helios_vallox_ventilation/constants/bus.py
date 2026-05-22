@@ -3,10 +3,6 @@ import array
 # domain
 DOMAIN = "helios_vallox_ventilation"
 
-# default network address and port
-DEFAULT_IP = "192.168.178.36"
-DEFAULT_PORT = 502
-
 # mapping for the four NTC5k temperature sensors
 NTC5K_TEMPERATURES = array.array(
     "i",
@@ -49,13 +45,13 @@ FANSPEEDS = {
 
 # mapping error messages / faults
 COMPONENT_FAULTS = {
-    0:  '-',
-    5:  'Supply air sensor fault',
-    6:  'CO2 Alarm',
-    7:  'Outdoor air sensor fault',
-    8:  'Exhaust air sensor fault',
-    9:  'Water coil frost warning',
-    10: 'Extract air sensor fault'
+    0:  'none',
+    5:  'supply_air_sensor_fault',
+    6:  'co2_alarm',
+    7:  'outdoor_air_sensor_fault',
+    8:  'exhaust_air_sensor_fault',
+    9:  'water_coil_frost_warning',
+    10: 'extract_air_sensor_fault'
 }
 
 # mapping for registers and coils

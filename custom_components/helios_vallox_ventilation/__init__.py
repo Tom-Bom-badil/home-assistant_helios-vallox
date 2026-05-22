@@ -1,65 +1,54 @@
 import logging
-from .const import DOMAIN
-from .schema import CONFIG_SCHEMA
-from .coordinator import HeliosCoordinator
-from datetime import timedelta
-from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.discovery import async_load_platform
-from homeassistant.helpers.event import async_track_time_interval
+from homeassistant.const import CONF_IP_ADDRESS, CONF_PORT, Platform
+from homeassistant.core import HomeAssistant
+from .constants import DOMAIN
+from .coordinator import HeliosCoordinator
+from .schema import SERVICE_WRITE_VALUE_SCHEMA
 
-# _LOGGER = logging.getLogger(__name__)   # too long, shortening
 _LOGGER = logging.getLogger("helios_vallox.__init__")
 
-async def async_setup(hass: HomeAssistant, config: dict):
+PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SWITCH, Platform.NUMBER, Platform.SELECT]
 
-    # Validate and load configuration
-    config = CONFIG_SCHEMA(config)
-    ip_address = config[DOMAIN].get("ip_address", "192.168.178.36")
-    port = config[DOMAIN].get("port", 502)
 
-    # Initialize and setup coordinator
-    coordinator = HeliosCoordinator(hass, ip_address, port)
-    hass.data[DOMAIN] = {"coordinator": coordinator, "entities": []}
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    ip_address = entry.data[CONF_IP_ADDRESS]
+    port = entry.data[CONF_PORT]
+
+    coordinator = HeliosCoordinator(hass, ip_address, port, config_data=entry.data)
     await coordinator.setup_coordinator()
 
-    # Load entity platforms
-    hass.async_create_task(
-        async_load_platform(hass, "sensor", DOMAIN, {"sensors": config[DOMAIN].get("sensors", [])}, config)
-    )
-    hass.async_create_task(
-        async_load_platform(hass, "binary_sensor", DOMAIN, {"binary_sensors": config[DOMAIN].get("binary_sensors", [])}, config)
-    )
-    hass.async_create_task(
-        async_load_platform(hass, "switch", DOMAIN, {"switches": config[DOMAIN].get("switches", [])}, config)
-    )
-    hass.async_create_task(
-        async_load_platform(hass, "number", DOMAIN, {"numbers": config[DOMAIN].get("numbers", [])}, config)
-    )
+    hass.data.setdefault(DOMAIN, {})
+    hass.data[DOMAIN][entry.entry_id] = coordinator
 
-    # Set up periodic data refresh
-    async def update_data(_):
-        try:
-            await coordinator._coordinator.async_request_refresh()
-        except Exception as e:
-            _LOGGER.error(f"Error during data refresh: {e}", exc_info=True)
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
-    # Register and manage the write service
-    async def handle_write_service(call):
-        try:
-            await hass.async_add_executor_job(coordinator.write_value, call.data["variable"], call.data["value"])
-        except Exception as e:
-            _LOGGER.error(f"Error handling write service: {e}", exc_info=True)
-    hass.services.async_register(DOMAIN, "write_value", handle_write_service, schema=CONFIG_SCHEMA)
+    # Register write service (once per domain)
+    if not hass.services.has_service(DOMAIN, "write_value"):
+        async def handle_write_service(call):
+            target_entry_id = call.data["entry_id"]
+            coord = hass.data[DOMAIN].get(target_entry_id)
+            if coord is None:
+                _LOGGER.error(f"No device found for entry_id: {target_entry_id}")
+                return
+            try:
+                await hass.async_add_executor_job(
+                    coord.write_value, call.data["variable"], call.data["value"]
+                )
+            except Exception as e:
+                _LOGGER.error(f"Error handling write service: {e}", exc_info=True)
 
-    # Initialization done
+        hass.services.async_register(
+            DOMAIN, "write_value", handle_write_service, schema=SERVICE_WRITE_VALUE_SCHEMA
+        )
+
     return True
 
-# Setup from config
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
-    return await async_setup(hass, entry.data)
 
-# Unload integration
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
-    hass.data.pop(DOMAIN, None)
-    return True
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    if unload_ok:
+        hass.data[DOMAIN].pop(entry.entry_id)
+        if not hass.data[DOMAIN]:
+            hass.services.async_remove(DOMAIN, "write_value")
+    return unload_ok
