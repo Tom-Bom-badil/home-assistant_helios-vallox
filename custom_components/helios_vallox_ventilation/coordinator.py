@@ -47,9 +47,9 @@ class HeliosCoordinator:
             return {}
 
     # Write a single register
-    def write_value(self, variable, value):
+    def write_value(self, variable, value, min_value=None, max_value=None):
         try:
-            result = self._helios.writeValue(variable, value)
+            result = self._helios.writeValue(variable, value, min_value, max_value)
             if result:
                 new_data = self._coordinator.data.copy() if self._coordinator.data else {}
                 new_data[variable] = value
