@@ -394,8 +394,8 @@ class HeliosBase:
             if not entity:
                 self.logger.error(f"Writing stopped: Entity 'number.ventilation_{varname}' not found.")
                 return False
-            min_value = entity.attributes.get("min_value")
-            max_value = entity.attributes.get("max_value")
+            min_value = entity.attributes.get("min")
+            max_value = entity.attributes.get("max")
             min_value = int(min_value) if isinstance(min_value, (int, float)) else None
             max_value = int(max_value) if isinstance(max_value, (int, float)) else None
             self.logger.debug(f"Validating '{varname}': value={value}, min={min_value}, max={max_value}")
