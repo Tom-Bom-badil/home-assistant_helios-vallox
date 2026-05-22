@@ -330,7 +330,7 @@ class HeliosBase:
                 self.logger.error(f"Writing stopped: '{value}' is not an integer.")
                 return False
         # Check if value is within allowed limits (HA only, not at CLI!)
-        if self._hass:
+        if self._hass and REGISTERS_AND_COILS[varname]["type"] != "bit":
             entity = self._hass.states.get(f"number.ventilation_{varname}")
             if not entity:
                 self.logger.error(f"Writing stopped: Entity 'number.ventilation_{varname}' not found.")
