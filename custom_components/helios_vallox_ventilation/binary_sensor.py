@@ -1,67 +1,54 @@
 import logging
 from homeassistant.components.binary_sensor import BinarySensorEntity
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from .const import DOMAIN
-# _LOGGER = logging.getLogger(__name__)
+from .constants import DOMAIN, BINARY_SENSOR_ENTITIES, CONF_DEVICE_MODEL, CUSTOM_MODEL
+
 _LOGGER = logging.getLogger("helios_vallox.binary_sensor")
 
-# platform setup
-async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
-    if discovery_info is None:
-        return
-    coordinator = hass.data[DOMAIN]["coordinator"]
-    entities = []
-    binary_sensor_config = discovery_info.get("binary_sensors", [])
-    for sensor in binary_sensor_config:
-        name = sensor.get("name")
-        if not name:
-            _LOGGER.warning("Binary sensor configuration missing 'name'. Skipping entry.")
-            continue
-        entities.append(
-            HeliosBinarySensor(
-                name=name,
-                variable=name,
-                coordinator=coordinator,
-                icon=sensor.get("icon"),
-                unique_id=f"ventilation_{name}",
-                description=sensor.get("description"),
-                device_class=sensor.get("device_class"),
-            )
-        )
-    async_add_entities(entities)
-    hass.data.setdefault("ventilation_entities", []).extend(entities)
 
-# binary sensor class
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    coordinator = hass.data[DOMAIN][entry.entry_id]
+    entities = [
+        HeliosBinarySensor(coordinator, entry, sensor_def)
+        for sensor_def in BINARY_SENSOR_ENTITIES
+    ]
+    async_add_entities(entities)
+
+
 class HeliosBinarySensor(CoordinatorEntity, BinarySensorEntity):
-    def __init__(
-        self,
-        name,
-        variable,
-        coordinator,
-        icon=None,
-        unique_id=None,
-        description=None,
-        device_class=None,
-    ):
+    _attr_has_entity_name = True
+
+    def __init__(self, coordinator, entry, sensor_def):
         super().__init__(coordinator.coordinator)
-        self._attr_name = f"Ventilation {name}"
-        self._variable = variable
         self._coordinator = coordinator
-        self._attr_icon = icon
-        self._attr_unique_id = unique_id
-        self._attr_description = description
-        self._attr_device_class = device_class
+        self._variable = sensor_def["key"]
+        self._attr_translation_key = sensor_def["key"]
+        self._attr_unique_id = f"{entry.entry_id}_{sensor_def['key']}"
+        self._attr_device_class = sensor_def.get("device_class")
+        self._attr_icon = sensor_def.get("icon")
+        self._attr_entity_registry_enabled_default = sensor_def.get("enabled_default", True)
+        self._entry = entry
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        model = self._entry.data.get(CONF_DEVICE_MODEL, CUSTOM_MODEL)
+        return DeviceInfo(
+            identifiers={(DOMAIN, self._entry.entry_id)},
+            name=f"{model} Ventilation",
+            manufacturer="Helios/Vallox",
+            model=model,
+        )
 
     @property
     def is_on(self):
+        if self.coordinator.data is None:
+            return None
         return bool(self.coordinator.data.get(self._variable))
-
-    # additional state attributes
-    @property
-    def extra_state_attributes(self):
-        return {k: v for k, v in {"description": self._attr_description}.items() if v}
-
-    # add entity and subscribe to updates
-    async def async_added_to_hass(self):
-        await super().async_added_to_hass()
-        self.async_on_remove(self.coordinator.async_add_listener(self.async_write_ha_state))
