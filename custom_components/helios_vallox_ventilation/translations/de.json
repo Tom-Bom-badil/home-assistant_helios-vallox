@@ -1,0 +1,157 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "1 / 4 - Helios/Vallox Lüftungsanlage",
+        "description": "Geben Sie die IP-Adresse und den Port Ihrer Lüftungsanlage ein.",
+        "data": {
+          "ip_address": "IP-Adresse",
+          "port": "Port"
+        },
+        "data_description": {
+          "ip_address": "Die IP-Adresse des Seriell-zu-Ethernet-Konverters in Ihrem lokalen Netzwerk.",
+          "port": "Der TCP-Port."
+        }
+      },
+      "model": {
+        "title": "2 / 4 - Gerätemodell",
+        "description": "Wählen Sie Ihr Lüftungsmodell zur automatischen Vorbelegung der Parameter oder 'Benutzerdefiniert' für manuelle Eingabe.",
+        "data": {
+          "device_model": "Gerätemodell"
+        },
+        "data_description": {
+          "device_model": "Die Auswahl eines Modells belegt die Geräteparameter im nächsten Schritt vor."
+        }
+      },
+      "details": {
+        "title": "3 / 4 - Geräteparameter",
+        "description": "Konfigurieren Sie die Lüftungsparameter. Die Werte wurden anhand des gewählten Modells vorbelegt.",
+        "data": {
+          "airflow_per_mode": "Luftmenge pro Lüftungsstufe (m³/h)",
+          "power_per_mode": "Leistung pro Lüftungsstufe (W)",
+          "heating_power": "Vor-/Nachheizleistung (W)"
+        },
+        "data_description": {
+          "airflow_per_mode": "Genau 8 ganzzahlige Werte, kommagetrennt, je einer pro Lüftungsstufe (1–8), z. B. '60,90,120,150,180,210,240,270'.",
+          "power_per_mode": "Genau 8 ganzzahlige Werte, kommagetrennt, je einer pro Lüftungsstufe (1–8), z. B. '10,18,25,34,50,75,117,185'.",
+          "heating_power": "Leistung des Vor- oder Nachheizers in Watt."
+        }
+      },
+      "house": {
+        "title": "4 / 4 - Gebäudeparameter",
+        "description": "Geben Sie die Parameter Ihres Gebäudes zur Berechnung des Lüftungsbedarfs ein.",
+        "data": {
+          "house_area": "Wohnfläche (m²)",
+          "house_volume": "Gebäudevolumen (m³)",
+          "isolation_factor": "Dämmfaktor"
+        },
+        "data_description": {
+          "house_area": "Die gesamte beheizte Wohnfläche in Quadratmetern.",
+          "house_volume": "Das gesamte Luftvolumen des Gebäudes in Kubikmetern.",
+          "isolation_factor": "Dämmqualität: 0,3 = gut gedämmt, 0,4 = Standard, 0,5 = schlecht gedämmt."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zur Lüftungsanlage nicht möglich. Bitte IP-Adresse und Port prüfen.",
+      "invalid_csv_count": "Es werden genau 8 Werte benötigt (je einer pro Lüftungsstufe), kommagetrennt.",
+      "invalid_csv_values": "Alle Werte müssen ganze Zahlen sein."
+    },
+    "abort": {
+      "already_configured": "Dieses Gerät ist bereits konfiguriert."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature_outdoor_air": { "name": "Außenlufttemperatur" },
+      "temperature_supply_air": { "name": "Zulufttemperatur" },
+      "temperature_extract_air": { "name": "Ablufttemperatur" },
+      "temperature_exhaust_air": { "name": "Fortlufttemperatur" },
+      "boost_remaining": { "name": "Restzeit Stoßlüftung" },
+      "fault_number": { "name": "Fehler-/Störungsnummer" },
+      "fault_text": {
+        "name": "Fehlertext",
+        "state": {
+          "none": "Kein Fehler",
+          "supply_air_sensor_fault": "Zuluft-Sensorfehler",
+          "co2_alarm": "CO\u2082-Alarm",
+          "outdoor_air_sensor_fault": "Außenluft-Sensorfehler",
+          "exhaust_air_sensor_fault": "Fortluft-Sensorfehler",
+          "water_coil_frost_warning": "Frostwarnung Wasserregister",
+          "extract_air_sensor_fault": "Abluft-Sensorfehler"
+        }
+      },
+      "rh_sensor1_raw": { "name": "Feuchtesensor 1 (Rohwert)" },
+      "rh_sensor2_raw": { "name": "Feuchtesensor 2 (Rohwert)" },
+      "co2_reading_upper_byte": { "name": "CO\u2082-Messwert (oberes Byte)" },
+      "co2_reading_lower_byte": { "name": "CO\u2082-Messwert (unteres Byte)" },
+      "co2_setting_upper_byte": { "name": "CO\u2082-Stellwert (oberes Byte)" },
+      "co2_setting_lower_byte": { "name": "CO\u2082-Stellwert (unteres Byte)" },
+      "temperature_reduction": { "name": "Temperaturabfall ausgehend" },
+      "temperature_gain": { "name": "Temperaturgewinn eingehend" },
+      "temperature_balance": { "name": "Temperaturbilanz" },
+      "efficiency": { "name": "Effizienz Wärmerückgewinnung" },
+      "rh_sensor1": { "name": "Feuchtesensor 1" },
+      "rh_sensor2": { "name": "Feuchtesensor 2" },
+      "co2_concentration": { "name": "CO\u2082-Konzentration" },
+      "co2_setting_value": { "name": "CO\u2082-Sollwert" },
+      "din_airflow_moisture": { "name": "DIN-Luftmenge (Feuchteschutz)" },
+      "din_airflow_reduced": { "name": "DIN-Luftmenge (Reduziert)" },
+      "din_airflow_normal": { "name": "DIN-Luftmenge (Normal)" },
+      "din_airflow_boost": { "name": "DIN-Luftmenge (Stoßlüftung)" },
+      "effective_airflow": { "name": "Aktuelle Luftmenge" },
+      "electrical_power": { "name": "Elektrische Leistung" }
+    },
+    "binary_sensor": {
+      "boost_status": { "name": "Indikator Stoßlüftung" },
+      "fault_detected": { "name": "Indikator Fehler" },
+      "clean_filter": { "name": "Indikator Filterwarnung" },
+      "service_requested": { "name": "Indikator Service" },
+      "post_heating_on": { "name": "Indikator Heizung aktiv" },
+      "co2_sensor1_present": { "name": "CO\u2082-Sensor 1 installiert" },
+      "co2_sensor2_present": { "name": "CO\u2082-Sensor 2 installiert" },
+      "co2_sensor3_present": { "name": "CO\u2082-Sensor 3 installiert" },
+      "co2_sensor4_present": { "name": "CO\u2082-Sensor 4 installiert" },
+      "co2_sensor5_present": { "name": "CO\u2082-Sensor 5 installiert" },
+      "co2_alarm": { "name": "CO\u2082-Alarm" }
+    },
+    "number": {
+      "fanspeed": { "name": "Lüftungsstufe" },
+      "initial_fanspeed": { "name": "Einschaltstufe" },
+      "max_fanspeed": { "name": "Maximalstufe" },
+      "bypass_setpoint": { "name": "Bypass-Aktivierungstemperatur" },
+      "preheat_setpoint": { "name": "Heizung-Einschalttemperatur" },
+      "defrost_setpoint": { "name": "Frostmodus-Aktivierungstemperatur" },
+      "defrost_hysteresis": { "name": "Frostmodus-Hysterese" },
+      "input_fan_percent": { "name": "Zuluftmotor Drehzahl SOLL" },
+      "output_fan_percent": { "name": "Fortluftmotor Drehzahl SOLL" },
+      "service_interval": { "name": "Warnintervall Filter" },
+      "service_due_months": { "name": "Restzeit Filterwarnung" }
+    },
+    "switch": {
+      "powerstate": { "name": "KWL an/aus" },
+      "co2_indicator": { "name": "Warnung CO\u2082" },
+      "rh_indicator": { "name": "Warnung Luftfeuchte" },
+      "preheat_status": { "name": "Status Vorheizung" },
+      "activate_boost": { "name": "Stoßlüftung aktivieren" },
+      "input_fan_off": { "name": "Frischluftventilator aus" },
+      "output_fan_off": { "name": "Fortluftventilator aus" }
+    },
+    "select": {
+      "boost_mode": {
+        "name": "Modus bei Stoßlüftung",
+        "state": {
+          "fireplace": "Kaminmodus",
+          "normal": "Normal"
+        }
+      },
+      "winter_mode": {
+        "name": "Wintermodus / WRG aktiv",
+        "state": {
+          "summer": "Sommer",
+          "winter": "Winter"
+        }
+      }
+    }
+  }
+}
