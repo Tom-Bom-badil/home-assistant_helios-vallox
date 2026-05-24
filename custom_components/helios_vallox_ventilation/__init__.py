@@ -1,4 +1,4 @@
-import logging
+import os, shutil, logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_IP_ADDRESS, CONF_PORT, Platform
 from homeassistant.core import HomeAssistant
@@ -9,6 +9,53 @@ from .schema import SERVICE_WRITE_VALUE_SCHEMA
 _LOGGER = logging.getLogger("helios_vallox.__init__")
 
 PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SWITCH, Platform.NUMBER, Platform.SELECT]
+
+
+async def async_install_frontend_files(hass: HomeAssistant) -> None:
+    """Copy dashboard frontend files to /www/community/helios_vallox_ventilation if needed."""
+
+    def _install() -> None:
+        source_dir = hass.config.path("custom_components", DOMAIN, "frontend")
+        target_dir = hass.config.path("www", "community", DOMAIN)
+
+        if not os.path.isdir(source_dir):
+            _LOGGER.debug(
+                "[Helios/Vallox] Frontend source folder not found: %s",
+                source_dir,
+            )
+            return
+
+        os.makedirs(target_dir, exist_ok=True)
+
+        for entry in os.scandir(source_dir):
+            if not entry.is_file():
+                continue
+
+            src = entry.path
+            dst = os.path.join(target_dir, entry.name)
+
+            if os.path.isfile(dst):
+                try:
+                    if os.path.getsize(src) == os.path.getsize(dst):
+                        _LOGGER.debug(
+                            "[Helios/Vallox] Skipping frontend file (already up to date): %s",
+                            entry.name,
+                        )
+                        continue
+                except OSError as err:
+                    _LOGGER.debug(
+                        "[Helios/Vallox] Size check failed for %s: %s",
+                        entry.name,
+                        err,
+                    )
+
+            shutil.copy2(src, dst)
+            _LOGGER.debug(
+                "[Helios/Vallox] Copied frontend file: %s",
+                entry.name,
+            )
+
+    await hass.async_add_executor_job(_install)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -22,6 +69,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = coordinator
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
+    # Copy ready-made frontend files for Lovelace
+    await async_install_frontend_files(hass)
 
     # Register write service (once per domain)
     if not hass.services.has_service(DOMAIN, "write_value"):
