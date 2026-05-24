@@ -10,7 +10,8 @@ from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.util import slugify
 from .device_info import (
     build_device_info,
-    build_suggested_object_id,
+    build_entity_id,
+    get_localized_entity_name,
     get_entity_prefix,
 )
 from .constants import (
@@ -21,6 +22,7 @@ from .constants import (
     LOVELACE_DEVICE_SELECT_UNIQUE_ID,
     LOVELACE_DEVICE_SELECT_OBJECT_ID,
 )
+
 
 _LOGGER = logging.getLogger("helios_vallox.select")
 
@@ -191,6 +193,7 @@ class HeliosSelect(CoordinatorEntity, SelectEntity):
         self._variable = select_def["key"]
         self._attr_translation_key = select_def["key"]
         self._attr_unique_id = f"{entry.entry_id}_{select_def['key']}"
+        self.entity_id = build_entity_id("select", entry, select_def["key"])
         self._attr_icon = select_def.get("icon")
         self._attr_entity_registry_enabled_default = select_def.get("enabled_default", True)
         self._entry = entry
@@ -205,9 +208,9 @@ class HeliosSelect(CoordinatorEntity, SelectEntity):
         return build_device_info(self._entry)
 
     @property
-    def suggested_object_id(self) -> str:
-        """Return a stable English object id for the entity registry."""
-        return build_suggested_object_id(self._entry, self._variable)
+    def name(self) -> str:
+        """Return localized entity name without device prefix."""
+        return get_localized_entity_name(self, "select", self._variable)
 
     @property
     def current_option(self) -> str | None:

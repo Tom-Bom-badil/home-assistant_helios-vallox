@@ -5,8 +5,13 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from .device_info import build_device_info, build_suggested_object_id
 from .constants import DOMAIN, SENSOR_ENTITIES
+from .device_info import (
+    build_device_info,
+    build_entity_id,
+    get_localized_entity_name,
+)
+
 
 _LOGGER = logging.getLogger("helios_vallox.sensor")
 
@@ -25,7 +30,8 @@ async def async_setup_entry(
 
 
 class HeliosSensor(CoordinatorEntity, SensorEntity):
-    _attr_has_entity_name = True
+
+    _attr_has_entity_name = False
 
     def __init__(self, coordinator, entry, sensor_def):
         super().__init__(coordinator.coordinator)
@@ -33,6 +39,7 @@ class HeliosSensor(CoordinatorEntity, SensorEntity):
         self._variable = sensor_def["key"]
         self._attr_translation_key = sensor_def["key"]
         self._attr_unique_id = f"{entry.entry_id}_{sensor_def['key']}"
+        self.entity_id = build_entity_id("sensor", entry, sensor_def["key"])
         self._attr_native_unit_of_measurement = sensor_def.get("unit")
         self._attr_device_class = sensor_def.get("device_class")
         self._attr_state_class = sensor_def.get("state_class")
@@ -49,9 +56,9 @@ class HeliosSensor(CoordinatorEntity, SensorEntity):
         return build_device_info(self._entry)
 
     @property
-    def suggested_object_id(self) -> str:
-        """Return a stable English object id for the entity registry."""
-        return build_suggested_object_id(self._entry, self._variable)
+    def name(self) -> str:
+        """Return localized entity name without device prefix."""
+        return get_localized_entity_name(self, "sensor", self._variable)
 
     @property
     def native_value(self):

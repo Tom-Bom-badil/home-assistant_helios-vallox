@@ -5,8 +5,13 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from .device_info import build_device_info, build_suggested_object_id
 from .constants import DOMAIN, SWITCH_ENTITIES
+from .device_info import (
+    build_device_info,
+    build_entity_id,
+    get_localized_entity_name,
+)
+
 
 _LOGGER = logging.getLogger("helios_vallox.switch")
 
@@ -25,7 +30,8 @@ async def async_setup_entry(
 
 
 class HeliosSwitch(CoordinatorEntity, SwitchEntity):
-    _attr_has_entity_name = True
+
+    _attr_has_entity_name = False
 
     def __init__(self, coordinator, entry, switch_def):
         super().__init__(coordinator.coordinator)
@@ -33,6 +39,7 @@ class HeliosSwitch(CoordinatorEntity, SwitchEntity):
         self._variable = switch_def["key"]
         self._attr_translation_key = switch_def["key"]
         self._attr_unique_id = f"{entry.entry_id}_{switch_def['key']}"
+        self.entity_id = build_entity_id("switch", entry, switch_def["key"])
         self._attr_icon = switch_def.get("icon")
         self._attr_entity_registry_enabled_default = switch_def.get("enabled_default", True)
         self._entry = entry
@@ -43,9 +50,9 @@ class HeliosSwitch(CoordinatorEntity, SwitchEntity):
         return build_device_info(self._entry)
 
     @property
-    def suggested_object_id(self) -> str:
-        """Return a stable English object id for the entity registry."""
-        return build_suggested_object_id(self._entry, self._variable)
+    def name(self) -> str:
+        """Return localized entity name without device prefix."""
+        return get_localized_entity_name(self, "switch", self._variable)
 
     @property
     def is_on(self):

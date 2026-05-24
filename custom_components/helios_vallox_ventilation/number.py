@@ -5,8 +5,13 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from .device_info import build_device_info, build_suggested_object_id
 from .constants import DOMAIN, NUMBER_ENTITIES
+from .device_info import (
+    build_device_info,
+    build_entity_id,
+    get_localized_entity_name,
+)
+
 
 _LOGGER = logging.getLogger("helios_vallox.number")
 
@@ -25,7 +30,7 @@ async def async_setup_entry(
 
 
 class HeliosNumber(CoordinatorEntity, NumberEntity):
-    _attr_has_entity_name = True
+    _attr_has_entity_name = False
 
     def __init__(self, coordinator, entry, number_def):
         super().__init__(coordinator.coordinator)
@@ -33,6 +38,7 @@ class HeliosNumber(CoordinatorEntity, NumberEntity):
         self._variable = number_def["key"]
         self._attr_translation_key = number_def["key"]
         self._attr_unique_id = f"{entry.entry_id}_{number_def['key']}"
+        self.entity_id = build_entity_id("number", entry, number_def["key"])
         self._attr_native_unit_of_measurement = number_def.get("unit")
         self._attr_native_min_value = number_def.get("min", 0)
         self._attr_native_max_value = number_def.get("max", 255)
@@ -50,9 +56,9 @@ class HeliosNumber(CoordinatorEntity, NumberEntity):
         return build_device_info(self._entry)
 
     @property
-    def suggested_object_id(self) -> str:
-        """Return a stable English object id for the entity registry."""
-        return build_suggested_object_id(self._entry, self._variable)
+    def name(self) -> str:
+        """Return localized entity name without device prefix."""
+        return get_localized_entity_name(self, "number", self._variable)
 
     @property
     def native_value(self):
