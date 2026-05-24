@@ -11,6 +11,9 @@ CONF_DEVICE_MODEL = "device_model"
 
 CUSTOM_MODEL = "Custom / None"
 
+CONF_ENTITY_PREFIX = "entity_prefix"
+DEFAULT_ENTITY_PREFIX = "Ventilation"
+
 # Predefined device profiles
 DEVICE_PRESETS = {
     "Vallox 90 SE": {

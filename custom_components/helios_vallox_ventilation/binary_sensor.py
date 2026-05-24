@@ -5,7 +5,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from .constants import DOMAIN, BINARY_SENSOR_ENTITIES, CONF_DEVICE_MODEL, CUSTOM_MODEL
+from .device_info import build_device_info, build_suggested_object_id
+from .constants import DOMAIN, BINARY_SENSOR_ENTITIES
 
 _LOGGER = logging.getLogger("helios_vallox.binary_sensor")
 
@@ -38,14 +39,14 @@ class HeliosBinarySensor(CoordinatorEntity, BinarySensorEntity):
         self._entry = entry
 
     @property
+    def suggested_object_id(self) -> str:
+        """Return a stable English object id for the entity registry."""
+        return build_suggested_object_id(self._entry, self._variable)
+
+    @property
     def device_info(self) -> DeviceInfo:
-        model = self._entry.data.get(CONF_DEVICE_MODEL, CUSTOM_MODEL)
-        return DeviceInfo(
-            identifiers={(DOMAIN, self._entry.entry_id)},
-            name=f"{model} Ventilation",
-            manufacturer="Helios/Vallox",
-            model=model,
-        )
+        """Return device information."""
+        return build_device_info(self._entry)
 
     @property
     def is_on(self):

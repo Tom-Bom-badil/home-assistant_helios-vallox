@@ -14,12 +14,14 @@
         }
       },
       "model": {
-        "title": "2 / 4 - Device Model",
-        "description": "Select your ventilation model to pre-populate device parameters, or choose 'Custom' to enter them manually.",
+        "title": "2 / 4 - Device",
+        "description": "Enter a unique device name and select your ventilation model to pre-populate device parameters, or choose 'Custom' to enter them manually.",
         "data": {
+          "entity_prefix": "Unique device name",
           "device_model": "Device Model"
         },
         "data_description": {
+          "entity_prefix": "Unique name used as prefix for this ventilation unit, e.g. 'Ventilation', 'KWL Keller' or 'KWL Upstairs'.",
           "device_model": "Selecting a model will pre-fill the device parameters in the next step."
         }
       },
@@ -55,7 +57,9 @@
     "error": {
       "cannot_connect": "Cannot connect to the ventilation unit. Please check the IP address and port.",
       "invalid_csv_count": "Exactly 8 values are required (one per fan speed level), separated by commas.",
-      "invalid_csv_values": "All values must be integers."
+      "invalid_csv_values": "All values must be integers.",
+      "invalid_entity_prefix": "Please enter a valid unique device name.",
+      "entity_prefix_in_use": "This device name is already used by another configured Helios/Vallox device."
     },
     "abort": {
       "already_configured": "This device is already configured."
