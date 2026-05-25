@@ -100,7 +100,8 @@
       "din_airflow_normal": { "name": "DIN-Luftmenge (Normal)" },
       "din_airflow_boost": { "name": "DIN-Luftmenge (Stoßlüftung)" },
       "effective_airflow": { "name": "Aktuelle Luftmenge" },
-      "electrical_power": { "name": "Elektrische Leistung" }
+      "electrical_power": { "name": "Elektrische Leistung" },
+      "configuration": { "name": "Konfiguration" }
     },
     "binary_sensor": {
       "boost_status": { "name": "Indikator Stoßlüftung" },

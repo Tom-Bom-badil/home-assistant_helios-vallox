@@ -100,7 +100,8 @@
       "din_airflow_normal": { "name": "DIN airflow (normal)" },
       "din_airflow_boost": { "name": "DIN airflow (boost)" },
       "effective_airflow": { "name": "Effective airflow" },
-      "electrical_power": { "name": "Electrical power" }
+      "electrical_power": { "name": "Electrical power" },
+      "configuration": { "name": "Configuration" }
     },
     "binary_sensor": {
       "boost_status": { "name": "Boost status" },
