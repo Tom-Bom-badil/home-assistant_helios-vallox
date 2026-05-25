@@ -14,21 +14,23 @@
         }
       },
       "model": {
-        "title": "2 / 4 - Gerätemodell",
-        "description": "Wählen Sie Ihr Lüftungsmodell zur automatischen Vorbelegung der Parameter oder 'Benutzerdefiniert' für manuelle Eingabe.",
+        "title": "2 / 4 - Gerätename und -modell",
+        "description": "Wählen Sie einen eindeutigen Gerätenamen und Ihr Lüftungsmodell (oder 'Benutzerdefiniert' für manuelle Eingabe).",
         "data": {
+          "entity_prefix": "Eindeutiger Name (z.B. 'KWL')",
           "device_model": "Gerätemodell"
         },
         "data_description": {
+          "entity_prefix": "Darf bei mehreren Geräten nur einmal existieren - dann z.B. 'KWL Keller', 'KWL oben' usw.",
           "device_model": "Die Auswahl eines Modells belegt die Geräteparameter im nächsten Schritt vor."
         }
       },
       "details": {
         "title": "3 / 4 - Geräteparameter",
-        "description": "Konfigurieren Sie die Lüftungsparameter. Die Werte wurden anhand des gewählten Modells vorbelegt.",
+        "description": "Konfigurieren Sie die Lüftungsparameter. Die Werte wurden anhand des gewählten Modells vorbelegt. Kann später erneut geändert werden.",
         "data": {
           "airflow_per_mode": "Luftmenge pro Lüftungsstufe (m³/h)",
-          "power_per_mode": "Leistung pro Lüftungsstufe (W)",
+          "power_per_mode": "Elektrische Leistung pro Lüftungsstufe (W)",
           "heating_power": "Vor-/Nachheizleistung (W)"
         },
         "data_description": {
@@ -39,15 +41,15 @@
       },
       "house": {
         "title": "4 / 4 - Gebäudeparameter",
-        "description": "Geben Sie die Parameter Ihres Gebäudes zur Berechnung des Lüftungsbedarfs ein.",
+        "description": "Geben Sie die Parameter Ihres Gebäudes zur Berechnung des Lüftungsbedarfs ein. Kann später erneut geändert werden.",
         "data": {
           "house_area": "Wohnfläche (m²)",
           "house_volume": "Gebäudevolumen (m³)",
           "isolation_factor": "Dämmfaktor"
         },
         "data_description": {
-          "house_area": "Die gesamte beheizte Wohnfläche in Quadratmetern.",
-          "house_volume": "Das gesamte Luftvolumen des Gebäudes in Kubikmetern.",
+          "house_area": "Die gesamte beheizte Wohnfläche in Quadratmetern (z.B. 143).",
+          "house_volume": "Das gesamte Luftvolumen des Gebäudes in Kubikmetern (z.B. 384).",
           "isolation_factor": "Dämmqualität: 0,3 = gut gedämmt, 0,4 = Standard, 0,5 = schlecht gedämmt."
         }
       }

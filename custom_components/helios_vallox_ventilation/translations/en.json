@@ -14,21 +14,23 @@
         }
       },
       "model": {
-        "title": "2 / 4 - Device Model",
-        "description": "Select your ventilation model to pre-populate device parameters, or choose 'Custom' to enter them manually.",
+        "title": "2 / 4 - Device Name and Model",
+        "description": "Enter a unique name and select your model to pre-populate parameters, or choose 'Custom' to enter them manually.",
         "data": {
+          "entity_prefix": "Unique name (e.g. 'Ventilation')",
           "device_model": "Device Model"
         },
         "data_description": {
+          "entity_prefix": "Must be unique if multiple devices are configured (e.g. 'Basement vent', 'Upstairs vent', etc.)",
           "device_model": "Selecting a model will pre-fill the device parameters in the next step."
         }
       },
       "details": {
         "title": "3 / 4 - Device Parameters",
-        "description": "Configure your ventilation parameters. Values have been pre-populated from the selected model.",
+        "description": "Configure your ventilation parameters. Values have been pre-populated from the selected model. Can be changed later again.",
         "data": {
           "airflow_per_mode": "Airflow per fan speed (m³/h)",
-          "power_per_mode": "Power per fan speed (W)",
+          "power_per_mode": "Power consumption per fan speed (W)",
           "heating_power": "Pre-/post-heating power (W)"
         },
         "data_description": {
@@ -39,16 +41,16 @@
       },
       "house": {
         "title": "4 / 4 - House Parameters",
-        "description": "Enter the parameters of your house to calculate ventilation requirements.",
+        "description": "Enter the parameters of your house to calculate ventilation requirements. Can be changed later again.",
         "data": {
           "house_area": "Living area (m²)",
           "house_volume": "House volume (m³)",
           "isolation_factor": "Isolation factor"
         },
         "data_description": {
-          "house_area": "The total heated living area of your house in square meters.",
-          "house_volume": "The total air volume of your house in cubic meters.",
-          "isolation_factor": "Insulation quality factor: 0.3 = well insulated, 0.4 = standard, 0.5 = poorly insulated."
+          "house_area": "The living area of your house in square meters (e.g.: 143).",
+          "house_volume": "The air volume of your house in cubic meters (e.g.: 384.",
+          "isolation_factor": "House insulation quality factor: 0.3 = well insulated, 0.4 = standard, 0.5 = poorly insulated."
         }
       }
     },
