@@ -66,7 +66,7 @@ async def async_setup_entry(
     dashboard_select = hass.data[DOMAIN].get(LOVELACE_DEVICE_SELECT_KEY)
 
     if dashboard_select is None:
-        dashboard_select = HeliosLovelaceDeviceSelect(hass)
+        dashboard_select = VentilationDeviceSelect(hass)
         hass.data[DOMAIN][LOVELACE_DEVICE_SELECT_KEY] = dashboard_select
         entities.append(dashboard_select)
     else:
@@ -74,14 +74,8 @@ async def async_setup_entry(
 
     async_add_entities(entities)
 
-    # entities = [
-    #     HeliosSelect(coordinator, entry, select_def)
-    #     for select_def in SELECT_ENTITIES
-    # ]
-    # async_add_entities(entities)
 
-
-class HeliosLovelaceDeviceSelect(RestoreEntity, SelectEntity):
+class VentilationDeviceSelect(RestoreEntity, SelectEntity):
     """Global ventilation selector for Lovelace dashboards."""
 
     _attr_has_entity_name = False
@@ -96,7 +90,7 @@ class HeliosLovelaceDeviceSelect(RestoreEntity, SelectEntity):
         self._selected_slug: str | None = None
 
     async def async_added_to_hass(self) -> None:
-        """Restore previous dashboard selection."""
+        """Restore previous selection."""
         await super().async_added_to_hass()
 
         if last_state := await self.async_get_last_state():
@@ -107,7 +101,7 @@ class HeliosLovelaceDeviceSelect(RestoreEntity, SelectEntity):
         self._ensure_valid_selection()
 
     async def async_will_remove_from_hass(self) -> None:
-        """Clear global reference when the entity is removed."""
+        """Clear reference when the device is removed."""
         if self.hass.data[DOMAIN].get(LOVELACE_DEVICE_SELECT_KEY) is self:
             self.hass.data[DOMAIN].pop(LOVELACE_DEVICE_SELECT_KEY, None)
 
@@ -126,11 +120,9 @@ class HeliosLovelaceDeviceSelect(RestoreEntity, SelectEntity):
         """Find a device by slug."""
         if not slug:
             return None
-
         for device in self._devices():
             if device["slug"] == slug:
                 return device
-
         return None
 
     def _device_by_label(self, label: str) -> dict[str, str] | None:
@@ -138,16 +130,22 @@ class HeliosLovelaceDeviceSelect(RestoreEntity, SelectEntity):
         for device in self._devices():
             if device["label"] == label:
                 return device
-
         return None
 
     def _ensure_valid_selection(self) -> None:
         """Ensure the selected device still exists."""
         if self._device_by_slug(self._selected_slug):
             return
-
         devices = self._devices()
         self._selected_slug = devices[0]["slug"] if devices else None
+
+    @property
+    def device_info(self) -> None:
+        """Return no device information on startup.
+        This is a global dashboard helper entity and does not belong
+        to one specific ventilation device.
+        """
+        return None
 
     @property
     def options(self) -> list[str]:
@@ -164,7 +162,6 @@ class HeliosLovelaceDeviceSelect(RestoreEntity, SelectEntity):
     def extra_state_attributes(self) -> dict[str, object]:
         """Return selected device metadata."""
         selected = self._device_by_slug(self._selected_slug)
-
         return {
             "selected_slug": selected["slug"] if selected else "",
             "entity_prefix": selected["slug"] if selected else "",
@@ -175,11 +172,9 @@ class HeliosLovelaceDeviceSelect(RestoreEntity, SelectEntity):
     async def async_select_option(self, option: str) -> None:
         """Select a ventilation device."""
         selected = self._device_by_label(option)
-
         if selected is None:
             _LOGGER.warning("Invalid Lovelace device selection: %s", option)
             return
-
         self._selected_slug = selected["slug"]
         self.async_write_ha_state()
 
