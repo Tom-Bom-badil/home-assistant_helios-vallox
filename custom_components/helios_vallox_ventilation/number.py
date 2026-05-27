@@ -2,10 +2,12 @@ import logging
 from homeassistant.components.number import NumberEntity, NumberMode
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from .constants import DOMAIN, NUMBER_ENTITIES
+from .constants import DOMAIN, NUMBER_ENTITIES, UI_NUMBER_ENTITIES
 from .device_info import (
     build_device_info,
     build_entity_id,
@@ -16,16 +18,41 @@ from .device_info import (
 _LOGGER = logging.getLogger("helios_vallox.number")
 
 
+# async def async_setup_entry(
+#     hass: HomeAssistant,
+#     entry: ConfigEntry,
+#     async_add_entities: AddEntitiesCallback,
+# ) -> None:
+#     coordinator = hass.data[DOMAIN][entry.entry_id]
+#     entities = [
+#         HeliosNumber(coordinator, entry, number_def)
+#         for number_def in NUMBER_ENTITIES
+#     ]
+#     async_add_entities(entities)
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     coordinator = hass.data[DOMAIN][entry.entry_id]
+
     entities = [
         HeliosNumber(coordinator, entry, number_def)
         for number_def in NUMBER_ENTITIES
     ]
+
+    # Global UI/helper number entities.
+    # These are dashboard state entities and must not be assigned
+    # to a concrete ventilation device.
+    for number_def in UI_NUMBER_ENTITIES:
+        storage_key = number_def["storage_key"]
+        existing_entity = hass.data[DOMAIN].get(storage_key)
+
+        if existing_entity is None or getattr(existing_entity, "platform", None) is None:
+            entity = Helios_Vallox_Ui_Numbers(number_def)
+            hass.data[DOMAIN][storage_key] = entity
+            entities.append(entity)
+
     async_add_entities(entities)
 
 
@@ -82,3 +109,64 @@ class HeliosNumber(CoordinatorEntity, NumberEntity):
         if self._description:
             attrs["description"] = self._description
         return attrs if attrs else None
+
+
+class Helios_Vallox_Ui_Numbers(RestoreEntity, NumberEntity):
+    """Global UI/helper number entity without ventilation bus access."""
+
+    _attr_has_entity_name = False
+    _attr_should_poll = False
+    _attr_entity_category = EntityCategory.CONFIG
+    _attr_mode = NumberMode.BOX
+
+    def __init__(self, number_def: dict) -> None:
+        self._attr_name = number_def["name"]
+        self._attr_unique_id = number_def["unique_id"]
+        self._attr_suggested_object_id = number_def["object_id"]
+
+        self._attr_native_min_value = number_def["min"]
+        self._attr_native_max_value = number_def["max"]
+        self._attr_native_step = number_def["step"]
+        self._attr_icon = number_def.get("icon")
+
+        self._default_value = number_def["initial"]
+        self._attr_native_value = self._default_value
+
+    @property
+    def device_info(self) -> None:
+        """Return no device information.
+
+        This is a global UI/helper entity and must not be assigned
+        to one specific ventilation device.
+        """
+        return None
+
+    async def async_added_to_hass(self) -> None:
+        """Restore previous UI/helper value."""
+        await super().async_added_to_hass()
+
+        last_state = await self.async_get_last_state()
+        if last_state is None:
+            return
+
+        try:
+            self._attr_native_value = self._normalize_value(last_state.state)
+        except (TypeError, ValueError):
+            self._attr_native_value = self._default_value
+
+    async def async_set_native_value(self, value: float) -> None:
+        """Set local UI/helper value.
+
+        This intentionally does not write anything to the ventilation unit.
+        """
+        self._attr_native_value = self._normalize_value(value)
+        self.async_write_ha_state()
+
+    def _normalize_value(self, value) -> int:
+        """Normalize and clamp the value to the configured range."""
+        int_value = int(float(value))
+
+        return max(
+            int(self._attr_native_min_value),
+            min(int(self._attr_native_max_value), int_value),
+        )

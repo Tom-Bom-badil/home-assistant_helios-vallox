@@ -66,7 +66,7 @@ async def async_setup_entry(
     dashboard_select = hass.data[DOMAIN].get(LOVELACE_DEVICE_SELECT_KEY)
 
     if dashboard_select is None:
-        dashboard_select = VentilationDeviceSelect(hass)
+        dashboard_select = Helios_Vallox_UI_Select(hass)
         hass.data[DOMAIN][LOVELACE_DEVICE_SELECT_KEY] = dashboard_select
         entities.append(dashboard_select)
     else:
@@ -75,7 +75,7 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class VentilationDeviceSelect(RestoreEntity, SelectEntity):
+class Helios_Vallox_UI_Select(RestoreEntity, SelectEntity):
     """Global ventilation selector for Lovelace dashboards."""
 
     _attr_has_entity_name = False
