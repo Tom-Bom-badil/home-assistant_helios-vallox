@@ -38,3 +38,12 @@ from .helpers import (
     LOVELACE_DEVICE_SELECT_OBJECT_ID,
     UI_NUMBER_ENTITIES,
 )
+
+# please ignore
+# needed for testing rH/CO2 formulas and settings without having sensors installed
+DEVELOPER_MODE = False
+try:
+    from .local_dev import DEVELOPER_MODE as LOCAL_DEVELOPER_MODE
+    DEVELOPER_MODE = LOCAL_DEVELOPER_MODE
+except ImportError:
+    pass

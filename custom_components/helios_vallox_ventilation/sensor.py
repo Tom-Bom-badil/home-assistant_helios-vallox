@@ -33,18 +33,51 @@ from .device_info import (
 _LOGGER = logging.getLogger("helios_vallox.sensor")
 
 
+INTERNAL_SENSOR_KEYS = {
+    "rh_sensor1_raw",
+    "rh_sensor2_raw",
+    "co2_reading_upper_byte",
+    "co2_reading_lower_byte",
+    "co2_setting_upper_byte",
+    "co2_setting_lower_byte",
+}
+
+CO2_SENSOR_KEYS = {
+    "co2_concentration",
+    "co2_setting_value",
+}
+
+RH_SENSOR_KEYS = {
+    "rh_sensor1",
+    "rh_sensor2",
+}
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
+
     coordinator = hass.data[DOMAIN][entry.entry_id]
     entities = [
         HeliosSensor(coordinator, entry, sensor_def)
         for sensor_def in SENSOR_ENTITIES
+        if _should_create_sensor(coordinator, sensor_def["key"])
     ]
     entities.append(HeliosConfigurationSensor(entry))
     async_add_entities(entities)
+
+
+def _should_create_sensor(coordinator, key: str) -> bool:
+    """rH / CO2: Return True if this sensor should be exposed as HA entity."""
+    if key in INTERNAL_SENSOR_KEYS:
+        return False
+    if key in CO2_SENSOR_KEYS:
+        return coordinator.has_capability("co2")
+    if key in RH_SENSOR_KEYS:
+        return coordinator.has_capability("rh")
+    return True
 
 
 class HeliosSensor(CoordinatorEntity, SensorEntity):

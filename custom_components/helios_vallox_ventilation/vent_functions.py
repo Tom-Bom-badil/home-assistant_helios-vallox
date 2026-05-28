@@ -122,6 +122,7 @@ class HeliosBase:
             return None
 
     def _addCalculationsToReadings(self, all_values):
+        logger = logging.getLogger(__name__)
         # add fault text (if any)
         fault_number = all_values.get('fault_number')
         if fault_number is not None:
@@ -151,37 +152,58 @@ class HeliosBase:
                 'efficiency': efficiency
             })
 
+# ----
         # Humidity sensor conversions (raw byte to %)
-        rh1_raw = all_values.get('rh_sensor1_raw')
-        if rh1_raw is not None and rh1_raw >= 0x33:
-            all_values['rh_sensor1'] = int((rh1_raw - 51) / 2.04)
-        else:
-            all_values['rh_sensor1'] = None
+        try:
+            rh1_raw = int(all_values.get("rh_sensor1_raw"))
+            all_values["rh_sensor1"] = int((rh1_raw - 51) / 2.04)
+        except (TypeError, ValueError):
+            all_values["rh_sensor1"] = None
 
-        rh2_raw = all_values.get('rh_sensor2_raw')
-        if rh2_raw is not None and rh2_raw >= 0x33:
-            all_values['rh_sensor2'] = int((rh2_raw - 51) / 2.04)
-        else:
-            all_values['rh_sensor2'] = None
+        try:
+            rh2_raw = int(all_values.get("rh_sensor2_raw"))
+            all_values["rh_sensor2"] = int((rh2_raw - 51) / 2.04)
+        except (TypeError, ValueError):
+            all_values["rh_sensor2"] = None
 
         # CO2 concentration (combine upper + lower byte)
-        co2_hi = all_values.get('co2_reading_upper_byte')
-        co2_lo = all_values.get('co2_reading_lower_byte')
-        co2_sensors_present = any(
-            all_values.get(f'co2_sensor{i}_present') for i in range(1, 6)
-        )
-        if co2_sensors_present and co2_hi is not None and co2_lo is not None:
-            all_values['co2_concentration'] = co2_hi * 256 + co2_lo
-        else:
-            all_values['co2_concentration'] = None
+        try:
+            co2_hi = int(all_values.get("co2_reading_upper_byte"))
+            co2_lo = int(all_values.get("co2_reading_lower_byte"))
+            all_values["co2_concentration"] = co2_hi * 256 + co2_lo
+        except (TypeError, ValueError):
+            all_values["co2_concentration"] = None
 
         # CO2 setting (combine upper + lower byte)
-        co2_set_hi = all_values.get('co2_setting_upper_byte')
-        co2_set_lo = all_values.get('co2_setting_lower_byte')
-        if co2_sensors_present and co2_set_hi is not None and co2_set_lo is not None:
-            all_values['co2_setting_value'] = co2_set_hi * 256 + co2_set_lo
-        else:
-            all_values['co2_setting_value'] = None
+        # Always calculate internally if B3/B4 are readable.
+        # Entity visibility is handled in sensor.py via capabilities.
+        try:
+            co2_set_hi = int(all_values.get("co2_setting_upper_byte"))
+            co2_set_lo = int(all_values.get("co2_setting_lower_byte"))
+            all_values["co2_setting_value"] = co2_set_hi * 256 + co2_set_lo
+        except (TypeError, ValueError):
+            all_values["co2_setting_value"] = None
+
+        # For testing CO2/rH values without sensors installed
+        if not getattr(self, "_optional_sensor_values_logged", False):
+            logger.debug(
+                "Optional sensor values: "
+                "rh1_raw=%r, rh1=%r, rh2_raw=%r, rh2=%r, "
+                "co2_present=%r, co2_hi=%r, co2_lo=%r, co2=%r, "
+                "co2_set_hi=%r, co2_set_lo=%r, co2_setting=%r",
+                all_values.get("rh_sensor1_raw"),
+                all_values.get("rh_sensor1"),
+                all_values.get("rh_sensor2_raw"),
+                all_values.get("rh_sensor2"),
+                [all_values.get(f"co2_sensor{i}_present") for i in range(1, 6)],
+                all_values.get("co2_reading_upper_byte"),
+                all_values.get("co2_reading_lower_byte"),
+                all_values.get("co2_concentration"),
+                all_values.get("co2_setting_upper_byte"),
+                all_values.get("co2_setting_lower_byte"),
+                all_values.get("co2_setting_value"),
+            )
+            self._optional_sensor_values_logged = True
 
         # DIN airflow calculations and effective values (require config data)
         if self._config_data:

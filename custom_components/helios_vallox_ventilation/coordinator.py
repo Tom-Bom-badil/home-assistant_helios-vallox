@@ -4,6 +4,7 @@ from datetime import timedelta
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .vent_functions import HeliosBase
+from .constants import DEVELOPER_MODE
 
 # _LOGGER = logging.getLogger(__name__)
 _LOGGER = logging.getLogger("helios_vallox.coordinator")
@@ -16,6 +17,7 @@ class HeliosCoordinator:
         self._ip = ip
         self._port = port
         self._lock = asyncio.Lock()
+        self._capabilities = {"co2": False, "rh": False}
         self._helios = HeliosBase(hass, ip, port, config_data=config_data)
         self._coordinator = DataUpdateCoordinator(
             hass,
@@ -41,10 +43,39 @@ class HeliosCoordinator:
     async def _async_update_data(self):
         try:
             data = await self._hass.async_add_executor_job(self._helios.readAllValues)
+            self._capabilities = (
+                {"co2": True, "rh": True}
+                if DEVELOPER_MODE
+                else self._detect_capabilities(data)
+            )
             return data
         except Exception as e:
             _LOGGER.error(f"Error fetching data: {e}", exc_info=True)
             return {}
+
+    def has_capability(self, capability: str) -> bool:
+        """Return True if the ventilation unit supports the given capability."""
+        return self._capabilities.get(capability, False)
+
+    @staticmethod
+    def _detect_capabilities(data: dict | None) -> dict[str, bool]:
+        """Detect optional hardware features from the latest read data."""
+        data = data or {}
+        return {
+            "co2": any(data.get(f"co2_sensor{i}_present") for i in range(1, 6)),
+            "rh": any(
+                HeliosCoordinator._is_valid_rh_raw(data.get(key))
+                for key in ("rh_sensor1_raw", "rh_sensor2_raw")
+            ),
+        }
+
+    @staticmethod
+    def _is_valid_rh_raw(value) -> bool:
+        """Return True if a raw humidity value looks like a real sensor value."""
+        try:
+            return 0x33 <= int(value) <= 0xFF
+        except (TypeError, ValueError):
+            return False
 
     # Write a single register
     def write_value(self, variable, value, min_value=None, max_value=None):

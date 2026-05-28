@@ -16,20 +16,32 @@ from .device_info import (
 _LOGGER = logging.getLogger("helios_vallox.binary_sensor")
 
 
+INTERNAL_BINARY_SENSOR_KEYS = {
+    "co2_sensor1_present",
+    "co2_sensor2_present",
+    "co2_sensor3_present",
+    "co2_sensor4_present",
+    "co2_sensor5_present",
+}
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
+
     coordinator = hass.data[DOMAIN][entry.entry_id]
     entities = [
         HeliosBinarySensor(coordinator, entry, sensor_def)
         for sensor_def in BINARY_SENSOR_ENTITIES
+        if sensor_def["key"] not in INTERNAL_BINARY_SENSOR_KEYS
     ]
     async_add_entities(entities)
 
 
 class HeliosBinarySensor(CoordinatorEntity, BinarySensorEntity):
+
     _attr_has_entity_name = False
 
     def __init__(self, coordinator, entry, sensor_def):
