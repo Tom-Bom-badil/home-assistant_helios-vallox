@@ -1,15 +1,18 @@
 # Entity definitions (replaces vent_conf.yaml)
 
+# to disable an entity, just add to the end:     `, "enabled_default": False`
+
+
 SENSOR_ENTITIES = [
     {"key": "temperature_outdoor_air", "unit": "°C", "device_class": "temperature", "state_class": "measurement", "icon": "mdi:thermometer"},
     {"key": "temperature_supply_air", "unit": "°C", "device_class": "temperature", "state_class": "measurement", "icon": "mdi:thermometer"},
     {"key": "temperature_extract_air", "unit": "°C", "device_class": "temperature", "state_class": "measurement", "icon": "mdi:thermometer"},
     {"key": "temperature_exhaust_air", "unit": "°C", "device_class": "temperature", "state_class": "measurement", "icon": "mdi:thermometer"},
     {"key": "boost_remaining", "unit": "min", "device_class": "duration", "state_class": "measurement", "icon": "mdi:fan-clock"},
-    {"key": "fault_number", "unit": None, "device_class": None, "state_class": "measurement", "icon": "mdi:alert", "enabled_default": False},
+    {"key": "fault_number", "unit": None, "device_class": None, "state_class": "measurement", "icon": "mdi:alert"},
     {"key": "fault_text", "unit": None, "device_class": "enum", "state_class": None, "icon": "mdi:alert",
-     "options": ["none", "supply_air_sensor_fault", "co2_alarm", "outdoor_air_sensor_fault",
-                 "exhaust_air_sensor_fault", "water_coil_frost_warning", "extract_air_sensor_fault"]},
+        "options": ["none", "supply_air_sensor_fault", "co2_alarm", "outdoor_air_sensor_fault",
+                    "exhaust_air_sensor_fault", "water_coil_frost_warning", "extract_air_sensor_fault"]},
     {"key": "rh_sensor1_raw", "unit": None, "device_class": None, "state_class": None, "icon": "mdi:water-percent", "enabled_default": False},
     {"key": "rh_sensor2_raw", "unit": None, "device_class": None, "state_class": None, "icon": "mdi:water-percent", "enabled_default": False},
     {"key": "co2_reading_upper_byte", "unit": None, "device_class": None, "state_class": None, "icon": "mdi:molecule-co2", "enabled_default": False},
@@ -48,12 +51,12 @@ BINARY_SENSOR_ENTITIES = [
 
 NUMBER_ENTITIES = [
     {"key": "fanspeed", "unit": None, "min": 1, "max": 8, "step": 1, "mode": "slider", "icon": "mdi:speedometer-medium", "description": "Fan speed", "factory_setting": None},
-    {"key": "initial_fanspeed", "unit": "level", "min": 1, "max": 8, "step": 1, "mode": "slider", "icon": "mdi:speedometer-slow", "description": "Initial fan speed after switching on", "factory_setting": 1, "enabled_default": False},
-    {"key": "max_fanspeed", "unit": "level", "min": 1, "max": 8, "step": 1, "mode": "slider", "icon": "mdi:speedometer", "description": "Maximum fan speed available to remotes", "factory_setting": 8, "enabled_default": False},
+    {"key": "initial_fanspeed", "unit": "level", "min": 1, "max": 8, "step": 1, "mode": "slider", "icon": "mdi:speedometer-slow", "description": "Initial fan speed after switching on", "factory_setting": 1},
+    {"key": "max_fanspeed", "unit": "level", "min": 1, "max": 8, "step": 1, "mode": "slider", "icon": "mdi:speedometer", "description": "Maximum fan speed available to remotes", "factory_setting": 8},
     {"key": "bypass_setpoint", "unit": "°C", "min": 0, "max": 25, "step": 1, "mode": "box", "icon": "mdi:thermometer", "description": None, "factory_setting": 10},
     {"key": "preheat_setpoint", "unit": "°C", "min": -10, "max": 10, "step": 1, "mode": "box", "icon": "mdi:thermometer", "description": None, "factory_setting": -3},
     {"key": "defrost_setpoint", "unit": "°C", "min": -6, "max": 15, "step": 1, "mode": "box", "icon": "mdi:thermometer", "description": None, "factory_setting": 3},
-    {"key": "defrost_hysteresis", "unit": "°C", "min": 1, "max": 10, "step": 1, "mode": "box", "icon": "mdi:thermometer", "description": None, "factory_setting": 3, "enabled_default": False},
+    {"key": "defrost_hysteresis", "unit": "°C", "min": 1, "max": 10, "step": 1, "mode": "box", "icon": "mdi:thermometer", "description": None, "factory_setting": 3},
     {"key": "input_fan_percent", "unit": "%", "min": 65, "max": 100, "step": 1, "mode": "slider", "icon": "mdi:percent", "description": None, "factory_setting": 100},
     {"key": "output_fan_percent", "unit": "%", "min": 65, "max": 100, "step": 1, "mode": "slider", "icon": "mdi:percent", "description": None, "factory_setting": 100},
     {"key": "service_interval", "unit": "months", "min": 1, "max": 12, "step": 1, "mode": "box", "icon": "mdi:calendar-multiple", "description": None, "factory_setting": 4},
