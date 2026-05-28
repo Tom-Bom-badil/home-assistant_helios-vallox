@@ -19,7 +19,7 @@ from .constants import (
     CONF_ENTITY_PREFIX,
     DEFAULT_ENTITY_PREFIX,
 )
-from .vent_functions import HeliosBase
+from .api import HeliosBase
 
 _LOGGER = logging.getLogger("helios_vallox.config_flow")
 

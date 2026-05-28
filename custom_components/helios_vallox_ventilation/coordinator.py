@@ -3,7 +3,7 @@ import logging
 from datetime import timedelta
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
-from .vent_functions import HeliosBase
+from .api import HeliosBase
 from .constants import DEVELOPER_MODE
 
 # _LOGGER = logging.getLogger(__name__)
@@ -39,7 +39,7 @@ class HeliosCoordinator:
         else:
             _LOGGER.error("Failed to connect to ventilation during setup.")
 
-    # Read all known registers (see vent_conf.yaml and const.py)
+    # Read all known registers
     async def _async_update_data(self):
         try:
             data = await self._hass.async_add_executor_job(self._helios.readAllValues)

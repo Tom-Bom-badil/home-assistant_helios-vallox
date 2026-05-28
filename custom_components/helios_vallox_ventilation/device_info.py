@@ -20,23 +20,6 @@ def get_entity_prefix(entry: ConfigEntry) -> str:
     return prefix or DEFAULT_ENTITY_PREFIX
 
 
-# def build_suggested_object_id(entry: ConfigEntry, entity_key: str) -> str:
-#     """Build a stable English object id including the configured prefix."""
-#     prefix = slugify(get_entity_prefix(entry))
-#     key = slugify(entity_key)
-
-#     if prefix and not key.startswith(f"{prefix}_"):
-#         return f"{prefix}_{key}"
-
-#     return key
-
-
-# def build_device_info(entry: ConfigEntry) -> DeviceInfo:
-#     """Build device info without a device name prefix for entity names."""
-#     return DeviceInfo(
-#         identifiers={(DOMAIN, entry.entry_id)},
-#     )
-
 def build_suggested_object_id(entry: ConfigEntry, entity_key: str) -> str:
     """Build a stable English object id including the configured entity prefix."""
     prefix = slugify(get_entity_prefix(entry))

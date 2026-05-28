@@ -29,7 +29,7 @@ class HeliosBase:
 
     def __init__(self, hass=None, ip=None, port=None, config_data=None):
         # self.logger = logging.getLogger(__name__)
-        self.logger = logging.getLogger("helios_vallox.vent_functions")
+        self.logger = logging.getLogger(__name__)
         self._hass = hass
         self._ip = ip
         self._port = port
