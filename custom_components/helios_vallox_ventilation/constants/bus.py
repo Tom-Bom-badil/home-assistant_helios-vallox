@@ -132,8 +132,8 @@ REGISTERS_AND_COILS = {
     # CO2 - measurements
     "co2_reading_upper_byte":  {"varid": 0x2B, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
     "co2_reading_lower_byte":  {"varid": 0x2C, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
-    "co2_setting_upper_byte":  {"varid": 0xB3, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
-    "co2_setting_lower_byte":  {"varid": 0xB4, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
+    "co2_setting_upper_byte":  {"varid": 0xB3, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },
+    "co2_setting_lower_byte":  {"varid": 0xB4, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },
     # CO2 - alarm
     "co2_alarm":               {"varid": 0x6D, 'type': 'bit',         'bitposition':  6, 'read': True, 'write': False}
 }

@@ -26,7 +26,6 @@ SENSOR_ENTITIES = [
     {"key": "rh_sensor1", "unit": "%", "device_class": "humidity", "state_class": "measurement", "icon": "mdi:water-percent", "description": "Relative humidity sensor 1"},
     {"key": "rh_sensor2", "unit": "%", "device_class": "humidity", "state_class": "measurement", "icon": "mdi:water-percent", "description": "Relative humidity sensor 2"},
     {"key": "co2_concentration", "unit": "ppm", "device_class": "carbon_dioxide", "state_class": "measurement", "icon": "mdi:molecule-co2", "description": "CO2 concentration"},
-    {"key": "co2_setting_value", "unit": "ppm", "device_class": "carbon_dioxide", "state_class": None, "icon": "mdi:molecule-co2", "description": "CO2 control setpoint"},
     {"key": "din_airflow_moisture", "unit": "m³/h", "device_class": None, "state_class": None, "icon": "mdi:fan", "description": "DIN airflow for moisture protection"},
     {"key": "din_airflow_reduced", "unit": "m³/h", "device_class": None, "state_class": None, "icon": "mdi:fan", "description": "DIN airflow for reduced exchange"},
     {"key": "din_airflow_normal", "unit": "m³/h", "device_class": None, "state_class": None, "icon": "mdi:fan", "description": "DIN airflow for normal exchange"},
@@ -61,6 +60,7 @@ NUMBER_ENTITIES = [
     {"key": "output_fan_percent", "unit": "%", "min": 65, "max": 100, "step": 1, "mode": "slider", "icon": "mdi:percent", "description": None, "factory_setting": 100},
     {"key": "service_interval", "unit": "months", "min": 1, "max": 12, "step": 1, "mode": "box", "icon": "mdi:calendar-multiple", "description": None, "factory_setting": 4},
     {"key": "service_due_months", "unit": "months", "min": 0, "max": 12, "step": 1, "mode": "box", "icon": "mdi:calendar-end", "description": None, "factory_setting": None},
+    {"key": "co2_setting_value", "unit": "ppm", "min": 400, "max": 2000, "step": 50, "mode": "slider", "icon": "mdi:molecule-co2", "description": "CO2 control setpoint", "factory_setting": 900 },
 ]
 
 SWITCH_ENTITIES = [

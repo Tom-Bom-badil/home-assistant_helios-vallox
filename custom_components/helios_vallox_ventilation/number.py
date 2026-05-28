@@ -18,17 +18,18 @@ from .device_info import (
 _LOGGER = logging.getLogger("helios_vallox.number")
 
 
-# async def async_setup_entry(
-#     hass: HomeAssistant,
-#     entry: ConfigEntry,
-#     async_add_entities: AddEntitiesCallback,
-# ) -> None:
-#     coordinator = hass.data[DOMAIN][entry.entry_id]
-#     entities = [
-#         HeliosNumber(coordinator, entry, number_def)
-#         for number_def in NUMBER_ENTITIES
-#     ]
-#     async_add_entities(entities)
+CO2_NUMBER_KEYS = {
+    "co2_setting_value",
+}
+
+
+def _should_create_number(coordinator, key: str) -> bool:
+    """Return True if this number should be exposed as HA entity."""
+    if key in CO2_NUMBER_KEYS:
+        return coordinator.has_capability("co2")
+    return True
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -39,11 +40,11 @@ async def async_setup_entry(
     entities = [
         HeliosNumber(coordinator, entry, number_def)
         for number_def in NUMBER_ENTITIES
+        if _should_create_number(coordinator, number_def["key"])
     ]
 
-    # Global UI/helper number entities.
-    # These are dashboard state entities and must not be assigned
-    # to a concrete ventilation device.
+    # Global UI/helper number entities. These are global dashboard state entities
+    # and are not meant to be assigned to a specific ventilation device.
     for number_def in UI_NUMBER_ENTITIES:
         storage_key = number_def["storage_key"]
         existing_entity = hass.data[DOMAIN].get(storage_key)
@@ -77,6 +78,25 @@ class HeliosNumber(CoordinatorEntity, NumberEntity):
         self._factory_setting = number_def.get("factory_setting")
         self._entry = entry
 
+    async def async_set_native_value(self, value: float) -> None:
+        int_value = int(value)
+        if self._variable == "co2_setting_value":
+            await self.hass.async_add_executor_job(
+                self._coordinator.write_co2_setting_value,
+                int_value,
+                self._attr_native_min_value,
+                self._attr_native_max_value,
+            )
+        else:
+            await self.hass.async_add_executor_job(
+                self._coordinator.write_value,
+                self._variable,
+                int_value,
+                self._attr_native_min_value,
+                self._attr_native_max_value,
+            )
+        self.async_write_ha_state()
+
     @property
     def device_info(self) -> DeviceInfo:
         """Return device information."""
@@ -92,14 +112,6 @@ class HeliosNumber(CoordinatorEntity, NumberEntity):
         if self.coordinator.data is None:
             return None
         return self.coordinator.data.get(self._variable)
-
-    async def async_set_native_value(self, value: float) -> None:
-        int_value = int(value)
-        await self.hass.async_add_executor_job(
-            self._coordinator.write_value, self._variable, int_value,
-            self._attr_native_min_value, self._attr_native_max_value
-        )
-        self.async_write_ha_state()
 
     @property
     def extra_state_attributes(self):
