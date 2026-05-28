@@ -80,21 +80,13 @@ class HeliosNumber(CoordinatorEntity, NumberEntity):
 
     async def async_set_native_value(self, value: float) -> None:
         int_value = int(value)
-        if self._variable == "co2_setting_value":
-            await self.hass.async_add_executor_job(
-                self._coordinator.write_co2_setting_value,
-                int_value,
-                self._attr_native_min_value,
-                self._attr_native_max_value,
-            )
-        else:
-            await self.hass.async_add_executor_job(
-                self._coordinator.write_value,
-                self._variable,
-                int_value,
-                self._attr_native_min_value,
-                self._attr_native_max_value,
-            )
+        await self.hass.async_add_executor_job(
+            self._coordinator.write_value,
+            self._variable,
+            int_value,
+            self._attr_native_min_value,
+            self._attr_native_max_value,
+        )
         self.async_write_ha_state()
 
     @property

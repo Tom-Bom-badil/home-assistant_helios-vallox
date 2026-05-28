@@ -77,37 +77,41 @@ class HeliosCoordinator:
         except (TypeError, ValueError):
             return False
 
-    # Write a single register
+    # Write a single register or handled pseudo-register
     def write_value(self, variable, value, min_value=None, max_value=None):
         try:
+            if variable == "co2_setting_value":
+                return self.write_co2_setting_value(value, min_value, max_value)
             result = self._helios.writeValue(variable, value, min_value, max_value)
             if result:
                 new_data = self._coordinator.data.copy() if self._coordinator.data else {}
                 new_data[variable] = value
-                self._hass.loop.call_soon_threadsafe(self._coordinator.async_set_updated_data, new_data)
+                self._hass.loop.call_soon_threadsafe(
+                    self._coordinator.async_set_updated_data,
+                    new_data,
+                )
             return result
         except Exception as e:
             _LOGGER.error(f"Error writing {value} to {variable}: {e}", exc_info=True)
             return False
 
-    # Special treatment for two combined 16-bit registers (here: CO2 setpoint)
+    # Special treatment for combined 16-bit CO2 setpoint
     def write_co2_setting_value(self, value, min_value=None, max_value=None):
         try:
+            min_value = 500 if min_value is None else min_value
+            max_value = 2000 if max_value is None else max_value
             value = int(round(float(value) / 50) * 50)
-            if min_value is not None:
-                value = max(int(min_value), value)
-            if max_value is not None:
-                value = min(int(max_value), value)
-            lower = value % 256
+            value = max(int(min_value), min(int(max_value), value))
             upper = value // 256
-            # Always write the lower byte first. The mainboard appears to latch / apply
+            lower = value % 256
+            # Write lower byte first. The mainboard appears to latch/apply
             # the 16-bit CO2 setpoint when the upper byte is written.
             lower_ok = self._helios.writeValue("co2_setting_lower_byte", lower, 0, 255)
             upper_ok = self._helios.writeValue("co2_setting_upper_byte", upper, 0, 255)
             if upper_ok and lower_ok:
                 new_data = self._coordinator.data.copy() if self._coordinator.data else {}
-                new_data["co2_setting_upper_byte"] = upper
                 new_data["co2_setting_lower_byte"] = lower
+                new_data["co2_setting_upper_byte"] = upper
                 new_data["co2_setting_value"] = value
                 self._hass.loop.call_soon_threadsafe(
                     self._coordinator.async_set_updated_data,
@@ -115,7 +119,13 @@ class HeliosCoordinator:
                 )
                 return True
         except Exception as e:
-            _LOGGER.error("Error writing CO2 setting value %s: %s", value, e, exc_info=True)
+            _LOGGER.error(
+                "Error writing CO2 setting value %s: %s",
+                value,
+                e,
+                exc_info=True,
+            )
+
         return False
 
     # Switch: Turn on

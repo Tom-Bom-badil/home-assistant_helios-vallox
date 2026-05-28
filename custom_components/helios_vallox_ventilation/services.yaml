@@ -1,18 +1,18 @@
 write_value:
-  name: Write a value to a variable
+  name: Write to ventilation registers
   description: Writes a value to the ventilation system.
-  
+
   fields:
     entry_id:
-      name: Config entry ID
-      description: The config entry ID of the device to write to.
-      required: true
-      example: "abc123"
+      name: device
+      description: Optional ID or unique name of the target device (if not given, it will use the first ventilation found).
+      required: false
+      example: "'KWL upper Apartment' or '01XXGA67SMD'"
     variable:
       name: variable
-      description: The variable to write to (e.g., fanspeed, boost_mode).
+      description: The entity to write to (e.g., 'fanspeed', 'boost_mode' - just skip the long prefixes).
       example: fanspeed
     value:
       name: value
-      description: The value to set for the variable.
+      description: The value to set the entity to.
       example: 5

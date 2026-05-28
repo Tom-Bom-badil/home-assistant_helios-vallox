@@ -2,12 +2,14 @@ import os, shutil, logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_IP_ADDRESS, CONF_PORT, Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.util import slugify
+from .device_info import get_entity_prefix
 from .constants import DOMAIN
 from .coordinator import HeliosCoordinator
 from .schema import SERVICE_WRITE_VALUE_SCHEMA
 
-_LOGGER = logging.getLogger("helios_vallox.__init__")
 
+_LOGGER = logging.getLogger("helios_vallox.__init__")
 PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SWITCH, Platform.NUMBER, Platform.SELECT]
 
 
@@ -76,11 +78,73 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Register write service (once per domain)
     if not hass.services.has_service(DOMAIN, "write_value"):
         async def handle_write_service(call):
-            target_entry_id = call.data["entry_id"]
-            coord = hass.data[DOMAIN].get(target_entry_id)
+
+# ---
+            target_entry_id = call.data.get("entry_id")
+            coord = None
+
+            if target_entry_id:
+                # 1) Try real config entry_id first
+                coord = hass.data[DOMAIN].get(target_entry_id)
+
+                # 2) Fallback: treat entry_id as unique device name
+                if coord is None:
+                    target_slug = slugify(target_entry_id)
+
+                    for entry in hass.config_entries.async_entries(DOMAIN):
+                        if slugify(get_entity_prefix(entry)) == target_slug:
+                            coord = hass.data[DOMAIN].get(entry.entry_id)
+                            break
+
+            else:
+                # 3) Backward-compatible fallback for single-device installations
+                coordinators = [
+                    item
+                    for item in hass.data[DOMAIN].values()
+                    if isinstance(item, HeliosCoordinator)
+                ]
+
+                if len(coordinators) == 1:
+                    coord = coordinators[0]
+                else:
+                    _LOGGER.error(
+                        "write_value requires entry_id when multiple ventilation devices are configured"
+                    )
+                    return
+
             if coord is None:
-                _LOGGER.error(f"No device found for entry_id: {target_entry_id}")
+                _LOGGER.error(
+                    "No ventilation device found for entry_id or unique device name: %s",
+                    target_entry_id,
+                )
                 return
+
+#---
+            # target_entry_id = call.data.get("entry_id")
+
+            # if target_entry_id:
+            #     coord = hass.data[DOMAIN].get(target_entry_id)
+            # else:
+            #     coordinators = [
+            #         item
+            #         for item in hass.data[DOMAIN].values()
+            #         if isinstance(item, HeliosCoordinator)
+            #     ]
+
+            #     if len(coordinators) == 1:
+            #         coord = coordinators[0]
+            #     else:
+            #         _LOGGER.error(
+            #             "write_value requires entry_id when multiple ventilation devices are configured."
+            #         )
+            #         return
+
+            # if coord is None:
+            #     _LOGGER.error("No ventilation device found for entry_id: %s", target_entry_id)
+            #     return
+# ----                
+
+
             try:
                 await hass.async_add_executor_job(
                     coord.write_value, call.data["variable"], call.data["value"]
