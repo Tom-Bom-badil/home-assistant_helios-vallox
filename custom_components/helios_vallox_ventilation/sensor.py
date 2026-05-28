@@ -48,10 +48,10 @@ CO2_SENSOR_KEYS = {
 }
 
 RH_SENSOR_KEYS = {
+    "highest_humidity",
     "rh_sensor1",
     "rh_sensor2",
 }
-
 
 async def async_setup_entry(
     hass: HomeAssistant,

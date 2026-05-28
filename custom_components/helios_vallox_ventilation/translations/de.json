@@ -95,8 +95,8 @@
       "efficiency": { "name": "Effizienz Wärmerückgewinnung" },
       "rh_sensor1": { "name": "Feuchtesensor 1" },
       "rh_sensor2": { "name": "Feuchtesensor 2" },
+      "highest_humidity": { "name": "Höchste Luftfeuchtigkeit" },
       "co2_concentration": { "name": "CO\u2082-Konzentration" },
-      "co2_setting_value": { "name": "CO\u2082-Sollwert" },
       "din_airflow_moisture": { "name": "DIN-Luftmenge (Feuchteschutz)" },
       "din_airflow_reduced": { "name": "DIN-Luftmenge (Reduziert)" },
       "din_airflow_normal": { "name": "DIN-Luftmenge (Normal)" },
@@ -127,6 +127,7 @@
       "defrost_setpoint": { "name": "Frostmodus-Aktivierungstemperatur" },
       "defrost_hysteresis": { "name": "Frostmodus-Hysterese" },
       "input_fan_percent": { "name": "Zuluftmotor Drehzahl SOLL" },
+      "co2_setting_value": { "name": "CO\u2082-Sollwert" },
       "output_fan_percent": { "name": "Fortluftmotor Drehzahl SOLL" },
       "service_interval": { "name": "Warnintervall Filter" },
       "service_due_months": { "name": "Restzeit Filterwarnung" }

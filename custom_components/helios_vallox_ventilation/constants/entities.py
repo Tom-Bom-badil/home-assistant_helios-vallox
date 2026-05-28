@@ -15,6 +15,7 @@ SENSOR_ENTITIES = [
                     "exhaust_air_sensor_fault", "water_coil_frost_warning", "extract_air_sensor_fault"]},
     {"key": "rh_sensor1_raw", "unit": None, "device_class": None, "state_class": None, "icon": "mdi:water-percent", "enabled_default": False},
     {"key": "rh_sensor2_raw", "unit": None, "device_class": None, "state_class": None, "icon": "mdi:water-percent", "enabled_default": False},
+    {"key": "highest_humidity", "unit": "%", "device_class": "humidity", "state_class": "measurement", "icon": "mdi:water-percent", "description": "Highest measured humidity"},
     {"key": "co2_reading_upper_byte", "unit": None, "device_class": None, "state_class": None, "icon": "mdi:molecule-co2", "enabled_default": False},
     {"key": "co2_reading_lower_byte", "unit": None, "device_class": None, "state_class": None, "icon": "mdi:molecule-co2", "enabled_default": False},
     {"key": "co2_setting_upper_byte", "unit": None, "device_class": None, "state_class": None, "icon": "mdi:molecule-co2", "enabled_default": False},

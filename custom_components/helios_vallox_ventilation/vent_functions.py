@@ -152,8 +152,7 @@ class HeliosBase:
                 'efficiency': efficiency
             })
 
-# ----
-        # Humidity sensor conversions (raw byte to %)
+        # Humidity sensor conversions (raw byte to %); add a max sensor
         try:
             rh1_raw = int(all_values.get("rh_sensor1_raw"))
             all_values["rh_sensor1"] = int((rh1_raw - 51) / 2.04)
@@ -166,7 +165,17 @@ class HeliosBase:
         except (TypeError, ValueError):
             all_values["rh_sensor2"] = None
 
-        # CO2 concentration (combine upper + lower byte)
+        rh_values = [
+            value
+            for value in (
+                all_values.get("rh_sensor1"),
+                all_values.get("rh_sensor2"),
+            )
+            if value is not None
+        ]
+        all_values["highest_humidity"] = max(rh_values) if rh_values else None
+
+        # CO2 concentration (combine upper+lower byte); always receives max anyways
         try:
             co2_hi = int(all_values.get("co2_reading_upper_byte"))
             co2_lo = int(all_values.get("co2_reading_lower_byte"))
@@ -175,8 +184,6 @@ class HeliosBase:
             all_values["co2_concentration"] = None
 
         # CO2 setting (combine upper + lower byte)
-        # Always calculate internally if B3/B4 are readable.
-        # Entity visibility is handled in sensor.py via capabilities.
         try:
             co2_set_hi = int(all_values.get("co2_setting_upper_byte"))
             co2_set_lo = int(all_values.get("co2_setting_lower_byte"))
@@ -184,7 +191,7 @@ class HeliosBase:
         except (TypeError, ValueError):
             all_values["co2_setting_value"] = None
 
-        # For testing CO2/rH values without sensors installed
+        # Dev/Testing only: Log CO2/rH values without sensors installed
         if not getattr(self, "_optional_sensor_values_logged", False):
             logger.debug(
                 "Optional sensor values: "
