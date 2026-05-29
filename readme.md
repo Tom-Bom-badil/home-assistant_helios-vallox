@@ -1,4 +1,5 @@
-# Helios Pro / Vallox SE ventilation control
+# Helios Pro / Vallox SE ventilation control<br/><sup><sub>(for models with  built-in RS485 and Modbus-like Protocol)</sub></sup>
+
 
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-%2341BDF5.svg)](https://www.home-assistant.io)
 [![Custom integration](https://img.shields.io/badge/Custom%20Integration-%2341BDF5.svg)](https://www.home-assistant.io/getting-started/concepts-terminology)
@@ -17,13 +18,11 @@ has been running 24/7 since 2014 on my previous home automation system. That plu
 used to be the first community-made software for these ventilation models. Over the<br/>
 years, it became the basis for many other system adaptations.<br/>
 <br/>
-As I migrated to HA a while ago, I reworked the plugin to be a HA custom integration.
+As I migrated to HA a while ago, I reworked the plugin to be a HA custom integration:
 
-<br/><br/>
 <a href="https://raw.githubusercontent.com/wiki/Tom-Bom-badil/home-assistant_helios-vallox/images/dashboard.png">
   <img width=70% alt="img1" src="https://raw.githubusercontent.com/wiki/Tom-Bom-badil/home-assistant_helios-vallox/images/dashboard.png" />
 </a>
-<br/>
 
 👉 Main features of the integration are:
 
@@ -33,14 +32,18 @@ As I migrated to HA a while ago, I reworked the plugin to be a HA custom integra
 - extensive derived calculations (airflow, power, efficiency, temperature balance)
 - DIN-based calculation of the required 'design' airflow (individual to your house)
 - ready-to-use example dashboard, available for copy/paste in the Wiki
-- mobile-friendly, multi-language software remote replacing the wall-mounted controller
+- mobile-friendly, multi-language software remote replacing the hardware remote
 
-The software-based remote control is especially useful when your wall-mounted remote<br/>control display became unreadable, or the remote itself is broken or no longer available.
+The software-based remote control is especially useful when your wall-mounted remote<br/>control display became unreadable, or the remote itself is broken or no longer available.<br/>You can simply use your Smartphone to control the ventilation - including a new, much<br/>simplified 'software boost mode':
+
+<a href="https://raw.githubusercontent.com/wiki/Tom-Bom-badil/home-assistant_helios-vallox/images/mobile-dashboard.png">
+  <img width=70% alt="img1" src="https://raw.githubusercontent.com/wiki/Tom-Bom-badil/home-assistant_helios-vallox/images/mobile-dashboard.png" />
+</a>
 
 The integration has been tested with various RS485 LAN/Wi-Fi adapters.<br/>
 For most of them, no soldering, no additional voltage or step-down boards are required.<br/>
 Simply use the screw / plug-in terminals of the tested adapters (see [here](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki/Appendix-1-%E2%80%90-Tested-adaptors)).<br/>
-Some adapters do not even require external power, they just run on bus power.
+Some adapters do not even require external power, they are just running on bus power.
 
 ## 📝 Compatible ventilation devices
 
