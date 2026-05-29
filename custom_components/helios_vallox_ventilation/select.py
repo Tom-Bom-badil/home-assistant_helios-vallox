@@ -191,11 +191,14 @@ class HeliosSelect(CoordinatorEntity, SelectEntity):
         self.entity_id = build_entity_id("select", entry, select_def["key"])
         self._attr_icon = select_def.get("icon")
         self._attr_entity_registry_enabled_default = select_def.get("enabled_default", True)
-        self._entry = entry
         # options mapping: raw int value -> display name
         self._value_to_name = select_def["options"]  # e.g. {0: "Fireplace", 1: "Normal"}
         self._name_to_value = {v: k for k, v in self._value_to_name.items()}
         self._attr_options = list(self._value_to_name.values())
+        entity_category = select_def.get("entity_category")
+        if entity_category:
+            self._attr_entity_category = EntityCategory(entity_category)
+        self._entry = entry
 
     @property
     def device_info(self) -> DeviceInfo:

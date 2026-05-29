@@ -2,15 +2,12 @@ import logging
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .constants import DOMAIN, SWITCH_ENTITIES
-from .device_info import (
-    build_device_info,
-    build_entity_id,
-    get_localized_entity_name,
-)
+from .device_info import build_device_info, build_entity_id, get_localized_entity_name
 
 
 _LOGGER = logging.getLogger("helios_vallox.switch")
@@ -42,6 +39,9 @@ class HeliosSwitch(CoordinatorEntity, SwitchEntity):
         self.entity_id = build_entity_id("switch", entry, switch_def["key"])
         self._attr_icon = switch_def.get("icon")
         self._attr_entity_registry_enabled_default = switch_def.get("enabled_default", True)
+        entity_category = switch_def.get("entity_category")
+        if entity_category:
+            self._attr_entity_category = EntityCategory(entity_category)
         self._entry = entry
 
     @property

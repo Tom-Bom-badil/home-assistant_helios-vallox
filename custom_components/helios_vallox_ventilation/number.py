@@ -76,6 +76,9 @@ class HeliosNumber(CoordinatorEntity, NumberEntity):
         self._attr_entity_registry_enabled_default = number_def.get("enabled_default", True)
         self._description = number_def.get("description")
         self._factory_setting = number_def.get("factory_setting")
+        entity_category = number_def.get("entity_category")
+        if entity_category:
+            self._attr_entity_category = EntityCategory(entity_category)
         self._entry = entry
 
     async def async_set_native_value(self, value: float) -> None:
