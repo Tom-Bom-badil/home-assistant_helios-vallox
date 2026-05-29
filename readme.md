@@ -20,11 +20,9 @@ years, it became the basis for many other system adaptations.<br/>
 As I migrated to HA a while ago, I reworked the plugin to be a HA custom integration.
 
 <br/><br/>
-<p align="center">
 <a href="https://raw.githubusercontent.com/wiki/Tom-Bom-badil/home-assistant_helios-vallox/images/dashboard.png">
   <img width=70% alt="img1" src="https://raw.githubusercontent.com/wiki/Tom-Bom-badil/home-assistant_helios-vallox/images/dashboard.png" />
 </a>
-</p>
 <br/>
 
 👉 Main features of the integration are:
