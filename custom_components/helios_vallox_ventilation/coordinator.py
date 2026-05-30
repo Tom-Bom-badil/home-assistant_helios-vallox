@@ -130,8 +130,8 @@ class HeliosCoordinator:
 
     # Switch: Turn on
     async def turn_on(self, variable):
-        self._hass.async_add_executor_job(self.write_value, variable, 1)
+        await self._hass.async_add_executor_job(self.write_value, variable, 1)
 
     # Switch: Turn off
     async def turn_off(self, variable):
-        self._hass.async_add_executor_job(self.write_value, variable, 0)
+        await self._hass.async_add_executor_job(self.write_value, variable, 0)

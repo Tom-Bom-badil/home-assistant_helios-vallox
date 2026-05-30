@@ -3,6 +3,7 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_IP_ADDRESS, CONF_PORT
 from homeassistant.util import slugify
+from .api import HeliosBase
 from .constants import (
     DOMAIN,
     DEVICE_PRESETS,
@@ -19,7 +20,7 @@ from .constants import (
     CONF_ENTITY_PREFIX,
     DEFAULT_ENTITY_PREFIX,
 )
-from .api import HeliosBase
+
 
 _LOGGER = logging.getLogger("helios_vallox.config_flow")
 

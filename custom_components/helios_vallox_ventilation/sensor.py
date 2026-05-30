@@ -8,6 +8,7 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import slugify
+from .device_info import build_device_info, build_entity_id
 from .constants import DOMAIN, SENSOR_ENTITIES
 from .constants.config import (
     CONF_AIRFLOW_PER_MODE,
@@ -23,7 +24,6 @@ from .constants.config import (
     CUSTOM_MODEL,
     DEFAULT_ENTITY_PREFIX,
 )
-from .device_info import build_device_info, build_entity_id
 
 
 _LOGGER = logging.getLogger("helios_vallox.sensor")

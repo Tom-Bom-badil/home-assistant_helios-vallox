@@ -77,9 +77,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     # Register write service (once per domain)
     if not hass.services.has_service(DOMAIN, "write_value"):
+
         async def handle_write_service(call):
 
-# ---
             target_entry_id = call.data.get("entry_id")
             coord = None
 
@@ -118,32 +118,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                     target_entry_id,
                 )
                 return
-
-#---
-            # target_entry_id = call.data.get("entry_id")
-
-            # if target_entry_id:
-            #     coord = hass.data[DOMAIN].get(target_entry_id)
-            # else:
-            #     coordinators = [
-            #         item
-            #         for item in hass.data[DOMAIN].values()
-            #         if isinstance(item, HeliosCoordinator)
-            #     ]
-
-            #     if len(coordinators) == 1:
-            #         coord = coordinators[0]
-            #     else:
-            #         _LOGGER.error(
-            #             "write_value requires entry_id when multiple ventilation devices are configured."
-            #         )
-            #         return
-
-            # if coord is None:
-            #     _LOGGER.error("No ventilation device found for entry_id: %s", target_entry_id)
-            #     return
-# ----                
-
 
             try:
                 await hass.async_add_executor_job(
