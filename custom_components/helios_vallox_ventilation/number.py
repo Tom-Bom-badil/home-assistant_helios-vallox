@@ -120,6 +120,8 @@ class Helios_Vallox_Ui_Numbers(RestoreEntity, NumberEntity):
     _attr_mode = NumberMode.BOX
 
     def __init__(self, number_def: dict) -> None:
+
+        self._storage_key = number_def["storage_key"]
         self._attr_name = number_def["name"]
         self._attr_unique_id = number_def["unique_id"]
         self._attr_suggested_object_id = number_def["object_id"]
@@ -135,11 +137,17 @@ class Helios_Vallox_Ui_Numbers(RestoreEntity, NumberEntity):
     @property
     def device_info(self) -> None:
         """Return no device information.
-
         This is a global UI/helper entity and must not be assigned
         to one specific ventilation device.
         """
         return None
+
+    async def async_will_remove_from_hass(self) -> None:
+        """Clear stored global UI/helper reference when the entity is removed."""
+        domain_data = self.hass.data.get(DOMAIN)
+
+        if domain_data is not None and domain_data.get(self._storage_key) is self:
+            domain_data.pop(self._storage_key, None)
 
     async def async_added_to_hass(self) -> None:
         """Restore previous UI/helper value."""
@@ -156,7 +164,6 @@ class Helios_Vallox_Ui_Numbers(RestoreEntity, NumberEntity):
 
     async def async_set_native_value(self, value: float) -> None:
         """Set local UI/helper value.
-
         This intentionally does not write anything to the ventilation unit.
         """
         self._attr_native_value = self._normalize_value(value)
