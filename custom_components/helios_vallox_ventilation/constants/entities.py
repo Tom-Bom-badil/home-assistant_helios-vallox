@@ -69,13 +69,13 @@ SWITCH_ENTITIES = [
     {"key": "powerstate", "icon": "mdi:power-settings"},
     {"key": "co2_indicator", "icon": "mdi:alert"},
     {"key": "rh_indicator", "icon": "mdi:alert"},
-    {"key": "preheat_status", "icon": "mdi:tooltip-question" },
+    {"key": "preheat_status", "icon": "mdi:tooltip-question", "entity_category": "config" },
     {"key": "activate_boost", "icon": "mdi:fan"},
-    {"key": "input_fan_off", "icon": "mdi:fan-off" },
-    {"key": "output_fan_off", "icon": "mdi:fan-off" },
+    {"key": "input_fan_off", "icon": "mdi:fan-off", "entity_category": "config" },
+    {"key": "output_fan_off", "icon": "mdi:fan-off", "entity_category": "config" },
 ]
 
 SELECT_ENTITIES = [
-    {"key": "boost_mode", "icon": "mdi:fan-speed-2", "options": {1: "normal", 0: "fireplace"}, "entity_category": "config"},
-    {"key": "winter_mode", "icon": "mdi:snowflake-thermometer", "options": {0: "summer", 1: "winter"}, "entity_category": "config"},
+    {"key": "boost_mode", "icon": "mdi:fan-speed-2", "options": {1: "normal", 0: "fireplace"}, "entity_category": "config" },
+    {"key": "winter_mode", "icon": "mdi:snowflake-thermometer", "options": {0: "summer", 1: "winter"} },
 ]

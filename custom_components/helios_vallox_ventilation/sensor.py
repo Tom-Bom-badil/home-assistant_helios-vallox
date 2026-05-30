@@ -23,12 +23,7 @@ from .constants.config import (
     CUSTOM_MODEL,
     DEFAULT_ENTITY_PREFIX,
 )
-from .device_info import (
-    build_device_info,
-    build_entity_id,
-    get_entity_prefix,
-    get_localized_entity_name,
-)
+from .device_info import build_device_info, build_entity_id
 
 
 _LOGGER = logging.getLogger("helios_vallox.sensor")
@@ -83,7 +78,7 @@ def _should_create_sensor(coordinator, key: str) -> bool:
 
 class HeliosSensor(CoordinatorEntity, SensorEntity):
 
-    _attr_has_entity_name = False
+    _attr_has_entity_name = True
 
     def __init__(self, coordinator, entry, sensor_def):
         super().__init__(coordinator.coordinator)
@@ -112,10 +107,10 @@ class HeliosSensor(CoordinatorEntity, SensorEntity):
         """Return device information."""
         return build_device_info(self._entry)
 
-    @property
-    def name(self) -> str:
-        """Return localized entity name without device prefix."""
-        return get_localized_entity_name(self, "sensor", self._variable)
+    # @property
+    # def name(self) -> str:
+    #     """Return localized entity name without device prefix."""
+    #     return get_localized_entity_name(self, "sensor", self._variable)
 
     @property
     def native_value(self):
@@ -134,7 +129,8 @@ class HeliosSensor(CoordinatorEntity, SensorEntity):
 class HeliosConfigurationSensor(SensorEntity):
     """Expose static configuration values for dashboards/templates."""
 
-    _attr_has_entity_name = False
+    _attr_has_entity_name = True
+
     _attr_should_poll = False
     _attr_icon = "mdi:cog"
 
@@ -151,10 +147,10 @@ class HeliosConfigurationSensor(SensorEntity):
         """Return device information."""
         return build_device_info(self._entry)
 
-    @property
-    def name(self) -> str:
-        """Return localized entity name without device prefix."""
-        return get_localized_entity_name(self, "sensor", self._variable)
+    # @property
+    # def name(self) -> str:
+    #     """Return localized entity name without device prefix."""
+    #     return get_localized_entity_name(self, "sensor", self._variable)
 
     @property
     def native_value(self) -> str:

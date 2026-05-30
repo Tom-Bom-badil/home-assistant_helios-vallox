@@ -49,7 +49,7 @@
         },
         "data_description": {
           "house_area": "Die gesamte beheizte Wohnfläche in Quadratmetern (z.B. 143).",
-          "house_volume": "Das gesamte Luftvolumen des Gebäudes in Kubikmetern (z.B. 384).",
+          "house_volume": "Das gesamte Luftvolumen des Gebäudes in Kubikmetern (Fläche x Raumhöhe, z.B. 384).",
           "isolation_factor": "Dämmqualität: 0,3 = gut gedämmt, 0,4 = Standard, 0,5 = schlecht gedämmt."
         }
       }
@@ -123,20 +123,20 @@
       "initial_fanspeed": { "name": "Lüftungsstufe beim Einschalten" },
       "max_fanspeed": { "name": "Lüftungsstufe maximal" },
       "bypass_setpoint": { "name": "Temperatur \u0394 für Bypass Aktivierung" },
-      "preheat_setpoint": { "name": "Einschalttemperatur Heizung" },
-      "defrost_setpoint": { "name": "Einschalttemperatur Frostmodus" },
-      "defrost_hysteresis": { "name": "Frostmodus-Hysterese" },
+      "preheat_setpoint": { "name": "Vorheizung Ein" },
+      "defrost_setpoint": { "name": "Frostmodus Ein" },
+      "defrost_hysteresis": { "name": "Frostmodus Hysterese" },
       "input_fan_percent": { "name": "Drehzahl % Zuluftmotor" },
       "output_fan_percent": { "name": "Drehzahl % Fortluftmotor" },
       "co2_setting_value": { "name": "CO\u2082 Warnschwelle" },
       "service_interval": { "name": "Warnintervall Filter" },
-      "service_due_months": { "name": "Restzeit bis Filterwechsel" }
+      "service_due_months": { "name": "Restzeit Filterwechsel" }
     },
     "switch": {
       "powerstate": { "name": "KWL an/aus" },
       "co2_indicator": { "name": "Warnung CO\u2082" },
       "rh_indicator": { "name": "Warnung Luftfeuchte" },
-      "preheat_status": { "name": "Status Vorheizung" },
+      "preheat_status": { "name": "Vorheizung Status" },
       "activate_boost": { "name": "Stoßlüftung aktivieren" },
       "input_fan_off": { "name": "Frischluftventilator aus" },
       "output_fan_off": { "name": "Fortluftventilator aus" }

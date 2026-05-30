@@ -41,25 +41,5 @@ def build_device_info(entry: ConfigEntry) -> DeviceInfo:
         identifiers={(DOMAIN, entry.entry_id)},
         manufacturer="Helios/Vallox",
         model=model,
+        name=get_entity_prefix(entry),
     )
-
-
-def get_localized_entity_name(entity, entity_domain: str, entity_key: str) -> str:
-    """Return localized entity name without adding the device name."""
-    platform_data = getattr(entity, "platform_data", None)
-
-    if platform_data is not None:
-        translation_key = (
-            f"component.{DOMAIN}.entity."
-            f"{entity_domain}.{entity_key}.name"
-        )
-
-        for translations in (
-            getattr(platform_data, "platform_translations", {}),
-            getattr(platform_data, "default_language_platform_translations", {}),
-        ):
-            name = translations.get(translation_key)
-            if name:
-                return name
-
-    return entity_key.replace("_", " ").title()

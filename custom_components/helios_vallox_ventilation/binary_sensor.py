@@ -7,11 +7,7 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .constants import DOMAIN, BINARY_SENSOR_ENTITIES
-from .device_info import (
-    build_device_info,
-    build_entity_id,
-    get_localized_entity_name,
-)
+from .device_info import build_device_info, build_entity_id
 
 
 _LOGGER = logging.getLogger("helios_vallox.binary_sensor")
@@ -43,7 +39,7 @@ async def async_setup_entry(
 
 class HeliosBinarySensor(CoordinatorEntity, BinarySensorEntity):
 
-    _attr_has_entity_name = False
+    _attr_has_entity_name = True
 
     def __init__(self, coordinator, entry, sensor_def):
         super().__init__(coordinator.coordinator)
@@ -59,11 +55,6 @@ class HeliosBinarySensor(CoordinatorEntity, BinarySensorEntity):
         if entity_category:
             self._attr_entity_category = EntityCategory(entity_category)
         self._entry = entry
-
-    @property
-    def name(self) -> str:
-        """Return localized entity name without device prefix."""
-        return get_localized_entity_name(self, "binary_sensor", self._variable)
 
     @property
     def device_info(self) -> DeviceInfo:

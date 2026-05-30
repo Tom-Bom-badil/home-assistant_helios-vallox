@@ -8,11 +8,7 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .constants import DOMAIN, NUMBER_ENTITIES, UI_NUMBER_ENTITIES
-from .device_info import (
-    build_device_info,
-    build_entity_id,
-    get_localized_entity_name,
-)
+from .device_info import build_device_info, build_entity_id
 
 
 _LOGGER = logging.getLogger("helios_vallox.number")
@@ -58,7 +54,8 @@ async def async_setup_entry(
 
 
 class HeliosNumber(CoordinatorEntity, NumberEntity):
-    _attr_has_entity_name = False
+
+    _attr_has_entity_name = True
 
     def __init__(self, coordinator, entry, number_def):
         super().__init__(coordinator.coordinator)
@@ -98,11 +95,6 @@ class HeliosNumber(CoordinatorEntity, NumberEntity):
         return build_device_info(self._entry)
 
     @property
-    def name(self) -> str:
-        """Return localized entity name without device prefix."""
-        return get_localized_entity_name(self, "number", self._variable)
-
-    @property
     def native_value(self):
         if self.coordinator.data is None:
             return None
@@ -121,7 +113,8 @@ class HeliosNumber(CoordinatorEntity, NumberEntity):
 class Helios_Vallox_Ui_Numbers(RestoreEntity, NumberEntity):
     """Global UI/helper number entity without ventilation bus access."""
 
-    _attr_has_entity_name = False
+    _attr_has_entity_name = True
+
     _attr_should_poll = False
     _attr_entity_category = EntityCategory.CONFIG
     _attr_mode = NumberMode.BOX

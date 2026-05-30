@@ -8,12 +8,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.util import slugify
-from .device_info import (
-    build_device_info,
-    build_entity_id,
-    get_localized_entity_name,
-    get_entity_prefix,
-)
+from .device_info import build_device_info, build_entity_id, get_entity_prefix
 from .constants import (
     DOMAIN,
     SELECT_ENTITIES,
@@ -34,10 +29,8 @@ def _build_lovelace_devices(hass: HomeAssistant) -> list[dict[str, str]]:
     for entry in hass.config_entries.async_entries(DOMAIN):
         label = get_entity_prefix(entry)
         slug = slugify(label)
-
         if not slug:
             continue
-
         devices.append(
             {
                 "label": label,
@@ -45,7 +38,6 @@ def _build_lovelace_devices(hass: HomeAssistant) -> list[dict[str, str]]:
                 "entry_id": entry.entry_id,
             }
         )
-
     devices.sort(key=lambda item: item["label"].lower())
     return devices
 
@@ -78,7 +70,8 @@ async def async_setup_entry(
 class Helios_Vallox_UI_Select(RestoreEntity, SelectEntity):
     """Global ventilation selector for Lovelace dashboards."""
 
-    _attr_has_entity_name = False
+    _attr_has_entity_name = True
+
     _attr_name = LOVELACE_DEVICE_SELECT_NAME
     _attr_unique_id = LOVELACE_DEVICE_SELECT_UNIQUE_ID
     _attr_suggested_object_id = LOVELACE_DEVICE_SELECT_OBJECT_ID
@@ -180,6 +173,7 @@ class Helios_Vallox_UI_Select(RestoreEntity, SelectEntity):
 
 
 class HeliosSelect(CoordinatorEntity, SelectEntity):
+
     _attr_has_entity_name = True
 
     def __init__(self, coordinator, entry, select_def):
@@ -204,11 +198,6 @@ class HeliosSelect(CoordinatorEntity, SelectEntity):
     def device_info(self) -> DeviceInfo:
         """Return device information."""
         return build_device_info(self._entry)
-
-    @property
-    def name(self) -> str:
-        """Return localized entity name without device prefix."""
-        return get_localized_entity_name(self, "select", self._variable)
 
     @property
     def current_option(self) -> str | None:

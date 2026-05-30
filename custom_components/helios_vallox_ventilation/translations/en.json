@@ -49,7 +49,7 @@
         },
         "data_description": {
           "house_area": "The living area of your house in square meters (e.g.: 143).",
-          "house_volume": "The air volume of your house in cubic meters (e.g.: 384.",
+          "house_volume": "The air volume of your house in cubic meters (area x room height, e.g.: 384).",
           "isolation_factor": "House insulation quality factor: 0.3 = well insulated, 0.4 = standard, 0.5 = poorly insulated."
         }
       }

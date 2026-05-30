@@ -27,8 +27,10 @@ As I migrated to HA a while ago, I reworked the plugin to be a HA custom integra
 👉 Main features of the integration are:
 
 - 50+ predefined entities for common ventilation registers and derived values
+- auto-detection of rH and CO2 sensors (if installed)
+- support of multiple ventilation units
 - write access to any writable register with plausibility and validity checks
-- a callable write service for your automations and helpers
+- a callable register write service for your automations and helpers
 - extensive derived calculations (airflow, power, efficiency, temperature balance)
 - DIN-based calculation of the required 'design' airflow (individual to your house)
 - ready-to-use example dashboard, available for copy/paste in the Wiki

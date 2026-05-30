@@ -7,7 +7,7 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .constants import DOMAIN, SWITCH_ENTITIES
-from .device_info import build_device_info, build_entity_id, get_localized_entity_name
+from .device_info import build_device_info, build_entity_id
 
 
 _LOGGER = logging.getLogger("helios_vallox.switch")
@@ -28,7 +28,7 @@ async def async_setup_entry(
 
 class HeliosSwitch(CoordinatorEntity, SwitchEntity):
 
-    _attr_has_entity_name = False
+    _attr_has_entity_name = True
 
     def __init__(self, coordinator, entry, switch_def):
         super().__init__(coordinator.coordinator)
@@ -48,11 +48,6 @@ class HeliosSwitch(CoordinatorEntity, SwitchEntity):
     def device_info(self) -> DeviceInfo:
         """Return device information."""
         return build_device_info(self._entry)
-
-    @property
-    def name(self) -> str:
-        """Return localized entity name without device prefix."""
-        return get_localized_entity_name(self, "switch", self._variable)
 
     @property
     def is_on(self):
