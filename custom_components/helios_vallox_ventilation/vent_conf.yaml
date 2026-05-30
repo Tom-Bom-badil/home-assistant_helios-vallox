@@ -1,0 +1,10 @@
+# Compatibility placeholder for upgrades from YAML-based versions.
+# v2026.06+ is configured via the Home Assistant UI config flow.
+# Please remove the old YAML include from configuration.yaml.
+
+# How do I do this? Delete of comment out the following lines in configuration.yaml
+#
+# helios_vallox_ventilation:
+#   !include custom_components/helios_vallox_ventilation/vent_conf.yaml
+
+{}

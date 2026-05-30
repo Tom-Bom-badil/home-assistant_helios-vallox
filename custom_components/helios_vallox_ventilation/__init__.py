@@ -3,6 +3,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_IP_ADDRESS, CONF_PORT, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.util import slugify
+from homeassistant.components import persistent_notification
 from .device_info import get_entity_prefix
 from .constants import DOMAIN
 from .coordinator import HeliosCoordinator
@@ -11,6 +12,25 @@ from .schema import SERVICE_WRITE_VALUE_SCHEMA
 
 _LOGGER = logging.getLogger("helios_vallox.__init__")
 PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SWITCH, Platform.NUMBER, Platform.SELECT]
+
+
+async def async_setup(hass: HomeAssistant, config: dict) -> bool:
+    """Handle legacy YAML configuration gracefully."""
+    if DOMAIN in config:
+        message = (
+            "Legacy YAML configuration for Helios/Vallox was detected. "
+            "v2026.06+ is configured through Settings > Devices & Services. "
+            "Please remove the old `helios_vallox_ventilation:` YAML block "
+            "and the old `packages: helios_vallox:` from configuration.yaml."
+        )
+        _LOGGER.warning(message)
+        persistent_notification.async_create(
+            hass,
+            message,
+            title="Helios/Vallox: legacy YAML configuration detected",
+            notification_id=f"{DOMAIN}_legacy_yaml",
+        )
+    return True
 
 
 async def async_install_frontend_files(hass: HomeAssistant) -> None:

@@ -1,0 +1,13 @@
+# Compatibility placeholder for upgrades from YAML-based versions.
+# v2026.06+ is configured via the Home Assistant UI config flow.
+# Please remove the old YAML include from configuration.yaml.
+
+# How do I do this? Delete of comment out helios_vallox in configuration.yaml:
+#
+# packages:
+#   helios_vallox:       !include user_conf.yaml
+
+# Important: If you copied the user_conf.yaml somewhere else by hand
+# (e.g. /packages directory), make sure to delete it there, too.
+
+{}
