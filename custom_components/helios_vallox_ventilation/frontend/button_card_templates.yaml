@@ -84,9 +84,11 @@
     tap_action:
       action: call-service
       service: number.set_value
-      service_data:
+      target:
         entity_id: number.helios_vallox_ui_display_select
-        value: '[[[ return variables.value; ]]]'
+      data:
+        value: |
+          [[[ return Number(variables.value); ]]]
     card_mod:
       style: |
         :host {
