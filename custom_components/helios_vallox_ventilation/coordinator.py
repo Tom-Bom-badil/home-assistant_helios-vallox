@@ -6,8 +6,9 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .api import HeliosBase
 from .constants import DEVELOPER_MODE
 
-# _LOGGER = logging.getLogger(__name__)
+
 _LOGGER = logging.getLogger("helios_vallox.coordinator")
+
 
 class HeliosCoordinator:
 
@@ -84,16 +85,25 @@ class HeliosCoordinator:
                 return self.write_co2_setting_value(value, min_value, max_value)
             result = self._helios.writeValue(variable, value, min_value, max_value)
             if result:
-                new_data = self._coordinator.data.copy() if self._coordinator.data else {}
-                new_data[variable] = value
-                self._hass.loop.call_soon_threadsafe(
-                    self._coordinator.async_set_updated_data,
-                    new_data,
-                )
+                self._update_local_data({variable: value})
             return result
         except Exception as e:
             _LOGGER.error(f"Error writing {value} to {variable}: {e}", exc_info=True)
             return False
+
+    # Update derived values (e.g. current air volume, power consumption) after writes
+    def _update_local_data(self, values: dict) -> None:
+        """Update coordinator cache and refresh derived values without a bus read."""
+        new_data = self._coordinator.data.copy() if self._coordinator.data else {}
+        new_data.update(values)
+
+        # Recalculate derived values immediately after local writes.
+        new_data = self._helios._addCalculationsToReadings(new_data)
+
+        self._hass.loop.call_soon_threadsafe(
+            self._coordinator.async_set_updated_data,
+            new_data,
+        )
 
     # Special treatment for combined 16-bit CO2 setpoint
     def write_co2_setting_value(self, value, min_value=None, max_value=None):
@@ -109,14 +119,11 @@ class HeliosCoordinator:
             lower_ok = self._helios.writeValue("co2_setting_lower_byte", lower, 0, 255)
             upper_ok = self._helios.writeValue("co2_setting_upper_byte", upper, 0, 255)
             if upper_ok and lower_ok:
-                new_data = self._coordinator.data.copy() if self._coordinator.data else {}
-                new_data["co2_setting_lower_byte"] = lower
-                new_data["co2_setting_upper_byte"] = upper
-                new_data["co2_setting_value"] = value
-                self._hass.loop.call_soon_threadsafe(
-                    self._coordinator.async_set_updated_data,
-                    new_data,
-                )
+                self._update_local_data({
+                    "co2_setting_lower_byte": lower,
+                    "co2_setting_upper_byte": upper,
+                    "co2_setting_value": value,
+                })
                 return True
         except Exception as e:
             _LOGGER.error(

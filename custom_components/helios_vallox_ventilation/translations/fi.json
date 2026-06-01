@@ -150,7 +150,7 @@
         }
       },
       "winter_mode": {
-        "name": "Kausi­tila",
+        "name": "Käyttötila",
         "state": {
           "summer": "Kesä",
           "winter": "Talvi"

@@ -150,7 +150,7 @@
         }
       },
       "winter_mode": {
-        "name": "Season mode",
+        "name": "Operating mode",
         "state": {
           "summer": "Summer",
           "winter": "Winter"
