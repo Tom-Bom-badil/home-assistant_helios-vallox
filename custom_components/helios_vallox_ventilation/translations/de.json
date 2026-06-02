@@ -70,6 +70,7 @@
       "temperature_extract_air": { "name": "Temperatur Abluft" },
       "temperature_exhaust_air": { "name": "Temperatur Fortluft" },
       "boost_remaining": { "name": "Restzeit Stoßlüftung" },
+      "softboost_remaining": { "name": "Softboost Restzeit" },
       "fault_number": { "name": "Fehler-/Störungsnummer" },
       "fault_text": {
         "name": "Fehlertext",
@@ -120,6 +121,8 @@
     },
     "number": {
       "fanspeed": { "name": "Lüftungsstufe" },
+      "softboost_level": { "name": "Softboost Stufe" },
+      "softboost_duration": { "name": "Softboost Dauer" },
       "initial_fanspeed": { "name": "Lüftungsstufe beim Einschalten" },
       "max_fanspeed": { "name": "Lüftungsstufe maximal" },
       "bypass_setpoint": { "name": "Temperatur \u0394 für Bypass Aktivierung" },
@@ -138,6 +141,8 @@
       "rh_indicator": { "name": "Warnung Luftfeuchte" },
       "preheat_status": { "name": "Vorheizung Status" },
       "activate_boost": { "name": "Stoßlüftung aktivieren" },
+      "softboost_active": { "name": "Softboost aktiv" },
+      "softboost_fireplace_mode": { "name": "Softboost Kaminmodus" },
       "input_fan_off": { "name": "Frischluftventilator aus" },
       "output_fan_off": { "name": "Fortluftventilator aus" }
     },

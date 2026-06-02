@@ -6,20 +6,11 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from .constants import DOMAIN, BINARY_SENSOR_ENTITIES
+from .constants import DOMAIN, BINARY_SENSOR_ENTITIES, INTERNAL_BINARY_SENSOR_KEYS
 from .device_info import build_device_info, build_entity_id
 
 
 _LOGGER = logging.getLogger("helios_vallox.binary_sensor")
-
-
-INTERNAL_BINARY_SENSOR_KEYS = {
-    "co2_sensor1_present",
-    "co2_sensor2_present",
-    "co2_sensor3_present",
-    "co2_sensor4_present",
-    "co2_sensor5_present",
-}
 
 
 async def async_setup_entry(

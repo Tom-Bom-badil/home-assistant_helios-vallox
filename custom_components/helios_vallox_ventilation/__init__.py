@@ -8,7 +8,7 @@ from .device_info import get_entity_prefix
 from .constants import DOMAIN
 from .coordinator import HeliosCoordinator
 from .schema import SERVICE_WRITE_VALUE_SCHEMA
-
+from .softboost import SoftBoostController
 
 _LOGGER = logging.getLogger("helios_vallox.__init__")
 PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SWITCH, Platform.NUMBER, Platform.SELECT]
@@ -22,12 +22,13 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
             "v2026.06+ is configured through Settings > Devices & Services. "
             "Please remove the old `helios_vallox_ventilation:` YAML block "
             "and the old `packages: helios_vallox:` from configuration.yaml."
+            "Also, delete `user_conf.yaml` file if you copied it to /packages."
         )
         _LOGGER.warning(message)
         persistent_notification.async_create(
             hass,
             message,
-            title="Helios/Vallox: legacy YAML configuration detected",
+            title="Helios/Vallox: Legacy YAML configuration detected.",
             notification_id=f"{DOMAIN}_legacy_yaml",
         )
     return True
@@ -86,6 +87,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     coordinator = HeliosCoordinator(hass, ip_address, port, config_data=entry.data)
     await coordinator.setup_coordinator()
+
+    # Load per-device Softboost runtime state.
+    # The controller is attached to the existing coordinator to keep hass.data unchanged.
+    softboost = SoftBoostController(hass, entry.entry_id, coordinator)
+    await softboost.async_load()
+    coordinator.softboost = softboost
+    await softboost.async_restore_after_startup()
 
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = coordinator

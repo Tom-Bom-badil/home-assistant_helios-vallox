@@ -7,16 +7,17 @@ from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from .constants import DOMAIN, NUMBER_ENTITIES, UI_NUMBER_ENTITIES
 from .device_info import build_device_info, build_entity_id
+from .constants import (
+    DOMAIN,
+    NUMBER_ENTITIES,
+    UI_NUMBER_ENTITIES,
+    CO2_NUMBER_KEYS,
+    SOFTBOOST_NUMBER_ENTITIES,
+)
 
 
 _LOGGER = logging.getLogger("helios_vallox.number")
-
-
-CO2_NUMBER_KEYS = {
-    "co2_setting_value",
-}
 
 
 def _should_create_number(coordinator, key: str) -> bool:
@@ -49,6 +50,13 @@ async def async_setup_entry(
             entity = Helios_Vallox_Ui_Numbers(number_def)
             hass.data[DOMAIN][storage_key] = entity
             entities.append(entity)
+
+    # Per-device Softboost settings.
+    # These do not write directly to the ventilation unit.
+    entities.extend(
+        HeliosSoftBoostNumber(coordinator, entry, number_def)
+        for number_def in SOFTBOOST_NUMBER_ENTITIES
+    )
 
     async_add_entities(entities)
 
@@ -108,6 +116,90 @@ class HeliosNumber(CoordinatorEntity, NumberEntity):
         if self._description:
             attrs["description"] = self._description
         return attrs if attrs else None
+
+
+class HeliosSoftBoostNumber(RestoreEntity, NumberEntity):
+    """Local per-device Softboost setting without direct bus access."""
+
+    _attr_has_entity_name = True
+    _attr_should_poll = False
+
+    def __init__(self, coordinator, entry: ConfigEntry, number_def: dict) -> None:
+        self._coordinator = coordinator
+        self._entry = entry
+        self._variable = number_def["key"]
+
+        self._attr_translation_key = self._variable
+        self._attr_unique_id = f"{entry.entry_id}_{self._variable}"
+        self.entity_id = build_entity_id("number", entry, self._variable)
+
+        self._attr_native_unit_of_measurement = number_def.get("unit")
+        self._attr_native_min_value = number_def["min"]
+        self._attr_native_max_value = number_def["max"]
+        self._attr_native_step = number_def["step"]
+        self._attr_icon = number_def.get("icon")
+        self._attr_mode = (
+            NumberMode.SLIDER
+            if number_def.get("mode") == "slider"
+            else NumberMode.BOX
+        )
+
+        self._default_value = number_def["initial"]
+        self._attr_native_value = self._default_value
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        """Return device information."""
+        return build_device_info(self._entry)
+
+    async def async_added_to_hass(self) -> None:
+        """Restore previous Softboost setting after HA restart."""
+        await super().async_added_to_hass()
+
+        last_state = await self.async_get_last_state()
+        if last_state is not None:
+            try:
+                self._attr_native_value = self._normalize_value(last_state.state)
+            except (TypeError, ValueError):
+                self._attr_native_value = self._default_value
+
+        self._sync_to_controller()
+
+    async def async_set_native_value(self, value: float) -> None:
+        """Store local Softboost setting without writing to the ventilation unit."""
+        softboost = self._coordinator.softboost
+        # Softboost settings are only editable before starting.
+        # During an active run, the user must stop and restart with new settings.
+        if softboost.is_active:
+            _LOGGER.info(
+                "Ignoring change of %s while Softboost is active",
+                self._variable,
+            )
+            self.async_write_ha_state()
+            return
+        self._attr_native_value = self._normalize_value(value)
+        self._sync_to_controller()
+        await softboost.async_save()
+        self.async_write_ha_state()
+
+    def _sync_to_controller(self) -> None:
+        """Keep the Softboost controller in sync with the visible settings."""
+        softboost = self._coordinator.softboost
+
+        if self._variable == "softboost_level":
+            softboost.state.level = int(self._attr_native_value)
+            return
+
+        if self._variable == "softboost_duration":
+            softboost.state.duration_seconds = int(self._attr_native_value) * 60
+
+    def _normalize_value(self, value) -> int:
+        """Normalize and clamp value to the configured range."""
+        int_value = int(float(value))
+        return max(
+            int(self._attr_native_min_value),
+            min(int(self._attr_native_max_value), int_value),
+        )
 
 
 class Helios_Vallox_Ui_Numbers(RestoreEntity, NumberEntity):

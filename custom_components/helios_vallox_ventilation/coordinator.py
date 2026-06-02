@@ -41,6 +41,7 @@ class HeliosCoordinator:
             _LOGGER.error("Failed to connect to ventilation during setup.")
 
     # Read all known registers
+    # (in developer mode: always read CO2 and rH sensors, even if not installed)
     async def _async_update_data(self):
         try:
             data = await self._hass.async_add_executor_job(self._helios.readAllValues)

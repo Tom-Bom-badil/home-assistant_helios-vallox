@@ -70,6 +70,7 @@
       "temperature_extract_air": { "name": "Poistoilman lämpötila" },
       "temperature_exhaust_air": { "name": "Ulospuhallus­ilman lämpötila" },
       "boost_remaining": { "name": "Tehostuksen jäljellä oleva aika" },
+      "softboost_remaining": { "name": "Softboost jäljellä" },
       "fault_number": { "name": "Vian numero" },
       "fault_text": {
         "name": "Vikakoodi",
@@ -120,6 +121,8 @@
     },
     "number": {
       "fanspeed": { "name": "Puhallintaso" },
+      "softboost_level": { "name": "Softboost ilmanvaihtotaso" },
+      "softboost_duration": { "name": "Softboost kesto" },
       "initial_fanspeed": { "name": "Puhallintaso käynnistettäessä" },
       "max_fanspeed": { "name": "Puhallintaso enintään" },
       "bypass_setpoint": { "name": "Ohitus­asetus" },
@@ -138,6 +141,8 @@
       "rh_indicator": { "name": "Kosteus­ilmaisin" },
       "preheat_status": { "name": "Esi­lämmitys" },
       "activate_boost": { "name": "Aktivoi tehoste­ilmanvaihto" },
+      "softboost_active": { "name": "Softboost aktiivinen" },
+      "softboost_fireplace_mode": { "name": "Softboost takkatila" },
       "input_fan_off": { "name": "Tulopuhallin pois" },
       "output_fan_off": { "name": "Poistopuhallin pois" }
     },

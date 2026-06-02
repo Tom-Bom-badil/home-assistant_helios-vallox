@@ -37,13 +37,24 @@ from .helpers import (
     LOVELACE_DEVICE_SELECT_UNIQUE_ID,
     LOVELACE_DEVICE_SELECT_OBJECT_ID,
     UI_NUMBER_ENTITIES,
+    RH_SENSOR_KEYS,
+    CO2_NUMBER_KEYS,
+    CO2_SENSOR_KEYS,
+    INTERNAL_SENSOR_KEYS,
+    INTERNAL_BINARY_SENSOR_KEYS,
+    SOFTBOOST_STORAGE_VERSION,
+    SOFTBOOST_STORAGE_KEY_SUFFIX,
+    DEFAULT_SOFTBOOST_LEVEL,
+    DEFAULT_SOFTBOOST_DURATION_SECONDS,
+    FIREPLACE_RESTORE_DELAY_SECONDS,
+    SOFTBOOST_NUMBER_ENTITIES,
+    SOFTBOOST_SWITCH_ENTITIES,
+    DEVELOPER_MODE,
 )
 
-# please ignore
-# needed for testing rH/CO2 formulas and settings without having sensors installed
-DEVELOPER_MODE = False
-try:
-    from .local_dev import DEVELOPER_MODE as LOCAL_DEVELOPER_MODE
-    DEVELOPER_MODE = LOCAL_DEVELOPER_MODE
-except ImportError:
-    pass
+# avoid collision of dev and production integrations
+if DEVELOPER_MODE:
+    BUS_ADDRESSES = {
+        **BUS_ADDRESSES,
+        "_HA": 0x2D,
+    }

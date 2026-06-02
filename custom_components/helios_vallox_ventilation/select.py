@@ -16,6 +16,7 @@ from .constants import (
     LOVELACE_DEVICE_SELECT_NAME,
     LOVELACE_DEVICE_SELECT_UNIQUE_ID,
     LOVELACE_DEVICE_SELECT_OBJECT_ID,
+    DEVELOPER_MODE,
 )
 
 
@@ -160,6 +161,7 @@ class Helios_Vallox_UI_Select(RestoreEntity, SelectEntity):
             "entity_prefix": selected["slug"] if selected else "",
             "selected_entry_id": selected["entry_id"] if selected else "",
             "available_devices": self._devices(),
+            "developer_mode": DEVELOPER_MODE,
         }
 
     async def async_select_option(self, option: str) -> None:

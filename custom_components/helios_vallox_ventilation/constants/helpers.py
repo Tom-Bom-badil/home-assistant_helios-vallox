@@ -1,3 +1,5 @@
+###### UI / Dashboard helpers
+
 # Device selector on the remote control of the example dashboard
 LOVELACE_DEVICE_SELECT_KEY = "__helios_vallox_ui_device_select"
 LOVELACE_DEVICE_SELECT_NAME = "Helios/Vallox UI Device Select"
@@ -29,3 +31,91 @@ UI_NUMBER_ENTITIES = [
         "icon": "mdi:remote",
     },
 ]
+
+
+###### CO2 and rH
+
+RH_SENSOR_KEYS = {
+    "highest_humidity",
+    "rh_sensor1",
+    "rh_sensor2",
+}
+
+CO2_NUMBER_KEYS = {
+    "co2_setting_value",
+}
+
+CO2_SENSOR_KEYS = {
+    "co2_concentration",
+    "co2_setting_value",
+}
+
+INTERNAL_SENSOR_KEYS = {
+    "rh_sensor1_raw",
+    "rh_sensor2_raw",
+    "co2_reading_upper_byte",
+    "co2_reading_lower_byte",
+    "co2_setting_upper_byte",
+    "co2_setting_lower_byte",
+}
+
+INTERNAL_BINARY_SENSOR_KEYS = {
+    "co2_sensor1_present",
+    "co2_sensor2_present",
+    "co2_sensor3_present",
+    "co2_sensor4_present",
+    "co2_sensor5_present",
+}
+
+
+
+###### Soft boost helpers
+
+SOFTBOOST_STORAGE_VERSION = 1
+SOFTBOOST_STORAGE_KEY_SUFFIX = "softboost"
+DEFAULT_SOFTBOOST_LEVEL = 8
+DEFAULT_SOFTBOOST_DURATION_SECONDS = 90 * 60
+# Minimum softboost duration is 15 minutes; restore output fan shortly before that.
+FIREPLACE_RESTORE_DELAY_SECONDS = (14 * 60) + 55
+SOFTBOOST_NUMBER_ENTITIES = [
+    {
+        "key": "softboost_level",
+        "unit": None,
+        "min": 1,
+        "max": 8,
+        "step": 1,
+        "mode": "slider",
+        "icon": "mdi:fan",
+        "initial": DEFAULT_SOFTBOOST_LEVEL,
+    },
+    {
+        "key": "softboost_duration",
+        "unit": "min",
+        "min": 15,
+        "max": 90,
+        "step": 15,
+        "mode": "box",
+        "icon": "mdi:timer-outline",
+        "initial": DEFAULT_SOFTBOOST_DURATION_SECONDS // 60,
+    },
+]
+SOFTBOOST_SWITCH_ENTITIES = [
+    {
+        "key": "softboost_fireplace_mode",
+        "icon": "mdi:fire",
+    },
+    {
+        "key": "softboost_active",
+        "icon": "mdi:fan-clock",
+    },
+]
+
+
+###### Developer mode  - internal setting only, please ignore
+# needed for testing rH/CO2 formulas and settings without having sensors installed
+DEVELOPER_MODE = False
+try:
+    from .local_dev import DEVELOPER_MODE as LOCAL_DEVELOPER_MODE
+    DEVELOPER_MODE = LOCAL_DEVELOPER_MODE
+except ImportError:
+    pass

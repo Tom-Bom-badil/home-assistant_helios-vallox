@@ -9,8 +9,13 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import slugify
 from .device_info import build_device_info, build_entity_id
-from .constants import DOMAIN, SENSOR_ENTITIES
-from .constants.config import (
+from .constants import (
+    DOMAIN,
+    SENSOR_ENTITIES,
+    RH_SENSOR_KEYS,
+    CO2_NUMBER_KEYS,
+    CO2_SENSOR_KEYS,
+    INTERNAL_SENSOR_KEYS,
     CONF_AIRFLOW_PER_MODE,
     CONF_DEVICE_MODEL,
     CONF_ENTITY_PREFIX,
@@ -29,26 +34,6 @@ from .constants.config import (
 _LOGGER = logging.getLogger("helios_vallox.sensor")
 
 
-INTERNAL_SENSOR_KEYS = {
-    "rh_sensor1_raw",
-    "rh_sensor2_raw",
-    "co2_reading_upper_byte",
-    "co2_reading_lower_byte",
-    "co2_setting_upper_byte",
-    "co2_setting_lower_byte",
-}
-
-CO2_SENSOR_KEYS = {
-    "co2_concentration",
-    "co2_setting_value",
-}
-
-RH_SENSOR_KEYS = {
-    "highest_humidity",
-    "rh_sensor1",
-    "rh_sensor2",
-}
-
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -62,6 +47,7 @@ async def async_setup_entry(
         if _should_create_sensor(coordinator, sensor_def["key"])
     ]
     entities.append(HeliosConfigurationSensor(entry))
+    entities.append(HeliosSoftBoostRemainingSensor(coordinator, entry))
     async_add_entities(entities)
 
 
@@ -124,6 +110,59 @@ class HeliosSensor(CoordinatorEntity, SensorEntity):
         if self._description:
             attrs["description"] = self._description
         return attrs if attrs else None
+
+
+class HeliosSoftBoostRemainingSensor(CoordinatorEntity, SensorEntity):
+    """Expose the remaining Softboost time for the Soft Remote Control."""
+
+    _attr_has_entity_name = True
+
+    _attr_should_poll = False
+    _attr_icon = "mdi:timer-outline"
+
+    def __init__(self, coordinator, entry: ConfigEntry) -> None:
+        super().__init__(coordinator.coordinator)
+        self._coordinator = coordinator
+        self._entry = entry
+        self._variable = "softboost_remaining"
+
+        self._attr_translation_key = self._variable
+        self._attr_unique_id = f"{entry.entry_id}_{self._variable}"
+        self.entity_id = build_entity_id("sensor", entry, self._variable)
+
+    async def async_added_to_hass(self) -> None:
+        """Register for Softboost countdown updates."""
+        await super().async_added_to_hass()
+        self.async_on_remove(
+            self._coordinator.softboost.async_add_listener(self.schedule_update_ha_state)
+        )
+
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        """Return device information."""
+        return build_device_info(self._entry)
+
+    @property
+    def native_value(self) -> str:
+        """Return remaining time as mm:ss text."""
+        return self._coordinator.softboost.remaining_text
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return dashboard/debug friendly Softboost attributes."""
+        softboost = self._coordinator.softboost
+        state = softboost.state
+
+        return {
+            "active": softboost.is_active,
+            "remaining_seconds": softboost.remaining_seconds,
+            "original_fanspeed": state.original_fanspeed,
+            "level": state.level,
+            "duration_seconds": state.duration_seconds,
+            "end_at_ts": state.end_at_ts,
+            "fireplace_restore_at_ts": state.fireplace_restore_at_ts,
+        }
 
 
 class HeliosConfigurationSensor(SensorEntity):
