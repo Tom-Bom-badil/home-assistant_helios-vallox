@@ -23,9 +23,28 @@ except ImportError:
         COMPONENT_FAULTS
     )
 
+try:
+    from .constants import DEVELOPER_MODE  # HA
+except ImportError:
+    try:
+        from constants import DEVELOPER_MODE  # Shell / CLI for testing
+    except ImportError:
+        DEVELOPER_MODE = False
+
+
+# CONSTS (seconds)
+RS485_SOCKET_TIMEOUT = 1.0
+RS485_RESPONSE_TIMEOUT = 1.0
+RS485_SILENCE_TIME = 0.007
+RS485_SILENCE_TIMEOUT = 1.0
+RS485_SEND_RETRY_DELAY = 1.0
+
+RS485_SEND_SLOT_ATTEMPTS = 5
+
+
 class HeliosBase:
 
-    ###### Init ################################################################
+    ###### Init and Logging ####################################################
 
     def __init__(self, hass=None, ip=None, port=None, config_data=None):
         # self.logger = logging.getLogger(__name__)
@@ -38,7 +57,26 @@ class HeliosBase:
         self._lock = threading.Lock()
         self._all_values, self._cache = {}, {}
 
+
+    def _logDebugOrDeveloperInfo(self, message, *args):
+        """Log as debug only in releases, but always developer mode."""
+        if DEVELOPER_MODE:
+            record = self.logger.makeRecord(
+                self.logger.name,
+                logging.INFO,
+                __file__,
+                0,
+                message,
+                args,
+                None,
+            )
+            self.logger.handle(record)
+        else:
+            self.logger.debug(message, *args)
+
+
     ###### Exposed functions (used from outside) ###############################
+
 
     # reads a single variable from the ventilation
     def readSingleValue(self, varname):
@@ -55,6 +93,7 @@ class HeliosBase:
             self._lock.release()
             self._disconnect()
 
+
     # reads all known variables from the ventilation
     def readAllValues(self):
         if not self._connect():
@@ -67,13 +106,14 @@ class HeliosBase:
                 value = self._performRead(varname)
                 self._all_values[varname] = value
             self._all_values = self._addCalculationsToReadings(self._all_values)
-            self.logger.info(f"Full read took {time.time() - start_time:.2f}s.")
+            self._logDebugOrDeveloperInfo(f"Full read took {time.time() - start_time:.2f}s.")
             return self._all_values
         except Exception as e:
             self.logger.error(f"Exception in _readAllValues(): {e}")
         finally:
             self._lock.release()
             self._disconnect()
+
 
     # writes a single variable to the ventilation, including plausability checks
     def writeValue(self, varname, value, min_value=None, max_value=None):
@@ -88,7 +128,9 @@ class HeliosBase:
             self._lock.release()
             self._disconnect()
 
+
     ###### Internal functions (higher layers) ##################################
+
 
     # read from a single register, cache registers containing single bits ('coils')
     def _performRead(self, varname):
@@ -99,15 +141,17 @@ class HeliosBase:
             sender, receiver = BUS_ADDRESSES["_HA"], BUS_ADDRESSES["MB1"]
             retry_count, max_retries = 0, 10
             while retry_count < max_retries:
-                if not self._syncWithRS485():
-                    return None
-                self._sendTelegram(sender, receiver, 0, varid)  # request register
-                value = self._receiveTelegram(receiver, sender, varid) # read response
+                # _sendTelegram() is the only place responsible for bus-silence.
+                # If no free slot is available, _sendTelegram() waits/retries internally.
+                if not self._sendTelegram(sender, receiver, 0, varid):
+                    retry_count += 1
+                    continue
+                value = self._receiveTelegram(receiver, sender, varid)  # read response
                 if value is not None:
                     if REGISTERS_AND_COILS[varname]["type"] == "bit":
                         self._cache[varid] = value
-                    if retry_count > 1: # log multiple re-reads (a single one is ok)
-                        self.logger.info(f"Retries for {varname}: {retry_count}.")
+                    if retry_count > 1:  # log multiple re-reads (a single one is ok)
+                        self._logDebugOrDeveloperInfo(f"Retries for {varname}: {retry_count}.")
                     return self._convertFromRaw(varname, value)
                 retry_count += 1
                 # if there are several HA instances running, reads may overlap each other
@@ -121,8 +165,8 @@ class HeliosBase:
             self.logger.error(f"Exception in _performRead(): {e}")
             return None
 
+
     def _addCalculationsToReadings(self, all_values):
-        logger = logging.getLogger(__name__)
         # add fault text (if any)
         fault_number = all_values.get('fault_number')
         if fault_number is not None:
@@ -152,19 +196,18 @@ class HeliosBase:
                 'efficiency': efficiency
             })
 
+
         # Humidity sensor conversions (raw byte to %); add a max sensor
         try:
             rh1_raw = int(all_values.get("rh_sensor1_raw"))
             all_values["rh_sensor1"] = int((rh1_raw - 51) / 2.04)
         except (TypeError, ValueError):
             all_values["rh_sensor1"] = None
-
         try:
             rh2_raw = int(all_values.get("rh_sensor2_raw"))
             all_values["rh_sensor2"] = int((rh2_raw - 51) / 2.04)
         except (TypeError, ValueError):
             all_values["rh_sensor2"] = None
-
         rh_values = [
             value
             for value in (
@@ -175,6 +218,7 @@ class HeliosBase:
         ]
         all_values["highest_humidity"] = max(rh_values) if rh_values else None
 
+
         # CO2 concentration (combine upper+lower byte); always receives max anyways
         try:
             co2_hi = int(all_values.get("co2_reading_upper_byte"))
@@ -182,6 +226,7 @@ class HeliosBase:
             all_values["co2_concentration"] = co2_hi * 256 + co2_lo
         except (TypeError, ValueError):
             all_values["co2_concentration"] = None
+
 
         # CO2 setting (combine upper + lower byte)
         try:
@@ -191,9 +236,10 @@ class HeliosBase:
         except (TypeError, ValueError):
             all_values["co2_setting_value"] = None
 
-        # Dev/Testing only: Log CO2/rH values without sensors installed
+
+        # Dev/Testing only: Log once CO2/rH values, even without sensors installed
         if not getattr(self, "_optional_sensor_values_logged", False):
-            logger.debug(
+            self._logDebugOrDeveloperInfo(
                 "Optional sensor values: "
                 "rh1_raw=%r, rh1=%r, rh2_raw=%r, rh2=%r, "
                 "co2_present=%r, co2_hi=%r, co2_lo=%r, co2=%r, "
@@ -212,6 +258,7 @@ class HeliosBase:
             )
             self._optional_sensor_values_logged = True
 
+
         # DIN airflow calculations and effective values (require config data)
         if self._config_data:
             area = float(self._config_data.get('house_area', 0))
@@ -222,17 +269,20 @@ class HeliosBase:
             all_values['din_airflow_normal'] = int(1.0 * base_airflow)
             all_values['din_airflow_boost'] = int(1.15 * base_airflow)
 
+
             # Effective airflow
             airflow_str = self._config_data.get('airflow_per_mode', '')
             fanspeed = all_values.get('fanspeed')
             input_pct = all_values.get('input_fan_percent')
             output_pct = all_values.get('output_fan_percent')
 
+
             if airflow_str and fanspeed is not None and input_pct is not None and output_pct is not None:
                 airflows = [int(x) for x in airflow_str.split(',')]
                 if 0 <= fanspeed < len(airflows):
                     fan_pct = min(input_pct, output_pct)
                     all_values['effective_airflow'] = int(airflows[fanspeed] * fan_pct / 100)
+
 
             # Electrical power
             power_str = self._config_data.get('power_per_mode', '')
@@ -243,6 +293,7 @@ class HeliosBase:
                     all_values['electrical_power'] = int(powers[fanspeed] * fan_pct / 100)
 
         return all_values
+
 
     # write to a single register
     def _performWrite(self, varname, value):
@@ -260,9 +311,12 @@ class HeliosBase:
             sender, receiver = BUS_ADDRESSES["_HA"], BUS_ADDRESSES["MB1"]
             register = vardef["varid"]
             # the actual write
-            self.logger.info(f"Writing {value} to {varname}")
-            self._sendTelegram(sender, receiver, register, rawvalue)
-            self._all_values[varname] = value   # update entities and bitcache
+            self._logDebugOrDeveloperInfo(f"Writing {value} to {varname}")
+            if not self._sendTelegram(sender, receiver, register, rawvalue):
+                self.logger.error(f"Writing failed: no free RS485 slot available for '{varname}'.")
+                return False
+            self._all_values[varname] = value
+            # update entities and bitcache
             if vardef["type"] == "bit":
                 self._cache[vardef["varid"]] = rawvalue
             return True
@@ -270,7 +324,9 @@ class HeliosBase:
             self.logger.error(f"Exception in _performWrite(): {e}")
             return False
 
+
     ###### Internal functions (lower layers) ###################################
+
 
     # connect to bus upon start and re-connect if needed
     def _connect(self):
@@ -284,7 +340,7 @@ class HeliosBase:
                 self._socket = None
         try:
             self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self._socket.settimeout(1.5)
+            self._socket.settimeout(RS485_SOCKET_TIMEOUT)
             self._socket.connect((self._ip, self._port))
             self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
             self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024)
@@ -296,6 +352,7 @@ class HeliosBase:
             self._socket = None
             return False
 
+
     # disconnect from bus
     def _disconnect(self):
         if self._socket is not None:
@@ -303,11 +360,12 @@ class HeliosBase:
             self._socket.close()
             self._socket = None
 
+
     # discover bus silence, return a free sending slot or a timeout
     def _syncWithRS485(self):
         gotSlot = False
-        silence_time = 0.007  # free sending slot length
-        timeout = time.time() + 1
+        silence_time = RS485_SILENCE_TIME
+        timeout = time.time() + RS485_SILENCE_TIMEOUT
         while time.time() < timeout:
             ready = select.select([self._socket], [], [], silence_time)
             if ready[0]:
@@ -323,6 +381,7 @@ class HeliosBase:
                 break
         return gotSlot
 
+
     # return entity value from a raw int received from the bus
     def _convertFromRaw(self, varname, rawvalue):
         vardef = REGISTERS_AND_COILS[varname]
@@ -334,6 +393,7 @@ class HeliosBase:
             "rh_percent": lambda v: max(0, min(100, int(round((int(v) - 51) / 2.04))))
         }
         return conversion_map.get(vardef["type"], lambda _: None)(rawvalue)
+
 
     # return a raw value from int/bool for writing to the bus
     def _convertToRaw(self, varname, value, currentval):
@@ -348,6 +408,7 @@ class HeliosBase:
         }
         return conversion_map.get(vardef["type"], lambda _: None)(value)
 
+
     # calculate a telegram checksum (last byte / byte 6 of each telegram)
     def _calculateCRC(self, telegram):
         sum = 0
@@ -355,25 +416,32 @@ class HeliosBase:
             sum = sum + c
         return sum % 256
 
+
     # send a telegram to the RS485 (=register read request or register write)
     def _sendTelegram(self, sender, receiver, register, value):
-        telegram = [ 0x01, sender, receiver, register, value, 0 ]
+        telegram = [0x01, sender, receiver, register, value, 0]
         telegram[5] = self._calculateCRC(telegram)
-        if not self._syncWithRS485():
-            self.logger.error("Writing failed: No proper connection available.")
-        try:
-            self._socket.sendall(bytearray(telegram))
-            # time.sleep(0.001)
-            # self._socket.sendall(bytearray(telegram))
-            return True
-        except socket.error as e:
-            self.logger.error(f"Socket error during send: {e}")
-            return False
+        # Never send into active bus traffic.
+        # If no free slot is found, wait once and try again.
+        for attempt in range(RS485_SEND_SLOT_ATTEMPTS):
+            if self._syncWithRS485():
+                try:
+                    self._socket.sendall(bytearray(telegram))
+                    return True
+                except socket.error as e:
+                    self.logger.error(f"Socket error during send: {e}")
+                    return False
+            if attempt == 0:
+                self.logger.debug("No free RS485 slot available. Retrying send in 1 second.")
+                time.sleep(RS485_SEND_RETRY_DELAY)
+        self.logger.error("Sending failed: no free RS485 slot available after retry.")
+        return False
+
 
     # read a telegram from RS485 (called after sending a register read request)
     def _receiveTelegram(self, sender, receiver, register):
         telegram = [0, 0, 0, 0, 0, 0] # FIFO ring buffer
-        timeout = time.time() + 1.5
+        timeout = time.time() + RS485_RESPONSE_TIMEOUT
         while time.time() < timeout:
             try:
                 char = self._socket.recv(1) # parse each byte received from bus
@@ -392,6 +460,7 @@ class HeliosBase:
                 continue
         self.logger.debug("Read timeout.")
         return None
+
 
     # Plausibility checks before writing to the bus
     def _validateBeforeWrite(self, varname, value, min_value=None, max_value=None):
@@ -432,7 +501,9 @@ class HeliosBase:
                 return False
         return True
 
+
 ###### for CLI (command line) testing only #####################################
+
 
 def main():
     parser = argparse.ArgumentParser(description="Test HeliosBase functions")
