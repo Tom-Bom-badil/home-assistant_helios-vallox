@@ -129,6 +129,7 @@
       "preheat_setpoint": { "name": "Pre-heat setpoint" },
       "defrost_setpoint": { "name": "Defrost setpoint" },
       "defrost_hysteresis": { "name": "Defrost hysteresis" },
+      "basic_humidity_level": { "name": "Humidity base level" },
       "co2_setting_value": { "name": "CO\u2082 setpoint" },
       "input_fan_percent": { "name": "Input fan speed" },
       "output_fan_percent": { "name": "Output fan speed" },
@@ -159,6 +160,13 @@
         "state": {
           "summer": "Summer",
           "winter": "Winter"
+        }
+      },
+      "humidity_control_mode": {
+        "name": "Humidity control mode",
+        "state": {
+          "manual": "Manual",
+          "automatic": "Automatic"
         }
       }
     }

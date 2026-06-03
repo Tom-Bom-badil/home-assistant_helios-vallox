@@ -129,6 +129,7 @@
       "preheat_setpoint": { "name": "Esi­lämmityksen asetus" },
       "defrost_setpoint": { "name": "Pakkassuojan asetus" },
       "defrost_hysteresis": { "name": "Pakkassuojan hystereesi" },
+      "basic_humidity_level": { "name": "Peruskosteustaso" },
       "co2_setting_value": { "name": "CO\u2082 hälytyskynnys" },
       "input_fan_percent": { "name": "Tulopuhallin: Prosentti" },
       "output_fan_percent": { "name": "Poistopuhallin: Prosentti" },
@@ -159,6 +160,13 @@
         "state": {
           "summer": "Kesä",
           "winter": "Talvi"
+        }
+      },
+      "humidity_control_mode": {
+        "name": "Kosteuden säädön tila",
+        "state": {
+          "manual": "Manuaalinen",
+          "automatic": "Automaattinen"
         }
       }
     }

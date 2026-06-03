@@ -131,6 +131,7 @@
       "defrost_hysteresis": { "name": "Frostmodus Hysterese" },
       "input_fan_percent": { "name": "Drehzahl % Zuluftmotor" },
       "output_fan_percent": { "name": "Drehzahl % Fortluftmotor" },
+      "basic_humidity_level": { "name": "Luftfeuchte Basisniveau" },
       "co2_setting_value": { "name": "CO\u2082 Warnschwelle" },
       "service_interval": { "name": "Warnintervall Filter" },
       "service_due_months": { "name": "Restzeit Filterwechsel" }
@@ -159,6 +160,13 @@
         "state": {
           "summer": "Sommer",
           "winter": "Winter"
+        }
+      },
+      "humidity_control_mode": {
+        "name": "Luftfeuchte Regelung",
+        "state": {
+          "manual": "Manuell",
+          "automatic": "Automatisch"
         }
       }
     }

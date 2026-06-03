@@ -41,6 +41,14 @@ RH_SENSOR_KEYS = {
     "rh_sensor2",
 }
 
+RH_NUMBER_KEYS = {
+    "basic_humidity_level",
+}
+
+RH_SELECT_KEYS = {
+    "humidity_control_mode",
+}
+
 CO2_NUMBER_KEYS = {
     "co2_setting_value",
 }
@@ -66,7 +74,6 @@ INTERNAL_BINARY_SENSOR_KEYS = {
     "co2_sensor4_present",
     "co2_sensor5_present",
 }
-
 
 
 ###### Soft boost helpers

@@ -63,6 +63,7 @@ NUMBER_ENTITIES = [
     {"key": "service_interval", "unit": "months", "min": 1, "max": 12, "step": 1, "mode": "box", "icon": "mdi:calendar-multiple", "description": "Service interval for filter warning", "factory_setting": 4, "entity_category": "config"},
     {"key": "service_due_months", "unit": "months", "min": 0, "max": 12, "step": 1, "mode": "box", "icon": "mdi:calendar-end", "description": "Remaining time for filter warning", "factory_setting": None },
     {"key": "co2_setting_value", "unit": "ppm", "min": 400, "max": 2000, "step": 50, "mode": "slider", "icon": "mdi:molecule-co2", "description": "CO2 alarm indicator setpoint", "factory_setting": 900, "entity_category": "config"},
+    {"key": "basic_humidity_level", "unit": "%", "min": 0, "max": 100, "step": 1, "mode": "slider", "icon": "mdi:water-percent", "description": "Basic humidity level", "factory_setting": None, "entity_category": "config"},
 ]
 
 SWITCH_ENTITIES = [
@@ -78,4 +79,5 @@ SWITCH_ENTITIES = [
 SELECT_ENTITIES = [
     {"key": "boost_mode", "icon": "mdi:fan-speed-2", "options": {1: "normal", 0: "fireplace"}, "entity_category": "config" },
     {"key": "winter_mode", "icon": "mdi:snowflake-thermometer", "options": {0: "summer", 1: "winter"} },
+    {"key": "humidity_control_mode", "icon": "mdi:water-percent", "options": {0: "manual", 1: "automatic"}, "entity_category": "config" },
 ]

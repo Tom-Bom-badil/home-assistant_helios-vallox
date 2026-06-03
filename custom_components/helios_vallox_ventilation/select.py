@@ -12,6 +12,7 @@ from .device_info import build_device_info, build_entity_id, get_entity_prefix
 from .constants import (
     DOMAIN,
     SELECT_ENTITIES,
+    RH_SELECT_KEYS,
     LOVELACE_DEVICE_SELECT_KEY,
     LOVELACE_DEVICE_SELECT_NAME,
     LOVELACE_DEVICE_SELECT_UNIQUE_ID,
@@ -26,7 +27,6 @@ _LOGGER = logging.getLogger("helios_vallox.select")
 def _build_lovelace_devices(hass: HomeAssistant) -> list[dict[str, str]]:
     """Build available ventilation devices from config entries."""
     devices: list[dict[str, str]] = []
-
     for entry in hass.config_entries.async_entries(DOMAIN):
         label = get_entity_prefix(entry)
         slug = slugify(label)
@@ -43,6 +43,13 @@ def _build_lovelace_devices(hass: HomeAssistant) -> list[dict[str, str]]:
     return devices
 
 
+def _should_create_select(coordinator, key: str) -> bool:
+    """Return True if this select should be exposed as HA entity."""
+    if key in RH_SELECT_KEYS:
+        return coordinator.has_capability("rh")
+    return True
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -54,6 +61,7 @@ async def async_setup_entry(
     entities: list[SelectEntity] = [
         HeliosSelect(coordinator, entry, select_def)
         for select_def in SELECT_ENTITIES
+        if _should_create_select(coordinator, select_def["key"])
     ]
 
     dashboard_select = hass.data[DOMAIN].get(LOVELACE_DEVICE_SELECT_KEY)

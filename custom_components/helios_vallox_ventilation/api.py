@@ -330,7 +330,8 @@ class HeliosBase:
             "temperature": lambda v: int(NTC5K_TEMPERATURES[v]),
             "fanspeed": lambda v: int(FANSPEEDS.get(v, 1)),
             "bit": lambda v: bool(v >> vardef["bitposition"] & 0x01),
-            "dec": lambda v: int(v // 3) if varname == "defrost_hysteresis" else int(v)
+            "dec": lambda v: int(v // 3) if varname == "defrost_hysteresis" else int(v),
+            "rh_percent": lambda v: max(0, min(100, int(round((int(v) - 51) / 2.04))))
         }
         return conversion_map.get(vardef["type"], lambda _: None)(rawvalue)
 
@@ -342,7 +343,8 @@ class HeliosBase:
             "fanspeed": lambda v: int({v: k for k, v in FANSPEEDS.items()}.get(int(v), 0)),
             "bit": lambda v: currentval | (1 << vardef["bitposition"]) if str(v).lower() in {"true", "1", "on"} 
                 else currentval & ~(1 << vardef["bitposition"]),
-            "dec": lambda v: int(v * 3) if varname == "defrost_hysteresis" else int(v)
+            "dec": lambda v: int(v * 3) if varname == "defrost_hysteresis" else int(v),
+            "rh_percent": lambda v: max(0x33, min(0xFF, int(round(float(v) * 2.04 + 51))))
         }
         return conversion_map.get(vardef["type"], lambda _: None)(value)
 

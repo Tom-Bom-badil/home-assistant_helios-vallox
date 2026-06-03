@@ -12,6 +12,7 @@ from .constants import (
     DOMAIN,
     NUMBER_ENTITIES,
     UI_NUMBER_ENTITIES,
+    RH_NUMBER_KEYS,
     CO2_NUMBER_KEYS,
     SOFTBOOST_NUMBER_ENTITIES,
 )
