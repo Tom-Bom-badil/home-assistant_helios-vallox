@@ -335,13 +335,26 @@ class SoftBoostController:
     @callback
     def _handle_end(self, _now=None) -> None:
         """Stop Softboost when the planned end time is reached."""
-        self.hass.async_create_task(self.async_stop())
+        self.hass.async_create_task(self._async_handle_end())
 
+    async def _async_handle_end(self) -> None:
+        """Stop Softboost with explicit error logging."""
+        try:
+            await self.async_stop()
+        except Exception:
+            _LOGGER.exception("Error stopping Softboost at planned end time")
 
     @callback
     def _handle_fireplace_restore(self, _now=None) -> None:
         """Restore output fan when fireplace delay has passed."""
-        self.hass.async_create_task(self._async_restore_output_fan())
+        self.hass.async_create_task(self._async_handle_fireplace_restore())
+
+    async def _async_handle_fireplace_restore(self) -> None:
+        """Restore output fan with explicit error logging."""
+        try:
+            await self._async_restore_output_fan()
+        except Exception:
+            _LOGGER.exception("Error restoring output fan after Softboost fireplace delay")
 
 
     def _schedule_tick(self) -> None:
@@ -385,12 +398,10 @@ class SoftBoostController:
     def _notify_listeners(self) -> None:
         """Notify Softboost entities to update their HA state."""
         for listener in list(self._listeners):
-            self.hass.async_create_task(self._async_call_listener(listener))
-
-
-    async def _async_call_listener(self, listener: Callable[[], None]) -> None:
-        """Call one HA state listener safely in the event loop."""
-        listener()
+            try:
+                listener()
+            except Exception:
+                _LOGGER.exception("Error notifying Softboost listener")
 
 
     async def _async_restore_output_fan(self) -> None:
