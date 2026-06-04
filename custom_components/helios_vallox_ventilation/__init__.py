@@ -4,6 +4,7 @@ from homeassistant.const import CONF_IP_ADDRESS, CONF_PORT, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.util import slugify
 from homeassistant.components import persistent_notification
+from homeassistant.exceptions import HomeAssistantError
 from .device_info import get_entity_prefix
 from .constants import DOMAIN
 from .coordinator import HeliosCoordinator
@@ -106,8 +107,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Register write service (once per domain)
     if not hass.services.has_service(DOMAIN, "write_value"):
 
+#---
         async def handle_write_service(call):
-
             target_entry_id = call.data.get("entry_id")
             coord = None
 
@@ -118,12 +119,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 # 2) Fallback: treat entry_id as unique device name
                 if coord is None:
                     target_slug = slugify(target_entry_id)
-
                     for entry in hass.config_entries.async_entries(DOMAIN):
                         if slugify(get_entity_prefix(entry)) == target_slug:
                             coord = hass.data[DOMAIN].get(entry.entry_id)
                             break
-
             else:
                 # 3) Backward-compatible fallback for single-device installations
                 coordinators = [
@@ -135,24 +134,42 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 if len(coordinators) == 1:
                     coord = coordinators[0]
                 else:
-                    _LOGGER.error(
-                        "write_value requires entry_id when multiple ventilation devices are configured"
+                    raise HomeAssistantError(
+                        "write_value requires entry_id when multiple ventilation "
+                        "devices are configured"
                     )
-                    return
 
             if coord is None:
-                _LOGGER.error(
-                    "No ventilation device found for entry_id or unique device name: %s",
-                    target_entry_id,
+                raise HomeAssistantError(
+                    "No ventilation device found for entry_id or unique device "
+                    f"name: {target_entry_id}"
                 )
-                return
+
+            variable = call.data["variable"]
+            value = call.data["value"]
 
             try:
-                await hass.async_add_executor_job(
-                    coord.write_value, call.data["variable"], call.data["value"]
+                success = await hass.async_add_executor_job(
+                    coord.write_value,
+                    variable,
+                    value,
                 )
-            except Exception as e:
-                _LOGGER.error(f"Error handling write service: {e}", exc_info=True)
+            except Exception as err:
+                _LOGGER.error(
+                    "Error handling write service for %s=%s: %s",
+                    variable,
+                    value,
+                    err,
+                    exc_info=True,
+                )
+                raise HomeAssistantError(
+                    f"Failed to write {variable}={value} to ventilation unit"
+                ) from err
+
+            if not success:
+                raise HomeAssistantError(
+                    f"Failed to write {variable}={value} to ventilation unit"
+                )
 
         hass.services.async_register(
             DOMAIN, "write_value", handle_write_service, schema=SERVICE_WRITE_VALUE_SCHEMA
