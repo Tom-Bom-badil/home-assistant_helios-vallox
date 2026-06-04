@@ -59,8 +59,8 @@ class HeliosBase:
 
 
     def _logDebugOrDeveloperInfo(self, message, *args):
-        """Log as debug only in releases, but always developer mode."""
-        if DEVELOPER_MODE:
+        """Log as debug in releases, but force INFO if developer mode is enabled."""
+        if DEVELOPER_MODE is True:
             record = self.logger.makeRecord(
                 self.logger.name,
                 logging.INFO,
@@ -80,27 +80,28 @@ class HeliosBase:
 
     # reads a single variable from the ventilation
     def readSingleValue(self, varname):
-        if not self._connect():
-            return {}
         self._lock.acquire()
-        self._cache.pop(REGISTERS_AND_COILS[varname]["varid"], None)
         try:
+            if not self._connect():
+                return {}
+            self._cache.pop(REGISTERS_AND_COILS[varname]["varid"], None)
             value = self._performRead(varname)
             return {varname: value}
         except Exception as e:
             self.logger.error(f"Exception in _readSingleValue(): {e}")
+            return {}
         finally:
-            self._lock.release()
             self._disconnect()
+            self._lock.release()
 
 
     # reads all known variables from the ventilation
     def readAllValues(self):
-        if not self._connect():
-            return {}
         self._lock.acquire()
-        self._all_values, self._cache = {}, {}
         try:
+            if not self._connect():
+                return {}
+            self._all_values, self._cache = {}, {}
             start_time = time.time()
             for varname in REGISTERS_AND_COILS:
                 value = self._performRead(varname)
@@ -110,23 +111,25 @@ class HeliosBase:
             return self._all_values
         except Exception as e:
             self.logger.error(f"Exception in _readAllValues(): {e}")
+            return {}
         finally:
-            self._lock.release()
             self._disconnect()
+            self._lock.release()
 
 
     # writes a single variable to the ventilation, including plausability checks
     def writeValue(self, varname, value, min_value=None, max_value=None):
-        if not self._connect() or not self._validateBeforeWrite(varname, value, min_value, max_value):
-            return False
         self._lock.acquire()
         try:
+            if not self._connect() or not self._validateBeforeWrite(varname, value, min_value, max_value):
+                return False
             return self._performWrite(varname, value)
         except Exception as e:
             self.logger.error(f"Exception in _writeValue(): {e}")
+            return False
         finally:
-            self._lock.release()
             self._disconnect()
+            self._lock.release()
 
 
     ###### Internal functions (higher layers) ##################################

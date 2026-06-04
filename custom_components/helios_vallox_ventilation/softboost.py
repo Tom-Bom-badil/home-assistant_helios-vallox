@@ -359,7 +359,7 @@ class SoftBoostController:
         if not self._state.active:
             return
         if self._was_overridden():
-            _LOGGER.info(
+            _LOGGER.debug(
                 "Softboost was cancelled because fan speed changed outside Softboost: "
                 "current=%s, softboost=%s",
                 self._current_fanspeed(),

@@ -172,7 +172,7 @@ class HeliosSoftBoostNumber(RestoreEntity, NumberEntity):
         # Softboost settings are only editable before starting.
         # During an active run, the user must stop and restart with new settings.
         if softboost.is_active:
-            _LOGGER.info(
+            _LOGGER.debug(
                 "Ignoring change of %s while Softboost is active",
                 self._variable,
             )
