@@ -15,7 +15,7 @@
       },
       "model": {
         "title": "2 / 4 - Device Name and Model",
-        "description": "Enter a unique name and select your model to pre-populate parameters, or choose 'Custom' to enter them manually.",
+        "description": "Enter a unique device name / entities prefix, and select your model to auto-populate device parameters (choose 'Custom' for manual input).",
         "data": {
           "entity_prefix": "Unique name (e.g. 'Ventilation')",
           "device_model": "Device Model"

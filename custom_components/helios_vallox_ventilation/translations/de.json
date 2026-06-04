@@ -15,7 +15,7 @@
       },
       "model": {
         "title": "2 / 4 - Gerätename und -modell",
-        "description": "Wählen Sie einen eindeutigen Gerätenamen und Ihr Lüftungsmodell (oder 'Benutzerdefiniert' für manuelle Eingabe).",
+        "description": "Wählen Sie einen eindeutigen Gerätenamen / Entity Prefix und Ihr Lüftungsmodell (oder 'Custom' für manuelle Eingabe).",
         "data": {
           "entity_prefix": "Eindeutiger Name (z.B. 'KWL')",
           "device_model": "Gerätemodell"
@@ -125,7 +125,7 @@
       "softboost_duration": { "name": "Softboost Dauer" },
       "initial_fanspeed": { "name": "Lüftungsstufe beim Einschalten" },
       "max_fanspeed": { "name": "Lüftungsstufe maximal" },
-      "bypass_setpoint": { "name": "Temperatur \u0394 für Bypass Aktivierung" },
+      "bypass_setpoint": { "name": "Temperatur für Bypass Aktivierung" },
       "preheat_setpoint": { "name": "Vorheizung Ein" },
       "defrost_setpoint": { "name": "Frostmodus Ein" },
       "defrost_hysteresis": { "name": "Frostmodus Hysterese" },

@@ -54,7 +54,7 @@ from .helpers import (
     DEVELOPER_MODE,
 )
 
-# avoid collision of dev and production integrations
+# avoid collision of integrations in dev and prod HA instances
 if DEVELOPER_MODE:
     BUS_ADDRESSES = {
         **BUS_ADDRESSES,

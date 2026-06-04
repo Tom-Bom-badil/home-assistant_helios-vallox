@@ -93,11 +93,6 @@ class HeliosSensor(CoordinatorEntity, SensorEntity):
         """Return device information."""
         return build_device_info(self._entry)
 
-    # @property
-    # def name(self) -> str:
-    #     """Return localized entity name without device prefix."""
-    #     return get_localized_entity_name(self, "sensor", self._variable)
-
     @property
     def native_value(self):
         if self.coordinator.data is None:
@@ -186,11 +181,6 @@ class HeliosConfigurationSensor(SensorEntity):
         """Return device information."""
         return build_device_info(self._entry)
 
-    # @property
-    # def name(self) -> str:
-    #     """Return localized entity name without device prefix."""
-    #     return get_localized_entity_name(self, "sensor", self._variable)
-
     @property
     def native_value(self) -> str:
         """Return a stable state for the configuration sensor."""
@@ -250,11 +240,8 @@ class HeliosConfigurationSensor(SensorEntity):
 
     @staticmethod
     def _csv_to_int_list(value: Any) -> list[int]:
-        """Convert a CSV string or list to a list of integers.
-
-        The config flow stores airflow_per_mode and power_per_mode with
-        a leading 0 for fan speed 0. If older data still contains only
-        the 8 real fan levels, prepend the 0 here for dashboard safety.
+        """Convert a CSV string or list to a list of integers
+        (airflow_per_mode, power_per_mode)
         """
         if value in (None, ""):
             return []

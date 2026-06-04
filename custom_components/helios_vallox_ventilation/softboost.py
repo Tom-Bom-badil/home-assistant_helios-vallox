@@ -1,4 +1,5 @@
-"""Softboost controller for Helios/Vallox ventilation.
+"""
+Softboost controller for Helios/Vallox ventilation.
 This module owns the HA-specific Soft Remote Control state machine.
 """
 

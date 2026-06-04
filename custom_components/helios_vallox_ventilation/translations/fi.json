@@ -15,7 +15,7 @@
       },
       "model": {
         "title": "2 / 4 - Laitteen nimi ja malli",
-        "description": "Syötä yksilöllinen nimi ja valitse ilmanvaihtolaitteen malli parametrien ennalta täyttämiseksi, tai valitse 'Mukautettu' manuaalista syöttöä varten.",
+        "description": "Syötä yksilöllinen nimi ja valitse ilmanvaihtolaitteen malli parametrien ennalta täyttämiseksi, tai valitse 'Custom' manuaalista syöttöä varten.",
         "data": {
           "entity_prefix": "Yksilöllinen nimi (esim. 'Ilmanvaihto')",
           "device_model": "Laitteen malli"

@@ -8,6 +8,6 @@
 #   helios_vallox:       !include user_conf.yaml
 
 # Important: If you copied the user_conf.yaml somewhere else by hand
-# (e.g. /packages directory), make sure to delete it there, too.
+# (e.g. to the /packages directory), make sure to delete it there, too.
 
 {}

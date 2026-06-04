@@ -3,6 +3,11 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_IP_ADDRESS, CONF_PORT
 from homeassistant.util import slugify
+from homeassistant.helpers.selector import (
+    SelectSelector,
+    SelectSelectorConfig,
+    SelectSelectorMode,
+)
 from .api import HeliosBase
 from .constants import (
     DOMAIN,
@@ -68,6 +73,7 @@ class HeliosValloxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     def __init__(self):
         self._data = {}
 
+
     async def async_step_user(self, user_input=None):
         """Step 1: Connection settings (IP / port)."""
         errors = {}
@@ -99,8 +105,9 @@ class HeliosValloxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
+
     async def async_step_model(self, user_input=None):
-        """Step 2: Select device model and unique device name."""
+        """Step 2: Select a unique device name (=entity ID prefix) and the device model ."""
         errors = {}
 
         if user_input is not None:
@@ -122,7 +129,7 @@ class HeliosValloxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self._data[CONF_ENTITY_PREFIX] = entity_prefix
                 return await self.async_step_details()
 
-        model_options = list(DEVICE_PRESETS.keys()) + [CUSTOM_MODEL]
+        model_options = list(DEVICE_PRESETS.keys())
 
         return self.async_show_form(
             step_id="model",
@@ -132,7 +139,15 @@ class HeliosValloxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         CONF_ENTITY_PREFIX,
                         default=DEFAULT_ENTITY_PREFIX,
                     ): str,
-                    vol.Required(CONF_DEVICE_MODEL): vol.In(model_options),
+                    vol.Required(
+                        CONF_DEVICE_MODEL,
+                        default=CUSTOM_MODEL,
+                    ): SelectSelector(
+                        SelectSelectorConfig(
+                            options=model_options,
+                            mode=SelectSelectorMode.DROPDOWN,
+                        )
+                    ),
                 }
             ),
             errors=errors,
@@ -142,6 +157,10 @@ class HeliosValloxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_details(self, user_input=None):
         """Step 3: Device parameters (pre-populated from model selection)."""
         errors = {}
+
+        model = self._data.get(CONF_DEVICE_MODEL, CUSTOM_MODEL)
+        preset = DEVICE_PRESETS.get(model, DEVICE_PRESETS[CUSTOM_MODEL])
+
         if user_input is not None:
             # Validate comma-separated fields: must be exactly 8 integers
             airflow_str = user_input.get(CONF_AIRFLOW_PER_MODE, "")
@@ -151,55 +170,55 @@ class HeliosValloxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 (CONF_AIRFLOW_PER_MODE, airflow_str),
                 (CONF_POWER_PER_MODE, power_str),
             ]:
-                if value:
-                    parts = [v.strip() for v in value.split(",") if v.strip()]
-                    if len(parts) != 8:
-                        errors[field] = "invalid_csv_count"
-                        continue
-                    try:
-                        [int(v) for v in parts]
-                    except ValueError:
-                        errors[field] = "invalid_csv_values"
+                if not str(value or "").strip():
+                    errors[field] = "invalid_csv_count"
+                    continue
+
+                parts = [v.strip() for v in value.split(",") if v.strip()]
+
+                if len(parts) != 8:
+                    errors[field] = "invalid_csv_count"
+                    continue
+
+                try:
+                    [int(v) for v in parts]
+                except ValueError:
+                    errors[field] = "invalid_csv_values"
 
             if not errors:
                 # Normalize: trim spaces and prepend 0 for fan speed 0 (off)
-                if airflow_str:
-                    trimmed = ",".join(v.strip() for v in airflow_str.split(",") if v.strip())
-                    user_input[CONF_AIRFLOW_PER_MODE] = "0," + trimmed
-                if power_str:
-                    trimmed = ",".join(v.strip() for v in power_str.split(",") if v.strip())
-                    user_input[CONF_POWER_PER_MODE] = "0," + trimmed
+                trimmed = ",".join(v.strip() for v in airflow_str.split(",") if v.strip())
+                user_input[CONF_AIRFLOW_PER_MODE] = "0," + trimmed
+
+                trimmed = ",".join(v.strip() for v in power_str.split(",") if v.strip())
+                user_input[CONF_POWER_PER_MODE] = "0," + trimmed
+
                 # Compute max airflow/power from the normalized per-mode values
-                if user_input.get(CONF_AIRFLOW_PER_MODE):
-                    user_input[CONF_MAX_AIRFLOW] = max(
-                        int(v) for v in user_input[CONF_AIRFLOW_PER_MODE].split(",")
-                    )
-                if user_input.get(CONF_POWER_PER_MODE):
-                    user_input[CONF_MAX_POWER] = max(
-                        int(v) for v in user_input[CONF_POWER_PER_MODE].split(",")
-                    )
+                user_input[CONF_MAX_AIRFLOW] = max(
+                    int(v) for v in user_input[CONF_AIRFLOW_PER_MODE].split(",")
+                )
+                user_input[CONF_MAX_POWER] = max(
+                    int(v) for v in user_input[CONF_POWER_PER_MODE].split(",")
+                )
+
                 self._data.update(user_input)
                 return await self.async_step_house()
-
-        # Pre-populate from selected model, or empty for custom
-        model = self._data.get(CONF_DEVICE_MODEL, CUSTOM_MODEL)
-        preset = DEVICE_PRESETS.get(model, {})
 
         return self.async_show_form(
             step_id="details",
             data_schema=vol.Schema(
                 {
-                    vol.Optional(
+                    vol.Required(
                         CONF_AIRFLOW_PER_MODE,
-                        default=preset.get(CONF_AIRFLOW_PER_MODE, ""),
+                        default=preset.get(CONF_AIRFLOW_PER_MODE, "0,0,0,0,0,0,0,0"),
                     ): str,
-                    vol.Optional(
+                    vol.Required(
                         CONF_POWER_PER_MODE,
-                        default=preset.get(CONF_POWER_PER_MODE, ""),
+                        default=preset.get(CONF_POWER_PER_MODE, "0,0,0,0,0,0,0,0"),
                     ): str,
-                    vol.Optional(
+                    vol.Required(
                         CONF_HEATING_POWER,
-                        default=preset.get(CONF_HEATING_POWER),
+                        default=preset.get(CONF_HEATING_POWER, 0),
                     ): vol.Coerce(int),
                 }
             ),
@@ -216,13 +235,25 @@ class HeliosValloxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 data=self._data,
             )
 
+        model = self._data.get(CONF_DEVICE_MODEL, CUSTOM_MODEL)
+        preset = DEVICE_PRESETS.get(model, DEVICE_PRESETS[CUSTOM_MODEL])
+
         return self.async_show_form(
             step_id="house",
             data_schema=vol.Schema(
                 {
-                    vol.Optional(CONF_HOUSE_AREA): vol.Coerce(float),
-                    vol.Optional(CONF_HOUSE_VOLUME): vol.Coerce(float),
-                    vol.Optional(CONF_ISOLATION_FACTOR, default=0.3): vol.Coerce(float),
+                    vol.Required(
+                        CONF_HOUSE_AREA,
+                        default=preset.get(CONF_HOUSE_AREA, 0),
+                    ): vol.Coerce(float),
+                    vol.Required(
+                        CONF_HOUSE_VOLUME,
+                        default=preset.get(CONF_HOUSE_VOLUME, 0),
+                    ): vol.Coerce(float),
+                    vol.Required(
+                        CONF_ISOLATION_FACTOR,
+                        default=preset.get(CONF_ISOLATION_FACTOR, 0.3),
+                    ): vol.Coerce(float),
                 }
             ),
         )
