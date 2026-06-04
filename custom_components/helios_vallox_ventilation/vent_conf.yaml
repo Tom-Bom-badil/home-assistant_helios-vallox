@@ -7,4 +7,7 @@
 # helios_vallox_ventilation:
 #   !include custom_components/helios_vallox_ventilation/vent_conf.yaml
 
+# After you have added your ventilation, you can also safely delete all
+# ventilation parameters in `secrets.yaml` - they are not used anymore.
+
 {}
