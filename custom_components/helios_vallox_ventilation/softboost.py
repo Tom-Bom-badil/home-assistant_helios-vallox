@@ -223,6 +223,12 @@ class SoftBoostController:
         self._notify_listeners()
 
 
+    def async_unload(self) -> None:
+        """Cancel scheduled callbacks without changing ventilation state."""
+        self._cancel_callbacks()
+        self._listeners.clear()
+
+
     def prepare_start_state(
         self,
         *,
@@ -386,10 +392,12 @@ class SoftBoostController:
         """Call one HA state listener safely in the event loop."""
         listener()
 
+
     async def _async_restore_output_fan(self) -> None:
         """Restore output fan to normal state."""
         await self._async_write_value("output_fan_off", 0, 0, 1)
         self._notify_listeners()
+
 
     def _cancel_callbacks(self) -> None:
         """Cancel all scheduled Softboost callbacks."""
@@ -400,7 +408,6 @@ class SoftBoostController:
         ):
             if unsub is not None:
                 unsub()
-
         self._unsub_end_callback = None
         self._unsub_fireplace_callback = None
         self._unsub_tick_callback = None
@@ -450,9 +457,3 @@ def _as_optional_float(value: Any) -> float | None:
         return float(value)
     except (TypeError, ValueError):
         return None
-
-
-def async_unload(self) -> None:
-    """Cancel scheduled callbacks without changing ventilation state."""
-    self._cancel_callbacks()
-    self._listeners.clear()
