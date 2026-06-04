@@ -163,8 +163,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+
     if unload_ok:
+        coordinator = hass.data[DOMAIN].get(entry.entry_id)
+
+        if coordinator is not None and getattr(coordinator, "softboost", None) is not None:
+            coordinator.softboost.async_unload()
+
         hass.data[DOMAIN].pop(entry.entry_id)
+
         if not hass.data[DOMAIN]:
             hass.services.async_remove(DOMAIN, "write_value")
+
     return unload_ok

@@ -23,6 +23,8 @@ _LOGGER = logging.getLogger("helios_vallox.number")
 
 def _should_create_number(coordinator, key: str) -> bool:
     """Return True if this number should be exposed as HA entity."""
+    if key in RH_NUMBER_KEYS:
+        return coordinator.has_capability("rh")
     if key in CO2_NUMBER_KEYS:
         return coordinator.has_capability("co2")
     return True
@@ -33,6 +35,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
+
     coordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities = [
@@ -46,13 +49,12 @@ async def async_setup_entry(
     for number_def in UI_NUMBER_ENTITIES:
         storage_key = number_def["storage_key"]
         existing_entity = hass.data[DOMAIN].get(storage_key)
-
         if existing_entity is None or getattr(existing_entity, "platform", None) is None:
             entity = Helios_Vallox_Ui_Numbers(number_def)
             hass.data[DOMAIN][storage_key] = entity
             entities.append(entity)
 
-    # Per-device Softboost settings.
+    # Per-device soft-boost settings.
     # These do not write directly to the ventilation unit.
     entities.extend(
         HeliosSoftBoostNumber(coordinator, entry, number_def)

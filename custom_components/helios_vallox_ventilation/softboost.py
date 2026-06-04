@@ -435,7 +435,6 @@ def _as_optional_int(value: Any) -> int | None:
     """Convert value to optional int."""
     if value is None:
         return None
-
     try:
         return int(value)
     except (TypeError, ValueError):
@@ -446,8 +445,13 @@ def _as_optional_float(value: Any) -> float | None:
     """Convert value to optional float."""
     if value is None:
         return None
-
     try:
         return float(value)
     except (TypeError, ValueError):
         return None
+
+
+def async_unload(self) -> None:
+    """Cancel scheduled callbacks without changing ventilation state."""
+    self._cancel_callbacks()
+    self._listeners.clear()
