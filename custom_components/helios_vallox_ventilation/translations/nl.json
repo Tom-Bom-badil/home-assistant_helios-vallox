@@ -1,0 +1,165 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "1 / 4 - Helios/Vallox ventilatie",
+        "description": "Voer het IP-adres en de poort van je ventilatie-unit in.",
+        "data": {
+          "ip_address": "IP-adres",
+          "port": "Poort"
+        },
+        "data_description": {
+          "ip_address": "Het IP-adres van de serieel-naar-Ethernet-converter in je lokale netwerk.",
+          "port": "De TCP-poort."
+        }
+      },
+      "model": {
+        "title": "2 / 4 - Apparaatnaam en model",
+        "description": "Voer een unieke apparaatnaam / entiteitsvoorvoegsel in en selecteer je model om apparaatparameters automatisch in te vullen (kies 'Custom' voor handmatige invoer).",
+        "data": {
+          "entity_prefix": "Unieke naam (bijv. 'Ventilatie')",
+          "device_model": "Apparaatmodel"
+        },
+        "data_description": {
+          "entity_prefix": "Moet uniek zijn als meerdere apparaten zijn geconfigureerd (bijv. 'Ventilatie kelder', 'Ventilatie boven', enz.).",
+          "device_model": "Het selecteren van een model vult de apparaatparameters in de volgende stap vooraf in."
+        }
+      },
+      "details": {
+        "title": "3 / 4 - Apparaatparameters",
+        "description": "Configureer de ventilatieparameters. De waarden zijn vooraf ingevuld op basis van het geselecteerde model. Ze kunnen later opnieuw worden gewijzigd.",
+        "data": {
+          "airflow_per_mode": "Luchtdebiet per ventilatiestand (m³/h)",
+          "power_per_mode": "Stroomverbruik per ventilatiestand (W)",
+          "heating_power": "Vermogen voor-/naverwarming (W)"
+        },
+        "data_description": {
+          "airflow_per_mode": "Exact 8 gehele waarden gescheiden door komma’s, één per ventilatiestand (1–8), bijv. '60,90,120,150,180,210,240,270'.",
+          "power_per_mode": "Exact 8 gehele waarden gescheiden door komma’s, één per ventilatiestand (1–8), bijv. '10,18,25,34,50,75,117,185'.",
+          "heating_power": "Het vermogen van het voor- of naverwarmingselement in watt."
+        }
+      },
+      "house": {
+        "title": "4 / 4 - Gebouwparameters",
+        "description": "Voer de parameters van je gebouw in om de ventilatiebehoefte te berekenen. Ze kunnen later opnieuw worden gewijzigd.",
+        "data": {
+          "house_area": "Woonoppervlak (m²)",
+          "house_volume": "Gebouwvolume (m³)",
+          "isolation_factor": "Isolatiefactor"
+        },
+        "data_description": {
+          "house_area": "Het totale verwarmde woonoppervlak in vierkante meters (bijv. 143).",
+          "house_volume": "Het totale luchtvolume van het gebouw in kubieke meters (oppervlak x kamerhoogte, bijv. 384).",
+          "isolation_factor": "Isolatiekwaliteit van het gebouw: 0,3 = goed geïsoleerd, 0,4 = standaard, 0,5 = slecht geïsoleerd."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kan geen verbinding maken met de ventilatie-unit. Controleer het IP-adres en de poort.",
+      "invalid_csv_count": "Er zijn exact 8 waarden vereist (één per ventilatiestand), gescheiden door komma’s.",
+      "invalid_csv_values": "Alle waarden moeten gehele getallen zijn."
+    },
+    "abort": {
+      "already_configured": "Dit apparaat is al geconfigureerd."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature_outdoor_air": { "name": "Temperatuur buitenlucht" },
+      "temperature_supply_air": { "name": "Temperatuur toevoerlucht" },
+      "temperature_extract_air": { "name": "Temperatuur afvoerlucht" },
+      "temperature_exhaust_air": { "name": "Temperatuur afblaaslucht" },
+      "boost_remaining": { "name": "Resterende tijd boostventilatie" },
+      "softboost_remaining": { "name": "Resterende tijd Softboost" },
+      "fault_number": { "name": "Fout-/storingsnummer" },
+      "fault_text": {
+        "name": "Fouttekst",
+        "state": {
+          "none": "Geen fout",
+          "supply_air_sensor_fault": "Sensorfout toevoerlucht",
+          "co2_alarm": "CO₂-alarm",
+          "outdoor_air_sensor_fault": "Sensorfout buitenlucht",
+          "exhaust_air_sensor_fault": "Sensorfout afblaaslucht",
+          "water_coil_frost_warning": "Vorstwaarschuwing waterbatterij",
+          "extract_air_sensor_fault": "Sensorfout afvoerlucht"
+        }
+      },
+      "rh_sensor1_raw": { "name": "Vochtigheidssensor 1 (ruwe waarde)" },
+      "rh_sensor2_raw": { "name": "Vochtigheidssensor 2 (ruwe waarde)" },
+      "co2_reading_upper_byte": { "name": "CO₂-meting (hoog byte)" },
+      "co2_reading_lower_byte": { "name": "CO₂-meting (laag byte)" },
+      "co2_setting_upper_byte": { "name": "CO₂-instelling (hoog byte)" },
+      "co2_setting_lower_byte": { "name": "CO₂-instelling (laag byte)" },
+      "temperature_reduction": { "name": "Temperatuurdaling uitgaand" },
+      "temperature_gain": { "name": "Temperatuurwinst inkomend" },
+      "temperature_balance": { "name": "Temperatuurbalans" },
+      "efficiency": { "name": "Efficiëntie warmteterugwinning" },
+      "rh_sensor1": { "name": "Vochtigheidssensor 1" },
+      "rh_sensor2": { "name": "Vochtigheidssensor 2" },
+      "highest_humidity": { "name": "Hoogste luchtvochtigheid" },
+      "co2_concentration": { "name": "CO₂-concentratie" },
+      "din_airflow_moisture": { "name": "Luchtdebiet 1 - DIN vochtbescherming" },
+      "din_airflow_reduced": { "name": "Luchtdebiet 2 - DIN gereduceerde ventilatie" },
+      "din_airflow_normal": { "name": "Luchtdebiet 3 - DIN normale ventilatie" },
+      "din_airflow_boost": { "name": "Luchtdebiet 4 - DIN boostventilatie" },
+      "effective_airflow": { "name": "Actueel luchtdebiet" },
+      "electrical_power": { "name": "Elektrisch vermogen" },
+      "configuration": { "name": "Configuratie" }
+    },
+    "binary_sensor": {
+      "boost_status": { "name": "Indicator: boostventilatie actief" },
+      "fault_detected": { "name": "Indicator: foutmelding" },
+      "clean_filter": { "name": "Indicator: filter vervangen" },
+      "service_requested": { "name": "Indicator: service" },
+      "post_heating_on": { "name": "Indicator: verwarming actief" },
+      "co2_alarm": { "name": "Indicator: CO₂-alarm" },
+      "co2_sensor1_present": { "name": "CO₂-sensor 1 geïnstalleerd" },
+      "co2_sensor2_present": { "name": "CO₂-sensor 2 geïnstalleerd" },
+      "co2_sensor3_present": { "name": "CO₂-sensor 3 geïnstalleerd" },
+      "co2_sensor4_present": { "name": "CO₂-sensor 4 geïnstalleerd" },
+      "co2_sensor5_present": { "name": "CO₂-sensor 5 geïnstalleerd" }
+    },
+    "number": {
+      "fanspeed": { "name": "Ventilatiestand" },
+      "softboost_level": { "name": "Softboost-stand" },
+      "softboost_duration": { "name": "Softboost-duur" },
+      "initial_fanspeed": { "name": "Ventilatiestand bij inschakelen" },
+      "max_fanspeed": { "name": "Maximale ventilatiestand" },
+      "bypass_setpoint": { "name": "Temperatuur voor bypass-activering" },
+      "preheat_setpoint": { "name": "Voorverwarming aan" },
+      "defrost_setpoint": { "name": "Vorstmodus aan" },
+      "defrost_hysteresis": { "name": "Hysterese vorstmodus" },
+      "input_fan_percent": { "name": "Toerental % toevoerluchtmotor" },
+      "output_fan_percent": { "name": "Toerental % afblaasluchtmotor" },
+      "basic_humidity_level": { "name": "Basisniveau luchtvochtigheid" },
+      "co2_setting_value": { "name": "CO₂-waarschuwingsdrempel" },
+      "service_interval": { "name": "Filterwaarschuwingsinterval" },
+      "service_due_months": { "name": "Resterende tijd tot filtervervanging" }
+    },
+    "switch": {
+      "powerstate": { "name": "Ventilatie aan/uit" },
+      "co2_indicator": { "name": "CO₂-waarschuwing" },
+      "rh_indicator": { "name": "Vochtigheidswaarschuwing" },
+      "preheat_status": { "name": "Status voorverwarming" },
+      "activate_boost": { "name": "Boostventilatie activeren" },
+      "softboost_active": { "name": "Softboost actief" },
+      "softboost_fireplace_mode": { "name": "Softboost haardmodus" },
+      "input_fan_off": { "name": "Toevoerluchtventilator uit" },
+      "output_fan_off": { "name": "Afblaasluchtventilator uit" }
+    },
+    "select": {
+      "boost_mode": {
+        "name": "Modus bij boostventilatie",
+        "state": { "fireplace": "Haardmodus", "normal": "Normaal" }
+      },
+      "winter_mode": {
+        "name": "Bedrijfsmodus",
+        "state": { "summer": "Zomer", "winter": "Winter" }
+      },
+      "humidity_control_mode": {
+        "name": "Vochtigheidsregeling",
+        "state": { "manual": "Handmatig", "automatic": "Automatisch" }
+      }
+    }
+  }
+}

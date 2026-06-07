@@ -150,24 +150,15 @@
     "select": {
       "boost_mode": {
         "name": "Modus bei Stoßlüftung",
-        "state": {
-          "fireplace": "Kaminmodus",
-          "normal": "Normal"
-        }
+        "state": {  "fireplace": "Kaminmodus", "normal": "Normal" }
       },
       "winter_mode": {
         "name": "Betriebsmodus",
-        "state": {
-          "summer": "Sommer",
-          "winter": "Winter"
-        }
+        "state": { "summer": "Sommer", "winter": "Winter" }
       },
       "humidity_control_mode": {
         "name": "Luftfeuchte Regelung",
-        "state": {
-          "manual": "Manuell",
-          "automatic": "Automatisch"
-        }
+        "state": { "manual": "Manuell", "automatic": "Automatisch" }
       }
     }
   }

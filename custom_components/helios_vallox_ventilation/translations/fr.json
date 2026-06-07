@@ -1,0 +1,165 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "1 / 4 - Ventilation Helios/Vallox",
+        "description": "Saisissez l’adresse IP et le port de votre unité de ventilation.",
+        "data": {
+          "ip_address": "Adresse IP",
+          "port": "Port"
+        },
+        "data_description": {
+          "ip_address": "L’adresse IP du convertisseur série vers Ethernet sur votre réseau local.",
+          "port": "Le port TCP."
+        }
+      },
+      "model": {
+        "title": "2 / 4 - Nom et modèle de l’appareil",
+        "description": "Saisissez un nom unique / préfixe d’entités et sélectionnez votre modèle pour préremplir les paramètres de l’appareil (choisissez « Custom » pour une saisie manuelle).",
+        "data": {
+          "entity_prefix": "Nom unique (p. ex. « Ventilation »)",
+          "device_model": "Modèle de l’appareil"
+        },
+        "data_description": {
+          "entity_prefix": "Doit être unique si plusieurs appareils sont configurés (p. ex. « Ventilation sous-sol », « Ventilation étage », etc.).",
+          "device_model": "La sélection d’un modèle préremplit les paramètres de l’appareil à l’étape suivante."
+        }
+      },
+      "details": {
+        "title": "3 / 4 - Paramètres de l’appareil",
+        "description": "Configurez les paramètres de ventilation. Les valeurs ont été préremplies à partir du modèle sélectionné. Elles pourront être modifiées ultérieurement.",
+        "data": {
+          "airflow_per_mode": "Débit d’air par vitesse de ventilation (m³/h)",
+          "power_per_mode": "Consommation électrique par vitesse de ventilation (W)",
+          "heating_power": "Puissance de pré-/post-chauffage (W)"
+        },
+        "data_description": {
+          "airflow_per_mode": "Exactement 8 valeurs entières séparées par des virgules, une par vitesse de ventilation (1–8), p. ex. « 60,90,120,150,180,210,240,270 ».",
+          "power_per_mode": "Exactement 8 valeurs entières séparées par des virgules, une par vitesse de ventilation (1–8), p. ex. « 10,18,25,34,50,75,117,185 ».",
+          "heating_power": "La puissance du préchauffage ou du post-chauffage en watts."
+        }
+      },
+      "house": {
+        "title": "4 / 4 - Paramètres du bâtiment",
+        "description": "Saisissez les paramètres de votre bâtiment pour calculer les besoins de ventilation. Ils pourront être modifiés ultérieurement.",
+        "data": {
+          "house_area": "Surface habitable (m²)",
+          "house_volume": "Volume du bâtiment (m³)",
+          "isolation_factor": "Facteur d’isolation"
+        },
+        "data_description": {
+          "house_area": "La surface habitable chauffée totale en mètres carrés (p. ex. 143).",
+          "house_volume": "Le volume d’air total du bâtiment en mètres cubes (surface x hauteur sous plafond, p. ex. 384).",
+          "isolation_factor": "Qualité d’isolation du bâtiment : 0,3 = bien isolé, 0,4 = standard, 0,5 = mal isolé."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Impossible de se connecter à l’unité de ventilation. Veuillez vérifier l’adresse IP et le port.",
+      "invalid_csv_count": "Exactement 8 valeurs sont requises (une par vitesse de ventilation), séparées par des virgules.",
+      "invalid_csv_values": "Toutes les valeurs doivent être des nombres entiers."
+    },
+    "abort": {
+      "already_configured": "Cet appareil est déjà configuré."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature_outdoor_air": { "name": "Température de l’air extérieur" },
+      "temperature_supply_air": { "name": "Température de l’air insufflé" },
+      "temperature_extract_air": { "name": "Température de l’air extrait" },
+      "temperature_exhaust_air": { "name": "Température de l’air rejeté" },
+      "boost_remaining": { "name": "Temps restant ventilation intensive" },
+      "softboost_remaining": { "name": "Temps restant Softboost" },
+      "fault_number": { "name": "Numéro de défaut" },
+      "fault_text": {
+        "name": "Texte du défaut",
+        "state": {
+          "none": "Aucun défaut",
+          "supply_air_sensor_fault": "Défaut capteur air insufflé",
+          "co2_alarm": "Alarme CO₂",
+          "outdoor_air_sensor_fault": "Défaut capteur air extérieur",
+          "exhaust_air_sensor_fault": "Défaut capteur air rejeté",
+          "water_coil_frost_warning": "Alerte gel batterie à eau",
+          "extract_air_sensor_fault": "Défaut capteur air extrait"
+        }
+      },
+      "rh_sensor1_raw": { "name": "Capteur d’humidité 1 (valeur brute)" },
+      "rh_sensor2_raw": { "name": "Capteur d’humidité 2 (valeur brute)" },
+      "co2_reading_upper_byte": { "name": "Mesure CO₂ (octet haut)" },
+      "co2_reading_lower_byte": { "name": "Mesure CO₂ (octet bas)" },
+      "co2_setting_upper_byte": { "name": "Consigne CO₂ (octet haut)" },
+      "co2_setting_lower_byte": { "name": "Consigne CO₂ (octet bas)" },
+      "temperature_reduction": { "name": "Baisse de température sortante" },
+      "temperature_gain": { "name": "Gain de température entrant" },
+      "temperature_balance": { "name": "Bilan de température" },
+      "efficiency": { "name": "Efficacité de récupération de chaleur" },
+      "rh_sensor1": { "name": "Capteur d’humidité 1" },
+      "rh_sensor2": { "name": "Capteur d’humidité 2" },
+      "highest_humidity": { "name": "Humidité la plus élevée" },
+      "co2_concentration": { "name": "Concentration de CO₂" },
+      "din_airflow_moisture": { "name": "Débit d’air 1 - Protection contre l’humidité DIN" },
+      "din_airflow_reduced": { "name": "Débit d’air 2 - Ventilation réduite DIN" },
+      "din_airflow_normal": { "name": "Débit d’air 3 - Ventilation normale DIN" },
+      "din_airflow_boost": { "name": "Débit d’air 4 - Ventilation intensive DIN" },
+      "effective_airflow": { "name": "Débit d’air actuel" },
+      "electrical_power": { "name": "Puissance électrique" },
+      "configuration": { "name": "Configuration" }
+    },
+    "binary_sensor": {
+      "boost_status": { "name": "Indicateur : ventilation intensive active" },
+      "fault_detected": { "name": "Indicateur : défaut" },
+      "clean_filter": { "name": "Indicateur : changement du filtre" },
+      "service_requested": { "name": "Indicateur : maintenance" },
+      "post_heating_on": { "name": "Indicateur : chauffage actif" },
+      "co2_alarm": { "name": "Indicateur : alarme CO₂" },
+      "co2_sensor1_present": { "name": "Capteur CO₂ 1 installé" },
+      "co2_sensor2_present": { "name": "Capteur CO₂ 2 installé" },
+      "co2_sensor3_present": { "name": "Capteur CO₂ 3 installé" },
+      "co2_sensor4_present": { "name": "Capteur CO₂ 4 installé" },
+      "co2_sensor5_present": { "name": "Capteur CO₂ 5 installé" }
+    },
+    "number": {
+      "fanspeed": { "name": "Vitesse de ventilation" },
+      "softboost_level": { "name": "Vitesse Softboost" },
+      "softboost_duration": { "name": "Durée Softboost" },
+      "initial_fanspeed": { "name": "Vitesse de ventilation au démarrage" },
+      "max_fanspeed": { "name": "Vitesse de ventilation maximale" },
+      "bypass_setpoint": { "name": "Température d’activation du bypass" },
+      "preheat_setpoint": { "name": "Préchauffage activé" },
+      "defrost_setpoint": { "name": "Mode antigel activé" },
+      "defrost_hysteresis": { "name": "Hystérésis du mode antigel" },
+      "input_fan_percent": { "name": "Vitesse % ventilateur d’air neuf" },
+      "output_fan_percent": { "name": "Vitesse % ventilateur d’air rejeté" },
+      "basic_humidity_level": { "name": "Niveau d’humidité de base" },
+      "co2_setting_value": { "name": "Seuil d’alerte CO₂" },
+      "service_interval": { "name": "Intervalle d’alerte filtre" },
+      "service_due_months": { "name": "Temps restant avant changement du filtre" }
+    },
+    "switch": {
+      "powerstate": { "name": "Ventilation marche/arrêt" },
+      "co2_indicator": { "name": "Avertissement CO₂" },
+      "rh_indicator": { "name": "Avertissement humidité" },
+      "preheat_status": { "name": "État du préchauffage" },
+      "activate_boost": { "name": "Activer la ventilation intensive" },
+      "softboost_active": { "name": "Softboost actif" },
+      "softboost_fireplace_mode": { "name": "Mode cheminée Softboost" },
+      "input_fan_off": { "name": "Ventilateur d’air neuf arrêté" },
+      "output_fan_off": { "name": "Ventilateur d’air rejeté arrêté" }
+    },
+    "select": {
+      "boost_mode": {
+        "name": "Mode de ventilation intensive",
+        "state": { "fireplace": "Mode cheminée", "normal": "Normal" }
+      },
+      "winter_mode": {
+        "name": "Mode de fonctionnement",
+        "state": { "summer": "Été", "winter": "Hiver" }
+      },
+      "humidity_control_mode": {
+        "name": "Mode de régulation de l’humidité",
+        "state": { "manual": "Manuel", "automatic": "Automatique" }
+      }
+    }
+  }
+}

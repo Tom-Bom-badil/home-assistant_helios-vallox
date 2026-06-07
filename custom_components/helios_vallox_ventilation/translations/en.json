@@ -151,23 +151,15 @@
       "boost_mode": {
         "name": "Boost mode",
         "state": {
-          "fireplace": "Fireplace",
-          "normal": "Normal"
-        }
+          "fireplace": "Fireplace",  "normal": "Normal" }
       },
       "winter_mode": {
         "name": "Operating mode",
-        "state": {
-          "summer": "Summer",
-          "winter": "Winter"
-        }
+        "state": { "summer": "Summer", "winter": "Winter" }
       },
       "humidity_control_mode": {
         "name": "Humidity control mode",
-        "state": {
-          "manual": "Manual",
-          "automatic": "Automatic"
-        }
+        "state": { "manual": "Manual", "automatic": "Automatic" }
       }
     }
   }

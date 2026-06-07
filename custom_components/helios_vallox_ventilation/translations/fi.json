@@ -2,46 +2,46 @@
   "config": {
     "step": {
       "user": {
-        "title": "1 / 4 - Helios/Vallox Ilmanvaihto",
+        "title": "1 / 4 - Helios/Vallox-ilmanvaihto",
         "description": "Syötä ilmanvaihtolaitteen IP-osoite ja portti.",
         "data": {
           "ip_address": "IP-osoite",
           "port": "Portti"
         },
         "data_description": {
-          "ip_address": "Sarjasta Ethernetiin -muuntimen IP-osoite paikallisverkossasi.",
+          "ip_address": "Paikallisverkon sarja–Ethernet-muuntimen IP-osoite.",
           "port": "TCP-portti."
         }
       },
       "model": {
         "title": "2 / 4 - Laitteen nimi ja malli",
-        "description": "Syötä yksilöllinen nimi ja valitse ilmanvaihtolaitteen malli parametrien ennalta täyttämiseksi, tai valitse 'Custom' manuaalista syöttöä varten.",
+        "description": "Syötä yksilöllinen nimi / entiteettien etuliite ja valitse malli laiteparametrien esitäyttöä varten (valitse 'Custom' manuaalista syöttöä varten).",
         "data": {
           "entity_prefix": "Yksilöllinen nimi (esim. 'Ilmanvaihto')",
-          "device_model": "Laitteen malli"
+          "device_model": "Laitemalli"
         },
         "data_description": {
-          "entity_prefix": "Täytyy olla yksilöllinen useiden laitteiden tapauksessa (esim. 'Kellarilmanvaihto', 'Yläkertailmanvaihto', jne.)",
-          "device_model": "Mallin valitseminen täyttää laiteparametrit seuraavassa vaiheessa."
+          "entity_prefix": "Täytyy olla yksilöllinen, jos useita laitteita on määritetty (esim. 'Kellarin ilmanvaihto', 'Yläkerran ilmanvaihto' jne.).",
+          "device_model": "Mallin valinta esitäyttää laiteparametrit seuraavassa vaiheessa."
         }
       },
       "details": {
         "title": "3 / 4 - Laiteparametrit",
-        "description": "Määritä ilmanvaihtolaitteen parametrit. Arvot on ennalta täytetty valitun mallin perusteella. Voidaan muuttaa myöhemmin.",
+        "description": "Määritä ilmanvaihdon parametrit. Arvot on esitäytetty valitun mallin perusteella. Niitä voi muuttaa myöhemmin.",
         "data": {
           "airflow_per_mode": "Ilmavirta puhallintasoa kohti (m³/h)",
           "power_per_mode": "Sähköteho puhallintasoa kohti (W)",
-          "heating_power": "Esi-/jälkilämmitystehot (W)"
+          "heating_power": "Esi-/jälkilämmitysteho (W)"
         },
         "data_description": {
-          "airflow_per_mode": "Tarkalleen 8 kokonaislukua pilkulla erotettuna, yksi puhallintasoa kohti (1-8), esim. '60,90,120,150,180,210,240,270'.",
-          "power_per_mode": "Tarkalleen 8 kokonaislukua pilkulla erotettuna, yksi puhallintasoa kohti (1-8), esim. '10,18,25,34,50,75,117,185'.",
-          "heating_power": "Esi- tai jälkilämmittimen teho watteina."
+          "airflow_per_mode": "Tarkalleen 8 kokonaislukua pilkulla erotettuna, yksi puhallintasoa kohti (1–8), esim. '60,90,120,150,180,210,240,270'.",
+          "power_per_mode": "Tarkalleen 8 kokonaislukua pilkulla erotettuna, yksi puhallintasoa kohti (1–8), esim. '10,18,25,34,50,75,117,185'.",
+          "heating_power": "Esi- tai jälkilämmityselementin teho watteina."
         }
       },
       "house": {
         "title": "4 / 4 - Rakennuksen parametrit",
-        "description": "Syötä rakennuksesi parametrit ilmanvaihdon tarpeen laskemiseksi. Voidaan muuttaa myöhemmin.",
+        "description": "Syötä rakennuksen parametrit ilmanvaihtotarpeen laskemiseksi. Niitä voi muuttaa myöhemmin.",
         "data": {
           "house_area": "Asuinpinta-ala (m²)",
           "house_volume": "Rakennuksen tilavuus (m³)",
@@ -49,125 +49,116 @@
         },
         "data_description": {
           "house_area": "Koko lämmitetty asuinpinta-ala neliömetreissä (esim. 143).",
-          "house_volume": "Rakennuksen koko ilmatilavuus kuutiometreissä (pinta-ala x korkeus, esim. 384).",
-          "isolation_factor": "Rakennuksen eristyskvaliteetti: 0,3 = hyvin eristetty, 0,4 = standardi, 0,5 = huonosti eristetty."
+          "house_volume": "Rakennuksen koko ilmatilavuus kuutiometreissä (pinta-ala x huonekorkeus, esim. 384).",
+          "isolation_factor": "Rakennuksen eristystaso: 0,3 = hyvin eristetty, 0,4 = standardi, 0,5 = huonosti eristetty."
         }
       }
     },
     "error": {
-      "cannot_connect": "Yhteys ilmanvaihto­laitteeseen ei onnistu. Tarkista IP-osoite ja portti.",
-      "invalid_csv_count": "Tarkalleen 8 arvoa vaaditaan (yksi puhallintasoa kohti), pilkulla erotettuna.",
-      "invalid_csv_values": "Kaikki arvot täytyy olla kokonaislukuja."
+      "cannot_connect": "Yhteys ilmanvaihtolaitteeseen ei onnistu. Tarkista IP-osoite ja portti.",
+      "invalid_csv_count": "Tarvitaan tarkalleen 8 arvoa (yksi kutakin puhallintasoa kohti), pilkulla erotettuna.",
+      "invalid_csv_values": "Kaikkien arvojen täytyy olla kokonaislukuja."
     },
     "abort": {
-      "already_configured": "Tämä laite on jo konfiguroitu."
+      "already_configured": "Tämä laite on jo määritetty."
     }
   },
   "entity": {
     "sensor": {
-      "temperature_outdoor_air": { "name": "Ulkoilman lämpötila" },
-      "temperature_supply_air": { "name": "Tuloilman lämpötila" },
-      "temperature_extract_air": { "name": "Poistoilman lämpötila" },
-      "temperature_exhaust_air": { "name": "Ulospuhallus­ilman lämpötila" },
-      "boost_remaining": { "name": "Tehostuksen jäljellä oleva aika" },
-      "softboost_remaining": { "name": "Softboost jäljellä" },
-      "fault_number": { "name": "Vian numero" },
+      "temperature_outdoor_air": {"name": "Ulkoilman lämpötila"},
+      "temperature_supply_air": {"name": "Tuloilman lämpötila"},
+      "temperature_extract_air": {"name": "Poistoilman lämpötila"},
+      "temperature_exhaust_air": {"name": "Jäteilman lämpötila"},
+      "boost_remaining": {"name": "Tehostuksen jäljellä oleva aika"},
+      "softboost_remaining": {"name": "Softboostin jäljellä oleva aika"},
+      "fault_number": {"name": "Vika-/häiriönumero"},
       "fault_text": {
-        "name": "Vikakoodi",
+        "name": "Vikateksti",
         "state": {
           "none": "Ei vikaa",
-          "supply_air_sensor_fault": "Tuloilman anturin vika",
-          "co2_alarm": "CO\u2082-hälytys",
-          "outdoor_air_sensor_fault": "Ulkoilman anturin vika",
-          "exhaust_air_sensor_fault": "Poistoilman anturin vika",
-          "water_coil_frost_warning": "Vesikeilan pakkasvaroitus",
-          "extract_air_sensor_fault": "Poistoilman anturin vika"
+          "supply_air_sensor_fault": "Tuloilma-anturin vika",
+          "co2_alarm": "CO₂-hälytys",
+          "outdoor_air_sensor_fault": "Ulkoilma-anturin vika",
+          "exhaust_air_sensor_fault": "Jäteilma-anturin vika",
+          "water_coil_frost_warning": "Vesipatterin jäätymisvaroitus",
+          "extract_air_sensor_fault": "Poistoilma-anturin vika"
         }
       },
-      "rh_sensor1_raw": { "name": "Kosteus­sensori 1 (raakaarvo)" },
-      "rh_sensor2_raw": { "name": "Kosteus­sensori 2 (raakaarvo)" },
-      "co2_reading_upper_byte": { "name": "CO\u2082 mittausarvo (ylä­tavu)" },
-      "co2_reading_lower_byte": { "name": "CO\u2082 mittausarvo (ala­tavu)" },
-      "co2_setting_upper_byte": { "name": "CO\u2082 asetusarvo (ylä­tavu)" },
-      "co2_setting_lower_byte": { "name": "CO\u2082 asetusarvo (ala­tavu)" },
-      "temperature_reduction": { "name": "Lämpötilan lasku ulospuhalluksessa" },
-      "temperature_gain": { "name": "Lämpötilan nousu tuloilmassa" },
-      "temperature_balance": { "name": "Lämpötasapaino" },
-      "efficiency": { "name": "Lämmön talteenotto­tehokkuus" },
-      "rh_sensor1": { "name": "Kosteus­sensori 1" },
-      "rh_sensor2": { "name": "Kosteus­sensori 2" },
-      "highest_humidity": { "name": "Korkein kosteus" },
-      "co2_concentration": { "name": "CO\u2082-pitoisuus" },
-      "din_airflow_moisture": { "name": "Ilmavirta 1 - DIN kosteuden­suojaus" },
-      "din_airflow_reduced": { "name": "Ilmavirta 2 - DIN alennettu ilmanvaihto" },
-      "din_airflow_normal": { "name": "Ilmavirta 3 - DIN normaali ilmanvaihto" },
-      "din_airflow_boost": { "name": "Ilmavirta 4 - DIN tehoste­ilmanvaihto" },
-      "effective_airflow": { "name": "Nykyinen ilmavirta" },
-      "electrical_power": { "name": "Sähköteho" },
-      "configuration": { "name": "Määritys" }
+      "rh_sensor1_raw": {"name": "Kosteusanturi 1 (raaka-arvo)"},
+      "rh_sensor2_raw": {"name": "Kosteusanturi 2 (raaka-arvo)"},
+      "co2_reading_upper_byte": {"name": "CO₂-mittausarvo (ylempi tavu)"},
+      "co2_reading_lower_byte": {"name": "CO₂-mittausarvo (alempi tavu)"},
+      "co2_setting_upper_byte": {"name": "CO₂-asetusarvo (ylempi tavu)"},
+      "co2_setting_lower_byte": {"name": "CO₂-asetusarvo (alempi tavu)"},
+      "temperature_reduction": {"name": "Lämpötilan lasku ulospäin"},
+      "temperature_gain": {"name": "Lämpötilan nousu sisäänpäin"},
+      "temperature_balance": {"name": "Lämpötilatase"},
+      "efficiency": {"name": "Lämmöntalteenoton hyötysuhde"},
+      "rh_sensor1": {"name": "Kosteusanturi 1"},
+      "rh_sensor2": {"name": "Kosteusanturi 2"},
+      "highest_humidity": {"name": "Korkein ilmankosteus"},
+      "co2_concentration": {"name": "CO₂-pitoisuus"},
+      "din_airflow_moisture": {"name": "Ilmavirta 1 - DIN kosteussuojaus"},
+      "din_airflow_reduced": {"name": "Ilmavirta 2 - DIN vähennetty ilmanvaihto"},
+      "din_airflow_normal": {"name": "Ilmavirta 3 - DIN normaali ilmanvaihto"},
+      "din_airflow_boost": {"name": "Ilmavirta 4 - DIN tehostettu ilmanvaihto"},
+      "effective_airflow": {"name": "Nykyinen ilmavirta"},
+      "electrical_power": {"name": "Sähköteho"},
+      "configuration": {"name": "Konfiguraatio"}
     },
     "binary_sensor": {
-      "boost_status": { "name": "Tehoste­ilmanvaihdon tila" },
-      "fault_detected": { "name": "Vika havaittu" },
-      "clean_filter": { "name": "Suodattimen puhdistus vaaditaan" },
-      "service_requested": { "name": "Huolto vaaditaan" },
-      "post_heating_on": { "name": "Jälkilämmitys päällä" },
-      "co2_sensor1_present": { "name": "CO\u2082-sensori 1 asennettu" },
-      "co2_sensor2_present": { "name": "CO\u2082-sensori 2 asennettu" },
-      "co2_sensor3_present": { "name": "CO\u2082-sensori 3 asennettu" },
-      "co2_sensor4_present": { "name": "CO\u2082-sensori 4 asennettu" },
-      "co2_sensor5_present": { "name": "CO\u2082-sensori 5 asennettu" },
-      "co2_alarm": { "name": "CO\u2082-hälytys" }
+      "boost_status": {"name": "Indikaattori: tehostus aktiivinen"},
+      "fault_detected": {"name": "Indikaattori: vikailmoitus"},
+      "clean_filter": {"name": "Indikaattori: suodattimen vaihto"},
+      "service_requested": {"name": "Indikaattori: huolto"},
+      "post_heating_on": {"name": "Indikaattori: lämmitys aktiivinen"},
+      "co2_alarm": {"name": "Indikaattori: CO₂-hälytys"},
+      "co2_sensor1_present": {"name": "CO₂-anturi 1 asennettu"},
+      "co2_sensor2_present": {"name": "CO₂-anturi 2 asennettu"},
+      "co2_sensor3_present": {"name": "CO₂-anturi 3 asennettu"},
+      "co2_sensor4_present": {"name": "CO₂-anturi 4 asennettu"},
+      "co2_sensor5_present": {"name": "CO₂-anturi 5 asennettu"}
     },
     "number": {
-      "fanspeed": { "name": "Puhallintaso" },
-      "softboost_level": { "name": "Softboost ilmanvaihtotaso" },
-      "softboost_duration": { "name": "Softboost kesto" },
-      "initial_fanspeed": { "name": "Puhallintaso käynnistettäessä" },
-      "max_fanspeed": { "name": "Puhallintaso enintään" },
-      "bypass_setpoint": { "name": "Ohitus­asetus" },
-      "preheat_setpoint": { "name": "Esi­lämmityksen asetus" },
-      "defrost_setpoint": { "name": "Pakkassuojan asetus" },
-      "defrost_hysteresis": { "name": "Pakkassuojan hystereesi" },
-      "basic_humidity_level": { "name": "Peruskosteustaso" },
-      "co2_setting_value": { "name": "CO\u2082 hälytyskynnys" },
-      "input_fan_percent": { "name": "Tulopuhallin: Prosentti" },
-      "output_fan_percent": { "name": "Poistopuhallin: Prosentti" },
-      "service_interval": { "name": "Huoltoväli" },
-      "service_due_months": { "name": "Huolto erääntynyt" }
+      "fanspeed": {"name": "Puhallintaso"},
+      "softboost_level": {"name": "Softboost-taso"},
+      "softboost_duration": {"name": "Softboost-kesto"},
+      "initial_fanspeed": {"name": "Puhallintaso käynnistettäessä"},
+      "max_fanspeed": {"name": "Puhallintaso maksimi"},
+      "bypass_setpoint": {"name": "Ohituksen aktivointilämpötila"},
+      "preheat_setpoint": {"name": "Esilämmitys päälle"},
+      "defrost_setpoint": {"name": "Jäätymisenesto päälle"},
+      "defrost_hysteresis": {"name": "Jäätymiseneston hystereesi"},
+      "input_fan_percent": {"name": "Tuloilmapuhaltimen nopeus %"},
+      "output_fan_percent": {"name": "Poistopuhaltimen nopeus %"},
+      "basic_humidity_level": {"name": "Ilmankosteuden perustaso"},
+      "co2_setting_value": {"name": "CO₂-varoituskynnys"},
+      "service_interval": {"name": "Suodatinvaroituksen aikaväli"},
+      "service_due_months": {"name": "Suodatinvaihtoon jäljellä"}
     },
     "switch": {
-      "powerstate": { "name": "Virta" },
-      "co2_indicator": { "name": "CO\u2082-ilmaisin" },
-      "rh_indicator": { "name": "Kosteus­ilmaisin" },
-      "preheat_status": { "name": "Esi­lämmitys" },
-      "activate_boost": { "name": "Aktivoi tehoste­ilmanvaihto" },
-      "softboost_active": { "name": "Softboost aktiivinen" },
-      "softboost_fireplace_mode": { "name": "Softboost takkatila" },
-      "input_fan_off": { "name": "Tulopuhallin pois" },
-      "output_fan_off": { "name": "Poistopuhallin pois" }
+      "powerstate": {"name": "Ilmanvaihto päälle/pois"},
+      "co2_indicator": {"name": "CO₂-varoitus"},
+      "rh_indicator": {"name": "Kosteusvaroitus"},
+      "preheat_status": {"name": "Esilämmityksen tila"},
+      "activate_boost": {"name": "Aktivoi tehostus"},
+      "softboost_active": {"name": "Softboost aktiivinen"},
+      "softboost_fireplace_mode": {"name": "Softboost-takkatila"},
+      "input_fan_off": {"name": "Tuloilmapuhallin pois"},
+      "output_fan_off": {"name": "Poistopuhallin pois"}
     },
     "select": {
       "boost_mode": {
-        "name": "Tehoste­ilmanvaihdon tila",
-        "state": {
-          "fireplace": "Takkatila",
-          "normal": "Normaali"
-        }
+        "name": "Tehostuksen tila",
+        "state": {"fireplace": "Takkatila", "normal": "Normaali"}
       },
       "winter_mode": {
         "name": "Käyttötila",
-        "state": {
-          "summer": "Kesä",
-          "winter": "Talvi"
-        }
+        "state": {"summer": "Kesä", "winter": "Talvi"}
       },
       "humidity_control_mode": {
-        "name": "Kosteuden säädön tila",
-        "state": {
-          "manual": "Manuaalinen",
-          "automatic": "Automaattinen"
-        }
+        "name": "Kosteussäädön tila",
+        "state": {"manual": "Manuaalinen", "automatic": "Automaattinen"}
       }
     }
   }

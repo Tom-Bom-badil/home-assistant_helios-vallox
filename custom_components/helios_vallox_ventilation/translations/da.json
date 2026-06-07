@@ -1,0 +1,166 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "1 / 4 - Helios/Vallox ventilation",
+        "description": "Indtast IP-adressen og porten for dit ventilationsanlæg.",
+        "data": {
+          "ip_address": "IP-adresse",
+          "port": "Port"
+        },
+        "data_description": {
+          "ip_address": "IP-adressen på serie-til-Ethernet-konverteren på dit lokale netværk.",
+          "port": "TCP-porten."
+        }
+      },
+      "model": {
+        "title": "2 / 4 - Enhedsnavn og model",
+        "description": "Indtast et unikt enhedsnavn / enhedspræfiks, og vælg din model for at udfylde enhedsparametre automatisk (vælg 'Custom' for manuel indtastning).",
+        "data": {
+          "entity_prefix": "Unikt navn (f.eks. 'Ventilation')",
+          "device_model": "Enhedsmodel"
+        },
+        "data_description": {
+          "entity_prefix": "Skal være unikt, hvis flere enheder er konfigureret (f.eks. 'Ventilation kælder', 'Ventilation ovenpå' osv.).",
+          "device_model": "Valg af model udfylder enhedsparametrene i næste trin."
+        }
+      },
+      "details": {
+        "title": "3 / 4 - Enhedsparametre",
+        "description": "Konfigurer ventilationsparametrene. Værdierne er udfyldt på forhånd ud fra den valgte model. De kan ændres senere igen.",
+        "data": {
+          "airflow_per_mode": "Luftmængde pr. ventilatortrin (m³/h)",
+          "power_per_mode": "Strømforbrug pr. ventilatortrin (W)",
+          "heating_power": "For-/eftervarmeeffekt (W)"
+        },
+        "data_description": {
+          "airflow_per_mode": "Præcis 8 heltalsværdier adskilt med komma, én pr. ventilatortrin (1–8), f.eks. '60,90,120,150,180,210,240,270'.",
+          "power_per_mode": "Præcis 8 heltalsværdier adskilt med komma, én pr. ventilatortrin (1–8), f.eks. '10,18,25,34,50,75,117,185'.",
+          "heating_power": "Effekten for forvarme- eller eftervarmeelementet i watt."
+        }
+      },
+      "house": {
+        "title": "4 / 4 - Bygningsparametre",
+        "description": "Indtast parametrene for din bygning for at beregne ventilationsbehovet. De kan ændres senere igen.",
+        "data": {
+          "house_area": "Boligareal (m²)",
+          "house_volume": "Bygningsvolumen (m³)",
+          "isolation_factor": "Isoleringsfaktor"
+        },
+        "data_description": {
+          "house_area": "Det samlede opvarmede boligareal i kvadratmeter (f.eks. 143).",
+          "house_volume": "Bygningens samlede luftvolumen i kubikmeter (areal x rumhøjde, f.eks. 384).",
+          "isolation_factor": "Bygningens isoleringskvalitet: 0,3 = godt isoleret, 0,4 = standard, 0,5 = dårligt isoleret."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kan ikke oprette forbindelse til ventilationsanlægget. Kontrollér IP-adresse og port.",
+      "invalid_csv_count": "Der kræves præcis 8 værdier (én pr. ventilatortrin), adskilt med komma.",
+      "invalid_csv_values": "Alle værdier skal være heltal."
+    },
+    "abort": {
+      "already_configured": "Denne enhed er allerede konfigureret."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature_outdoor_air": {  "name": "Udelufttemperatur" },
+      "temperature_supply_air": { "name": "Indblæsningslufttemperatur" },
+      "temperature_extract_air": { "name": "Udsugningslufttemperatur" },
+      "temperature_exhaust_air": { "name": "Afkastlufttemperatur" },
+      "boost_remaining": { "name": "Resterende tid forceret ventilation" },
+      "softboost_remaining": { "name": "Resterende Softboost-tid" },
+      "fault_number": { "name": "Fejl-/alarmnummer" },
+      "fault_text": {
+        "name": "Fejltekst",
+        "state": {
+          "none": "Ingen fejl",
+          "supply_air_sensor_fault": "Følerfejl indblæsningsluft",
+          "co2_alarm": "CO₂-alarm",
+          "outdoor_air_sensor_fault": "Følerfejl udeluft",
+          "exhaust_air_sensor_fault": "Følerfejl afkastluft",
+          "water_coil_frost_warning": "Frostrisiko i vandflade",
+          "extract_air_sensor_fault": "Følerfejl udsugningsluft"
+        }
+      },
+      "rh_sensor1_raw": { "name": "Fugtighedsføler 1 (råværdi)" },
+      "rh_sensor2_raw": { "name": "Fugtighedsføler 2 (råværdi)" },
+      "co2_reading_upper_byte": { "name": "CO₂-måling (øvre byte)" },
+      "co2_reading_lower_byte": { "name": "CO₂-måling (nedre byte)" },
+      "co2_setting_upper_byte": { "name": "CO₂-indstilling (øvre byte)" },
+      "co2_setting_lower_byte": { "name": "CO₂-indstilling (nedre byte)" },
+      "temperature_reduction": { "name": "Temperaturfald udgående" },
+      "temperature_gain": { "name": "Temperaturstigning indgående" },
+      "temperature_balance": { "name": "Temperaturbalance" },
+      "efficiency": { "name": "Varmegenvindingsvirkningsgrad" },
+      "rh_sensor1": { "name": "Fugtighedsføler 1" },
+      "rh_sensor2": { "name": "Fugtighedsføler 2" },
+      "highest_humidity": { "name": "Højeste luftfugtighed" },
+      "co2_concentration": { "name": "CO₂-koncentration" },
+      "din_airflow_moisture": { "name": "Luftmængde 1 - DIN fugtbeskyttelse" },
+      "din_airflow_reduced": { "name": "Luftmængde 2 - DIN reduceret ventilation" },
+      "din_airflow_normal": { "name": "Luftmængde 3 - DIN normalventilation" },
+      "din_airflow_boost": { "name": "Luftmængde 4 - DIN forceret ventilation" },
+      "effective_airflow": { "name": "Aktuel luftmængde" },
+      "electrical_power": { "name": "Elektrisk effekt" },
+      "configuration": { "name": "Konfiguration" }
+    },
+    "binary_sensor": {
+      "boost_status": {  "name": "Indikator: forceret ventilation aktiv" },
+      "fault_detected": { "name": "Indikator: fejlmeddelelse" },
+      "clean_filter": { "name": "Indikator: filterskift" },
+      "service_requested": { "name": "Indikator: service" },
+      "post_heating_on": { "name": "Indikator: varme aktiv" },
+      "co2_alarm": { "name": "Indikator: CO₂-alarm" },
+      "co2_sensor1_present": { "name": "CO₂-føler 1 installeret" },
+      "co2_sensor2_present": { "name": "CO₂-føler 2 installeret" },
+      "co2_sensor3_present": { "name": "CO₂-føler 3 installeret" },
+      "co2_sensor4_present": { "name": "CO₂-føler 4 installeret" },
+      "co2_sensor5_present": { "name": "CO₂-føler 5 installeret" }
+    },
+    "number": {
+      "fanspeed": {  "name": "Ventilatortrin" },
+      "softboost_level": { "name": "Softboost-trin" },
+      "softboost_duration": { "name": "Softboost-varighed" },
+      "initial_fanspeed": { "name": "Ventilatortrin ved opstart" },
+      "max_fanspeed": { "name": "Maksimalt ventilatortrin" },
+      "bypass_setpoint": { "name": "Temperatur for bypass-aktivering" },
+      "preheat_setpoint": { "name": "Forvarme til" },
+      "defrost_setpoint": { "name": "Frosttilstand til" },
+      "defrost_hysteresis": { "name": "Frosttilstand hysterese" },
+      "input_fan_percent": { "name": "Hastighed % indblæsningsventilator" },
+      "output_fan_percent": { "name": "Hastighed % afkastventilator" },
+      "basic_humidity_level": { "name": "Basisniveau for luftfugtighed" },
+      "co2_setting_value": { "name": "CO₂-advarselstærskel" },
+      "service_interval": { "name": "Filteradvarselsinterval" },
+      "service_due_months": { "name": "Resterende tid til filterskift" }
+    },
+    "switch": {
+      "powerstate": { "name": "Ventilation til/fra" },
+      "co2_indicator": { "name": "CO₂-advarsel" },
+      "rh_indicator": { "name": "Fugtighedsadvarsel" },
+      "preheat_status": { "name": "Forvarmestatus" },
+      "activate_boost": { "name": "Aktivér forceret ventilation" },
+      "softboost_active": { "name": "Softboost aktiv" },
+      "softboost_fireplace_mode": { "name": "Softboost pejsetilstand" },
+      "input_fan_off": { "name": "Indblæsningsventilator fra" },
+      "output_fan_off": { "name": "Afkastventilator fra" }
+    },
+    "select": {
+      "boost_mode": {
+        "name": "Tilstand ved forceret ventilation",
+        "state": {  "fireplace": "Pejsetilstand", "normal": "Normal" }
+      },
+      "winter_mode": {
+        "name": "Driftstilstand",
+        "state": { "summer": "Sommer", "winter": "Vinter" }
+      },
+      "humidity_control_mode": {
+        "name": "Fugtstyring",
+        "state": { "manual": "Manuel", "automatic": "Automatisk"
+        }
+      }
+    }
+  }
+}

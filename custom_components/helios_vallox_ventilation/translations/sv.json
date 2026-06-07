@@ -1,0 +1,165 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "1 / 4 - Helios/Vallox ventilation",
+        "description": "Ange IP-adress och port för ditt ventilationsaggregat.",
+        "data": {
+          "ip_address": "IP-adress",
+          "port": "Port"
+        },
+        "data_description": {
+          "ip_address": "IP-adressen till seriell-till-Ethernet-omvandlaren i ditt lokala nätverk.",
+          "port": "TCP-porten."
+        }
+      },
+      "model": {
+        "title": "2 / 4 - Enhetsnamn och modell",
+        "description": "Ange ett unikt enhetsnamn / entitetsprefix och välj din modell för att förifylla enhetsparametrar (välj 'Custom' för manuell inmatning).",
+        "data": {
+          "entity_prefix": "Unikt namn (t.ex. 'Ventilation')",
+          "device_model": "Enhetsmodell"
+        },
+        "data_description": {
+          "entity_prefix": "Måste vara unikt om flera enheter är konfigurerade (t.ex. 'Ventilation källare', 'Ventilation övervåning' osv.).",
+          "device_model": "Val av modell förifyller enhetsparametrarna i nästa steg."
+        }
+      },
+      "details": {
+        "title": "3 / 4 - Enhetsparametrar",
+        "description": "Konfigurera ventilationsparametrarna. Värdena har förifyllts från den valda modellen. De kan ändras senare igen.",
+        "data": {
+          "airflow_per_mode": "Luftflöde per fläkthastighet (m³/h)",
+          "power_per_mode": "Strömförbrukning per fläkthastighet (W)",
+          "heating_power": "För-/eftervärmeeffekt (W)"
+        },
+        "data_description": {
+          "airflow_per_mode": "Exakt 8 heltalsvärden separerade med kommatecken, ett per fläkthastighet (1–8), t.ex. '60,90,120,150,180,210,240,270'.",
+          "power_per_mode": "Exakt 8 heltalsvärden separerade med kommatecken, ett per fläkthastighet (1–8), t.ex. '10,18,25,34,50,75,117,185'.",
+          "heating_power": "Effekten för förvärmnings- eller eftervärmningselementet i watt."
+        }
+      },
+      "house": {
+        "title": "4 / 4 - Byggnadsparametrar",
+        "description": "Ange parametrarna för din byggnad för att beräkna ventilationsbehovet. De kan ändras senare igen.",
+        "data": {
+          "house_area": "Boyta (m²)",
+          "house_volume": "Byggnadsvolym (m³)",
+          "isolation_factor": "Isoleringsfaktor"
+        },
+        "data_description": {
+          "house_area": "Den totala uppvärmda boytan i kvadratmeter (t.ex. 143).",
+          "house_volume": "Byggnadens totala luftvolym i kubikmeter (yta x rumshöjd, t.ex. 384).",
+          "isolation_factor": "Byggnadens isoleringskvalitet: 0,3 = välisolerad, 0,4 = standard, 0,5 = dåligt isolerad."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kan inte ansluta till ventilationsaggregatet. Kontrollera IP-adress och port.",
+      "invalid_csv_count": "Exakt 8 värden krävs (ett per fläkthastighet), separerade med kommatecken.",
+      "invalid_csv_values": "Alla värden måste vara heltal."
+    },
+    "abort": {
+      "already_configured": "Den här enheten är redan konfigurerad."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature_outdoor_air": { "name": "Uteluftstemperatur" },
+      "temperature_supply_air": { "name": "Tilluftstemperatur" },
+      "temperature_extract_air": { "name": "Frånluftstemperatur" },
+      "temperature_exhaust_air": { "name": "Avluftstemperatur" },
+      "boost_remaining": { "name": "Återstående tid forcerad ventilation" },
+      "softboost_remaining": { "name": "Återstående Softboost-tid" },
+      "fault_number": { "name": "Fel-/larmnummer" },
+      "fault_text": {
+        "name": "Feltext",
+        "state": {
+          "none": "Inget fel",
+          "supply_air_sensor_fault": "Givarfel tilluft",
+          "co2_alarm": "CO₂-larm",
+          "outdoor_air_sensor_fault": "Givarfel uteluft",
+          "exhaust_air_sensor_fault": "Givarfel avluft",
+          "water_coil_frost_warning": "Frostvarning vattenbatteri",
+          "extract_air_sensor_fault": "Givarfel frånluft"
+        }
+      },
+      "rh_sensor1_raw": { "name": "Fuktgivare 1 (råvärde)" },
+      "rh_sensor2_raw": { "name": "Fuktgivare 2 (råvärde)" },
+      "co2_reading_upper_byte": { "name": "CO₂-mätvärde (övre byte)" },
+      "co2_reading_lower_byte": { "name": "CO₂-mätvärde (nedre byte)" },
+      "co2_setting_upper_byte": { "name": "CO₂-inställning (övre byte)" },
+      "co2_setting_lower_byte": { "name": "CO₂-inställning (nedre byte)" },
+      "temperature_reduction": { "name": "Temperaturfall utgående" },
+      "temperature_gain": { "name": "Temperaturökning inkommande" },
+      "temperature_balance": { "name": "Temperaturbalans" },
+      "efficiency": { "name": "Värmeåtervinningsverkningsgrad" },
+      "rh_sensor1": { "name": "Fuktgivare 1" },
+      "rh_sensor2": { "name": "Fuktgivare 2" },
+      "highest_humidity": { "name": "Högsta luftfuktighet" },
+      "co2_concentration": { "name": "CO₂-koncentration" },
+      "din_airflow_moisture": { "name": "Luftflöde 1 - DIN fuktskydd" },
+      "din_airflow_reduced": { "name": "Luftflöde 2 - DIN reducerad ventilation" },
+      "din_airflow_normal": { "name": "Luftflöde 3 - DIN normalventilation" },
+      "din_airflow_boost": { "name": "Luftflöde 4 - DIN forcerad ventilation" },
+      "effective_airflow": { "name": "Aktuellt luftflöde" },
+      "electrical_power": { "name": "Elektrisk effekt" },
+      "configuration": { "name": "Konfiguration" }
+    },
+    "binary_sensor": {
+      "boost_status": { "name": "Indikator: forcerad ventilation aktiv" },
+      "fault_detected": { "name": "Indikator: felmeddelande" },
+      "clean_filter": { "name": "Indikator: filterbyte" },
+      "service_requested": { "name": "Indikator: service" },
+      "post_heating_on": { "name": "Indikator: värme aktiv" },
+      "co2_alarm": { "name": "Indikator: CO₂-larm" },
+      "co2_sensor1_present": { "name": "CO₂-givare 1 installerad" },
+      "co2_sensor2_present": { "name": "CO₂-givare 2 installerad" },
+      "co2_sensor3_present": { "name": "CO₂-givare 3 installerad" },
+      "co2_sensor4_present": { "name": "CO₂-givare 4 installerad" },
+      "co2_sensor5_present": { "name": "CO₂-givare 5 installerad" }
+    },
+    "number": {
+      "fanspeed": { "name": "Fläkthastighet" },
+      "softboost_level": { "name": "Softboost-nivå" },
+      "softboost_duration": { "name": "Softboost-varaktighet" },
+      "initial_fanspeed": { "name": "Fläkthastighet vid start" },
+      "max_fanspeed": { "name": "Maximal fläkthastighet" },
+      "bypass_setpoint": { "name": "Temperatur för bypass-aktivering" },
+      "preheat_setpoint": { "name": "Förvärme på" },
+      "defrost_setpoint": { "name": "Frostläge på" },
+      "defrost_hysteresis": { "name": "Frostläge hysteres" },
+      "input_fan_percent": { "name": "Varvtal % tilluftsfläkt" },
+      "output_fan_percent": { "name": "Varvtal % avluftsfläkt" },
+      "basic_humidity_level": { "name": "Basnivå luftfuktighet" },
+      "co2_setting_value": { "name": "CO₂-varningströskel" },
+      "service_interval": { "name": "Filtervarningsintervall" },
+      "service_due_months": { "name": "Återstående tid till filterbyte" }
+    },
+    "switch": {
+      "powerstate": { "name": "Ventilation på/av" },
+      "co2_indicator": { "name": "CO₂-varning" },
+      "rh_indicator": { "name": "Fuktvarning" },
+      "preheat_status": { "name": "Förvärmningsstatus" },
+      "activate_boost": { "name": "Aktivera forcerad ventilation" },
+      "softboost_active": { "name": "Softboost aktiv" },
+      "softboost_fireplace_mode": { "name": "Softboost braskaminsläge" },
+      "input_fan_off": { "name": "Tilluftsfläkt av" },
+      "output_fan_off": { "name": "Avluftsfläkt av" }
+    },
+    "select": {
+      "boost_mode": {
+        "name": "Läge vid forcerad ventilation",
+        "state": { "fireplace": "Braskaminsläge", "normal": "Normal" }
+      },
+      "winter_mode": {
+        "name": "Driftläge",
+        "state": { "summer": "Sommar", "winter": "Vinter" }
+      },
+      "humidity_control_mode": {
+        "name": "Fuktreglering",
+        "state": { "manual": "Manuell", "automatic": "Automatisk" }
+      }
+    }
+  }
+}
