@@ -63,6 +63,39 @@
       "already_configured": "Tämä laite on jo määritetty."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Muokkaa ilmanvaihtoasetuksia",
+        "description": "Muokkaa yhteys-, laite- ja rakennusparametreja.",
+        "data": {
+          "ip_address": "IP-osoite",
+          "port": "Portti",
+          "airflow_per_mode": "Ilmavirta puhallintasoa kohti (m³/h)",
+          "power_per_mode": "Sähköteho puhallintasoa kohti (W)",
+          "heating_power": "Esi-/jälkilämmitysteho (W)",
+          "house_area": "Asuinpinta-ala (m²)",
+          "house_volume": "Rakennuksen tilavuus (m³)",
+          "isolation_factor": "Eristyskerroin"
+        },
+        "data_description": {
+          "ip_address": "RS485/TCP-sovittimen IP-osoite tai isäntänimi.",
+          "port": "RS485/TCP-sovittimen TCP-portti.",
+          "airflow_per_mode": "Tarkalleen 8 kokonaislukua pilkulla erotettuna, yksi puhallintasoa 1-8 kohti. Esimerkki: 60,90,120,150,180,210,240,270",
+          "power_per_mode": "Tarkalleen 8 kokonaislukua pilkulla erotettuna, yksi puhallintasoa 1-8 kohti. Esimerkki: 10,18,25,34,50,75,117,185",
+          "heating_power": "Esi- tai jälkilämmittimen teho watteina.",
+          "house_area": "Rakennuksen lämmitetty asuinpinta-ala neliömetreinä.",
+          "house_volume": "Rakennuksen koko ilmatilavuus kuutiometreinä, esim. pinta-ala × huonekorkeus.",
+          "isolation_factor": "Rakennuksen eristyskerroin: 0,3 = hyvin eristetty, 0,4 = normaali, 0,5 = huonosti eristetty."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Yhteys epäonnistui. Tarkista IP-osoite, portti ja sovitin.",
+      "invalid_csv_count": "Tarkalleen 8 arvoa vaaditaan, yksi puhallintasoa kohti, pilkulla erotettuna.",
+      "invalid_csv_values": "Kaikkien arvojen täytyy olla kokonaislukuja."
+    }
+  },
   "entity": {
     "sensor": {
       "temperature_outdoor_air": {"name": "Ulkoilman lämpötila"},

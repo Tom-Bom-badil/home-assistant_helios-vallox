@@ -63,6 +63,39 @@
       "already_configured": "Den här enheten är redan konfigurerad."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Redigera ventilationsinställningar",
+        "description": "Redigera anslutnings-, enhets- och byggnadsparametrar.",
+        "data": {
+          "ip_address": "IP-adress",
+          "port": "Port",
+          "airflow_per_mode": "Luftflöde per fläkthastighet (m³/h)",
+          "power_per_mode": "Elförbrukning per fläkthastighet (W)",
+          "heating_power": "För-/eftervärmningseffekt (W)",
+          "house_area": "Bostadsyta (m²)",
+          "house_volume": "Byggnadsvolym (m³)",
+          "isolation_factor": "Isoleringsfaktor"
+        },
+        "data_description": {
+          "ip_address": "IP-adress eller värdnamn för RS485/TCP-adaptern.",
+          "port": "TCP-port för RS485/TCP-adaptern.",
+          "airflow_per_mode": "Exakt 8 heltalsvärden separerade med kommatecken, ett per fläkthastighet 1-8. Exempel: 60,90,120,150,180,210,240,270",
+          "power_per_mode": "Exakt 8 heltalsvärden separerade med kommatecken, ett per fläkthastighet 1-8. Exempel: 10,18,25,34,50,75,117,185",
+          "heating_power": "Effekten för för- eller eftervärmaren i watt.",
+          "house_area": "Den uppvärmda bostadsytan i kvadratmeter.",
+          "house_volume": "Byggnadens totala luftvolym i kubikmeter, t.ex. yta × rumshöjd.",
+          "isolation_factor": "Isoleringskvalitet: 0,3 = välisolerat, 0,4 = standard, 0,5 = dåligt isolerat."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Anslutningen misslyckades. Kontrollera IP-adress, port och adapter.",
+      "invalid_csv_count": "Exakt 8 värden krävs, ett per fläkthastighet, separerade med kommatecken.",
+      "invalid_csv_values": "Alla värden måste vara heltal."
+    }
+  },
   "entity": {
     "sensor": {
       "temperature_outdoor_air": { "name": "Uteluftstemperatur" },

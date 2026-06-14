@@ -63,6 +63,39 @@
       "already_configured": "Dieses Gerät ist bereits konfiguriert."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "KWL-Einstellungen bearbeiten",
+        "description": "Bearbeiten Sie die Verbindungs-, Geräte- und Gebäudeparameter.",
+        "data": {
+          "ip_address": "IP-Adresse",
+          "port": "Port",
+          "airflow_per_mode": "Luftmenge pro Lüftungsstufe (m³/h)",
+          "power_per_mode": "Elektrische Leistung pro Lüftungsstufe (W)",
+          "heating_power": "Vor-/Nachheizleistung (W)",
+          "house_area": "Wohnfläche (m²)",
+          "house_volume": "Gebäudevolumen (m³)",
+          "isolation_factor": "Dämmfaktor"
+        },
+        "data_description": {
+          "ip_address": "IP-Adresse oder Hostname des RS485-/TCP-Adapters.",
+          "port": "TCP-Port des RS485-/TCP-Adapters.",
+          "airflow_per_mode": "Genau 8 ganzzahlige Werte, kommagetrennt, je einer pro Lüftungsstufe 1–8. Beispiel: 60,90,120,150,180,210,240,270",
+          "power_per_mode": "Genau 8 ganzzahlige Werte, kommagetrennt, je einer pro Lüftungsstufe 1–8. Beispiel: 10,18,25,34,50,75,117,185",
+          "heating_power": "Leistung des Vor- oder Nachheizers in Watt.",
+          "house_area": "Die gesamte beheizte Wohnfläche in Quadratmetern.",
+          "house_volume": "Das gesamte Luftvolumen des Gebäudes in Kubikmetern, z. B. Fläche × Raumhöhe.",
+          "isolation_factor": "Dämmqualität: 0,3 = gut gedämmt, 0,4 = Standard, 0,5 = schlecht gedämmt."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung fehlgeschlagen. Bitte IP-Adresse, Port und Adapter prüfen.",
+      "invalid_csv_count": "Es werden genau 8 Werte benötigt, je einer pro Lüftungsstufe, kommagetrennt.",
+      "invalid_csv_values": "Alle Werte müssen ganze Zahlen sein."
+    }
+  },
   "entity": {
     "sensor": {
       "temperature_outdoor_air": { "name": "Temperatur Außenluft" },

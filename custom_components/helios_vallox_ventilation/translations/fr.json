@@ -63,6 +63,39 @@
       "already_configured": "Cet appareil est déjà configuré."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Modifier les paramètres de ventilation",
+        "description": "Modifiez les paramètres de connexion, de l'appareil et du bâtiment.",
+        "data": {
+          "ip_address": "Adresse IP",
+          "port": "Port",
+          "airflow_per_mode": "Débit d'air par vitesse de ventilation (m³/h)",
+          "power_per_mode": "Puissance électrique par vitesse de ventilation (W)",
+          "heating_power": "Puissance de pré-/post-chauffage (W)",
+          "house_area": "Surface habitable (m²)",
+          "house_volume": "Volume du bâtiment (m³)",
+          "isolation_factor": "Facteur d'isolation"
+        },
+        "data_description": {
+          "ip_address": "Adresse IP ou nom d'hôte de l'adaptateur RS485/TCP.",
+          "port": "Port TCP de l'adaptateur RS485/TCP.",
+          "airflow_per_mode": "Exactement 8 valeurs entières séparées par des virgules, une par vitesse de ventilation 1-8. Exemple : 60,90,120,150,180,210,240,270",
+          "power_per_mode": "Exactement 8 valeurs entières séparées par des virgules, une par vitesse de ventilation 1-8. Exemple : 10,18,25,34,50,75,117,185",
+          "heating_power": "Puissance du préchauffage ou du post-chauffage en watts.",
+          "house_area": "Surface habitable chauffée en mètres carrés.",
+          "house_volume": "Volume d'air total du bâtiment en mètres cubes, par exemple surface × hauteur sous plafond.",
+          "isolation_factor": "Qualité d'isolation : 0,3 = bien isolé, 0,4 = standard, 0,5 = mal isolé."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "La connexion a échoué. Veuillez vérifier l'adresse IP, le port et l'adaptateur.",
+      "invalid_csv_count": "Exactement 8 valeurs sont requises, une par vitesse de ventilation, séparées par des virgules.",
+      "invalid_csv_values": "Toutes les valeurs doivent être des nombres entiers."
+    }
+  },
   "entity": {
     "sensor": {
       "temperature_outdoor_air": { "name": "Température de l’air extérieur" },

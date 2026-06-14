@@ -63,6 +63,39 @@
       "already_configured": "Denne enhed er allerede konfigureret."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Rediger ventilationsindstillinger",
+        "description": "Rediger forbindelses-, enheds- og bygningsparametre.",
+        "data": {
+          "ip_address": "IP-adresse",
+          "port": "Port",
+          "airflow_per_mode": "Luftmængde pr. ventilatortrin (m³/h)",
+          "power_per_mode": "Elforbrug pr. ventilatortrin (W)",
+          "heating_power": "For-/eftervarmeeffekt (W)",
+          "house_area": "Boligareal (m²)",
+          "house_volume": "Bygningsvolumen (m³)",
+          "isolation_factor": "Isoleringsfaktor"
+        },
+        "data_description": {
+          "ip_address": "IP-adresse eller værtsnavn for RS485/TCP-adapteren.",
+          "port": "TCP-port for RS485/TCP-adapteren.",
+          "airflow_per_mode": "Præcis 8 heltalsværdier adskilt med komma, én pr. ventilatortrin 1-8. Eksempel: 60,90,120,150,180,210,240,270",
+          "power_per_mode": "Præcis 8 heltalsværdier adskilt med komma, én pr. ventilatortrin 1-8. Eksempel: 10,18,25,34,50,75,117,185",
+          "heating_power": "Effekten for for- eller eftervarmelegemet i watt.",
+          "house_area": "Det opvarmede boligareal i kvadratmeter.",
+          "house_volume": "Bygningens samlede luftvolumen i kubikmeter, f.eks. areal × rumhøjde.",
+          "isolation_factor": "Isoleringskvalitet: 0,3 = godt isoleret, 0,4 = standard, 0,5 = dårligt isoleret."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Forbindelsen mislykkedes. Kontroller IP-adresse, port og adapter.",
+      "invalid_csv_count": "Der kræves præcis 8 værdier, én pr. ventilatortrin, adskilt med komma.",
+      "invalid_csv_values": "Alle værdier skal være heltal."
+    }
+  },
   "entity": {
     "sensor": {
       "temperature_outdoor_air": {  "name": "Udelufttemperatur" },

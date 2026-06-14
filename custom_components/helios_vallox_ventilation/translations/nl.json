@@ -63,6 +63,39 @@
       "already_configured": "Dit apparaat is al geconfigureerd."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Ventilatie-instellingen bewerken",
+        "description": "Bewerk de verbindings-, apparaat- en gebouwparameters.",
+        "data": {
+          "ip_address": "IP-adres",
+          "port": "Poort",
+          "airflow_per_mode": "Luchtdebiet per ventilatiestand (m³/h)",
+          "power_per_mode": "Elektrisch vermogen per ventilatiestand (W)",
+          "heating_power": "Voor-/naverwarmingsvermogen (W)",
+          "house_area": "Woonoppervlak (m²)",
+          "house_volume": "Gebouwvolume (m³)",
+          "isolation_factor": "Isolatiefactor"
+        },
+        "data_description": {
+          "ip_address": "IP-adres of hostnaam van de RS485/TCP-adapter.",
+          "port": "TCP-poort van de RS485/TCP-adapter.",
+          "airflow_per_mode": "Precies 8 gehele waarden gescheiden door komma's, één per ventilatiestand 1-8. Voorbeeld: 60,90,120,150,180,210,240,270",
+          "power_per_mode": "Precies 8 gehele waarden gescheiden door komma's, één per ventilatiestand 1-8. Voorbeeld: 10,18,25,34,50,75,117,185",
+          "heating_power": "Het vermogen van de voor- of naverwarmer in watt.",
+          "house_area": "Het verwarmde woonoppervlak in vierkante meters.",
+          "house_volume": "Het totale luchtvolume van het gebouw in kubieke meters, bijv. oppervlak × kamerhoogte.",
+          "isolation_factor": "Isolatiekwaliteit: 0,3 = goed geïsoleerd, 0,4 = standaard, 0,5 = slecht geïsoleerd."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbinding mislukt. Controleer het IP-adres, de poort en de adapter.",
+      "invalid_csv_count": "Er zijn precies 8 waarden vereist, één per ventilatiestand, gescheiden door komma's.",
+      "invalid_csv_values": "Alle waarden moeten gehele getallen zijn."
+    }
+  },
   "entity": {
     "sensor": {
       "temperature_outdoor_air": { "name": "Temperatuur buitenlucht" },

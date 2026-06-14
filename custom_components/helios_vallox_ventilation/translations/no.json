@@ -63,6 +63,39 @@
       "already_configured": "Denne enheten er allerede konfigurert."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Rediger ventilasjonsinnstillinger",
+        "description": "Rediger tilkoblings-, enhets- og bygningsparametere.",
+        "data": {
+          "ip_address": "IP-adresse",
+          "port": "Port",
+          "airflow_per_mode": "Luftmengde per viftehastighet (m³/h)",
+          "power_per_mode": "Strømforbruk per viftehastighet (W)",
+          "heating_power": "For-/ettervarmeeffekt (W)",
+          "house_area": "Boareal (m²)",
+          "house_volume": "Bygningsvolum (m³)",
+          "isolation_factor": "Isolasjonsfaktor"
+        },
+        "data_description": {
+          "ip_address": "IP-adresse eller vertsnavn til RS485/TCP-adapteren.",
+          "port": "TCP-porten til RS485/TCP-adapteren.",
+          "airflow_per_mode": "Nøyaktig 8 heltallsverdier separert med komma, én per viftehastighet 1-8. Eksempel: 60,90,120,150,180,210,240,270",
+          "power_per_mode": "Nøyaktig 8 heltallsverdier separert med komma, én per viftehastighet 1-8. Eksempel: 10,18,25,34,50,75,117,185",
+          "heating_power": "Effekten til for- eller ettervarmeren i watt.",
+          "house_area": "Oppvarmet boareal i kvadratmeter.",
+          "house_volume": "Bygningens totale luftvolum i kubikkmeter, f.eks. areal × romhøyde.",
+          "isolation_factor": "Isolasjonskvalitet: 0,3 = godt isolert, 0,4 = standard, 0,5 = dårlig isolert."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Tilkoblingen mislyktes. Kontroller IP-adresse, port og adapter.",
+      "invalid_csv_count": "Det kreves nøyaktig 8 verdier, én per viftehastighet, separert med komma.",
+      "invalid_csv_values": "Alle verdier må være heltall."
+    }
+  },
   "entity": {
     "sensor": {
       "temperature_outdoor_air": { "name": "Utelufttemperatur" },

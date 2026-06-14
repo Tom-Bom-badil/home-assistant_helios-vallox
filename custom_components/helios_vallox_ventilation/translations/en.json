@@ -63,6 +63,39 @@
       "already_configured": "This device is already configured."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Edit ventilation settings",
+        "description": "Edit the connection, device and house parameters.",
+        "data": {
+          "ip_address": "IP address",
+          "port": "Port",
+          "airflow_per_mode": "Airflow per fan speed (m³/h)",
+          "power_per_mode": "Power consumption per fan speed (W)",
+          "heating_power": "Pre-/post-heating power (W)",
+          "house_area": "Living area (m²)",
+          "house_volume": "House volume (m³)",
+          "isolation_factor": "Isolation factor"
+        },
+        "data_description": {
+          "ip_address": "IP address or hostname of the RS485/TCP adapter.",
+          "port": "TCP port of the RS485/TCP adapter.",
+          "airflow_per_mode": "Exactly 8 integer values separated by commas, one per fan speed level 1-8. Example: 60,90,120,150,180,210,240,270",
+          "power_per_mode": "Exactly 8 integer values separated by commas, one per fan speed level 1-8. Example: 10,18,25,34,50,75,117,185",
+          "heating_power": "The power of the pre-heater or post-heater element in watts.",
+          "house_area": "The heated living area of your house in square meters.",
+          "house_volume": "The total air volume of the house in cubic meters, e.g. area × room height.",
+          "isolation_factor": "House insulation quality factor: 0.3 = well insulated, 0.4 = standard, 0.5 = poorly insulated."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Connection failed. Please check the IP address, port and adapter.",
+      "invalid_csv_count": "Exactly 8 values are required, one per fan speed level, separated by commas.",
+      "invalid_csv_values": "All values must be integers."
+    }
+  },
   "entity": {
     "sensor": {
       "temperature_outdoor_air": { "name": "Outdoor air temperature" },

@@ -83,9 +83,10 @@ async def async_install_frontend_files(hass: HomeAssistant) -> None:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    ip_address = entry.data[CONF_IP_ADDRESS]
-    port = entry.data[CONF_PORT]
 
+    config_data = {**entry.data, **entry.options}
+    ip_address = config_data[CONF_IP_ADDRESS]
+    port = config_data[CONF_PORT]
     coordinator = HeliosCoordinator(hass, ip_address, port, config_data=entry.data)
     await coordinator.setup_coordinator()
 
