@@ -298,6 +298,36 @@ class HeliosBase:
         return all_values
 
 
+    # # write to a single register
+    # def _performWrite(self, varname, value):
+    #     try:
+    #         # preparations
+    #         vardef = REGISTERS_AND_COILS[varname]
+    #         if vardef["type"] == "bit":
+    #             currentval = self._cache.get(vardef["varid"])
+    #         else:
+    #             currentval = None
+    #         rawvalue = self._convertToRaw(varname, value, currentval)
+    #         if rawvalue is None:
+    #             self.logger.error(f"Writing failed: Cannot convert {value}.")
+    #             return False
+    #         sender, receiver = BUS_ADDRESSES["_HA"], BUS_ADDRESSES["MB1"]
+    #         register = vardef["varid"]
+    #         # the actual write
+    #         self._logDebugOrDeveloperInfo(f"Writing {value} to {varname}")
+    #         if not self._sendTelegram(sender, receiver, register, rawvalue):
+    #             self.logger.error(f"Writing failed: no free RS485 slot available for '{varname}'.")
+    #             return False
+    #         self._all_values[varname] = value
+    #         # update entities and bitcache
+    #         if vardef["type"] == "bit":
+    #             self._cache[vardef["varid"]] = rawvalue
+    #         return True
+    #     except Exception as e:
+    #         self.logger.error(f"Exception in _performWrite(): {e}")
+    #         return False
+
+
     # write to a single register
     def _performWrite(self, varname, value):
         try:
@@ -311,21 +341,53 @@ class HeliosBase:
             if rawvalue is None:
                 self.logger.error(f"Writing failed: Cannot convert {value}.")
                 return False
-            sender, receiver = BUS_ADDRESSES["_HA"], BUS_ADDRESSES["MB1"]
             register = vardef["varid"]
-            # the actual write
-            self._logDebugOrDeveloperInfo(f"Writing {value} to {varname}")
-            if not self._sendTelegram(sender, receiver, register, rawvalue):
-                self.logger.error(f"Writing failed: no free RS485 slot available for '{varname}'.")
+            self._logDebugOrDeveloperInfo(
+                "Writing %s to %s: register=0x%02X, raw=0x%02X",
+                value,
+                varname,
+                register,
+                rawvalue,
+            )
+            if not self._sendWriteSequence(varname, register, rawvalue):
                 return False
             self._all_values[varname] = value
-            # update entities and bitcache
+            # update bit cache with the complete byte value
             if vardef["type"] == "bit":
-                self._cache[vardef["varid"]] = rawvalue
+                self._cache[register] = rawvalue
             return True
         except Exception as e:
             self.logger.error(f"Exception in _performWrite(): {e}")
             return False
+
+
+    # send write sequence like the old, proven SmartHomeNG plugin:
+    # 1) broadcast to all remote controls
+    # 2) broadcast to all mainboards
+    # 3) write directly to mainboard 1
+    def _sendWriteSequence(self, varname, register, rawvalue):
+        sender = BUS_ADDRESSES["_HA"]
+        write_targets = (
+            ("FB*", BUS_ADDRESSES["FB*"]),
+            ("MB*", BUS_ADDRESSES["MB*"]),
+            ("MB1", BUS_ADDRESSES["MB1"]),
+        )
+        for target_name, receiver in write_targets:
+            self._logDebugOrDeveloperInfo(
+                "Sending %s to %s: register=0x%02X, raw=0x%02X",
+                varname,
+                target_name,
+                register,
+                rawvalue,
+            )
+            if not self._sendTelegram(sender, receiver, register, rawvalue):
+                self.logger.error(
+                    "Writing failed for '%s': no free RS485 slot available while sending to %s.",
+                    varname,
+                    target_name,
+                )
+                return False
+        return True
 
 
     ###### Internal functions (lower layers) ###################################
