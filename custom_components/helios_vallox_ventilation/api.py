@@ -368,11 +368,11 @@ class HeliosBase:
     def _sendWriteSequence(self, varname, register, rawvalue):
         sender = BUS_ADDRESSES["_HA"]
         write_targets = (
-            ("FB*", BUS_ADDRESSES["FB*"]),
-            ("MB*", BUS_ADDRESSES["MB*"]),
-            ("MB1", BUS_ADDRESSES["MB1"]),
+            ("FB*", BUS_ADDRESSES["FB*"], False),
+            ("MB*", BUS_ADDRESSES["MB*"], False),
+            ("MB1", BUS_ADDRESSES["MB1"], True),
         )
-        for target_name, receiver in write_targets:
+        for target_name, receiver, repeat_checksum in write_targets:
             self._logDebugOrDeveloperInfo(
                 "Sending %s to %s: register=0x%02X, raw=0x%02X",
                 varname,
@@ -380,7 +380,7 @@ class HeliosBase:
                 register,
                 rawvalue,
             )
-            if not self._sendTelegram(sender, receiver, register, rawvalue):
+            if not self._sendTelegram(sender, receiver, register, rawvalue, repeat_checksum=repeat_checksum):
                 self.logger.error(
                     "Writing failed for '%s': no free RS485 slot available while sending to %s.",
                     varname,
@@ -482,10 +482,33 @@ class HeliosBase:
         return sum % 256
 
 
+    # # send a telegram to the RS485 (=register read request or register write)
+    # def _sendTelegram(self, sender, receiver, register, value):
+    #     telegram = [0x01, sender, receiver, register, value, 0]
+    #     telegram[5] = self._calculateCRC(telegram)
+    #     # Never send into active bus traffic.
+    #     # If no free slot is found, wait once and try again.
+    #     for attempt in range(RS485_SEND_SLOT_ATTEMPTS):
+    #         if self._syncWithRS485():
+    #             try:
+    #                 self._socket.sendall(bytearray(telegram))
+    #                 return True
+    #             except socket.error as e:
+    #                 self.logger.error(f"Socket error during send: {e}")
+    #                 return False
+    #         if attempt == 0:
+    #             self.logger.debug("No free RS485 slot available. Retrying send in 1 second.")
+    #             time.sleep(RS485_SEND_RETRY_DELAY)
+    #     self.logger.error("Sending failed: no free RS485 slot available after retry.")
+    #     return False
+
+
     # send a telegram to the RS485 (=register read request or register write)
-    def _sendTelegram(self, sender, receiver, register, value):
+    def _sendTelegram(self, sender, receiver, register, value, repeat_checksum=False):
         telegram = [0x01, sender, receiver, register, value, 0]
         telegram[5] = self._calculateCRC(telegram)
+        if repeat_checksum:
+            telegram.append(telegram[5])
         # Never send into active bus traffic.
         # If no free slot is found, wait once and try again.
         for attempt in range(RS485_SEND_SLOT_ATTEMPTS):
@@ -498,7 +521,7 @@ class HeliosBase:
                     return False
             if attempt == 0:
                 self.logger.debug("No free RS485 slot available. Retrying send in 1 second.")
-                time.sleep(RS485_SEND_RETRY_DELAY)
+            time.sleep(RS485_SEND_RETRY_DELAY)
         self.logger.error("Sending failed: no free RS485 slot available after retry.")
         return False
 
@@ -578,7 +601,7 @@ def main():
     parser.add_argument("--readall", action="store_true", help="Read all values")
     parser.add_argument("--write", nargs=2, metavar=("varname", "value"), help="Variable name and value to write")
     args = parser.parse_args()
-    helios = HeliosBase(args.ip, args.port)
+    helios = HeliosBase(ip=args.ip, port=args.port)
     if args.read:
         value = helios.readSingleValue(args.read)
         print(value)
