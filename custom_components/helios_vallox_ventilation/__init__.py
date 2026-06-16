@@ -11,8 +11,16 @@ from .coordinator import HeliosCoordinator
 from .schema import SERVICE_WRITE_VALUE_SCHEMA
 from .softboost import SoftBoostController
 
+
 _LOGGER = logging.getLogger("helios_vallox.__init__")
-PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SWITCH, Platform.NUMBER, Platform.SELECT]
+PLATFORMS = [
+    Platform.SENSOR,
+    Platform.BINARY_SENSOR,
+    Platform.SWITCH,
+    Platform.NUMBER,
+    Platform.SELECT,
+    Platform.FAN,
+]
 
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
