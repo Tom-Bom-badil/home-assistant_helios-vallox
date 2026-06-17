@@ -20,6 +20,7 @@ PLATFORMS = [
     Platform.NUMBER,
     Platform.SELECT,
     Platform.FAN,
+    Platform.BUTTON,
 ]
 
 

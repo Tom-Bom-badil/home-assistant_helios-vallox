@@ -193,6 +193,9 @@
         "name": "Mode de régulation de l’humidité",
         "state": { "manual": "Manuel", "automatic": "Automatique" }
       }
+    },
+    "button": {
+      "reset_service_reminder": { "name": "Réinitialiser le rappel d’entretien" }
     }
   }
 }

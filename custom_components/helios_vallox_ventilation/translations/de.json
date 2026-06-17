@@ -193,6 +193,9 @@
         "name": "Luftfeuchte Regelung",
         "state": { "manual": "Manuell", "automatic": "Automatisch" }
       }
+    },
+    "button": {
+      "reset_service_reminder": { "name": "Warnintervall Filter zurücksetzen" }
     }
   }
 }

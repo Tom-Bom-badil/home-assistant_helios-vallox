@@ -194,6 +194,9 @@
         "state": { "manual": "Manuel", "automatic": "Automatisk"
         }
       }
+    },
+    "button": {
+      "reset_service_reminder": { "name": "Nulstil servicepåmindelse" }
     }
   }
 }

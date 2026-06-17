@@ -193,6 +193,9 @@
         "name": "Vochtigheidsregeling",
         "state": { "manual": "Handmatig", "automatic": "Automatisch" }
       }
+    },
+    "button": {
+      "reset_service_reminder": { "name": "Serviceherinnering resetten" }
     }
   }
 }

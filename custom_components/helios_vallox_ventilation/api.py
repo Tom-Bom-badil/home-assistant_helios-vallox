@@ -132,6 +132,57 @@ class HeliosBase:
             self._lock.release()
 
 
+    # resets the service reminder like pressing '+' and '-' on the remote control
+    def resetServiceReminder(self):
+        self._lock.acquire()
+        try:
+            if not self._connect():
+                return False
+            service_interval = self._all_values.get("service_interval")
+            current_a3 = self._cache.get(REGISTERS_AND_COILS["service_requested"]["varid"])
+            if service_interval is None:
+                self.logger.error("Service reminder reset failed: missing cached service_interval.")
+                return False
+            if current_a3 is None:
+                self.logger.error("Service reminder reset failed: missing cached A3 value.")
+                return False
+            service_interval = int(service_interval)
+            current_a3 = int(current_a3)
+            # Clear only bit 7 (service reminder), preserve all other A3 indicator bits.
+            new_a3 = current_a3 & ~(1 << REGISTERS_AND_COILS["service_requested"]["bitposition"])
+            self._logDebugOrDeveloperInfo(
+                "Resetting service reminder: service_interval=%s, A3 0x%02X -> 0x%02X",
+                service_interval,
+                current_a3,
+                new_a3,
+            )
+            if not self._sendWriteSequence(
+                "service_due_months",
+                REGISTERS_AND_COILS["service_due_months"]["varid"],
+                service_interval,
+            ):
+                return False
+            if not self._sendWriteSequence(
+                "reset_service_reminder",
+                REGISTERS_AND_COILS["service_requested"]["varid"],
+                new_a3,
+            ):
+                return False
+            self._all_values["service_due_months"] = service_interval
+            self._all_values["service_requested"] = False
+            self._cache[REGISTERS_AND_COILS["service_requested"]["varid"]] = new_a3
+            return True
+
+        except Exception as e:
+            self.logger.error(f"Exception in resetServiceReminder(): {e}", exc_info=True)
+            return False
+
+        finally:
+            self._disconnect()
+            self._lock.release()
+
+
+
     ###### Internal functions (higher layers) ##################################
 
 

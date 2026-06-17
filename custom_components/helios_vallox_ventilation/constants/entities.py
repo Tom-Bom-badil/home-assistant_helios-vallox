@@ -60,8 +60,8 @@ NUMBER_ENTITIES = [
     {"key": "defrost_hysteresis", "unit": "°C", "min": 1, "max": 10, "step": 1, "mode": "box", "icon": "mdi:thermometer", "description": "Defrost + Hysteresis: Switch on intake air again", "factory_setting": 3, "entity_category": "config"},
     {"key": "input_fan_percent", "unit": "%", "min": 65, "max": 100, "step": 1, "mode": "slider", "icon": "mdi:percent", "description": "Input fan: Percent of regular voltage", "factory_setting": 100, "entity_category": "config"},
     {"key": "output_fan_percent", "unit": "%", "min": 65, "max": 100, "step": 1, "mode": "slider", "icon": "mdi:percent", "description": "Output fan: Percent of regular voltage", "factory_setting": 100, "entity_category": "config"},
-    {"key": "service_interval", "unit": "months", "min": 1, "max": 12, "step": 1, "mode": "box", "icon": "mdi:calendar-multiple", "description": "Service interval for filter warning", "factory_setting": 4, "entity_category": "config"},
-    {"key": "service_due_months", "unit": "months", "min": 0, "max": 12, "step": 1, "mode": "box", "icon": "mdi:calendar-end", "description": "Remaining time for filter warning", "factory_setting": None },
+    {"key": "service_interval", "unit": "months", "min": 1, "max": 15, "step": 1, "mode": "box", "icon": "mdi:calendar-multiple", "description": "Service interval for filter warning", "factory_setting": 4, "entity_category": "config"},
+    {"key": "service_due_months", "unit": "months", "min": 0, "max": 15, "step": 1, "mode": "box", "icon": "mdi:calendar-end", "description": "Remaining time for filter warning", "factory_setting": None },
     {"key": "co2_setting_value", "unit": "ppm", "min": 400, "max": 2000, "step": 50, "mode": "slider", "icon": "mdi:molecule-co2", "description": "CO2 alarm indicator setpoint", "factory_setting": 900, "entity_category": "config"},
     {"key": "basic_humidity_level", "unit": "%", "min": 0, "max": 100, "step": 1, "mode": "slider", "icon": "mdi:water-percent", "description": "Basic humidity level", "factory_setting": None, "entity_category": "config"},
 ]

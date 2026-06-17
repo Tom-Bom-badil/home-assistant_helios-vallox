@@ -193,6 +193,9 @@
         "name": "Fuktighetsregulering",
         "state": { "manual": "Manuell", "automatic": "Automatisk" }
       }
+    },
+    "button": {
+      "reset_service_reminder": { "name": "Tilbakestill servicepåminnelse" }
     }
   }
 }

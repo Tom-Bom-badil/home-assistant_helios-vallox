@@ -92,6 +92,23 @@ class HeliosCoordinator:
             _LOGGER.error(f"Error writing {value} to {variable}: {e}", exc_info=True)
             return False
 
+    # Reset service reminder
+    def reset_service_reminder(self):
+        try:
+            result = self._helios.resetServiceReminder()
+            if result:
+                service_interval = None
+                if self._coordinator.data:
+                    service_interval = self._coordinator.data.get("service_interval")
+                self._update_local_data({
+                    "service_due_months": service_interval,
+                    "service_requested": False,
+                })
+            return result
+        except Exception as e:
+            _LOGGER.error("Error resetting service reminder: %s", e, exc_info=True)
+            return False
+
     # Update derived values (e.g. current air volume, power consumption) after writes
     def _update_local_data(self, values: dict) -> None:
         """Update coordinator cache and refresh derived values without a bus read."""

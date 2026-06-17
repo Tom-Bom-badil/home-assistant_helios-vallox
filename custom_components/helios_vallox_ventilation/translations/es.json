@@ -193,6 +193,9 @@
         "name": "Modo de control de humedad",
         "state": { "manual": "Manual", "automatic": "Automático" }
       }
+    },
+    "button": {
+      "reset_service_reminder": { "name": "Restablecer recordatorio de mantenimiento" }
     }
   }
 }

@@ -194,6 +194,9 @@
         "name": "Humidity control mode",
         "state": { "manual": "Manual", "automatic": "Automatic" }
       }
+    },
+    "button": {
+      "reset_service_reminder": { "name": "Reset filter reminder" }
     }
   }
 }

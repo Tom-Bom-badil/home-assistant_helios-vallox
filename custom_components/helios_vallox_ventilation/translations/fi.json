@@ -193,6 +193,9 @@
         "name": "Kosteussäädön tila",
         "state": {"manual": "Manuaalinen", "automatic": "Automaattinen"}
       }
+    },
+    "button": {
+      "reset_service_reminder": { "name": "Nollaa huoltomuistutin" }
     }
   }
 }

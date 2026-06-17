@@ -1,4 +1,4 @@
-# Helios Pro / Vallox SE ventilation control<br/><sup><sub>(for models with  built-in RS485 and Modbus-like Protocol)</sub></sup>
+# Helios Pro / Vallox Digit + SE ventilation control<br/><sup><sub>(for models with  built-in RS485 and Modbus-like Protocol)</sub></sup>
 
 
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-%2341BDF5.svg)](https://www.home-assistant.io)
@@ -26,17 +26,18 @@ As I migrated to HA a while ago, I reworked the plugin to be a HA custom integra
 
 👉 Main features of the integration are:
 
-- 50+ predefined entities for common ventilation registers and derived values
+- 60+ predefined entities for common ventilation registers and derived values
 - auto-detection of rH and CO2 sensors (if installed)
 - support of multiple ventilation units
 - write access to any writable register with plausibility and validity checks
 - a callable register write service for your automations and helpers
 - extensive derived calculations (airflow, power, efficiency, temperature balance)
 - DIN-based calculation of the required 'design' airflow (individual to your house)
+- extra fan entity for integration in Apple Home, Google Home, Alexa, HA Assist etc
 - ready-to-use example dashboard, available for copy/paste in the Wiki
-- mobile-friendly, multi-language software remote replacing the hardware remote
+- mobile-friendly, multi-language software remote replacing your hardware remote
 
-The software-based remote control is especially useful when your wall-mounted remote<br/>control display became unreadable, or the remote itself is broken or no longer available.<br/>You can simply use your Smartphone to control the ventilation - including a new, much<br/>simplified 'software boost mode':
+The software-based remote control is especially useful when your wall-mounted device<br/>became unreadable, or the remote itself is broken or no longer available.<br/>You can simply use your Smartphone to control the ventilation - including a new, much<br/>simplified 'software boost mode':
 
 <a href="https://raw.githubusercontent.com/wiki/Tom-Bom-badil/home-assistant_helios-vallox/images/mobile-dashboard.png">
   <img width=70% alt="img1" src="https://raw.githubusercontent.com/wiki/Tom-Bom-badil/home-assistant_helios-vallox/images/mobile-dashboard.png" />
