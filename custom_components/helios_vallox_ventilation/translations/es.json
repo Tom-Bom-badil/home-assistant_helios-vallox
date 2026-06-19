@@ -150,7 +150,8 @@
       "co2_sensor2_present": { "name": "Sensor de CO₂ 2 instalado" },
       "co2_sensor3_present": { "name": "Sensor de CO₂ 3 instalado" },
       "co2_sensor4_present": { "name": "Sensor de CO₂ 4 instalado" },
-      "co2_sensor5_present": { "name": "Sensor de CO₂ 5 instalado" }
+      "co2_sensor5_present": { "name": "Sensor de CO₂ 5 instalado" },
+      "softboost_active": {"name": "Softboost activo"}
     },
     "number": {
       "fanspeed": { "name": "Nivel de ventilación" },
@@ -175,7 +176,6 @@
       "rh_indicator": { "name": "Advertencia de humedad" },
       "preheat_status": { "name": "Estado del precalentamiento" },
       "activate_boost": { "name": "Activar ventilación intensiva" },
-      "softboost_active": { "name": "Softboost activo" },
       "softboost_fireplace_mode": { "name": "Modo chimenea de Softboost" },
       "input_fan_off": { "name": "Ventilador de aire exterior apagado" },
       "output_fan_off": { "name": "Ventilador de aire expulsado apagado" }
@@ -195,7 +195,8 @@
       }
     },
     "button": {
-      "reset_service_reminder": { "name": "Restablecer recordatorio de mantenimiento" }
+      "reset_service_reminder": { "name": "Restablecer recordatorio de mantenimiento" },
+      "softboost_start_stop": {"name": "Iniciar/detener Softboost"}
     }
   }
 }

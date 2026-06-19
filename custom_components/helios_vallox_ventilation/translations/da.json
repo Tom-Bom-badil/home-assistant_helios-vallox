@@ -150,7 +150,8 @@
       "co2_sensor2_present": { "name": "CO₂-føler 2 installeret" },
       "co2_sensor3_present": { "name": "CO₂-føler 3 installeret" },
       "co2_sensor4_present": { "name": "CO₂-føler 4 installeret" },
-      "co2_sensor5_present": { "name": "CO₂-føler 5 installeret" }
+      "co2_sensor5_present": { "name": "CO₂-føler 5 installeret" },
+      "softboost_active": {"name": "Softboost aktiv"}
     },
     "number": {
       "fanspeed": {  "name": "Ventilatortrin" },
@@ -175,7 +176,6 @@
       "rh_indicator": { "name": "Fugtighedsadvarsel" },
       "preheat_status": { "name": "Forvarmestatus" },
       "activate_boost": { "name": "Aktivér forceret ventilation" },
-      "softboost_active": { "name": "Softboost aktiv" },
       "softboost_fireplace_mode": { "name": "Softboost pejsetilstand" },
       "input_fan_off": { "name": "Indblæsningsventilator fra" },
       "output_fan_off": { "name": "Afkastventilator fra" }
@@ -196,7 +196,8 @@
       }
     },
     "button": {
-      "reset_service_reminder": { "name": "Nulstil servicepåmindelse" }
+      "reset_service_reminder": { "name": "Nulstil servicepåmindelse" },
+      "softboost_start_stop": {"name": "Start/stop Softboost"}
     }
   }
 }

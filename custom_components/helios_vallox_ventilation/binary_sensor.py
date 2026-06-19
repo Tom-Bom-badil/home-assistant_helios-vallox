@@ -6,8 +6,13 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from .constants import DOMAIN, BINARY_SENSOR_ENTITIES, INTERNAL_BINARY_SENSOR_KEYS
 from .device_info import build_device_info, build_entity_id
+from .constants import (
+    DOMAIN,
+    BINARY_SENSOR_ENTITIES,
+    INTERNAL_BINARY_SENSOR_KEYS,
+    SOFTBOOST_BINARY_SENSOR_ENTITIES,
+)
 
 
 _LOGGER = logging.getLogger("helios_vallox.binary_sensor")
@@ -18,17 +23,21 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-
     coordinator = hass.data[DOMAIN][entry.entry_id]
     entities = [
         HeliosBinarySensor(coordinator, entry, sensor_def)
         for sensor_def in BINARY_SENSOR_ENTITIES
         if sensor_def["key"] not in INTERNAL_BINARY_SENSOR_KEYS
     ]
+    entities.extend(
+        HeliosSoftBoostBinarySensor(coordinator, entry, sensor_def)
+        for sensor_def in SOFTBOOST_BINARY_SENSOR_ENTITIES
+    )
     async_add_entities(entities)
 
 
 class HeliosBinarySensor(CoordinatorEntity, BinarySensorEntity):
+    """Local per-device generic binary sensors."""
 
     _attr_has_entity_name = True
 
@@ -57,3 +66,44 @@ class HeliosBinarySensor(CoordinatorEntity, BinarySensorEntity):
         if self.coordinator.data is None:
             return None
         return bool(self.coordinator.data.get(self._variable))
+
+
+class HeliosSoftBoostBinarySensor(CoordinatorEntity, BinarySensorEntity):
+    """Local per-device Softboost status without direct bus access."""
+
+    _attr_has_entity_name = True
+    _attr_should_poll = False
+
+    def __init__(self, coordinator, entry, sensor_def):
+        super().__init__(coordinator.coordinator)
+        self._coordinator = coordinator
+        self._entry = entry
+        self._variable = sensor_def["key"]
+        self._attr_translation_key = self._variable
+        self._attr_unique_id = f"{entry.entry_id}_{self._variable}"
+        self.entity_id = build_entity_id("binary_sensor", entry, self._variable)
+        self._attr_icon = sensor_def.get("icon")
+
+        entity_category = sensor_def.get("entity_category")
+        if entity_category:
+            self._attr_entity_category = EntityCategory(entity_category)
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        """Return device information."""
+        return build_device_info(self._entry)
+
+    async def async_added_to_hass(self) -> None:
+        """Register for Softboost state updates."""
+        await super().async_added_to_hass()
+        self.async_on_remove(
+            self._coordinator.softboost.async_add_listener(self.schedule_update_ha_state)
+        )
+
+    @property
+    def is_on(self):
+        """Return current local Softboost active state."""
+        if self._variable == "softboost_active":
+            return self._coordinator.softboost.is_active
+
+        return False

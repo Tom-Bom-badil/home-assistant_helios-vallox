@@ -150,7 +150,8 @@
       "co2_sensor2_present": { "name": "CO₂-sensor 2 geïnstalleerd" },
       "co2_sensor3_present": { "name": "CO₂-sensor 3 geïnstalleerd" },
       "co2_sensor4_present": { "name": "CO₂-sensor 4 geïnstalleerd" },
-      "co2_sensor5_present": { "name": "CO₂-sensor 5 geïnstalleerd" }
+      "co2_sensor5_present": { "name": "CO₂-sensor 5 geïnstalleerd" },
+      "softboost_active": {"name": "Softboost actief"}
     },
     "number": {
       "fanspeed": { "name": "Ventilatiestand" },
@@ -175,7 +176,6 @@
       "rh_indicator": { "name": "Vochtigheidswaarschuwing" },
       "preheat_status": { "name": "Status voorverwarming" },
       "activate_boost": { "name": "Boostventilatie activeren" },
-      "softboost_active": { "name": "Softboost actief" },
       "softboost_fireplace_mode": { "name": "Softboost haardmodus" },
       "input_fan_off": { "name": "Toevoerluchtventilator uit" },
       "output_fan_off": { "name": "Afblaasluchtventilator uit" }
@@ -195,7 +195,8 @@
       }
     },
     "button": {
-      "reset_service_reminder": { "name": "Serviceherinnering resetten" }
+      "reset_service_reminder": { "name": "Serviceherinnering resetten" },
+      "softboost_start_stop": {"name": "Softboost starten/stoppen"}
     }
   }
 }

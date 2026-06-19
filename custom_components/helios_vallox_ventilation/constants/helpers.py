@@ -80,41 +80,28 @@ INTERNAL_BINARY_SENSOR_KEYS = {
 
 SOFTBOOST_STORAGE_VERSION = 1
 SOFTBOOST_STORAGE_KEY_SUFFIX = "softboost"
-DEFAULT_SOFTBOOST_LEVEL = 8
-DEFAULT_SOFTBOOST_DURATION_SECONDS = 90 * 60
-# Minimum softboost duration is 15 minutes; restore output fan shortly before that.
-FIREPLACE_RESTORE_DELAY_SECONDS = (14 * 60) + 55
+# Default level
+SOFTBOOST_DEFAULT_LEVEL = 8
+# Default time (45 minutes)
+SOFTBOOST_DEFAULT_DURATION = 45 * 60
+# Fireplace only: Min softboost duration = 15 minutes; restore output fan before that
+SOFTBOOST_FIREPLACE_RESTORE_DELAY = (15 * 60) - 5
+
 SOFTBOOST_NUMBER_ENTITIES = [
-    {
-        "key": "softboost_level",
-        "unit": None,
-        "min": 1,
-        "max": 8,
-        "step": 1,
-        "mode": "slider",
-        "icon": "mdi:fan",
-        "initial": DEFAULT_SOFTBOOST_LEVEL,
-    },
-    {
-        "key": "softboost_duration",
-        "unit": "min",
-        "min": 15,
-        "max": 90,
-        "step": 15,
-        "mode": "box",
-        "icon": "mdi:timer-outline",
-        "initial": DEFAULT_SOFTBOOST_DURATION_SECONDS // 60,
-    },
+    {"key": "softboost_level", "unit": None, "min": 1, "max": 8, "step": 1, "mode": "slider", "icon": "mdi:fan", "initial": SOFTBOOST_DEFAULT_LEVEL},
+    {"key": "softboost_duration", "unit": "min", "min": 15, "max": 90, "step": 15, "mode": "box", "icon": "mdi:timer-outline", "initial": SOFTBOOST_DEFAULT_DURATION // 60},
 ]
+
+SOFTBOOST_BINARY_SENSOR_ENTITIES = [
+    {"key": "softboost_active", "icon": "mdi:fan-clock"},
+]
+
 SOFTBOOST_SWITCH_ENTITIES = [
-    {
-        "key": "softboost_fireplace_mode",
-        "icon": "mdi:fire",
-    },
-    {
-        "key": "softboost_active",
-        "icon": "mdi:fan-clock",
-    },
+    {"key": "softboost_fireplace_mode", "icon": "mdi:fire"},
+]
+
+SOFTBOOST_BUTTON_ENTITIES = [
+    {"key": "softboost_start_stop"},
 ]
 
 

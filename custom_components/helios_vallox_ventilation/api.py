@@ -42,6 +42,24 @@ RS485_SEND_RETRY_DELAY = 1.0
 RS485_SEND_SLOT_ATTEMPTS = 5
 
 
+# Log major DEBUG messages as INFO in developer environment
+def log_debug_or_developer_info(logger, message, *args):
+    """Log as DEBUG in releases, but force logging as INFO in developer mode."""
+    if DEVELOPER_MODE is True:
+        record = logger.makeRecord(
+            logger.name,
+            logging.INFO,
+            __file__,
+            0,
+            message,
+            args,
+            None,
+        )
+        logger.handle(record)
+    else:
+        logger.debug(message, *args)
+
+
 class HeliosBase:
 
     ###### Init and Logging ####################################################
@@ -59,23 +77,11 @@ class HeliosBase:
 
 
     def _logDebugOrDeveloperInfo(self, message, *args):
-        """Log as debug in releases, but force INFO if developer mode is enabled."""
-        if DEVELOPER_MODE is True:
-            record = self.logger.makeRecord(
-                self.logger.name,
-                logging.INFO,
-                __file__,
-                0,
-                message,
-                args,
-                None,
-            )
-            self.logger.handle(record)
-        else:
-            self.logger.debug(message, *args)
+        """Log as DEBUG in releases, but force logging as INFO in developer mode."""
+        log_debug_or_developer_info(self.logger, message, *args)
 
 
-    ###### Exposed functions (used from outside) ###############################
+    ###### Exposed functions ###################################################
 
 
     # reads a single variable from the ventilation
@@ -349,36 +355,6 @@ class HeliosBase:
         return all_values
 
 
-    # # write to a single register
-    # def _performWrite(self, varname, value):
-    #     try:
-    #         # preparations
-    #         vardef = REGISTERS_AND_COILS[varname]
-    #         if vardef["type"] == "bit":
-    #             currentval = self._cache.get(vardef["varid"])
-    #         else:
-    #             currentval = None
-    #         rawvalue = self._convertToRaw(varname, value, currentval)
-    #         if rawvalue is None:
-    #             self.logger.error(f"Writing failed: Cannot convert {value}.")
-    #             return False
-    #         sender, receiver = BUS_ADDRESSES["_HA"], BUS_ADDRESSES["MB1"]
-    #         register = vardef["varid"]
-    #         # the actual write
-    #         self._logDebugOrDeveloperInfo(f"Writing {value} to {varname}")
-    #         if not self._sendTelegram(sender, receiver, register, rawvalue):
-    #             self.logger.error(f"Writing failed: no free RS485 slot available for '{varname}'.")
-    #             return False
-    #         self._all_values[varname] = value
-    #         # update entities and bitcache
-    #         if vardef["type"] == "bit":
-    #             self._cache[vardef["varid"]] = rawvalue
-    #         return True
-    #     except Exception as e:
-    #         self.logger.error(f"Exception in _performWrite(): {e}")
-    #         return False
-
-
     # write to a single register
     def _performWrite(self, varname, value):
         try:
@@ -531,27 +507,6 @@ class HeliosBase:
         for c in telegram[:-1]:
             sum = sum + c
         return sum % 256
-
-
-    # # send a telegram to the RS485 (=register read request or register write)
-    # def _sendTelegram(self, sender, receiver, register, value):
-    #     telegram = [0x01, sender, receiver, register, value, 0]
-    #     telegram[5] = self._calculateCRC(telegram)
-    #     # Never send into active bus traffic.
-    #     # If no free slot is found, wait once and try again.
-    #     for attempt in range(RS485_SEND_SLOT_ATTEMPTS):
-    #         if self._syncWithRS485():
-    #             try:
-    #                 self._socket.sendall(bytearray(telegram))
-    #                 return True
-    #             except socket.error as e:
-    #                 self.logger.error(f"Socket error during send: {e}")
-    #                 return False
-    #         if attempt == 0:
-    #             self.logger.debug("No free RS485 slot available. Retrying send in 1 second.")
-    #             time.sleep(RS485_SEND_RETRY_DELAY)
-    #     self.logger.error("Sending failed: no free RS485 slot available after retry.")
-    #     return False
 
 
     # send a telegram to the RS485 (=register read request or register write)

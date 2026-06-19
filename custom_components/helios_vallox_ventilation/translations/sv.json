@@ -150,7 +150,8 @@
       "co2_sensor2_present": { "name": "CO₂-givare 2 installerad" },
       "co2_sensor3_present": { "name": "CO₂-givare 3 installerad" },
       "co2_sensor4_present": { "name": "CO₂-givare 4 installerad" },
-      "co2_sensor5_present": { "name": "CO₂-givare 5 installerad" }
+      "co2_sensor5_present": { "name": "CO₂-givare 5 installerad" },
+      "softboost_active": {"name": "Softboost aktiv"}
     },
     "number": {
       "fanspeed": { "name": "Fläkthastighet" },
@@ -175,7 +176,6 @@
       "rh_indicator": { "name": "Fuktvarning" },
       "preheat_status": { "name": "Förvärmningsstatus" },
       "activate_boost": { "name": "Aktivera forcerad ventilation" },
-      "softboost_active": { "name": "Softboost aktiv" },
       "softboost_fireplace_mode": { "name": "Softboost braskaminsläge" },
       "input_fan_off": { "name": "Tilluftsfläkt av" },
       "output_fan_off": { "name": "Avluftsfläkt av" }
@@ -195,7 +195,8 @@
       }
     },
     "button": {
-      "reset_service_reminder": { "name": "Återställ servicepåminnelse" }
+      "reset_service_reminder": { "name": "Återställ servicepåminnelse" },
+      "softboost_start_stop": {"name": "Starta/stoppa Softboost"}
     }
   }
 }

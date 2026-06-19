@@ -1,25 +1,25 @@
-"""
-Softboost controller for Helios/Vallox ventilation.
-This module owns the HA-specific Soft Remote Control state machine.
-"""
+""" Softboost controller / state machine for Helios/Vallox ventilation. """
 
 from __future__ import annotations
 
-from collections.abc import Callable
-from dataclasses import asdict, dataclass
 import logging
 import time
+from collections.abc import Callable
+from dataclasses import asdict, dataclass
 from typing import Any
+
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.event import async_call_later
 from homeassistant.helpers.storage import Store
+
+from .api import log_debug_or_developer_info
 from .constants import (
     DOMAIN,
     SOFTBOOST_STORAGE_VERSION,
     SOFTBOOST_STORAGE_KEY_SUFFIX,
-    DEFAULT_SOFTBOOST_LEVEL,
-    DEFAULT_SOFTBOOST_DURATION_SECONDS,
-    FIREPLACE_RESTORE_DELAY_SECONDS,
+    SOFTBOOST_DEFAULT_LEVEL,
+    SOFTBOOST_DEFAULT_DURATION,
+    SOFTBOOST_FIREPLACE_RESTORE_DELAY,
 )
 
 
@@ -32,34 +32,38 @@ class SoftBoostState:
 
     active: bool = False
     original_fanspeed: int | None = None
-    level: int = DEFAULT_SOFTBOOST_LEVEL
-    duration_seconds: int = DEFAULT_SOFTBOOST_DURATION_SECONDS
+    level: int = SOFTBOOST_DEFAULT_LEVEL
+    duration_seconds: int = SOFTBOOST_DEFAULT_DURATION
     started_at_ts: float | None = None
     end_at_ts: float | None = None
     fireplace_mode: bool = False
     fireplace_restore_at_ts: float | None = None
+
 
     @classmethod
     def from_dict(cls, data: dict[str, Any] | None) -> SoftBoostState:
         """Create state from persisted storage data."""
         if not data:
             return cls()
-
+        active = bool(data.get("active", False))
         return cls(
-            active=bool(data.get("active", False)),
+            active=active,
             original_fanspeed=_as_optional_int(data.get("original_fanspeed")),
-            level=_as_int(data.get("level"), DEFAULT_SOFTBOOST_LEVEL),
+            level=_as_int(data.get("level"), SOFTBOOST_DEFAULT_LEVEL),
             duration_seconds=_as_int(
                 data.get("duration_seconds"),
-                DEFAULT_SOFTBOOST_DURATION_SECONDS,
+                SOFTBOOST_DEFAULT_DURATION,
             ),
             started_at_ts=_as_optional_float(data.get("started_at_ts")),
             end_at_ts=_as_optional_float(data.get("end_at_ts")),
-            fireplace_mode=bool(data.get("fireplace_mode", False)),
-            fireplace_restore_at_ts=_as_optional_float(
-                data.get("fireplace_restore_at_ts")
+            fireplace_mode=bool(data.get("fireplace_mode", False)) if active else False,
+            fireplace_restore_at_ts=(
+                _as_optional_float(data.get("fireplace_restore_at_ts"))
+                if active
+                else None
             ),
         )
+
 
     def as_dict(self) -> dict[str, Any]:
         """Return JSON-serializable state data."""
@@ -68,7 +72,6 @@ class SoftBoostState:
 
 class SoftBoostController:
     """Controller for the YAML-free Soft Remote Control boost logic."""
-
     def __init__(self, hass: HomeAssistant, entry_id: str, coordinator) -> None:
         """Initialize controller for one config entry / ventilation device."""
         self.hass = hass
@@ -80,36 +83,41 @@ class SoftBoostController:
             f"{DOMAIN}.{SOFTBOOST_STORAGE_KEY_SUFFIX}.{entry_id}",
         )
         self._state = SoftBoostState()
-
         self._listeners: list[Callable[[], None]] = []
         self._unsub_end_callback: Callable[[], None] | None = None
         self._unsub_fireplace_callback: Callable[[], None] | None = None
         self._unsub_tick_callback: Callable[[], None] | None = None
+
 
     @property
     def state(self) -> SoftBoostState:
         """Return current in-memory softboost state."""
         return self._state
 
+
     @property
     def is_active(self) -> bool:
         """Return True if softboost is currently active."""
         return self._state.active
+
 
     @property
     def remaining_seconds(self) -> int:
         """Return remaining softboost time in seconds."""
         return self._remaining_seconds()
 
+
     @property
     def remaining_text(self) -> str:
         """Return remaining softboost time as mm:ss text for the dashboard."""
         return format_remaining(self.remaining_seconds)
 
+
     async def async_load(self) -> None:
         """Load persisted state from Home Assistant storage."""
         raw_state = await self._store.async_load()
         self._state = SoftBoostState.from_dict(raw_state)
+
 
     async def async_restore_after_startup(self) -> None:
         """Restore or clean up persisted Softboost state after HA startup."""
@@ -122,7 +130,6 @@ class SoftBoostController:
             )
             # output_fan_off = 0 is the safe normal state after restart.
             await self._async_write_value("output_fan_off", 0, 0, 1)
-
             self.mark_stopped()
             await self.async_save()
             self._notify_listeners()
@@ -135,47 +142,42 @@ class SoftBoostController:
         ):
             # Fireplace restore time passed during HA downtime.
             # Restore output fan now, but keep Softboost running.
-            await self._async_write_value("output_fan_off", 0, 0, 1)
+            await self._async_restore_output_fan()
         self._schedule_callbacks()
         self._notify_listeners()
+
 
     async def async_save(self) -> None:
         """Persist current runtime state."""
         await self._store.async_save(self._state.as_dict())
+
 
     async def async_clear(self) -> None:
         """Clear persisted and in-memory softboost state."""
         self._state = SoftBoostState()
         await self._store.async_remove()
 
+
     def async_add_listener(self, listener: Callable[[], None]) -> Callable[[], None]:
         """Register a listener for visible Softboost state updates."""
         self._listeners.append(listener)
-
         def remove_listener() -> None:
             if listener in self._listeners:
                 self._listeners.remove(listener)
-
         return remove_listener
+
 
     async def async_start(self) -> bool:
         """Start Softboost and write the selected level to the ventilation unit."""
         if self._state.active:
             return True
-
         original_fanspeed = self._current_fanspeed()
         if original_fanspeed is None:
             _LOGGER.warning("Cannot start Softboost: current fanspeed is unknown")
             return False
-
         level = self._clamp(self._state.level, 1, 8)
-        duration_seconds = self._clamp(
-            self._state.duration_seconds,
-            15 * 60,
-            90 * 60,
-        )
+        duration_seconds = self._clamp(self._state.duration_seconds, 15 * 60, 90 * 60,)
         fireplace_mode = bool(self._state.fireplace_mode)
-
         # Fireplace mode: temporarily switch off output fan before changing level.
         if fireplace_mode:
             if not await self._async_write_value("output_fan_off", 1, 0, 1):
@@ -183,20 +185,35 @@ class SoftBoostController:
                     "Cannot start Softboost: failed to switch output fan off"
                 )
                 return False
-
         if not await self._async_write_value("fanspeed", level, 1, 8):
             _LOGGER.warning("Cannot start Softboost: failed to write fanspeed")
             if fireplace_mode:
                 await self._async_write_value("output_fan_off", 0, 0, 1)
             return False
-
         self.prepare_start_state(
             original_fanspeed=original_fanspeed,
             level=level,
             duration_seconds=duration_seconds,
             fireplace_mode=fireplace_mode,
         )
-
+        log_debug_or_developer_info(
+            _LOGGER,
+            "Starting Softboost: "
+            "entry_id=%s, active=%s, original_fanspeed=%s, current_fanspeed=%s, "
+            "level=%s, duration_seconds=%s, started_at_ts=%s, end_at_ts=%s, "
+            "fireplace_mode=%s, fireplace_restore_at_ts=%s, remaining_seconds=%s",
+            self.entry_id,
+            self._state.active,
+            self._state.original_fanspeed,
+            self._current_fanspeed(),
+            self._state.level,
+            self._state.duration_seconds,
+            self._state.started_at_ts,
+            self._state.end_at_ts,
+            self._state.fireplace_mode,
+            self._state.fireplace_restore_at_ts,
+            self.remaining_seconds,
+        )
         await self.async_save()
         self._schedule_callbacks()
         self._notify_listeners()
@@ -208,16 +225,52 @@ class SoftBoostController:
         if not self._state.active:
             self._notify_listeners()
             return
+        current_fanspeed_before_restore = self._current_fanspeed()
+        fanspeed_restored: bool | None = None
+        output_fan_restored: bool | None = None
         self._cancel_callbacks()
-        # output_fan_off = 0 is the safe normal state and can always be written.
-        await self._async_write_value("output_fan_off", 0, 0, 1)
         if restore_fanspeed and self._state.original_fanspeed is not None:
-            await self._async_write_value(
+            original_fanspeed = self._clamp(self._state.original_fanspeed, 1, 8)
+            fanspeed_restored = await self._async_write_value(
                 "fanspeed",
-                self._clamp(self._state.original_fanspeed, 1, 8),
+                original_fanspeed,
                 1,
                 8,
             )
+            if not fanspeed_restored:
+                _LOGGER.warning(
+                    "Softboost stop: failed to restore original fanspeed %s",
+                    original_fanspeed,
+                )
+        # Safety fallback: always make sure output fan is enabled again.
+        # Important: do this after the fanspeed restore, not before it.
+        output_fan_restored = await self._async_write_value("output_fan_off", 0, 0, 1)
+        if not output_fan_restored:
+            _LOGGER.warning("Softboost stop: failed to restore output_fan_off")
+        log_debug_or_developer_info(
+            _LOGGER,
+            "Ending Softboost: "
+            "entry_id=%s, restore_fanspeed=%s, active=%s, original_fanspeed=%s, "
+            "current_fanspeed_before_restore=%s, current_fanspeed_after_restore=%s, "
+            "level=%s, duration_seconds=%s, started_at_ts=%s, end_at_ts=%s, "
+            "fireplace_mode=%s, fireplace_restore_at_ts=%s, remaining_seconds=%s, "
+            "output_fan_restored=%s, fanspeed_restored=%s",
+            self.entry_id,
+            restore_fanspeed,
+            self._state.active,
+            self._state.original_fanspeed,
+            current_fanspeed_before_restore,
+            self._current_fanspeed(),
+            self._state.level,
+            self._state.duration_seconds,
+            self._state.started_at_ts,
+            self._state.end_at_ts,
+            self._state.fireplace_mode,
+            self._state.fireplace_restore_at_ts,
+            self.remaining_seconds,
+            output_fan_restored,
+            fanspeed_restored,
+        )
         self.mark_stopped()
         await self.async_save()
         self._notify_listeners()
@@ -240,7 +293,6 @@ class SoftBoostController:
         """Prepare runtime state for a new softboost run."""
         now_ts = _now_ts()
         end_at_ts = now_ts + duration_seconds
-
         self._state = SoftBoostState(
             active=True,
             original_fanspeed=original_fanspeed,
@@ -249,15 +301,19 @@ class SoftBoostController:
             started_at_ts=now_ts,
             end_at_ts=end_at_ts,
             fireplace_mode=fireplace_mode,
-            fireplace_restore_at_ts=now_ts + FIREPLACE_RESTORE_DELAY_SECONDS,
+            fireplace_restore_at_ts=(
+                now_ts + SOFTBOOST_FIREPLACE_RESTORE_DELAY
+                if fireplace_mode
+                else None
+            ),
         )
         return self._state
 
+
     def mark_stopped(self) -> None:
-        """Mark softboost as stopped while preserving user settings."""
+        """Mark softboost as stopped while preserving level and duration."""
         level = self._state.level
         duration_seconds = self._state.duration_seconds
-
         self._state = SoftBoostState(
             active=False,
             level=level,
@@ -265,21 +321,24 @@ class SoftBoostController:
             fireplace_mode=False,
         )
 
+
     def has_expired(self) -> bool:
         """Return True if persisted softboost end time is in the past."""
         return bool(self._state.end_at_ts and self._state.end_at_ts <= _now_ts())
+
 
     def _remaining_seconds(self) -> int:
         """Calculate remaining time from numeric backend timestamp."""
         if not self._state.active or not self._state.end_at_ts:
             return 0
-
         return max(0, int(round(self._state.end_at_ts - _now_ts())))
+
 
     def _current_fanspeed(self) -> int | None:
         """Return the latest known fanspeed from coordinator data."""
         data = self._coordinator.coordinator.data or {}
         return _as_optional_int(data.get("fanspeed"))
+
 
     def _was_overridden(self) -> bool:
         """Return True if the real fan speed was changed outside Softboost."""
@@ -289,6 +348,7 @@ class SoftBoostController:
             and current_fanspeed is not None
             and current_fanspeed != self._state.level
         )
+
 
     async def _async_write_value(
         self,
@@ -306,22 +366,19 @@ class SoftBoostController:
             max_value,
         )
 
+
     def _schedule_callbacks(self) -> None:
         """Schedule end, fireplace restore and countdown updates."""
         self._cancel_callbacks()
-
         if not self._state.active or not self._state.end_at_ts:
             return
-
         now_ts = _now_ts()
         end_delay = max(0, self._state.end_at_ts - now_ts)
-
         self._unsub_end_callback = async_call_later(
             self.hass,
             end_delay,
             self._handle_end,
         )
-
         if self._state.fireplace_restore_at_ts is not None:
             fireplace_delay = max(0, self._state.fireplace_restore_at_ts - now_ts)
             self._unsub_fireplace_callback = async_call_later(
@@ -329,13 +386,14 @@ class SoftBoostController:
                 fireplace_delay,
                 self._handle_fireplace_restore,
             )
-
         self._schedule_tick()
+
 
     @callback
     def _handle_end(self, _now=None) -> None:
         """Stop Softboost when the planned end time is reached."""
         self.hass.async_create_task(self._async_handle_end())
+
 
     async def _async_handle_end(self) -> None:
         """Stop Softboost with explicit error logging."""
@@ -344,10 +402,12 @@ class SoftBoostController:
         except Exception:
             _LOGGER.exception("Error stopping Softboost at planned end time")
 
+
     @callback
     def _handle_fireplace_restore(self, _now=None) -> None:
         """Restore output fan when fireplace delay has passed."""
         self.hass.async_create_task(self._async_handle_fireplace_restore())
+
 
     async def _async_handle_fireplace_restore(self) -> None:
         """Restore output fan with explicit error logging."""
@@ -362,10 +422,8 @@ class SoftBoostController:
         if self._unsub_tick_callback is not None:
             self._unsub_tick_callback()
             self._unsub_tick_callback = None
-
         if not self._state.active:
             return
-
         self._unsub_tick_callback = async_call_later(
             self.hass,
             1,
@@ -406,7 +464,34 @@ class SoftBoostController:
 
     async def _async_restore_output_fan(self) -> None:
         """Restore output fan to normal state."""
-        await self._async_write_value("output_fan_off", 0, 0, 1)
+        if not self._state.active or self._state.fireplace_restore_at_ts is None:
+            return
+
+        log_debug_or_developer_info(
+            _LOGGER,
+            "Stopping Softboost fireplace mode: "
+            "entry_id=%s, active=%s, original_fanspeed=%s, current_fanspeed=%s, "
+            "level=%s, duration_seconds=%s, started_at_ts=%s, end_at_ts=%s, "
+            "fireplace_mode=%s, fireplace_restore_at_ts=%s, remaining_seconds=%s",
+            self.entry_id,
+            self._state.active,
+            self._state.original_fanspeed,
+            self._current_fanspeed(),
+            self._state.level,
+            self._state.duration_seconds,
+            self._state.started_at_ts,
+            self._state.end_at_ts,
+            self._state.fireplace_mode,
+            self._state.fireplace_restore_at_ts,
+            self.remaining_seconds,
+        )
+
+        if not await self._async_write_value("output_fan_off", 0, 0, 1):
+            _LOGGER.warning("Failed to restore output fan after Softboost fireplace delay")
+            return
+
+        self._state.fireplace_restore_at_ts = None
+        await self.async_save()
         self._notify_listeners()
 
 

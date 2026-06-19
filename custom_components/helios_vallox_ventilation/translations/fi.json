@@ -150,7 +150,8 @@
       "co2_sensor2_present": {"name": "CO₂-anturi 2 asennettu"},
       "co2_sensor3_present": {"name": "CO₂-anturi 3 asennettu"},
       "co2_sensor4_present": {"name": "CO₂-anturi 4 asennettu"},
-      "co2_sensor5_present": {"name": "CO₂-anturi 5 asennettu"}
+      "co2_sensor5_present": {"name": "CO₂-anturi 5 asennettu"},
+      "softboost_active": {"name": "Softboost aktiivinen"}
     },
     "number": {
       "fanspeed": {"name": "Puhallintaso"},
@@ -175,7 +176,6 @@
       "rh_indicator": {"name": "Kosteusvaroitus"},
       "preheat_status": {"name": "Esilämmityksen tila"},
       "activate_boost": {"name": "Aktivoi tehostus"},
-      "softboost_active": {"name": "Softboost aktiivinen"},
       "softboost_fireplace_mode": {"name": "Softboost-takkatila"},
       "input_fan_off": {"name": "Tuloilmapuhallin pois"},
       "output_fan_off": {"name": "Poistopuhallin pois"}
@@ -195,7 +195,8 @@
       }
     },
     "button": {
-      "reset_service_reminder": { "name": "Nollaa huoltomuistutin" }
+      "reset_service_reminder": { "name": "Nollaa huoltomuistutin" },
+      "softboost_start_stop": {"name": "Käynnistä/pysäytä Softboost"}
     }
   }
 }

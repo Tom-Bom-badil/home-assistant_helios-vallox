@@ -150,7 +150,8 @@
       "co2_sensor3_present": { "name": "CO\u2082 sensor 3 present" },
       "co2_sensor4_present": { "name": "CO\u2082 sensor 4 present" },
       "co2_sensor5_present": { "name": "CO\u2082 sensor 5 present" },
-      "co2_alarm": { "name": "CO\u2082 alarm" }
+      "co2_alarm": { "name": "CO\u2082 alarm" },
+      "softboost_active": {"name": "Softboost active"}
     },
     "number": {
       "fanspeed": { "name": "Fan speed" },
@@ -175,7 +176,6 @@
       "rh_indicator": { "name": "Humidity indicator" },
       "preheat_status": { "name": "Pre-heating" },
       "activate_boost": { "name": "Activate boost" },
-      "softboost_active": { "name": "Softboost active" },
       "softboost_fireplace_mode": { "name": "Softboost fireplace mode" },
       "input_fan_off": { "name": "Input fan off" },
       "output_fan_off": { "name": "Output fan off" }
@@ -196,7 +196,8 @@
       }
     },
     "button": {
-      "reset_service_reminder": { "name": "Reset filter reminder" }
+      "reset_service_reminder": { "name": "Reset filter reminder" },
+      "softboost_start_stop": {"name": "Start/stop Softboost"}
     }
   }
 }
