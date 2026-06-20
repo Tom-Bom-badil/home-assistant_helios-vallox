@@ -1,0 +1,2281 @@
+title: Ventilation
+path: vent-2026-06-2
+separator_line: "-------------------------------------------------------------------"
+type: sections
+header: {}
+badges: []
+cards: []
+max_columns: 4
+dense_section_placement: true
+layout:
+  grid-template-columns: 1fr 1fr
+  grid-template-rows: auto
+  grid-gap: 16px
+background:
+  opacity: 100
+  alignment: center
+  size: cover
+  repeat: no-repeat
+  attachment: fixed
+  image:
+    media_content_id: /local/community/helios_vallox_ventilation/page_background.png
+    media_content_type: image/png
+sections:
+  - type: grid
+    cards:
+      - type: heading
+        icon: " "
+        heading_style: title
+        style: |
+          ha-card {
+            height: 240px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+          }
+      - type: picture-elements
+        name: Remote_Control
+        show_state: false
+        show_name: false
+        panel: true
+        image: /local/community/helios_vallox_ventilation/rc_background.png
+        card_mod:
+          style: |
+            ha-card { 
+              background: transparent;
+              --ha-card-border-color: rgba(0,0,0,0);
+              --ha-card-border-radius: 0px;
+              --ha-card-border-width: 0px;
+            }
+        elements:
+          - type: custom:button-card
+            name: __init_i18n__
+            show_name: false
+            show_icon: false
+            tap_action:
+              action: null
+            styles:
+              card:
+                - display: none
+            custom_fields:
+              init: |
+                [[[
+                  const KEY = "helios.i18n.display";
+                  const detectLang = () => {
+                    const l = (
+                      typeof hass !== "undefined" && hass?.language
+                        ? hass.language
+                        : navigator?.language || "en"
+                    ).toLowerCase().split("-")[0];
+                    if (l === "nb" || l === "nn") return "no";
+                    return ["de", "en", "fr", "es", "nl", "da", "sv", "no", "fi"].includes(l)
+                      ? l
+                      : "en";
+                  };
+                  const defaults = {
+                    de: {
+                      temp_titles: ["Außenluft", "Zuluft", "Abluft", "Fortluft"],
+                      page2_title: "Stufe (lange drücken)",
+                      page3_title: "Alternative Stoßlüftung",
+                      label_fanspeed: "Lüfterstufe",
+                      label_minutes: "Minuten",
+                      label_fireplace: "Kaminmodus",
+                      boost_active: "Aktiv",
+                      boost_back_to_speed_prefix: 'Zurück zu Lüfterstufe ',
+                      boost_back_to_speed_suffix: ' in',
+                      label_selected_device: "Ausgewählte Lüftungsanlage",
+                      label_start: "Start",
+                      label_cancel: "Abbrechen"
+                    },
+                    en: {
+                      temp_titles: ["Outdoor air", "Supply air", "Extract air", "Exhaust air"],
+                      page2_title: "Fanspeed (hold to set)",
+                      page3_title: "Alternative timed boost",
+                      label_fanspeed: "Fan speed",
+                      label_minutes: "Minutes",
+                      label_fireplace: "Fireplace mode",
+                      boost_active: "Active",
+                      boost_back_to_speed_prefix: 'Back to fan speed ',
+                      boost_back_to_speed_suffix: ' in',
+                      label_selected_device: "Selected ventilation unit",
+                      label_start: "Start",
+                      label_cancel: "Cancel"
+                    },
+                    fr: {
+                      temp_titles: ["Air extérieur", "Air soufflé", "Air extrait", "Air rejeté"],
+                      page2_title: "Niveau (appui long)",
+                      page3_title: "Boost alternatif",
+                      label_fanspeed: "Vitesse du ventilateur",
+                      label_minutes: "Minutes",
+                      label_fireplace: "Mode cheminée",
+                      boost_active: "Actif",
+                      boost_back_to_speed_prefix: 'Retour à la vitesse ',
+                      boost_back_to_speed_suffix: ' dans',
+                      label_selected_device: "Unité sélectionnée",
+                      label_start: "Démarrer",
+                      label_cancel: "Annuler"
+                    },
+                    es: {
+                      temp_titles: ["Aire exterior", "Impulsión", "Extracción", "Expulsión"],
+                      page2_title: "Nivel (mantener)",
+                      page3_title: "Boost alternativo",
+                      label_fanspeed: "Velocidad del ventilador",
+                      label_minutes: "Minutos",
+                      label_fireplace: "Modo chimenea",
+                      boost_active: "Activo",
+                      boost_back_to_speed_prefix: 'Volver a velocidad ',
+                      boost_back_to_speed_suffix: ' en',
+                      label_selected_device: "Unidad seleccionada",
+                      label_start: "Iniciar",
+                      label_cancel: "Cancelar"
+                    },
+                    nl: {
+                      temp_titles: ["Buitenlucht", "Toevoer", "Afvoer", "Uitblaas"],
+                      page2_title: "Stand (lang drukken)",
+                      page3_title: "Alternatieve boost",
+                      label_fanspeed: "Ventilatiestand",
+                      label_minutes: "Minuten",
+                      label_fireplace: "Haardmodus",
+                      boost_active: "Actief",
+                      boost_back_to_speed_prefix: 'Terug naar stand ',
+                      boost_back_to_speed_suffix: ' over',
+                      label_selected_device: "Geselecteerde unit",
+                      label_start: "Start",
+                      label_cancel: "Annuleren"
+                    },
+                    da: {
+                      temp_titles: ["Udeluft", "Tilluft", "Fraluft", "Afluft"],
+                      page2_title: "Trin (hold nede)",
+                      page3_title: "Alternativ boost",
+                      label_fanspeed: "Ventilationsniveau",
+                      label_minutes: "Minutter",
+                      label_fireplace: "Pejsetilstand",
+                      boost_active: "Aktiv",
+                      boost_back_to_speed_prefix: 'Tilbage til ventilationsniveau ',
+                      boost_back_to_speed_suffix: ' om',
+                      label_selected_device: "Valgt ventilationsenhed",
+                      label_start: "Start",
+                      label_cancel: "Annuller"
+                    },
+                    sv: {
+                      temp_titles: ["Uteluft", "Tilluft", "Frånluft", "Avluft"],
+                      page2_title: "Nivå (håll in)",
+                      page3_title: "Alternativ forcering",
+                      label_fanspeed: "Fläkthastighet",
+                      label_minutes: "Minuter",
+                      label_fireplace: "Eldstadsläge",
+                      boost_active: "Aktiv",
+                      boost_back_to_speed_prefix: 'Tillbaka till fläkthastighet ',
+                      boost_back_to_speed_suffix: ' om',
+                      label_selected_device: "Vald ventilationsenhet",
+                      label_start: "Starta",
+                      label_cancel: "Avbryt"
+                    },
+                    no: {
+                      temp_titles: ["Uteluft", "Tilluft", "Avtrekksluft", "Avkastluft"],
+                      page2_title: "Trinn (hold inne)",
+                      page3_title: "Alternativ boost",
+                      label_fanspeed: "Ventilasjonsnivå",
+                      label_minutes: "Minutter",
+                      label_fireplace: "Peismodus",
+                      boost_active: "Aktiv",
+                      boost_back_to_speed_prefix: 'Tilbake til ventilasjonsnivå ',
+                      boost_back_to_speed_suffix: ' om',
+                      label_selected_device: "Valgt ventilasjonsenhet",
+                      label_start: "Start",
+                      label_cancel: "Avbryt"
+                    },
+                    fi: {
+                      temp_titles: ["Ulkoilma", "Tuloilma", "Poistoilma", "Jäteilma"],
+                      page2_title: "Taso (pidä painettuna)",
+                      page3_title: "Vaihtoehtoinen tehostus",
+                      label_fanspeed: "Ilmanvaihtotaso",
+                      label_minutes: "Minuuttia",
+                      label_fireplace: "Takkatila",
+                      boost_active: "Aktiivinen",
+                      boost_back_to_speed_prefix: 'Takaisin ilmanvaihtotasolle ',
+                      boost_back_to_speed_suffix: ' kuluttua',
+                      label_selected_device: "Valittu ilmanvaihtolaite",
+                      label_start: "Käynnistä",
+                      label_cancel: "Peruuta"
+                    }
+                  };
+                  const data = {
+                    lang: detectLang(),
+                    strings: defaults
+                  };
+                  localStorage.setItem(KEY, JSON.stringify(data));
+                  return "";
+                ]]]
+          - type: conditional
+            conditions:
+              - entity: number.helios_vallox_ui_display_select
+                state: "1"
+            elements:
+              - type: image
+                image: /local/community/helios_vallox_ventilation/rc_buttontexts.png
+                card_mod: null
+                tap_action:
+                  action: null
+                style:
+                  top: 50%
+                  left: 50%
+                  width: 100%
+                  transform: translate(-50%, -50%)
+              - name: On Off Button
+                type: custom:button-card
+                template: ventilation_remote_control_leds
+                entity: |
+                  [[[
+                    const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                    return `switch.${slug}_powerstate`;
+                  ]]]
+                tap_action:
+                  action: more-info
+                style:
+                  top: 45%
+                  left: 18%
+                  width: 5%
+                  transform: translate(-50%, -50%)
+              - name: CO2 Button
+                type: custom:button-card
+                template: ventilation_remote_control_leds
+                entity: |
+                  [[[
+                    const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                    return `switch.${slug}_co2_indicator`;
+                  ]]]
+                tap_action:
+                  action: more-info
+                style:
+                  top: 45%
+                  left: 38%
+                  width: 5%
+                  transform: translate(-50%, -50%)
+              - name: RH Button
+                type: custom:button-card
+                template: ventilation_remote_control_leds
+                entity: |
+                  [[[
+                    const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                    return `switch.${slug}_rh_indicator`;
+                  ]]]
+                tap_action:
+                  action: more-info
+                style:
+                  top: 45%
+                  left: 58%
+                  width: 5%
+                  transform: translate(-50%, -50%)
+              - name: C Button
+                type: custom:button-card
+                template: ventilation_remote_control_leds
+                entity: |
+                  [[[
+                    const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                    return `select.${slug}_winter_mode`;
+                  ]]]
+                tap_action:
+                  action: call-service
+                  service: select.select_next
+                  data:
+                    entity_id: |
+                      [[[
+                        const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                        return `select.${slug}_winter_mode`;
+                      ]]]
+                    cycle: true
+                style:
+                  top: 45%
+                  left: 78%
+                  width: 5%
+                  transform: translate(-50%, -50%)
+              - title: Display
+                type: custom:button-card
+                name: |
+                  [[[
+                    const displayIndexEntity = states['number.helios_vallox_ui_display_index'];
+                    let index = parseInt(displayIndexEntity?.state ?? '0', 10);
+                    if (isNaN(index)) index = 0;
+                    index = Math.max(0, Math.min(3, index));
+
+                    const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                    const KEY = "helios.i18n.display";
+                    // Sprache bestimmen: localStorage.lang -> hass.language -> navigator.language -> de
+                    const getLang = () => {
+                      try {
+                        const d = JSON.parse(localStorage.getItem(KEY));
+                        return d?.lang || "de";
+                      } catch (e) { return "de"; }
+                    };
+                    // Titles laden, mit Fallback auf Deutsch
+                    const getTitles = (lang) => {
+                      try {
+                        const d = JSON.parse(localStorage.getItem(KEY));
+                        const cur = d?.strings?.[lang];
+                        const de  = d?.strings?.de;
+                        if (cur && !Array.isArray(cur) && Array.isArray(cur.temp_titles)) return cur.temp_titles;
+                        if (Array.isArray(cur)) return cur;
+                        if (de && !Array.isArray(de) && Array.isArray(de.temp_titles)) return de.temp_titles;
+                        if (Array.isArray(de)) return de;
+                        return ["Außenluft","Zuluft","Abluft","Fortluft"];
+                      } catch (e) { return ["Außenluft","Zuluft","Abluft","Fortluft"]; }
+                    };
+                    const lang = getLang();
+                    const titles = getTitles(lang);
+                    const entities = [
+                      `sensor.${slug}_temperature_outdoor_air`,
+                      `sensor.${slug}_temperature_supply_air`,
+                      `sensor.${slug}_temperature_extract_air`,
+                      `sensor.${slug}_temperature_exhaust_air`
+                    ];
+                    const entityId = entities[index];
+                    const rawValue = entityId ? states[entityId]?.state : undefined;
+
+                    const zeile1 = titles[index] ?? '';
+                    const zeile2 = rawValue && !['unknown', 'unavailable'].includes(rawValue) ? rawValue : '-';
+
+                    return `<div class="lcd">
+                              <div class="l1">${zeile1}</div>
+                              <div class="l2">${zeile2} °C</div>
+                            </div>`;
+                  ]]]
+                style:
+                  left: 57%
+                  top: 78%
+                styles:
+                  card:
+                    - padding: 0
+                    - margin: 0
+                    - color: black
+                    - background-color: "#5CCA03"
+                    - border: 2px inset lightgrey
+                    - display: |
+                        [[[
+                          const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                          return (states[`switch.${slug}_powerstate`]?.state !== 'on') ? 'none' : 'block';
+                        ]]]
+                  name:
+                    - padding: 0
+                    - margin: 0
+                card_mod:
+                  style: >
+                    :host, ha-card { 
+                      width: 83% !important;
+                      height: 35% !important;
+                    } ha-card { box-sizing: border-box; } #name, #name * {
+                    box-sizing: border-box; } #name .lcd{
+                      width: 100%;
+                      justify-content: center;
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      line-height: 1.05;
+                    } #name .l1{
+                      font-size: clamp(16px, 1.6vw, 20px);
+                      font-weight: 700;
+                    } #name .l2{
+                      font-size: clamp(16px, 1.6vw, 20px);
+                      font-weight: 400;
+                    }
+              - name: Display Up Button
+                type: custom:button-card
+                template: ventilation_remote_control_buttons
+                tap_action:
+                  action: call-service
+                  service: number.set_value
+                  target:
+                    entity_id: number.helios_vallox_ui_display_index
+                  data:
+                    value: |
+                      [[[
+                        let index = parseInt(states['number.helios_vallox_ui_display_index'].state);
+                        let max_index = 3;
+                        let newlevel = 0;
+                        if (index < max_index) { newlevel = index + 1 };
+                        return newlevel;
+                      ]]]
+                style:
+                  top: 87%
+                  left: 18%
+                  width: 5%
+                  transform: translate(-50%, -50%)
+              - name: Display Down Button
+                type: custom:button-card
+                template: ventilation_remote_control_buttons
+                tap_action:
+                  action: call-service
+                  service: number.set_value
+                  target:
+                    entity_id: number.helios_vallox_ui_display_index
+                  data:
+                    value: |
+                      [[[
+                        let index = parseInt(states['number.helios_vallox_ui_display_index'].state);
+                        let min_index = 0;
+                        let newlevel = 3;
+                        if (index > min_index) { newlevel = index - 1 };
+                        return newlevel;
+                      ]]]
+                style:
+                  top: 87%
+                  left: 38%
+                  width: 5%
+                  transform: translate(-50%, -50%)
+              - name: Plus Button
+                type: custom:button-card
+                template: ventilation_remote_control_buttons
+                tap_action:
+                  action: call-service
+                  service: number.set_value
+                  target:
+                    entity_id: |
+                      [[[
+                        const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                        return `number.${slug}_fanspeed`;
+                      ]]]
+                  data:
+                    value: |
+                      [[[
+                        const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                        let current_speed = parseInt(states[`number.${slug}_fanspeed`]?.state ?? 0);
+                        if (current_speed < 8) {
+                          return current_speed + 1
+                        } else {
+                          return current_speed
+                        }
+                      ]]]
+                style:
+                  top: 87%
+                  left: 58%
+                  width: 5%
+                  transform: translate(-50%, -50%)
+              - name: Minus Button
+                type: custom:button-card
+                template: ventilation_remote_control_buttons
+                tap_action:
+                  action: call-service
+                  service: number.set_value
+                  target:
+                    entity_id: |
+                      [[[
+                        const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                        return `number.${slug}_fanspeed`;
+                      ]]]
+                  data:
+                    value: |
+                      [[[
+                        const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                        let current_speed = parseInt(states[`number.${slug}_fanspeed`]?.state ?? 0);
+                        if (current_speed > 1) {
+                          return current_speed - 1
+                        } else {
+                          return current_speed
+                        }
+                      ]]]
+                style:
+                  top: 87%
+                  left: 78%
+                  width: 5%
+                  transform: translate(-50%, -50%)
+          - name: Fan speed buttons
+            type: conditional
+            conditions:
+              - entity: number.helios_vallox_ui_display_select
+                state: "2"
+            elements:
+              - type: custom:button-card
+                title: Set fan speed header
+                name: |
+                  [[[
+                    const KEY="helios.i18n.display";
+                    try {
+                      const d = JSON.parse(localStorage.getItem(KEY));
+                      const lang = d?.lang || "de";
+                      const s = d?.strings?.[lang] || d?.strings?.de || {};
+                      return s.page2_title || "Set fan speed";
+                    } catch (e) { return "Set fan speed"; }
+                  ]]]
+                tap_action:
+                  action: none
+                style:
+                  left: 50%
+                  top: 45%
+                  width: 68%
+                  transform: translate(-50%, -50%)
+                card_mod:
+                  style: |
+                    ha-card { height: 2em !important; }
+                styles:
+                  card:
+                    - background-color: rgba(92, 202, 3, 0.5)
+                    - border: 2px inset
+                    - border-radius: 5px
+                    - box-shadow: 0 1px 2px rgba(0,0,0,0.15)
+                    - padding: 0
+                    - margin: 0
+                  name:
+                    - color: black
+                    - font-size: clamp(16px, 1.4vw, 18px)
+                    - font-weight: 600
+                    - text-align: center
+              - type: custom:button-card
+                title: Fan Speed Buttons
+                style:
+                  top: 50%
+                  left: 50%
+                  width: 93%
+                  transform: translate(-50%, 20%)
+                card_mod:
+                  style: |
+                    ha-card { 
+                      background: transparent;
+                      width: 78% !important;
+                      margin-left: 12%;
+                    }
+                styles:
+                  card:
+                    - padding: 1%
+                  grid:
+                    - grid-template-areas: |
+                        'speed_header'
+                        'speed_buttons'
+                    - gap: .5em
+                  custom_fields:
+                    speed_buttons:
+                      - align-self: center
+                      - background-color: transparent
+                      - border: none
+                custom_fields:
+                  speed_buttons:
+                    card:
+                      type: grid
+                      columns: 4
+                      cards:
+                        - type: custom:button-card
+                          template: ventilation_fan_speed_buttons
+                          variables:
+                            value: 1
+                        - type: custom:button-card
+                          template: ventilation_fan_speed_buttons
+                          variables:
+                            value: 2
+                        - type: custom:button-card
+                          template: ventilation_fan_speed_buttons
+                          variables:
+                            value: 3
+                        - type: custom:button-card
+                          template: ventilation_fan_speed_buttons
+                          variables:
+                            value: 4
+                        - type: custom:button-card
+                          template: ventilation_fan_speed_buttons
+                          variables:
+                            value: 5
+                        - type: custom:button-card
+                          template: ventilation_fan_speed_buttons
+                          variables:
+                            value: 6
+                        - type: custom:button-card
+                          template: ventilation_fan_speed_buttons
+                          variables:
+                            value: 7
+                        - type: custom:button-card
+                          template: ventilation_fan_speed_buttons
+                          variables:
+                            value: 8
+          - name: Timed boost
+            type: conditional
+            conditions:
+              - entity: number.helios_vallox_ui_display_select
+                state: "3"
+            elements:
+              - type: custom:button-card
+                title: Timed boost header
+                name: |
+                  [[[
+                    const KEY="helios.i18n.display";
+                    try {
+                      const d = JSON.parse(localStorage.getItem(KEY));
+                      const lang = d?.lang || "de";
+                      const s = d?.strings?.[lang] || d?.strings?.de || {};
+                      return s.page3_title || "Boost / Reduced Air Timer";
+                    } catch (e) { return "Boost / Reduced Air Timer"; }
+                  ]]]
+                tap_action:
+                  action: none
+                style:
+                  left: 50%
+                  top: 45%
+                  width: 68%
+                  transform: translate(-50%, -50%)
+                card_mod:
+                  style: |
+                    ha-card { height: 2em !important; }
+                styles:
+                  card:
+                    - background-color: rgba(92, 202, 3, 0.5)
+                    - border: 2px inset
+                    - border-radius: 5px
+                    - box-shadow: 0 1px 2px rgba(0,0,0,0.15)
+                    - padding: 0
+                    - margin: 0
+                  name:
+                    - color: black
+                    - font-size: clamp(16px, 1.4vw, 18px)
+                    - font-weight: 600
+                    - text-align: center
+              - type: custom:button-card
+                style:
+                  top: 58%
+                  left: 50%
+                  width: 88%
+                  transform: translate(-50%, -10%)
+                card_mod:
+                  style: |
+                    ha-card { 
+                      background: transparent;
+                      width: 80% !important;
+                      margin-left: 10%
+                    }
+                styles:
+                  card:
+                    - padding: 1%
+                  grid:
+                    - grid-template-areas: |
+                        'boost_settings boost_settings'
+                        'fireplace start_stop'
+                    - gap: .5em
+                  custom_fields:
+                    boost_settings:
+                      - background-color: transparent
+                      - margin-bottom: 10px
+                    fireplace:
+                      - justify-self: start
+                      - align-self: center
+                    start_stop:
+                      - justify-self: end
+                      - align-self: center
+                      - margin-right: 10px
+                      - background-color: transparent
+                custom_fields:
+                  boost_settings:
+                    card:
+                      type: custom:button-card
+                      show_icon: false
+                      show_state: false
+                      show_name: true
+                      name: |
+                        [[[
+                          const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                          const active = states[`binary_sensor.${slug}_softboost_active`]?.state === 'on';
+
+                          const KEY="helios.i18n.display";
+                          let s = {};
+                          try {
+                            const d = JSON.parse(localStorage.getItem(KEY));
+                            const lang = d?.lang || "de";
+                            s = d?.strings?.[lang] || d?.strings?.de || {};
+                          } catch (e) {}
+
+                          if (active) {
+                            const remaining = states[`sensor.${slug}_softboost_remaining`];
+                            const orig = remaining?.attributes?.original_fanspeed ?? '–';
+                            const level = remaining?.attributes?.level
+                              ?? states[`number.${slug}_softboost_level`]?.state
+                              ?? '–';
+
+                            return '<h1 style="margin-top: -0.2em; margin-bottom: 0.25em;">' +
+                                    (s.boost_active || "Active") +
+                                    ' (' + level + ')' +
+                                   '</h1>' +
+                                   '<div style="color: black; margin-top: -0.5em;">' +
+                                    (s.boost_back_to_speed_prefix || 'Back to fan speed ') +
+                                    orig +
+                                    (s.boost_back_to_speed_suffix || ' in') +
+                                   '</div>';
+                          }
+
+                          return ' ';
+                        ]]]
+                      styles:
+                        grid:
+                          - grid-template-areas: |
+                              "fanspeed"
+                              "duration"
+                              "timer"
+                          - height: |
+                              [[[
+                                const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                return states[`binary_sensor.${slug}_softboost_active`]?.state === 'on'
+                                  ? '10em'
+                                  : '7em';
+                              ]]]
+                        card:
+                          - background: none
+                          - border-radius: 12px
+                          - box-shadow: |
+                              [[[
+                                const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                return states[`binary_sensor.${slug}_softboost_active`]?.state === 'on'
+                                  ? 'inset 0px 0px 10px 2px #5CCA03'
+                                  : 'none';
+                              ]]]
+                          - color: black
+                          - border: 1px lightgrey solid
+                          - margin-top: 10px
+                          - padding: |
+                              [[[
+                                const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                return states[`binary_sensor.${slug}_softboost_active`]?.state === 'on'
+                                  ? '0'
+                                  : '14px 10px 5px 10px';
+                              ]]]
+                        name:
+                          - color: "#5CCA03"
+                          - position: absolute
+                          - top: 2em
+                          - left: 0
+                          - right: 0
+                          - width: 100%
+                          - text-align: center
+                        custom_fields:
+                          fanspeed:
+                            - background-color: transparent
+                            - display: |
+                                [[[
+                                  const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                  return states[`binary_sensor.${slug}_softboost_active`]?.state === 'on'
+                                    ? 'none'
+                                    : 'block';
+                                ]]]
+                            - margin-left: 10px
+                            - margin-right: 10px
+                          duration:
+                            - background-color: transparent
+                            - margin-top: 10px
+                            - display: |
+                                [[[
+                                  const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                  return states[`binary_sensor.${slug}_softboost_active`]?.state === 'on'
+                                    ? 'none'
+                                    : 'block';
+                                ]]]
+                            - margin-left: 10px
+                            - margin-right: 10px
+                          timer:
+                            - background: "#5CCA03"
+                            - border-radius: 8px
+                            - margin-left: 1em
+                            - margin-right: 1em
+                            - margin-top: "-80px"
+                            - height: 2em
+                            - line-height: 1em
+                            - display: |
+                                [[[
+                                  const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                  return states[`binary_sensor.${slug}_softboost_active`]?.state === 'on'
+                                    ? 'block'
+                                    : 'none';
+                                ]]]
+                      custom_fields:
+                        fanspeed:
+                          card:
+                            type: custom:button-card
+                            show_icon: false
+                            show_name: false
+                            show_state: false
+                            styles:
+                              card:
+                                - background: "#5CCA03"
+                                - color: black
+                                - border-radius: 12px
+                                - box-shadow: none
+                                - padding: 8px 10px
+                                - min-height: 52px
+                              grid:
+                                - grid-template-areas: "\"icon label minus value plus\""
+                                - grid-template-columns: 44px 1fr 32px 42px 32px
+                                - align-items: center
+                                - column-gap: 0px
+                              custom_fields:
+                                icon:
+                                  - justify-self: center
+                                label:
+                                  - justify-self: center
+                                  - font-weight: 400
+                                  - font-size: 15px
+                                minus:
+                                  - justify-self: center
+                                  - background: rgba(0,0,0,0.08)
+                                  - border-radius: 12px 0 0 12px
+                                  - width: 32px
+                                  - height: 42px
+                                value:
+                                  - justify-self: center
+                                  - background: rgba(0,0,0,0.08)
+                                  - width: 42px
+                                  - height: 42px
+                                  - line-height: 42px
+                                  - font-weight: bold
+                                  - font-size: 15px
+                                plus:
+                                  - justify-self: center
+                                  - background: rgba(0,0,0,0.08)
+                                  - border-radius: 0 12px 12px 0
+                                  - width: 32px
+                                  - height: 42px
+                            custom_fields:
+                              icon: |
+                                [[[
+                                  return '<ha-icon icon="mdi:fan" style="width:30px;height:30px;color:black;"></ha-icon>';
+                                ]]]
+                              label: |
+                                [[[
+                                  const KEY="helios.i18n.display";
+                                  try {
+                                    const d = JSON.parse(localStorage.getItem(KEY));
+                                    const lang = d?.lang || "de";
+                                    const s = d?.strings?.[lang] || d?.strings?.de || {};
+                                    return s.label_fanspeed || "Fan speed";
+                                  } catch (e) { return "Fan speed"; }
+                                ]]]
+                              minus:
+                                card:
+                                  type: custom:button-card
+                                  name: −
+                                  show_icon: false
+                                  tap_action:
+                                    action: call-service
+                                    service: number.set_value
+                                    target:
+                                      entity_id: |
+                                        [[[
+                                          const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                          return `number.${slug}_softboost_level`;
+                                        ]]]
+                                    data:
+                                      value: |
+                                        [[[
+                                          const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                          const v = Number(states[`number.${slug}_softboost_level`]?.state ?? 8);
+                                          return Math.max(1, v - 1);
+                                        ]]]
+                                  styles:
+                                    card:
+                                      - background: transparent
+                                      - border: none
+                                      - box-shadow: none
+                                      - color: black
+                                      - padding: 0
+                                      - height: 42px
+                                    name:
+                                      - font-size: 24px
+                              value: |
+                                [[[
+                                  const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                  return states[`number.${slug}_softboost_level`]?.state ?? '–';
+                                ]]]
+                              plus:
+                                card:
+                                  type: custom:button-card
+                                  name: +
+                                  show_icon: false
+                                  tap_action:
+                                    action: call-service
+                                    service: number.set_value
+                                    target:
+                                      entity_id: |
+                                        [[[
+                                          const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                          return `number.${slug}_softboost_level`;
+                                        ]]]
+                                    data:
+                                      value: |
+                                        [[[
+                                          const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                          const v = Number(states[`number.${slug}_softboost_level`]?.state ?? 8);
+                                          return Math.min(8, v + 1);
+                                        ]]]
+                                  styles:
+                                    card:
+                                      - background: transparent
+                                      - border: none
+                                      - box-shadow: none
+                                      - color: black
+                                      - padding: 0
+                                      - height: 42px
+                                    name:
+                                      - font-size: 22px
+                        duration:
+                          card:
+                            type: custom:button-card
+                            show_icon: false
+                            show_name: false
+                            show_state: false
+                            styles:
+                              card:
+                                - background: "#5CCA03"
+                                - color: black
+                                - border-radius: 12px
+                                - box-shadow: none
+                                - padding: 8px 10px
+                                - min-height: 52px
+                              grid:
+                                - grid-template-areas: "\"icon label minus value plus\""
+                                - grid-template-columns: 44px 1fr 32px 42px 32px
+                                - align-items: center
+                                - column-gap: 0px
+                              custom_fields:
+                                icon:
+                                  - justify-self: center
+                                label:
+                                  - justify-self: center
+                                  - font-weight: 400
+                                  - font-size: 15px
+                                minus:
+                                  - justify-self: center
+                                  - background: rgba(0,0,0,0.08)
+                                  - border-radius: 12px 0 0 12px
+                                  - width: 32px
+                                  - height: 42px
+                                value:
+                                  - justify-self: center
+                                  - background: rgba(0,0,0,0.08)
+                                  - width: 42px
+                                  - height: 42px
+                                  - line-height: 42px
+                                  - font-weight: bold
+                                  - font-size: 15px
+                                plus:
+                                  - justify-self: center
+                                  - background: rgba(0,0,0,0.08)
+                                  - border-radius: 0 12px 12px 0
+                                  - width: 32px
+                                  - height: 42px
+                            custom_fields:
+                              icon: |
+                                [[[
+                                  return '<ha-icon icon="mdi:clock" style="width:30px;height:30px;color:black;"></ha-icon>';
+                                ]]]
+                              label: |
+                                [[[
+                                  const KEY="helios.i18n.display";
+                                  try {
+                                    const d = JSON.parse(localStorage.getItem(KEY));
+                                    const lang = d?.lang || "de";
+                                    const s = d?.strings?.[lang] || d?.strings?.de || {};
+                                    return s.label_minutes || "Minutes";
+                                  } catch (e) { return "Minutes"; }
+                                ]]]
+                              minus:
+                                card:
+                                  type: custom:button-card
+                                  name: −
+                                  show_icon: false
+                                  tap_action:
+                                    action: call-service
+                                    service: number.set_value
+                                    target:
+                                      entity_id: |
+                                        [[[
+                                          const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                          return `number.${slug}_softboost_duration`;
+                                        ]]]
+                                    data:
+                                      value: |
+                                        [[[
+                                          const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                          const v = Number(states[`number.${slug}_softboost_duration`]?.state ?? 90);
+                                          return Math.max(15, v - 15);
+                                        ]]]
+                                  styles:
+                                    card:
+                                      - background: transparent
+                                      - border: none
+                                      - box-shadow: none
+                                      - color: black
+                                      - padding: 0
+                                      - height: 42px
+                                    name:
+                                      - font-size: 24px
+                              value: |
+                                [[[
+                                  const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                  return states[`number.${slug}_softboost_duration`]?.state ?? '–';
+                                ]]]
+                              plus:
+                                card:
+                                  type: custom:button-card
+                                  name: +
+                                  show_icon: false
+                                  tap_action:
+                                    action: call-service
+                                    service: number.set_value
+                                    target:
+                                      entity_id: |
+                                        [[[
+                                          const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                          return `number.${slug}_softboost_duration`;
+                                        ]]]
+                                    data:
+                                      value: |
+                                        [[[
+                                          const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                          const v = Number(states[`number.${slug}_softboost_duration`]?.state ?? 90);
+                                          return Math.min(90, v + 15);
+                                        ]]]
+                                  styles:
+                                    card:
+                                      - background: transparent
+                                      - border: none
+                                      - box-shadow: none
+                                      - color: black
+                                      - padding: 0
+                                      - height: 42px
+                                    name:
+                                      - font-size: 22px
+                        timer:
+                          card:
+                            type: custom:button-card
+                            show_icon: false
+                            show_name: false
+                            show_state: true
+                            entity: |
+                              [[[
+                                const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                return `sensor.${slug}_softboost_remaining`;
+                              ]]]
+                            styles:
+                              card:
+                                - background: transparent
+                                - border: none
+                                - box-shadow: none
+                                - padding: 0
+                              state:
+                                - color: white
+                                - font-size: 1.2em
+                                - margin-top: 0.2em
+                  fireplace:
+                    card:
+                      type: custom:button-card
+                      name: |
+                        [[[
+                          const KEY="helios.i18n.display";
+                          try {
+                            const d = JSON.parse(localStorage.getItem(KEY));
+                            const lang = d?.lang || "de";
+                            const s = d?.strings?.[lang] || d?.strings?.de || {};
+                            return s.label_fireplace || "Fireplace mode";
+                          } catch (e) { return "Fireplace mode"; }
+                        ]]]
+                      entity: |
+                        [[[
+                          const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                          return `switch.${slug}_softboost_fireplace_mode`;
+                        ]]]
+                      show_icon: true
+                      show_name: true
+                      show_state: false
+                      state:
+                        - value: "on"
+                          styles:
+                            icon:
+                              - color: "#5CCA03"
+                        - value: "off"
+                          styles:
+                            icon:
+                              - color: lightgrey
+                      tap_action:
+                        action: toggle
+                      styles:
+                        card:
+                          - background: transparent
+                          - border: none
+                          - box-shadow: none
+                          - padding: 0px
+                          - margin: 0px
+                          - display: |
+                              [[[
+                                const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                                return states[`binary_sensor.${slug}_softboost_active`]?.state === 'on'
+                                  ? 'none'
+                                  : 'block';
+                              ]]]
+                        grid:
+                          - grid-template-areas: "\"i n\""
+                          - grid-template-columns: min-content auto
+                          - align-items: center
+                        icon:
+                          - width: 30px
+                          - margin-left: 10px
+                          - margin-right: 5px
+                        name:
+                          - justify-self: start
+                          - align-self: center
+                          - font-weight: 500
+                          - color: black
+                          - line-height: 1
+                          - padding-top: 2px
+                          - font-size: 14px
+                  start_stop:
+                    card:
+                      type: custom:button-card
+                      show_name: true
+                      show_icon: false
+                      icon: mdi:play
+                      tap_action:
+                        action: call-service
+                        service: button.press
+                        target:
+                          entity_id: |
+                            [[[
+                              const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                              return `button.${slug}_softboost_start_stop`;
+                            ]]]
+                      name: |
+                        [[[
+                          const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                          const active = states[`binary_sensor.${slug}_softboost_active`]?.state === 'on';
+
+                          const KEY="helios.i18n.display";
+                          try {
+                            const d = JSON.parse(localStorage.getItem(KEY));
+                            const lang = d?.lang || "de";
+                            const s = d?.strings?.[lang] || d?.strings?.de || {};
+
+                            if (!active) return (s.label_start || "Start") + ' ⏵';
+                            return '⏹ ' + (s.label_cancel || "Cancel");
+                          } catch (e) {
+                            return active ? '⏹ Cancel' : 'Start ⏵';
+                          }
+                        ]]]
+                      styles:
+                        card:
+                          - color: black
+                          - background: transparent
+                          - border: none
+                          - box-shadow: none
+                          - margin-top: "-2px"
+          - type: custom:button-card
+            name: info_speed_timer_buttons
+            entity: none
+            tap_action:
+              action: null
+            show_name: false
+            show_state: false
+            show_icon: false
+            style:
+              top: 27%
+              left: 51%
+              width: 73%
+            styles:
+              card:
+                - background: transparent
+                - box-shadow: none
+                - padding: 8px
+                - min-height: 2em
+                - transform: |
+                    [[[
+                      /* In developer mode, it will simulate 2 or more devices, so the select is shown! */
+                      const a = states['select.helios_vallox_ui_device_select']?.attributes || {};
+                      const dev = a.developer_mode === true;
+                      const d = a.available_devices;
+                      const c = Array.isArray(d)
+                        ? d.length
+                        : d && typeof d === 'object'
+                          ? Object.keys(d).length
+                          : Array.isArray(a.options)
+                            ? a.options.length
+                            : 1;
+                      return (dev || c > 1)
+                        ? "translate(0%, 40%)"
+                        : "translate(0%, 0%)";
+                    ]]]
+              grid:
+                - grid-template-areas: "\"infobtn speedbtn timerbtn\""
+                - grid-template-columns: 1fr 1fr 1fr
+                - gap: 10px
+              custom_fields:
+                infobtn:
+                  - width: 100%
+                  - height: 100%
+                  - justify-self: start
+                speedbtn:
+                  - width: 100%
+                  - height: 100%
+                  - justify-self: center
+                timerbtn:
+                  - width: 100%
+                  - height: 100%
+                  - justify-self: end
+            custom_fields:
+              infobtn:
+                card:
+                  type: custom:button-card
+                  template: ventilation_remote_control_displayselect
+                  aspect_ratio: 2/1
+                  icon: mdi:information-outline
+                  variables:
+                    value: 1
+              speedbtn:
+                card:
+                  type: custom:button-card
+                  template: ventilation_remote_control_displayselect
+                  aspect_ratio: 2/1
+                  icon: mdi:fan-plus
+                  variables:
+                    value: 2
+              timerbtn:
+                card:
+                  type: custom:button-card
+                  template: ventilation_remote_control_displayselect
+                  aspect_ratio: 2/1
+                  icon: mdi:fan-clock
+                  variables:
+                    value: 3
+          - type: custom:button-card
+            entity: none
+            style:
+              top: 19%
+              left: 51%
+              width: 73%
+              transform: translate(-50%, -50%)
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            styles:
+              card:
+                - background: transparent
+                - box-shadow: none
+                - border: none
+                - padding: 0
+                - margin: 0
+                - border-radius: 0
+                - display: ""
+                - display: |
+                    [[[
+                      /* In developer mode, it will simulate 2 or more devices, so the select is shown! */
+                      const a = states['select.helios_vallox_ui_device_select']?.attributes || {};
+                      const dev = a.developer_mode === true;
+                      const d = a.available_devices;
+                      const c = Array.isArray(d)
+                        ? d.length
+                        : d && typeof d === 'object'
+                          ? Object.keys(d).length
+                          : Array.isArray(a.options)
+                            ? a.options.length
+                            : 1;
+                      return (dev || c > 1) ? "block" : "none";
+                    ]]]
+              grid:
+                - grid-template-areas: "\"device_select\""
+                - grid-template-columns: 1fr
+                - grid-template-rows: 5.5vh
+                - align-items: center
+            custom_fields:
+              device_select:
+                card:
+                  type: entities
+                  entities:
+                    - entity: select.helios_vallox_ui_device_select
+                      name: |
+                        [[[
+                          const KEY = "helios.i18n.display";
+                          try {
+                            const d = JSON.parse(localStorage.getItem(KEY));
+                            const lang = d?.lang || "en";
+                            const s = d?.strings?.[lang] || d?.strings?.en || d?.strings?.de || {};
+                            return s.label_selected_device || "Selected ventilation unit";
+                          } catch (e) {
+                            return "Selected ventilation unit";
+                          }
+                        ]]]
+                      card_mod:
+                        style:
+                          .: |
+                            :host {
+                              border: none !important;
+                              box-shadow: none !important;
+                            }
+                          hui-generic-entity-row $: |
+                            state-badge {
+                              display: none !important;
+                            }
+                          ha-select $ ha-picker-field $ ha-combo-box-item $: |
+                            md-item {
+                              min-height: 2em !important;
+                            }
+                          ha-select $ ha-picker-field $ ha-combo-box-item $ md-item $: |
+                            .text {
+                              text-align: left !important;
+                            }
+                          ha-select $ ha-picker-field $: |
+                            ha-combo-box-item > span[slot="overline"],
+                            ha-combo-box-item > span[slot="headline"] {
+                              display: block !important;
+                              max-width: calc(100% - 24px) !important;
+                              white-space: nowrap !important;
+                              overflow: hidden !important;
+                              text-overflow: ellipsis !important;
+                              color: black !important;
+                            }
+                            ha-svg-icon.arrow {
+                              margin-left: auto !important;
+                              margin-right: -10px !important;
+                              flex: 0 0 auto !important;
+                              color: black;
+                            }
+                          ha-select $: |
+                            ha-picker-field {
+                              background: white !important;
+                              --ha-color-form-background: transparent !important;
+                              --ha-color-form-background-hover: transparent !important;
+                              --ha-color-form-background-focus: transparent !important;
+                            }
+                            ha-dropdown-item .content {
+                              color: black !important;
+                            }
+                            ha-dropdown-item[selected] .content {
+                              color: green !important;
+                              background-color: #EDEBEE !important;
+                            }
+                            ha-dropdown-item,
+                            ha-dropdown-item .content {
+                              background: #EDEBEE !important;
+                              border: none;
+                            }
+                          ha-select $ ha-dropdown $: |
+                            #menu {
+                              background: #EDEBEE !important;
+                            }
+                            wa-popup::part(popup) {
+                              background: #EDEBEE !important;
+                            }
+                  card_mod:
+                    style: |
+                      ha-card {
+                        background: transparent;
+                        border: none;
+                        box-shadow: none;
+                      }
+                      #states {
+                        padding: 0 !important;
+                      }
+      - square: false
+        type: grid
+        grid_options:
+          columns: full
+          rows: auto
+        columns: 2
+        cards:
+          - type: custom:button-card
+            aspect_ratio: 1
+            custom_fields:
+              gauge:
+                card:
+                  type: gauge
+                  name: |
+                    [[[
+                      const t = {
+                        en: "Fan speed",
+                        de: "Lüftungsstufe",
+                        fr: "Niveau de ventilation",
+                        es: "Nivel de ventilación",
+                        nl: "Ventilatiestand",
+                        da: "Ventilationstrin",
+                        sv: "Ventilationsnivå",
+                        no: "Ventilasjonstrinn",
+                        fi: "Ilmanvaihtotaso"
+                      };
+                      const l = (hass.language || "en").toLowerCase();
+                      return t[l] || t[l.split("-")[0]] || t.en;
+                    ]]]        
+                  entity: |
+                    [[[
+                      const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                      const fanspeed = `number.${slug}_fanspeed`;
+                      return fanspeed;
+                    ]]]
+                  min: 0
+                  max: 9
+                  needle: true
+                  severity:
+                    green: 0
+                    yellow: 100
+                    red: 150
+                  segments:
+                    - from: 0
+                      color: "#3899E1"
+                    - from: 0.5
+                      color: white
+                    - from: 1.5
+                      color: "#3899E1"
+                    - from: 2.5
+                      color: white
+                    - from: 3.5
+                      color: "#3899E1"
+                    - from: 4.5
+                      color: white
+                    - from: 5.5
+                      color: "#3899E1"
+                    - from: 6.5
+                      color: white
+                    - from: 7.5
+                      color: "#3899E1"
+                    - from: 8.5
+                      color: white
+            styles:
+              custom_fields:
+                gauge:
+                  - position: absolute
+                  - top: 50%
+                  - left: 50%
+                  - width: 100%
+                  - transform: translate(-50%, -50%)
+              card:
+                - overflow: hidden
+                - box-shadow: none
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: transparent;
+                  --ha-card-border-color: rgba(0,0,0,0);
+                  --ha-card-border-radius: 0px;
+                  --ha-card-border-width: 0px;
+                }
+          - type: custom:button-card
+            aspect_ratio: 1
+            custom_fields:
+              gauge:
+                card:
+                  type: gauge
+                  name: |
+                    [[[
+                      const t = {
+                        en: "Efficiency",
+                        de: "Effizienz",
+                        fr: "Efficacité",
+                        es: "Eficiencia",
+                        nl: "Efficiëntie",
+                        da: "Effektivitet",
+                        sv: "Effektivitet",
+                        no: "Effektivitet",
+                        fi: "Hyötysuhde"
+                      };
+                      const l = (hass.language || "en").toLowerCase();
+                      return t[l] || t[l.split("-")[0]] || t.en;
+                    ]]]
+                  entity: |
+                    [[[
+                      const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                      const efficiency = `sensor.${slug}_efficiency`;
+                      return efficiency;
+                    ]]]
+                  min: 0
+                  max: 100
+                  needle: true
+                  severity:
+                    red: 0
+                    yellow: 75
+                    green: 90
+            styles:
+              custom_fields:
+                gauge:
+                  - position: absolute
+                  - top: 50%
+                  - left: 50%
+                  - width: 100%
+                  - transform: translate(-50%, -50%)
+              card:
+                - overflow: hidden
+                - box-shadow: none
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: transparent;
+                  --ha-card-border-color: rgba(0,0,0,0);
+                  --ha-card-border-radius: 0px;
+                  --ha-card-border-width: 0px;
+                }
+    column_span: 1
+  - type: grid
+    cards:
+      - type: heading
+        icon: " "
+        heading_style: title
+        style: |
+          ha-card {
+            height: 240px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+          }
+      - type: custom:button-card
+        show_icon: false
+        show_name: false
+        show_state: false
+        styles:
+          card:
+            - padding: 0
+            - background: transparent
+            - border: none
+            - box-shadow: none
+            - overflow: hidden
+          grid:
+            - grid-template-areas: "\"table\""
+            - grid-template-columns: 1fr
+            - grid-template-rows: 1fr
+          custom_fields:
+            table:
+              - width: 100%
+              - min-width: 0
+              - overflow: hidden
+              - font-size: 16px
+              - line-height: 1.35
+        custom_fields:
+          table: |
+            [[[
+              const i18n = {
+                en: ["DIN calculations for this house", "Air exchange", "Moisture protection", "Reduced ventilation", "Normal ventilation", "Boost ventilation"],
+                de: ["DIN-Berechnungen für dieses Haus", "Luftaustausch", "Feuchteschutz", "Reduzierte Lüftung", "Normale Lüftung", "Stoßlüftung"],
+                fr: ["Calculs DIN pour cette maison", "Renouvellement d’air", "Protection contre l’humidité", "Ventilation réduite", "Ventilation normale", "Ventilation intensive"],
+                es: ["Cálculos DIN para esta vivienda", "Renovación de aire", "Protección contra la humedad", "Ventilación reducida", "Ventilación normal", "Ventilación intensiva"],
+                nl: ["DIN-berekeningen voor dit huis", "Luchtverversing", "Vochtbescherming", "Gereduceerde ventilatie", "Normale ventilatie", "Boostventilatie"],
+                da: ["DIN-beregninger for dette hus", "Luftudskiftning", "Fugtbeskyttelse", "Reduceret ventilation", "Normal ventilation", "Boostventilation"],
+                sv: ["DIN-beräkningar för detta hus", "Luftväxling", "Fuktskydd", "Reducerad ventilation", "Normal ventilation", "Forcerad ventilation"],
+                no: ["DIN-beregninger for dette huset", "Luftutskifting", "Fuktbeskyttelse", "Redusert ventilasjon", "Normal ventilasjon", "Forsert ventilasjon"],
+                fi: ["DIN-laskelmat tälle talolle", "Ilmanvaihto", "Kosteussuojaus", "Alennettu ilmanvaihto", "Normaali ilmanvaihto", "Tehostettu ilmanvaihto"]
+              };
+              const l = (hass.language || "en").toLowerCase();
+              const [title, airflow, moisture, reduced, normal, boost] =
+                i18n[l] || i18n[l.split("-")[0]] || i18n.en;
+              const slug = states["select.helios_vallox_ui_device_select"]?.attributes?.selected_slug || "ventilation";
+              const p = `sensor.${slug}_`;
+              const v = k => {
+                const s = states[p + k]?.state;
+                return s && s !== "unknown" && s !== "unavailable" ? s : "–";
+              };
+              const row = (label, val, bg) => `
+                <tr style="background:${bg};color:white;">
+                  <td style="text-align:left;padding:6px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${label}</td>
+                  <td style="text-align:right;padding:6px 8px;white-space:nowrap;">${val} m³/h</td>
+                </tr>`;
+              return `
+                <table style="width:100%;height:100%;border-collapse:collapse;table-layout:fixed;">
+                  <colgroup>
+                    <col style="width:70%;">
+                    <col style="width:30%;">
+                  </colgroup>
+
+                  <tr style="background:white;color:black;">
+                    <td style="text-align:left;padding:6px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><b>${title}</b></td>
+                    <td style="text-align:right;padding:6px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><b>${airflow}</b></td>
+                  </tr>
+
+                  ${row(moisture, v("din_airflow_moisture"), "#ff5514")}
+                  ${row(reduced, v("din_airflow_reduced"), "#dbb51f")}
+                  ${row(normal, v("din_airflow_normal"), "#208719")}
+                  ${row(boost, v("din_airflow_boost"), "#dbb51f")}
+                </table>
+              `;
+            ]]]
+      - type: picture-elements
+        name: temperatures
+        show_state: false
+        show_name: false
+        image: /local/community/helios_vallox_ventilation/temperature-balance.png
+        card_mod:
+          style: |
+            ha-card { 
+              background: transparent;
+              --ha-card-border-color: rgba(0,0,0,0);
+              --ha-card-border-radius: 0px;
+              --ha-card-border-width: 0px;
+              margin-top: 30px;
+            }
+        elements:
+          - type: custom:button-card
+            entity: |
+              [[[
+                const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                return `sensor.${slug}_temperature_exhaust_air`;
+              ]]]
+            show_icon: false
+            show_name: false
+            show_state: true
+            state_display: |
+              [[[ 
+                const v = Number(entity.state);
+                if (isNaN(v)) return '–';
+                return `${Math.round(v)} °C`;
+              ]]]
+            tap_action:
+              action: more-info
+            style:
+              left: 10%
+              top: 91%
+            styles:
+              card:
+                - background: transparent
+                - box-shadow: none
+                - border-radius: 0
+                - padding: 0
+              state:
+                - font-size: 1.2em
+                - font-style: bold
+                - font-weight: 700
+                - color: white
+                - justify-self: start
+                - align-self: end
+          - type: custom:button-card
+            entity: |
+              [[[
+                const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                return `sensor.${slug}_temperature_supply_air`;
+              ]]]
+            show_icon: false
+            show_name: false
+            show_state: true
+            state_display: |
+              [[[ 
+                const v = Number(entity.state);
+                if (isNaN(v)) return '–';
+                return `${Math.round(v)} °C`;
+              ]]]
+            tap_action:
+              action: more-info
+            style:
+              left: 88%
+              top: 91%
+            styles:
+              card:
+                - background: transparent
+                - box-shadow: none
+                - border-radius: 0
+                - padding: 0
+              state:
+                - font-size: 1.2em
+                - font-style: bold
+                - font-weight: 700
+                - color: white
+                - justify-self: end
+                - align-self: end
+          - type: custom:button-card
+            entity: |
+              [[[
+                const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                return `sensor.${slug}_temperature_outdoor_air`;
+              ]]]
+            show_icon: false
+            show_name: false
+            show_state: true
+            state_display: |
+              [[[ 
+                const v = Number(entity.state);
+                if (isNaN(v)) return '–';
+                return `${Math.round(v)} °C`;
+              ]]]
+            tap_action:
+              action: more-info
+            style:
+              left: 7%
+              top: 7%
+            styles:
+              card:
+                - background: transparent
+                - box-shadow: none
+                - border-radius: 0
+                - padding: 0
+              state:
+                - font-size: 1.2em
+                - font-style: bold
+                - font-weight: 700
+                - color: white
+                - justify-self: start
+                - align-self: end
+          - type: custom:button-card
+            entity: |
+              [[[
+                const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                return `sensor.${slug}_temperature_extract_air`;
+              ]]]
+            show_icon: false
+            show_name: false
+            show_state: true
+            state_display: |
+              [[[ 
+                const v = Number(entity.state);
+                if (isNaN(v)) return '–';
+                return `${Math.round(v)} °C`;
+              ]]]
+            tap_action:
+              action: more-info
+            style:
+              left: 88%
+              top: 10%
+            styles:
+              card:
+                - background: transparent
+                - box-shadow: none
+                - border-radius: 0
+                - padding: 0
+              state:
+                - font-size: 1.2em
+                - font-style: bold
+                - font-weight: 700
+                - color: white
+                - justify-self: end
+                - align-self: end
+          - type: custom:button-card
+            entity: |
+              [[[
+                const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                return `sensor.${slug}_temperature_balance`;
+              ]]]
+            show_icon: false
+            show_name: false
+            show_state: true
+            state_display: |
+              [[[ 
+                const t = {
+                  en: "Balance",
+                  de: "Bilanz",
+                  fr: "Bilan",
+                  es: "Balance",
+                  nl: "Balans",
+                  da: "Balance",
+                  sv: "Balans",
+                  no: "Balanse",
+                  fi: "Lämpötase"
+                };
+                const l = (hass.language || "en").toLowerCase();
+                const label = t[l] || t[l.split("-")[0]] || t.en;
+                const v = Number(entity.state);
+                if (isNaN(v)) return '–';
+                const r = Math.round(v);
+                if (r > 0) return `${label}:<br/>∆T = +${r} °C`;
+                if (r < 0) return `${label}:<br/>∆T = ${r} °C`;
+                return `${label}:<br/>∆T = ±0 °C`;
+              ]]]
+            tap_action:
+              action: more-info
+            style:
+              left: 49%
+              top: 49%
+              width: 120px
+              transform: translate(-50%, -50%)
+            styles:
+              card:
+                - background: transparent
+                - box-shadow: none
+                - border-radius: 0
+                - padding: 0
+                - width: 120px
+                - height: auto
+              state:
+                - font-size: 1.2em
+                - font-weight: 500
+                - color: black
+                - justify-self: center
+                - align-self: center
+                - text-align: center
+      - square: false
+        type: grid
+        grid_options:
+          columns: 12
+          rows: auto
+        columns: 2
+        cards:
+          - type: custom:button-card
+            aspect_ratio: 1
+            custom_fields:
+              gauge:
+                card:
+                  type: gauge
+                  name: |
+                    [[[
+                      const t = {
+                        en: "Air exchange",
+                        de: "Luftaustausch",
+                        fr: "Renouvellement d’air",
+                        es: "Renovación de aire",
+                        nl: "Luchtverversing",
+                        da: "Luftudskiftning",
+                        sv: "Luftväxling",
+                        no: "Luftutskifting",
+                        fi: "Ilmanvaihto"
+                      };
+                      const l = (hass.language || "en").toLowerCase();
+                      return t[l] || t[l.split("-")[0]] || t.en;
+                    ]]]
+                  entity: |
+                    [[[
+                      const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                      const effective_airflow = `sensor.${slug}_effective_airflow`;
+                      return effective_airflow;
+                    ]]]
+                  min: 0
+                  max: |
+                    [[[
+                      const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                      const max_airflow = states[`sensor.${slug}_configuration`]?.attributes?.max_airflow || '300';
+                      return Number(max_airflow);
+                    ]]]
+                  needle: true
+                  segments:
+                    - from: 0
+                      color: "#FF0000"
+                    - from: 5.56
+                      color: "#FF150B"
+                    - from: 11.11
+                      color: "#FF2A16"
+                    - from: 16.67
+                      color: "#FF3F22"
+                    - from: 22.22
+                      color: "#FF542D"
+                    - from: 27.78
+                      color: "#FF6A38"
+                    - from: 33.33
+                      color: "#FF7F44"
+                    - from: 38.89
+                      color: "#FF944F"
+                    - from: 44.44
+                      color: "#FFA95A"
+                    - from: 50
+                      color: "#FFBF66"
+                    - from: 57.78
+                      color: "#FFC562"
+                    - from: 65.56
+                      color: "#FFCB5E"
+                    - from: 73.33
+                      color: "#FFD25A"
+                    - from: 81.11
+                      color: "#FFD856"
+                    - from: 88.89
+                      color: "#FFDF52"
+                    - from: 96.67
+                      color: "#FFE54E"
+                    - from: 104.44
+                      color: "#FFEC4A"
+                    - from: 112.22
+                      color: "#FFF246"
+                    - from: 120
+                      color: "#FFF942"
+                    - from: 124.44
+                      color: "#E2F93A"
+                    - from: 128.89
+                      color: "#C6FA33"
+                    - from: 133.33
+                      color: "#AAFB2C"
+                    - from: 137.78
+                      color: "#8DFB24"
+                    - from: 142.22
+                      color: "#71FC1D"
+                    - from: 146.67
+                      color: "#55FD16"
+                    - from: 151.11
+                      color: "#38FD0E"
+                    - from: 155.56
+                      color: "#1CFE07"
+                    - from: 160
+                      color: "#00FF00"
+                    - from: 163.33
+                      color: "#1BFE01"
+                    - from: 166.67
+                      color: "#37FE03"
+                    - from: 170
+                      color: "#53FE05"
+                    - from: 173.33
+                      color: "#6FFE07"
+                    - from: 176.67
+                      color: "#8AFE08"
+                    - from: 180
+                      color: "#A6FE0A"
+                    - from: 183.33
+                      color: "#C2FE0C"
+                    - from: 186.67
+                      color: "#DEFE0E"
+                    - from: 190
+                      color: "#FAFE10"
+                    - from: 198.89
+                      color: "#FAF619"
+                    - from: 207.78
+                      color: "#FBEF22"
+                    - from: 216.67
+                      color: "#FBE82C"
+                    - from: 225.56
+                      color: "#FCE135"
+                    - from: 234.44
+                      color: "#FCDA3E"
+                    - from: 243.33
+                      color: "#FDD348"
+                    - from: 252.22
+                      color: "#FDCC51"
+                    - from: 261.11
+                      color: "#FEC55A"
+                    - from: 270
+                      color: "#FFBE64"
+                    - from: 280
+                      color: "#FFA858"
+                    - from: 290
+                      color: "#FF934D"
+                    - from: 300
+                      color: "#FF7E42"
+                    - from: 310
+                      color: "#FF6937"
+                    - from: 320
+                      color: "#FF542C"
+                    - from: 330
+                      color: "#FF3F21"
+                    - from: 340
+                      color: "#FF2A16"
+                    - from: 350
+                      color: "#FF150B"
+                    - from: 360
+                      color: "#FF0000"
+            styles:
+              custom_fields:
+                gauge:
+                  - position: absolute
+                  - top: 50%
+                  - left: 50%
+                  - width: 100%
+                  - transform: translate(-50%, -50%)
+              card:
+                - overflow: hidden
+                - box-shadow: none
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: transparent;
+                  --ha-card-border-color: rgba(0,0,0,0);
+                  --ha-card-border-radius: 0px;
+                  --ha-card-border-width: 0px;
+                }
+          - type: custom:button-card
+            aspect_ratio: 1
+            custom_fields:
+              gauge:
+                card:
+                  type: gauge
+                  name: |
+                    [[[
+                      const t = {
+                        en: "Power consumption",
+                        de: "Energieverbrauch",
+                        fr: "Consommation d’énergie",
+                        es: "Consumo de energía",
+                        nl: "Energieverbruik",
+                        da: "Energiforbrug",
+                        sv: "Energiförbrukning",
+                        no: "Energiforbruk",
+                        fi: "Energiankulutus"
+                      };
+
+                      const l = (hass.language || "en").toLowerCase();
+                      return t[l] || t[l.split("-")[0]] || t.en;
+                    ]]]
+                  entity: |
+                    [[[
+                      const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                      const electrical_power_entity = `sensor.${slug}_electrical_power`;
+                      return electrical_power_entity;
+                    ]]]
+                  min: 0
+                  max: |
+                    [[[
+                      const slug = states['select.helios_vallox_ui_device_select']?.attributes?.selected_slug || 'ventilation';
+                      const max_power = states[`sensor.${slug}_configuration`]?.attributes?.max_power || '194';
+                      return Number(max_power);
+                    ]]]
+                  needle: true
+                  severity:
+                    green: 0
+                    yellow: 100
+                    red: 150
+            styles:
+              custom_fields:
+                gauge:
+                  - position: absolute
+                  - top: 50%
+                  - left: 50%
+                  - width: 100%
+                  - transform: translate(-50%, -50%)
+              card:
+                - overflow: hidden
+                - box-shadow: none
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: transparent;
+                  --ha-card-border-color: rgba(0,0,0,0);
+                  --ha-card-border-radius: 0px;
+                  --ha-card-border-width: 0px;
+                }
+  - type: grid
+    column_span: 2
+    cards:
+      - type: custom:plotly-graph
+        grid_options:
+          columns: 24
+          rows: auto
+        hours_to_show: 168
+        refresh_interval: 300
+        card_mod:
+          style:
+            .: |
+              ha-card { 
+                --ha-card-border-width: 0px;
+                --ha-card-border-radius: 0px; 
+                --ha-card-border-color: #grey;
+                --card-mod-icon-color: white;
+                padding: 0;
+                height: 75vh;
+                margin-top: 0.53em;
+                width: 100% !important;
+                background: transparent;
+              }
+        defaults:
+          xaxes:
+            showgrid: true
+            gridcolor: rgba(255,255,255,0.12)
+            gridwidth: 1
+            showline: true
+            linewidth: 1
+            fixedrange: false
+            zeroline: false
+            mirror: true
+          yaxes:
+            type: number
+            title: ""
+            fixedrange: true
+            visible: true
+            overlaying: false
+            tickfont:
+              color: grey
+            showgrid: true
+            gridcolor: rgba(255,255,255,0.12)
+            gridwidth: 1
+            side: left
+            mirror: true
+          entity:
+            xaxis: x
+            yaxis: "y"
+        config:
+          displaylogo: false
+          responsive: true
+        entities:
+          - entity: select.helios_vallox_ui_device_select
+            name: __device_selector_helper
+            visible: false
+            showlegend: false
+            filters:
+              - force_numeric
+            fn: |
+              $ex {
+                const tr = {
+                  en: ["Temperatures °C", "Efficiency %", "Fan speed", "Outdoor air", "Extract air", "Supply air", "Exhaust air", "Efficiency"],
+                  de: ["Temperaturen °C", "Effizienz %", "Lüftungsstufe", "Außenluft", "Abluft", "Zuluft", "Fortluft", "Effizienz"],
+                  fr: ["Températures °C", "Efficacité %", "Niveau de ventilation", "Air extérieur", "Air extrait", "Air soufflé", "Air rejeté", "Efficacité"],
+                  es: ["Temperaturas °C", "Eficiencia %", "Nivel de ventilación", "Aire exterior", "Aire de extracción", "Aire de impulsión", "Aire expulsado", "Eficiencia"],
+                  nl: ["Temperaturen °C", "Efficiëntie %", "Ventilatiestand", "Buitenlucht", "Afvoerlucht", "Toevoerlucht", "Uitblaaslucht", "Efficiëntie"],
+                  da: ["Temperaturer °C", "Effektivitet %", "Ventilationstrin", "Udeluft", "Udsugningsluft", "Indblæsningsluft", "Afkastluft", "Effektivitet"],
+                  sv: ["Temperaturer °C", "Effektivitet %", "Ventilationsnivå", "Uteluft", "Frånluft", "Tilluft", "Avluft", "Effektivitet"],
+                  no: ["Temperaturer °C", "Effektivitet %", "Ventilasjonstrinn", "Uteluft", "Avtrekksluft", "Tilluft", "Avkastluft", "Effektivitet"],
+                  fi: ["Lämpötilat °C", "Hyötysuhde %", "Ilmanvaihtotaso", "Ulkoilma", "Poistoilma", "Tuloilma", "Jäteilma", "Hyötysuhde"]
+                };
+
+                const l = (hass.language || "en").toLowerCase();
+                const b = l.split("-")[0];
+                vars.t = tr[l] || tr[b] || (b === "nb" ? tr.no : null) || tr.en;
+
+                const slug = meta?.selected_slug || "ventilation";
+                vars.slug = slug;
+                vars.prefix = `${slug}_`;
+
+                return {};
+              }
+          - entity: |
+              $ex `sensor.${vars.prefix}temperature_outdoor_air`
+            name: $ex vars.t?.[3] || "Outdoor air"
+            fillcolor: rgba(168, 216, 234, 0.1)
+            fill: tozeroy
+            line:
+              shape: spline
+              color: grey
+              width: 1
+              smoothing: 0.3
+          - entity: |
+              $ex `sensor.${vars.prefix}temperature_extract_air`
+            name: $ex vars.t?.[4] || "Extract air"
+            line:
+              shape: spline
+              color: "#FF5F15"
+              width: 2
+              smoothing: 0.3
+          - entity: |
+              $ex `sensor.${vars.prefix}temperature_supply_air`
+            name: $ex vars.t?.[5] || "Supply air"
+            line:
+              shape: spline
+              color: "#4BA602"
+              width: 2
+              smoothing: 0.3
+          - entity: |
+              $ex `sensor.${vars.prefix}temperature_exhaust_air`
+            name: $ex vars.t?.[6] || "Exhaust air"
+            line:
+              shape: spline
+              color: "#DAA520"
+              width: 2
+              smoothing: 0.3
+          - entity: |
+              $ex `sensor.${vars.prefix}efficiency`
+            name: $ex vars.t?.[7] || "Efficiency"
+            xaxis: x2
+            yaxis: y2
+            type: scatter
+            fill: tozeroy
+            line:
+              width: 1
+              color: "#4BA602"
+          - entity: |
+              $ex `number.${vars.prefix}fanspeed`
+            name: $ex vars.t?.[2] || "Fan speed"
+            xaxis: x3
+            yaxis: y3
+            type: scatter
+            fill: tozeroy
+            line:
+              width: 1
+              color: "#DAA520"
+        layout:
+          paper_bgcolor: transparent
+          plot_bgcolor: transparent
+          margin:
+            b: 15
+            t: 0
+            l: 45
+            r: 10
+            pad: 0
+          grid:
+            rows: 3
+            columns: 1
+            pattern: independent
+            roworder: top to bottom
+            ygap: 0.1
+          showlegend: true
+          legend:
+            orientation: h
+            x: 0
+            "y": 1.01
+          hovermode: x unified
+          hoversubplots: axis
+          hoverdistance: -1
+          spikedistance: -1
+          xaxis:
+            title: ""
+            tickformat: "%a %H:%M"
+            showlegend: true
+            mirror: true
+            showspikes: true
+            spikemode: across
+            spikesnap: cursor
+            spikethickness: 0.5
+            spikecolor: rgba(255,255,255,0.35)
+            showticklabels: false
+            rangeselector:
+              x: 1
+              xanchor: right
+              "y": 1.01
+              yanchor: bottom
+              buttons:
+                - count: 12
+                  step: hour
+                - count: 1
+                  step: day
+                - count: 2
+                  step: day
+                - count: 7
+                  step: day
+          xaxis2:
+            showspikes: true
+            spikemode: across
+            spikesnap: cursor
+            title: ""
+            mirror: true
+            showline: true
+            matches: x
+            gridcolor: rgba(255,255,255,0.12)
+            showticklabels: false
+          xaxis3:
+            showspikes: true
+            spikemode: across
+            spikesnap: cursor
+            title: ""
+            mirror: true
+            showline: true
+            matches: x
+            gridcolor: rgba(255,255,255,0.12)
+            showticklabels: true
+            tickformat: "%a %H:%M"
+          yaxis:
+            showline: true
+            showticklabels: true
+            ticks: inside
+            side: left
+            range: auto
+            position: 0.1
+          yaxis2:
+            side: left
+            showline: true
+            showticklabels: true
+            ticks: inside
+            range:
+              - 60
+              - 100
+          yaxis3:
+            showline: true
+            showticklabels: true
+            ticks: inside
+            side: left
+            range:
+              - 0
+              - 8
+          annotations:
+            - text: $ex vars.t?.[0] || "Temperatures °C"
+              x: 0.01
+              xref: paper
+              xanchor: left
+              "y": 1
+              yref: paper
+              showarrow: false
+              font:
+                color: rgba(255, 255, 255, 0.5)
+                size: 14
+            - text: $ex vars.t?.[1] || "Efficiency %"
+              x: 0.01
+              xref: paper
+              xanchor: left
+              "y": 0.64
+              yref: paper
+              showarrow: false
+              font:
+                color: rgba(255, 255, 255, 0.5)
+                size: 14
+            - text: $ex vars.t?.[2] || "Fan speed"
+              x: 0.01
+              xref: paper
+              xanchor: left
+              "y": 0.28
+              yref: paper
+              showarrow: false
+              font:
+                color: rgba(255, 255, 255, 0.5)
+                size: 14
