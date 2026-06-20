@@ -1,6 +1,6 @@
 title: Ventilation
 path: vent-2026-06-2
-separator_line: "-------------------------------------------------------------------"
+separator_line: "--------------------------------------------------------------------"
 type: sections
 header: {}
 badges: []
@@ -84,7 +84,7 @@ sections:
                       boost_active: "Aktiv",
                       boost_back_to_speed_prefix: 'Zurück zu Lüfterstufe ',
                       boost_back_to_speed_suffix: ' in',
-                      label_selected_device: "Ausgewählte Lüftungsanlage",
+                      label_selected_unit: "Ausgewählte Lüftungsanlage",
                       label_start: "Start",
                       label_cancel: "Abbrechen"
                     },
@@ -98,7 +98,7 @@ sections:
                       boost_active: "Active",
                       boost_back_to_speed_prefix: 'Back to fan speed ',
                       boost_back_to_speed_suffix: ' in',
-                      label_selected_device: "Selected ventilation unit",
+                      label_selected_unit: "Selected ventilation unit",
                       label_start: "Start",
                       label_cancel: "Cancel"
                     },
@@ -112,7 +112,7 @@ sections:
                       boost_active: "Actif",
                       boost_back_to_speed_prefix: 'Retour à la vitesse ',
                       boost_back_to_speed_suffix: ' dans',
-                      label_selected_device: "Unité sélectionnée",
+                      label_selected_unit: "Unité sélectionnée",
                       label_start: "Démarrer",
                       label_cancel: "Annuler"
                     },
@@ -126,7 +126,7 @@ sections:
                       boost_active: "Activo",
                       boost_back_to_speed_prefix: 'Volver a velocidad ',
                       boost_back_to_speed_suffix: ' en',
-                      label_selected_device: "Unidad seleccionada",
+                      label_selected_unit: "Unidad seleccionada",
                       label_start: "Iniciar",
                       label_cancel: "Cancelar"
                     },
@@ -140,7 +140,7 @@ sections:
                       boost_active: "Actief",
                       boost_back_to_speed_prefix: 'Terug naar stand ',
                       boost_back_to_speed_suffix: ' over',
-                      label_selected_device: "Geselecteerde unit",
+                      label_selected_unit: "Geselecteerde unit",
                       label_start: "Start",
                       label_cancel: "Annuleren"
                     },
@@ -154,7 +154,7 @@ sections:
                       boost_active: "Aktiv",
                       boost_back_to_speed_prefix: 'Tilbage til ventilationsniveau ',
                       boost_back_to_speed_suffix: ' om',
-                      label_selected_device: "Valgt ventilationsenhed",
+                      label_selected_unit: "Valgt ventilationsenhed",
                       label_start: "Start",
                       label_cancel: "Annuller"
                     },
@@ -168,7 +168,7 @@ sections:
                       boost_active: "Aktiv",
                       boost_back_to_speed_prefix: 'Tillbaka till fläkthastighet ',
                       boost_back_to_speed_suffix: ' om',
-                      label_selected_device: "Vald ventilationsenhet",
+                      label_selected_unit: "Vald ventilationsenhet",
                       label_start: "Starta",
                       label_cancel: "Avbryt"
                     },
@@ -182,7 +182,7 @@ sections:
                       boost_active: "Aktiv",
                       boost_back_to_speed_prefix: 'Tilbake til ventilasjonsnivå ',
                       boost_back_to_speed_suffix: ' om',
-                      label_selected_device: "Valgt ventilasjonsenhet",
+                      label_selected_unit: "Valgt ventilasjonsenhet",
                       label_start: "Start",
                       label_cancel: "Avbryt"
                     },
@@ -196,7 +196,7 @@ sections:
                       boost_active: "Aktiivinen",
                       boost_back_to_speed_prefix: 'Takaisin ilmanvaihtotasolle ',
                       boost_back_to_speed_suffix: ' kuluttua',
-                      label_selected_device: "Valittu ilmanvaihtolaite",
+                      label_selected_unit: "Valittu ilmanvaihtolaite",
                       label_start: "Käynnistä",
                       label_cancel: "Peruuta"
                     }
@@ -1290,7 +1290,7 @@ sections:
                             const d = JSON.parse(localStorage.getItem(KEY));
                             const lang = d?.lang || "en";
                             const s = d?.strings?.[lang] || d?.strings?.en || d?.strings?.de || {};
-                            return s.label_selected_device || "Selected ventilation unit";
+                            return s.label_selected_unit || "Selected ventilation unit";
                           } catch (e) {
                             return "Selected ventilation unit";
                           }
