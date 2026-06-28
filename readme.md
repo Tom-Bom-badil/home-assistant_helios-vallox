@@ -56,11 +56,11 @@ If your ventilation system has this remote control, it is almost certainly compa
 
 👉 Over the years, users have reported the successful installation for:<br/>
 _`Helios EC 200/300/500 Pro`, `Vallox Digit SE`, `Vallox 130 D`,<br/>
-`Vallox 080/090/096/121/145/150 SE`, `ValloPlus 350/500/510/910 SE`._<br/>
+`Vallox 080/090/096/110/121/145/150 SE`, `ValloPlus 350/500/510/910 SE`._<br/>
 _(the 130D requires changing a few register numbers due to different addresses; see [old wiki](https://github.com/Tom-Bom-badil/SmartHomeNG-Helios/wiki))._
 
 👉 According to docs I came across, the following models should also work:<br/>
-_`Vallox 110/150/270 SE`, `Vallox Digit SE2`.<br/>
+_`Vallox 150/270 SE`, `Vallox Digit SE2` - there are likely more working models.<br/>
 (Please report back if you got it working on one of these models, thanks in advance!)_
 
 ## ⚙️ Installation
