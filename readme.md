@@ -60,7 +60,7 @@ _`Helios EC 200/300/500 Pro`, `Vallox Digit SE`, `Vallox 130 D`,<br/>
 _(the 130D requires changing a few register numbers due to different addresses; see [old wiki](https://github.com/Tom-Bom-badil/SmartHomeNG-Helios/wiki))._
 
 👉 According to docs I came across, the following models should also work:<br/>
-_`Vallox 150/270 SE`, `Vallox Digit SE2` - there are likely more working models.<br/>
+_`Vallox 150/270 SE`, `Vallox Digit SE2` (likely there are more models)<br/>
 (Please report back if you got it working on one of these models, thanks in advance!)_
 
 ## ⚙️ Installation
