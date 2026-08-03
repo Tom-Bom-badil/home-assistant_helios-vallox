@@ -96,7 +96,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     config_data = {**entry.data, **entry.options}
     ip_address = config_data[CONF_IP_ADDRESS]
     port = config_data[CONF_PORT]
-    coordinator = HeliosCoordinator(hass, ip_address, port, config_data=entry.data)
+    coordinator = HeliosCoordinator(hass, ip_address, port, config_data=config_data)
     await coordinator.setup_coordinator()
 
     # Load per-device Softboost runtime state.
