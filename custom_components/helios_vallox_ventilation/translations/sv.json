@@ -140,6 +140,7 @@
       "configuration": { "name": "Konfiguration" }
     },
     "binary_sensor": {
+      "connection": { "name": "Anslutning" },
       "boost_status": { "name": "Indikator: forcerad ventilation aktiv" },
       "fault_detected": { "name": "Indikator: felmeddelande" },
       "clean_filter": { "name": "Indikator: filterbyte" },

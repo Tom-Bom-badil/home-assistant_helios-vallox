@@ -140,6 +140,7 @@
       "configuration": { "name": "Konfiguration" }
     },
     "binary_sensor": {
+      "connection": { "name": "Verbindung" },
       "boost_status": { "name": "Indikator: Stoßlüftung aktiv" },
       "fault_detected": { "name": "Indikator: Fehlermeldung" },
       "clean_filter": { "name": "Indikator: Filterwechsel" },

@@ -140,6 +140,7 @@
       "configuration": { "name": "Configuration" }
     },
     "binary_sensor": {
+      "connection": { "name": "Connection" },
       "boost_status": { "name": "Boost status" },
       "fault_detected": { "name": "Fault detected" },
       "clean_filter": { "name": "Filter cleaning required" },

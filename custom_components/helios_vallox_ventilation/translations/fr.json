@@ -140,6 +140,7 @@
       "configuration": { "name": "Configuration" }
     },
     "binary_sensor": {
+      "connection": { "name": "Connexion" },
       "boost_status": { "name": "Indicateur : ventilation intensive active" },
       "fault_detected": { "name": "Indicateur : défaut" },
       "clean_filter": { "name": "Indicateur : changement du filtre" },

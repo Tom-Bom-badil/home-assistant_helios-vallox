@@ -140,6 +140,7 @@
       "configuration": {"name": "Konfiguraatio"}
     },
     "binary_sensor": {
+      "connection": { "name": "Yhteys" },
       "boost_status": {"name": "Indikaattori: tehostus aktiivinen"},
       "fault_detected": {"name": "Indikaattori: vikailmoitus"},
       "clean_filter": {"name": "Indikaattori: suodattimen vaihto"},

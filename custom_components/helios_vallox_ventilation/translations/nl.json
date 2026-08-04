@@ -140,6 +140,7 @@
       "configuration": { "name": "Configuratie" }
     },
     "binary_sensor": {
+      "connection": { "name": "Verbinding" },
       "boost_status": { "name": "Indicator: boostventilatie actief" },
       "fault_detected": { "name": "Indicator: foutmelding" },
       "clean_filter": { "name": "Indicator: filter vervangen" },

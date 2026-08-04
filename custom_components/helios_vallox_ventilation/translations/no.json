@@ -140,6 +140,7 @@
       "configuration": { "name": "Konfigurasjon" }
     },
     "binary_sensor": {
+      "connection": { "name": "Tilkobling" },
       "boost_status": { "name": "Indikator: forsert ventilasjon aktiv" },
       "fault_detected": { "name": "Indikator: feilmelding" },
       "clean_filter": { "name": "Indikator: filterbytte" },
