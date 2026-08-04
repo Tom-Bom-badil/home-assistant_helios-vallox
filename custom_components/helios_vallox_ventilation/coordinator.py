@@ -1,8 +1,10 @@
 import logging
 from collections.abc import Awaitable, Callable
 from datetime import datetime, timedelta
+from time import monotonic
 from typing import Any, override
 
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
@@ -13,8 +15,8 @@ from homeassistant.util import dt as dt_util
 from .api import HeliosBase
 from .constants import DEVELOPER_MODE
 
-_LOGGER = logging.getLogger("helios_vallox.coordinator")
 
+_LOGGER = logging.getLogger("helios_vallox.coordinator")
 RunFinishedCallback = Callable[[], None]
 UpdateMethod = Callable[[], Awaitable[dict[str, Any]]]
 
@@ -27,11 +29,13 @@ class HeliosDataUpdateCoordinator(
     def __init__(
         self,
         hass: HomeAssistant,
+        config_entry: ConfigEntry,
         update_method: UpdateMethod,
     ) -> None:
         super().__init__(
             hass,
             _LOGGER,
+            config_entry=config_entry,
             name="Helios Vallox Data Coordinator",
             update_method=update_method,
             update_interval=timedelta(seconds=59),
@@ -93,11 +97,13 @@ class HeliosCoordinator:
     def __init__(
         self,
         hass: HomeAssistant,
+        config_entry: ConfigEntry,
         ip: str,
         port: int,
         config_data: dict | None = None,
     ) -> None:
         self._hass = hass
+        self._config_entry = config_entry
         self._ip = ip
         self._port = port
         self._capabilities = {"co2": False, "rh": False}
@@ -111,6 +117,7 @@ class HeliosCoordinator:
 
         self._coordinator = HeliosDataUpdateCoordinator(
             hass,
+            config_entry,
             self._async_update_data,
         )
 
@@ -121,28 +128,86 @@ class HeliosCoordinator:
 
     async def setup_coordinator(self) -> None:
         """Perform the initial full read."""
-        await self._coordinator.async_refresh()
+        await self._coordinator.async_config_entry_first_refresh()
 
     async def _async_update_data(self) -> dict[str, Any]:
         """Read all known registers from the ventilation unit."""
+        started = monotonic()
+
+        _LOGGER.debug(
+            "Coordinator update started for '%s' (%s:%s).",
+            self._config_entry.title,
+            self._ip,
+            self._port,
+        )
+
         try:
             data = await self._hass.async_add_executor_job(
                 self._helios.readAllValues
             )
         except Exception as err:
+            elapsed = monotonic() - started
+
+            _LOGGER.debug(
+                "Coordinator update raised an unexpected exception for "
+                "'%s' after %.2f s.",
+                self._config_entry.title,
+                elapsed,
+                exc_info=True,
+            )
+
             raise UpdateFailed(
                 f"Unexpected error reading ventilation data: {err}"
             ) from err
 
+        read_elapsed = monotonic() - started
+
         if not data:
+            _LOGGER.debug(
+                "Coordinator update failed for '%s' after %.2f s: "
+                "full read returned no data.",
+                self._config_entry.title,
+                read_elapsed,
+            )
+
             raise UpdateFailed(
                 "Ventilation unit returned no data during full read"
             )
+
+        unavailable_values = sorted(
+            key
+            for key, value in data.items()
+            if value is None
+        )
+
+        _LOGGER.debug(
+            "Coordinator full read completed for '%s' in %.2f s: "
+            "%d values received, %d unavailable: %s.",
+            self._config_entry.title,
+            read_elapsed,
+            len(data),
+            len(unavailable_values),
+            ", ".join(unavailable_values) or "none",
+        )
 
         self._capabilities = (
             {"co2": True, "rh": True}
             if DEVELOPER_MODE
             else self._detect_capabilities(data)
+        )
+
+        _LOGGER.debug(
+            "Coordinator capabilities for '%s': CO2=%s, rH=%s.",
+            self._config_entry.title,
+            self._capabilities["co2"],
+            self._capabilities["rh"],
+        )
+
+        _LOGGER.debug(
+            "Coordinator update finished successfully for '%s' "
+            "in %.2f s.",
+            self._config_entry.title,
+            monotonic() - started,
         )
 
         return data
