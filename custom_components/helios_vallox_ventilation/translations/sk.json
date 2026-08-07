@@ -1,0 +1,203 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "1 / 4 - Vetranie Helios/Vallox",
+        "description": "Zadajte IP adresu a port vašej vetracej jednotky.",
+        "data": {
+          "ip_address": "IP adresa",
+          "port": "Port"
+        },
+        "data_description": {
+          "ip_address": "IP adresa prevodníka Serial-to-Ethernet vo vašej lokálnej sieti.",
+          "port": "TCP port."
+        }
+      },
+      "model": {
+        "title": "2 / 4 - Názov a model zariadenia",
+        "description": "Zadajte jedinečný názov zariadenia / prefix entít a vyberte model na automatické predvyplnenie parametrov zariadenia (pre ručné zadanie vyberte „Vlastné“).",
+        "data": {
+          "entity_prefix": "Jedinečný názov (napr. „Vetranie“)",
+          "device_model": "Model zariadenia"
+        },
+        "data_description": {
+          "entity_prefix": "Pri konfigurácii viacerých zariadení musí byť jedinečný (napr. „Vetranie pivnica“, „Vetranie poschodie“ a pod.).",
+          "device_model": "Výberom modelu sa v ďalšom kroku predvyplnia parametre zariadenia."
+        }
+      },
+      "details": {
+        "title": "3 / 4 - Parametre zariadenia",
+        "description": "Nastavte parametre vetrania. Hodnoty boli predvyplnené podľa vybraného modelu. Neskôr ich možno znova zmeniť.",
+        "data": {
+          "airflow_per_mode": "Prietok vzduchu pre každý stupeň ventilátora (m³/h)",
+          "power_per_mode": "Príkon pre každý stupeň ventilátora (W)",
+          "heating_power": "Výkon predohrevu/dohrevu (W)"
+        },
+        "data_description": {
+          "airflow_per_mode": "Presne 8 celočíselných hodnôt oddelených čiarkami, jedna pre každý stupeň ventilátora (1–8), napr. „60,90,120,150,180,210,240,270“.",
+          "power_per_mode": "Presne 8 celočíselných hodnôt oddelených čiarkami, jedna pre každý stupeň ventilátora (1–8), napr. „10,18,25,34,50,75,117,185“.",
+          "heating_power": "Výkon predhrievacieho alebo dohrievacieho telesa vo wattoch."
+        }
+      },
+      "house": {
+        "title": "4 / 4 - Parametre budovy",
+        "description": "Zadajte parametre budovy na výpočet požiadaviek na vetranie. Neskôr ich možno znova zmeniť.",
+        "data": {
+          "house_area": "Obytná plocha (m²)",
+          "house_volume": "Objem budovy (m³)",
+          "isolation_factor": "Faktor izolácie"
+        },
+        "data_description": {
+          "house_area": "Obytná plocha vášho domu v štvorcových metroch (napr. 143).",
+          "house_volume": "Objem vzduchu v budove v kubických metroch (plocha × výška miestnosti, napr. 384).",
+          "isolation_factor": "Faktor kvality tepelnej izolácie budovy: 0,3 = dobre izolovaná, 0,4 = štandardná, 0,5 = zle izolovaná."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "K vetracej jednotke sa nedá pripojiť. Skontrolujte IP adresu a port.",
+      "invalid_csv_count": "Vyžaduje sa presne 8 hodnôt (jedna pre každý stupeň ventilátora) oddelených čiarkami.",
+      "invalid_csv_values": "Všetky hodnoty musia byť celé čísla."
+    },
+    "abort": {
+      "already_configured": "Toto zariadenie je už nakonfigurované."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Upraviť nastavenia vetrania",
+        "description": "Upravte parametre pripojenia, zariadenia a budovy.",
+        "data": {
+          "ip_address": "IP adresa",
+          "port": "Port",
+          "airflow_per_mode": "Prietok vzduchu pre každý stupeň ventilátora (m³/h)",
+          "power_per_mode": "Príkon pre každý stupeň ventilátora (W)",
+          "heating_power": "Výkon predohrevu/dohrevu (W)",
+          "house_area": "Obytná plocha (m²)",
+          "house_volume": "Objem budovy (m³)",
+          "isolation_factor": "Faktor izolácie"
+        },
+        "data_description": {
+          "ip_address": "IP adresa alebo názov hostiteľa adaptéra RS485/TCP.",
+          "port": "TCP port adaptéra RS485/TCP.",
+          "airflow_per_mode": "Presne 8 celočíselných hodnôt oddelených čiarkami, jedna pre každý stupeň ventilátora 1–8. Príklad: 60,90,120,150,180,210,240,270",
+          "power_per_mode": "Presne 8 celočíselných hodnôt oddelených čiarkami, jedna pre každý stupeň ventilátora 1–8. Príklad: 10,18,25,34,50,75,117,185",
+          "heating_power": "Výkon predhrievacieho alebo dohrievacieho telesa vo wattoch.",
+          "house_area": "Celková vykurovaná obytná plocha budovy v štvorcových metroch.",
+          "house_volume": "Celkový objem vzduchu v budove v kubických metroch, napr. plocha × výška miestnosti.",
+          "isolation_factor": "Faktor kvality tepelnej izolácie budovy: 0,3 = dobre izolovaná, 0,4 = štandardná, 0,5 = zle izolovaná."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Pripojenie zlyhalo. Skontrolujte IP adresu, port a adaptér.",
+      "invalid_csv_count": "Vyžaduje sa presne 8 hodnôt, jedna pre každý stupeň ventilátora, oddelených čiarkami.",
+      "invalid_csv_values": "Všetky hodnoty musia byť celé čísla."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature_outdoor_air": { "name": "Teplota vonkajšieho vzduchu" },
+      "temperature_supply_air": { "name": "Teplota privádzaného vzduchu" },
+      "temperature_extract_air": { "name": "Teplota odvádzaného vzduchu" },
+      "temperature_exhaust_air": { "name": "Teplota odpadového vzduchu" },
+      "boost_remaining": { "name": "Zostávajúci čas intenzívneho vetrania" },
+      "softboost_remaining": { "name": "Zostávajúci čas Softboost" },
+      "fault_number": { "name": "Číslo poruchy" },
+      "fault_text": {
+        "name": "Text poruchy",
+        "state": {
+          "none": "Bez poruchy",
+          "supply_air_sensor_fault": "Porucha snímača privádzaného vzduchu",
+          "co2_alarm": "Alarm CO₂",
+          "outdoor_air_sensor_fault": "Porucha snímača vonkajšieho vzduchu",
+          "exhaust_air_sensor_fault": "Porucha snímača odpadového vzduchu",
+          "water_coil_frost_warning": "Varovanie pred zamrznutím vodného výmenníka",
+          "extract_air_sensor_fault": "Porucha snímača odvádzaného vzduchu"
+        }
+      },
+      "rh_sensor1_raw": { "name": "Snímač vlhkosti 1 (surová hodnota)" },
+      "rh_sensor2_raw": { "name": "Snímač vlhkosti 2 (surová hodnota)" },
+      "co2_reading_upper_byte": { "name": "Hodnota CO₂ (horný bajt)" },
+      "co2_reading_lower_byte": { "name": "Hodnota CO₂ (dolný bajt)" },
+      "co2_setting_upper_byte": { "name": "Nastavenie CO₂ (horný bajt)" },
+      "co2_setting_lower_byte": { "name": "Nastavenie CO₂ (dolný bajt)" },
+      "temperature_reduction": { "name": "Pokles teploty" },
+      "temperature_gain": { "name": "Nárast teploty" },
+      "temperature_balance": { "name": "Teplotná bilancia" },
+      "efficiency": { "name": "Účinnosť rekuperácie tepla" },
+      "rh_sensor1": { "name": "Snímač vlhkosti 1" },
+      "rh_sensor2": { "name": "Snímač vlhkosti 2" },
+      "highest_humidity": { "name": "Najvyššia vlhkosť" },
+      "co2_concentration": { "name": "Koncentrácia CO₂" },
+      "din_airflow_moisture": { "name": "Prietok vzduchu DIN (ochrana proti vlhkosti)" },
+      "din_airflow_reduced": { "name": "Prietok vzduchu DIN (znížený)" },
+      "din_airflow_normal": { "name": "Prietok vzduchu DIN (normálny)" },
+      "din_airflow_boost": { "name": "Prietok vzduchu DIN (intenzívny)" },
+      "effective_airflow": { "name": "Aktuálny prietok vzduchu" },
+      "electrical_power": { "name": "Elektrický príkon" },
+      "configuration": { "name": "Konfigurácia" }
+    },
+    "binary_sensor": {
+      "connection": { "name": "Pripojenie" },
+      "boost_status": { "name": "Stav intenzívneho vetrania" },
+      "fault_detected": { "name": "Zistená porucha" },
+      "clean_filter": { "name": "Je potrebné vyčistiť filter" },
+      "service_requested": { "name": "Požadovaný servis" },
+      "post_heating_on": { "name": "Dohrev aktívny" },
+      "co2_sensor1_present": { "name": "Snímač CO₂ 1 prítomný" },
+      "co2_sensor2_present": { "name": "Snímač CO₂ 2 prítomný" },
+      "co2_sensor3_present": { "name": "Snímač CO₂ 3 prítomný" },
+      "co2_sensor4_present": { "name": "Snímač CO₂ 4 prítomný" },
+      "co2_sensor5_present": { "name": "Snímač CO₂ 5 prítomný" },
+      "co2_alarm": { "name": "Alarm CO₂" },
+      "softboost_active": { "name": "Softboost aktívny" }
+    },
+    "number": {
+      "fanspeed": { "name": "Stupeň ventilátora" },
+      "softboost_level": { "name": "Stupeň ventilátora Softboost" },
+      "softboost_duration": { "name": "Trvanie Softboost" },
+      "initial_fanspeed": { "name": "Počiatočný stupeň ventilátora" },
+      "max_fanspeed": { "name": "Maximálny stupeň ventilátora" },
+      "bypass_setpoint": { "name": "Nastavená hodnota bypassu" },
+      "preheat_setpoint": { "name": "Nastavená hodnota predohrevu" },
+      "defrost_setpoint": { "name": "Nastavená hodnota odmrazovania" },
+      "defrost_hysteresis": { "name": "Hysterézia odmrazovania" },
+      "basic_humidity_level": { "name": "Základná úroveň vlhkosti" },
+      "co2_setting_value": { "name": "Nastavená hodnota CO₂" },
+      "input_fan_percent": { "name": "Otáčky prívodného ventilátora" },
+      "output_fan_percent": { "name": "Otáčky odťahového ventilátora" },
+      "service_interval": { "name": "Servisný interval" },
+      "service_due_months": { "name": "Čas do servisu" }
+    },
+    "switch": {
+      "powerstate": { "name": "Napájanie" },
+      "co2_indicator": { "name": "Indikátor CO₂" },
+      "rh_indicator": { "name": "Indikátor vlhkosti" },
+      "preheat_status": { "name": "Predohrev" },
+      "activate_boost": { "name": "Aktivovať intenzívne vetranie" },
+      "softboost_fireplace_mode": { "name": "Krbový režim Softboost" },
+      "input_fan_off": { "name": "Prívodný ventilátor vypnutý" },
+      "output_fan_off": { "name": "Odťahový ventilátor vypnutý" }
+    },
+    "select": {
+      "boost_mode": {
+        "name": "Režim intenzívneho vetrania",
+        "state": { "fireplace": "Krb", "normal": "Normálny" }
+      },
+      "winter_mode": {
+        "name": "Prevádzkový režim",
+        "state": { "summer": "Leto", "winter": "Zima" }
+      },
+      "humidity_control_mode": {
+        "name": "Režim regulácie vlhkosti",
+        "state": { "manual": "Manuálny", "automatic": "Automatický" }
+      }
+    },
+    "button": {
+      "reset_service_reminder": { "name": "Resetovať upozornenie na filter" },
+      "softboost_start_stop": { "name": "Spustiť/zastaviť Softboost" }
+    }
+  }
+}

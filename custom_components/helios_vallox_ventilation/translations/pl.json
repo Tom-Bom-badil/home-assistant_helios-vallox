@@ -1,0 +1,203 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "1 / 4 - Wentylacja Helios/Vallox",
+        "description": "Wprowadź adres IP i port centrali wentylacyjnej.",
+        "data": {
+          "ip_address": "Adres IP",
+          "port": "Port"
+        },
+        "data_description": {
+          "ip_address": "Adres IP konwertera Serial-to-Ethernet w sieci lokalnej.",
+          "port": "Port TCP."
+        }
+      },
+      "model": {
+        "title": "2 / 4 - Nazwa i model urządzenia",
+        "description": "Wprowadź unikalną nazwę urządzenia / prefiks encji i wybierz model, aby automatycznie uzupełnić parametry urządzenia (wybierz „Własny”, aby wprowadzić je ręcznie).",
+        "data": {
+          "entity_prefix": "Unikalna nazwa (np. „Wentylacja”)",
+          "device_model": "Model urządzenia"
+        },
+        "data_description": {
+          "entity_prefix": "Musi być unikalna, jeśli skonfigurowano kilka urządzeń (np. „Wentylacja piwnica”, „Wentylacja piętro” itp.).",
+          "device_model": "Wybranie modelu spowoduje wstępne uzupełnienie parametrów urządzenia w następnym kroku."
+        }
+      },
+      "details": {
+        "title": "3 / 4 - Parametry urządzenia",
+        "description": "Skonfiguruj parametry wentylacji. Wartości zostały wstępnie uzupełnione na podstawie wybranego modelu. Można je później ponownie zmienić.",
+        "data": {
+          "airflow_per_mode": "Przepływ powietrza dla każdego stopnia wentylatora (m³/h)",
+          "power_per_mode": "Pobór mocy dla każdego stopnia wentylatora (W)",
+          "heating_power": "Moc nagrzewnicy wstępnej/wtórnej (W)"
+        },
+        "data_description": {
+          "airflow_per_mode": "Dokładnie 8 wartości całkowitych oddzielonych przecinkami, po jednej dla każdego stopnia wentylatora (1–8), np. „60,90,120,150,180,210,240,270”.",
+          "power_per_mode": "Dokładnie 8 wartości całkowitych oddzielonych przecinkami, po jednej dla każdego stopnia wentylatora (1–8), np. „10,18,25,34,50,75,117,185”.",
+          "heating_power": "Moc nagrzewnicy wstępnej lub wtórnej w watach."
+        }
+      },
+      "house": {
+        "title": "4 / 4 - Parametry budynku",
+        "description": "Wprowadź parametry budynku, aby obliczyć wymagania dotyczące wentylacji. Można je później ponownie zmienić.",
+        "data": {
+          "house_area": "Powierzchnia mieszkalna (m²)",
+          "house_volume": "Kubatura budynku (m³)",
+          "isolation_factor": "Współczynnik izolacji"
+        },
+        "data_description": {
+          "house_area": "Powierzchnia mieszkalna domu w metrach kwadratowych (np. 143).",
+          "house_volume": "Objętość powietrza w budynku w metrach sześciennych (powierzchnia × wysokość pomieszczenia, np. 384).",
+          "isolation_factor": "Współczynnik jakości izolacji budynku: 0,3 = dobra izolacja, 0,4 = standardowa, 0,5 = słaba izolacja."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nie można połączyć się z centralą wentylacyjną. Sprawdź adres IP i port.",
+      "invalid_csv_count": "Wymaganych jest dokładnie 8 wartości (po jednej dla każdego stopnia wentylatora), oddzielonych przecinkami.",
+      "invalid_csv_values": "Wszystkie wartości muszą być liczbami całkowitymi."
+    },
+    "abort": {
+      "already_configured": "To urządzenie jest już skonfigurowane."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Edytuj ustawienia wentylacji",
+        "description": "Edytuj parametry połączenia, urządzenia i budynku.",
+        "data": {
+          "ip_address": "Adres IP",
+          "port": "Port",
+          "airflow_per_mode": "Przepływ powietrza dla każdego stopnia wentylatora (m³/h)",
+          "power_per_mode": "Pobór mocy dla każdego stopnia wentylatora (W)",
+          "heating_power": "Moc nagrzewnicy wstępnej/wtórnej (W)",
+          "house_area": "Powierzchnia mieszkalna (m²)",
+          "house_volume": "Kubatura budynku (m³)",
+          "isolation_factor": "Współczynnik izolacji"
+        },
+        "data_description": {
+          "ip_address": "Adres IP lub nazwa hosta adaptera RS485/TCP.",
+          "port": "Port TCP adaptera RS485/TCP.",
+          "airflow_per_mode": "Dokładnie 8 wartości całkowitych oddzielonych przecinkami, po jednej dla każdego stopnia wentylatora 1–8. Przykład: 60,90,120,150,180,210,240,270",
+          "power_per_mode": "Dokładnie 8 wartości całkowitych oddzielonych przecinkami, po jednej dla każdego stopnia wentylatora 1–8. Przykład: 10,18,25,34,50,75,117,185",
+          "heating_power": "Moc nagrzewnicy wstępnej lub wtórnej w watach.",
+          "house_area": "Całkowita ogrzewana powierzchnia mieszkalna budynku w metrach kwadratowych.",
+          "house_volume": "Całkowita objętość powietrza w budynku w metrach sześciennych, np. powierzchnia × wysokość pomieszczenia.",
+          "isolation_factor": "Współczynnik jakości izolacji budynku: 0,3 = dobra izolacja, 0,4 = standardowa, 0,5 = słaba izolacja."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Połączenie nie powiodło się. Sprawdź adres IP, port i adapter.",
+      "invalid_csv_count": "Wymaganych jest dokładnie 8 wartości, po jednej dla każdego stopnia wentylatora, oddzielonych przecinkami.",
+      "invalid_csv_values": "Wszystkie wartości muszą być liczbami całkowitymi."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature_outdoor_air": { "name": "Temperatura powietrza zewnętrznego" },
+      "temperature_supply_air": { "name": "Temperatura powietrza nawiewanego" },
+      "temperature_extract_air": { "name": "Temperatura powietrza wywiewanego" },
+      "temperature_exhaust_air": { "name": "Temperatura powietrza wyrzutowego" },
+      "boost_remaining": { "name": "Pozostały czas intensywnej wentylacji" },
+      "softboost_remaining": { "name": "Pozostały czas Softboost" },
+      "fault_number": { "name": "Numer usterki" },
+      "fault_text": {
+        "name": "Opis usterki",
+        "state": {
+          "none": "Brak usterki",
+          "supply_air_sensor_fault": "Usterka czujnika powietrza nawiewanego",
+          "co2_alarm": "Alarm CO₂",
+          "outdoor_air_sensor_fault": "Usterka czujnika powietrza zewnętrznego",
+          "exhaust_air_sensor_fault": "Usterka czujnika powietrza wyrzutowego",
+          "water_coil_frost_warning": "Ostrzeżenie przed zamarznięciem nagrzewnicy wodnej",
+          "extract_air_sensor_fault": "Usterka czujnika powietrza wywiewanego"
+        }
+      },
+      "rh_sensor1_raw": { "name": "Czujnik wilgotności 1 (wartość surowa)" },
+      "rh_sensor2_raw": { "name": "Czujnik wilgotności 2 (wartość surowa)" },
+      "co2_reading_upper_byte": { "name": "Odczyt CO₂ (starszy bajt)" },
+      "co2_reading_lower_byte": { "name": "Odczyt CO₂ (młodszy bajt)" },
+      "co2_setting_upper_byte": { "name": "Ustawienie CO₂ (starszy bajt)" },
+      "co2_setting_lower_byte": { "name": "Ustawienie CO₂ (młodszy bajt)" },
+      "temperature_reduction": { "name": "Spadek temperatury" },
+      "temperature_gain": { "name": "Wzrost temperatury" },
+      "temperature_balance": { "name": "Bilans temperatury" },
+      "efficiency": { "name": "Sprawność odzysku ciepła" },
+      "rh_sensor1": { "name": "Czujnik wilgotności 1" },
+      "rh_sensor2": { "name": "Czujnik wilgotności 2" },
+      "highest_humidity": { "name": "Najwyższa wilgotność" },
+      "co2_concentration": { "name": "Stężenie CO₂" },
+      "din_airflow_moisture": { "name": "Przepływ powietrza DIN (ochrona przed wilgocią)" },
+      "din_airflow_reduced": { "name": "Przepływ powietrza DIN (zredukowany)" },
+      "din_airflow_normal": { "name": "Przepływ powietrza DIN (normalny)" },
+      "din_airflow_boost": { "name": "Przepływ powietrza DIN (intensywny)" },
+      "effective_airflow": { "name": "Aktualny przepływ powietrza" },
+      "electrical_power": { "name": "Moc elektryczna" },
+      "configuration": { "name": "Konfiguracja" }
+    },
+    "binary_sensor": {
+      "connection": { "name": "Połączenie" },
+      "boost_status": { "name": "Stan intensywnej wentylacji" },
+      "fault_detected": { "name": "Wykryto usterkę" },
+      "clean_filter": { "name": "Wymagane czyszczenie filtra" },
+      "service_requested": { "name": "Wymagany serwis" },
+      "post_heating_on": { "name": "Dogrzewanie aktywne" },
+      "co2_sensor1_present": { "name": "Czujnik CO₂ 1 obecny" },
+      "co2_sensor2_present": { "name": "Czujnik CO₂ 2 obecny" },
+      "co2_sensor3_present": { "name": "Czujnik CO₂ 3 obecny" },
+      "co2_sensor4_present": { "name": "Czujnik CO₂ 4 obecny" },
+      "co2_sensor5_present": { "name": "Czujnik CO₂ 5 obecny" },
+      "co2_alarm": { "name": "Alarm CO₂" },
+      "softboost_active": { "name": "Softboost aktywny" }
+    },
+    "number": {
+      "fanspeed": { "name": "Stopień wentylatora" },
+      "softboost_level": { "name": "Stopień wentylatora Softboost" },
+      "softboost_duration": { "name": "Czas trwania Softboost" },
+      "initial_fanspeed": { "name": "Początkowy stopień wentylatora" },
+      "max_fanspeed": { "name": "Maksymalny stopień wentylatora" },
+      "bypass_setpoint": { "name": "Wartość zadana bypassu" },
+      "preheat_setpoint": { "name": "Wartość zadana nagrzewnicy wstępnej" },
+      "defrost_setpoint": { "name": "Wartość zadana odszraniania" },
+      "defrost_hysteresis": { "name": "Histereza odszraniania" },
+      "basic_humidity_level": { "name": "Bazowy poziom wilgotności" },
+      "co2_setting_value": { "name": "Wartość zadana CO₂" },
+      "input_fan_percent": { "name": "Prędkość wentylatora nawiewnego" },
+      "output_fan_percent": { "name": "Prędkość wentylatora wywiewnego" },
+      "service_interval": { "name": "Interwał serwisowy" },
+      "service_due_months": { "name": "Czas do serwisu" }
+    },
+    "switch": {
+      "powerstate": { "name": "Zasilanie" },
+      "co2_indicator": { "name": "Wskaźnik CO₂" },
+      "rh_indicator": { "name": "Wskaźnik wilgotności" },
+      "preheat_status": { "name": "Nagrzewnica wstępna" },
+      "activate_boost": { "name": "Włącz intensywną wentylację" },
+      "softboost_fireplace_mode": { "name": "Tryb kominkowy Softboost" },
+      "input_fan_off": { "name": "Wentylator nawiewny wyłączony" },
+      "output_fan_off": { "name": "Wentylator wywiewny wyłączony" }
+    },
+    "select": {
+      "boost_mode": {
+        "name": "Tryb intensywnej wentylacji",
+        "state": { "fireplace": "Kominek", "normal": "Normalny" }
+      },
+      "winter_mode": {
+        "name": "Tryb pracy",
+        "state": { "summer": "Lato", "winter": "Zima" }
+      },
+      "humidity_control_mode": {
+        "name": "Tryb regulacji wilgotności",
+        "state": { "manual": "Ręczny", "automatic": "Automatyczny" }
+      }
+    },
+    "button": {
+      "reset_service_reminder": { "name": "Resetuj przypomnienie o filtrze" },
+      "softboost_start_stop": { "name": "Uruchom/zatrzymaj Softboost" }
+    }
+  }
+}
