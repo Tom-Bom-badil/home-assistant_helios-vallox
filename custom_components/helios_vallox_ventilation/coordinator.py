@@ -13,7 +13,6 @@ from homeassistant.helpers.update_coordinator import (
 from homeassistant.util import dt as dt_util
 
 from .api import HeliosBase
-from .constants import DEVELOPER_MODE
 
 
 _LOGGER = logging.getLogger("helios_vallox.coordinator")
@@ -190,11 +189,7 @@ class HeliosCoordinator:
             ", ".join(unavailable_values) or "none",
         )
 
-        self._capabilities = (
-            {"co2": True, "rh": True}
-            if DEVELOPER_MODE
-            else self._detect_capabilities(data)
-        )
+        self._capabilities = self._detect_capabilities(data)
 
         _LOGGER.debug(
             "Coordinator capabilities for '%s': CO2=%s, rH=%s.",

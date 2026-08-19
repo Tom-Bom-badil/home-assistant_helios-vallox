@@ -17,7 +17,6 @@ from .constants import (
     LOVELACE_DEVICE_SELECT_NAME,
     LOVELACE_DEVICE_SELECT_UNIQUE_ID,
     LOVELACE_DEVICE_SELECT_OBJECT_ID,
-    DEVELOPER_MODE,
 )
 
 
@@ -50,12 +49,16 @@ def _should_create_select(coordinator, key: str) -> bool:
     return True
 
 
+def _should_create_lovelace_select(hass: HomeAssistant) -> bool:
+    """Return True if the global Lovelace device selector should be exposed."""
+    return len(_build_lovelace_devices(hass)) > 1
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-
     coordinator = hass.data[DOMAIN][entry.entry_id]
 
     entities: list[SelectEntity] = [
@@ -67,9 +70,10 @@ async def async_setup_entry(
     dashboard_select = hass.data[DOMAIN].get(LOVELACE_DEVICE_SELECT_KEY)
 
     if dashboard_select is None:
-        dashboard_select = Helios_Vallox_UI_Select(hass)
-        hass.data[DOMAIN][LOVELACE_DEVICE_SELECT_KEY] = dashboard_select
-        entities.append(dashboard_select)
+        if _should_create_lovelace_select(hass):
+            dashboard_select = Helios_Vallox_UI_Select(hass)
+            hass.data[DOMAIN][LOVELACE_DEVICE_SELECT_KEY] = dashboard_select
+            entities.append(dashboard_select)
     else:
         dashboard_select.async_refresh_devices()
 
@@ -79,8 +83,8 @@ async def async_setup_entry(
 class Helios_Vallox_UI_Select(RestoreEntity, SelectEntity):
     """Global ventilation selector for Lovelace dashboards."""
 
+    _developer_mode = False
     _attr_has_entity_name = True
-
     _attr_name = LOVELACE_DEVICE_SELECT_NAME
     _attr_unique_id = LOVELACE_DEVICE_SELECT_UNIQUE_ID
     _attr_suggested_object_id = LOVELACE_DEVICE_SELECT_OBJECT_ID
@@ -169,7 +173,7 @@ class Helios_Vallox_UI_Select(RestoreEntity, SelectEntity):
             "entity_prefix": selected["slug"] if selected else "",
             "selected_entry_id": selected["entry_id"] if selected else "",
             "available_devices": self._devices(),
-            "developer_mode": DEVELOPER_MODE,
+            "developer_mode": self._developer_mode,
         }
 
     async def async_select_option(self, option: str) -> None:

@@ -53,9 +53,4 @@ from .helpers import (
     SOFTBOOST_BINARY_SENSOR_ENTITIES,
     SOFTBOOST_SWITCH_ENTITIES,
     SOFTBOOST_BUTTON_ENTITIES,
-    DEVELOPER_MODE,
 )
-
-# avoid collision of data packets in HA-Dev and HA-Prod instances
-if DEVELOPER_MODE:
-    BUS_ADDRESSES = { **BUS_ADDRESSES, "_HA": 0x2D, }

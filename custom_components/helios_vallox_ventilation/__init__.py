@@ -12,6 +12,20 @@ from .schema import SERVICE_WRITE_VALUE_SCHEMA
 from .softboost import SoftBoostController
 
 
+try:
+    from ._local_dev_overrides import (
+        DEVELOPER_MODE,
+        apply_local_function_overrides,
+        apply_local_log_overrides,
+    )
+except ModuleNotFoundError:
+    DEVELOPER_MODE = False
+else:
+    if DEVELOPER_MODE:
+        apply_local_function_overrides()
+        apply_local_log_overrides()
+
+
 _LOGGER = logging.getLogger("helios_vallox.__init__")
 PLATFORMS = [
     Platform.SENSOR,

@@ -1,3 +1,5 @@
 __pycache__/
 .vscode/
-custom_components/helios_vallox_ventilation/constants/local_dev.py
+
+# ignore local-only files (eg developer mode switch)
+**/_local_dev_overrides/

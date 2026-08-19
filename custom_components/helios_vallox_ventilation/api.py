@@ -23,14 +23,6 @@ except ImportError:
         COMPONENT_FAULTS
     )
 
-try:
-    from .constants import DEVELOPER_MODE  # HA
-except ImportError:
-    try:
-        from constants import DEVELOPER_MODE  # Shell / CLI for testing
-    except ImportError:
-        DEVELOPER_MODE = False
-
 
 # CONSTS (seconds)
 RS485_SOCKET_TIMEOUT = 1.0
@@ -42,22 +34,10 @@ RS485_SEND_RETRY_DELAY = 1.0
 RS485_SEND_SLOT_ATTEMPTS = 5
 
 
-# Log major DEBUG messages as INFO in developer environment
+# Log major DEBUG messages as INFO in developer environment (replaced)
 def log_debug_or_developer_info(logger, message, *args):
-    """Log as DEBUG in releases, but force logging as INFO in developer mode."""
-    if DEVELOPER_MODE is True:
-        record = logger.makeRecord(
-            logger.name,
-            logging.INFO,
-            __file__,
-            0,
-            message,
-            args,
-            None,
-        )
-        logger.handle(record)
-    else:
-        logger.debug(message, *args)
+    """Log developer diagnostics as DEBUG."""
+    logger.debug(message, *args)
 
 
 class HeliosBase:

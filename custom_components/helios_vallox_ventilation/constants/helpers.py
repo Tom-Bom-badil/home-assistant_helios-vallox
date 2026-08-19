@@ -103,13 +103,3 @@ SOFTBOOST_SWITCH_ENTITIES = [
 SOFTBOOST_BUTTON_ENTITIES = [
     {"key": "softboost_start_stop"},
 ]
-
-
-###### Developer mode  - internal setting only, please ignore
-# needed for testing rH/CO2 formulas and settings without having sensors installed
-DEVELOPER_MODE = False
-try:
-    from .local_dev import DEVELOPER_MODE as LOCAL_DEVELOPER_MODE
-    DEVELOPER_MODE = LOCAL_DEVELOPER_MODE
-except ImportError:
-    pass
