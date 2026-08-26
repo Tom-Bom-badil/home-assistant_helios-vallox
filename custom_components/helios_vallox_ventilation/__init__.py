@@ -1,29 +1,22 @@
 import os, shutil, logging
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_IP_ADDRESS, CONF_PORT, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.util import slugify
 from homeassistant.components import persistent_notification
 from homeassistant.exceptions import HomeAssistantError
+
 from .device_info import get_entity_prefix
 from .constants import DOMAIN
 from .coordinator import HeliosCoordinator
 from .schema import SERVICE_WRITE_VALUE_SCHEMA
 from .softboost import SoftBoostController
 
-
 try:
-    from ._local_dev_overrides import (
-        DEVELOPER_MODE,
-        apply_local_function_overrides,
-        apply_local_log_overrides,
-    )
+    from ._local_dev_overrides import DEVELOPER_MODE
 except ModuleNotFoundError:
     DEVELOPER_MODE = False
-else:
-    if DEVELOPER_MODE:
-        apply_local_function_overrides()
-        apply_local_log_overrides()
 
 
 _LOGGER = logging.getLogger("helios_vallox.__init__")
