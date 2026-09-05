@@ -49,11 +49,6 @@ def _should_create_select(coordinator, key: str) -> bool:
     return True
 
 
-def _should_create_lovelace_select(hass: HomeAssistant) -> bool:
-    """Return True if the global Lovelace device selector should be exposed."""
-    return len(_build_lovelace_devices(hass)) > 1
-
-
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -68,12 +63,10 @@ async def async_setup_entry(
     ]
 
     dashboard_select = hass.data[DOMAIN].get(LOVELACE_DEVICE_SELECT_KEY)
-
     if dashboard_select is None:
-        if _should_create_lovelace_select(hass):
-            dashboard_select = Helios_Vallox_UI_Select(hass)
-            hass.data[DOMAIN][LOVELACE_DEVICE_SELECT_KEY] = dashboard_select
-            entities.append(dashboard_select)
+        dashboard_select = Helios_Vallox_UI_Select(hass)
+        hass.data[DOMAIN][LOVELACE_DEVICE_SELECT_KEY] = dashboard_select
+        entities.append(dashboard_select)
     else:
         dashboard_select.async_refresh_devices()
 
