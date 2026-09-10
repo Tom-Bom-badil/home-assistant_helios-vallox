@@ -99,15 +99,22 @@ async def async_install_frontend_files(hass: HomeAssistant) -> None:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-
     config_data = {**entry.data, **entry.options}
-    ip_address = config_data[CONF_IP_ADDRESS]
-    port = config_data[CONF_PORT]
+
+    # New connection-string based configuration. Existing installations still
+    # use IP address + port and are converted transparently at runtime until
+    # their config entries are migrated.
+    connection = config_data.get("connection")
+    if connection is None:
+        connection = (
+            f"socket://{config_data[CONF_IP_ADDRESS]}:"
+            f"{config_data[CONF_PORT]}"
+        )
+
     coordinator = HeliosCoordinator(
         hass=hass,
         config_entry=entry,
-        ip=ip_address,
-        port=port,
+        connection=connection,
         config_data=config_data,
     )
     await coordinator.setup_coordinator()
@@ -130,7 +137,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Register write service (once per domain)
     if not hass.services.has_service(DOMAIN, "write_value"):
 
-#---
         async def handle_write_service(call):
             target_entry_id = call.data.get("entry_id")
             coord = None

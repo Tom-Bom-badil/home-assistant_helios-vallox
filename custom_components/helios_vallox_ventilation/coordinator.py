@@ -97,23 +97,19 @@ class HeliosCoordinator:
         self,
         hass: HomeAssistant,
         config_entry: ConfigEntry,
-        ip: str,
-        port: int,
+        connection: str,
         config_data: dict | None = None,
     ) -> None:
         self._hass = hass
         self._config_entry = config_entry
-        self._ip = ip
-        self._port = port
+        self._connection = connection
         self._capabilities = {"co2": False, "rh": False}
 
         self._helios = HeliosBase(
-            hass,
-            ip,
-            port,
+            hass=hass,
+            connection=connection,
             config_data=config_data,
         )
-
         self._coordinator = HeliosDataUpdateCoordinator(
             hass,
             config_entry,
@@ -134,10 +130,8 @@ class HeliosCoordinator:
         started = monotonic()
 
         _LOGGER.debug(
-            "Coordinator update started for '%s' (%s:%s).",
+            "Coordinator update started for '%s'.",
             self._config_entry.title,
-            self._ip,
-            self._port,
         )
 
         try:
