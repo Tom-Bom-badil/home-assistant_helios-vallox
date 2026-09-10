@@ -2,26 +2,20 @@
   "config": {
     "step": {
       "user": {
-        "title": "1 / 4 - Helios/Vallox-ilmanvaihto",
-        "description": "Syötä ilmanvaihtolaitteen IP-osoite ja portti.",
-        "data": {
-          "ip_address": "IP-osoite",
-          "port": "Portti"
-        },
+        "title": "1 / 4 - Yhteys",
+        "description": "Valitse tunnettu sarjaliitäntä tai syötä ilmanvaihtolaitteen yhteys manuaalisesti. Kirjoitusasu määrittää yhteystyypin automaattisesti:\n\n- **socket://ip_osoite:portti**\nLäpinäkyvä sarjamuotoinen verkkoyhteys, esimerkiksi tavallinen ser2net-sovitin.\n- **/dev/ttyUSB...**\nPaikallinen USB–sarjasovitin.\n- **/dev/serial/by-id/...**\nVakaa polku paikalliseen sarjaliitäntään.\n- **/dev/...**\nMuut paikalliset tai virtuaaliset sarjaliitännät, esimerkiksi `socat`-ohjelman kautta.\n\nHome Assistant tarjoaa ESPHome Serial Proxyt automaattisesti tunnettujen sarjaliitäntöjen joukossa. Vallox/Helios DIGIT -protokolla käyttää aina asetuksia 9600 baud, 8N1.",
+        "data": {"known_connection": "Tunnettu sarjaliitäntä", "connection": "Syötä yhteys manuaalisesti"},
         "data_description": {
-          "ip_address": "Paikallisverkon sarja–Ethernet-muuntimen IP-osoite.",
-          "port": "TCP-portti."
+          "known_connection": "Home Assistantin tunnistamat paikalliset liitännät ja ESPHome Serial Proxyt. Tässä tehty valinta ohittaa manuaalisen syötön.",
+          "connection": "Esimerkiksi `socket://192.168.178.36:502` tai `/dev/serial/by-id/...`."
         }
       },
       "model": {
         "title": "2 / 4 - Laitteen nimi ja malli",
         "description": "Syötä yksilöllinen nimi / entiteettien etuliite ja valitse malli laiteparametrien esitäyttöä varten (valitse 'Custom' manuaalista syöttöä varten).",
-        "data": {
-          "entity_prefix": "Yksilöllinen nimi (esim. 'Ilmanvaihto')",
-          "device_model": "Laitemalli"
-        },
+        "data": {"entity_prefix": "Yksilöllinen nimi (esim. 'Ilmanvaihto')", "device_model": "Laitemalli"},
         "data_description": {
-          "entity_prefix": "Täytyy olla yksilöllinen, jos useita laitteita on määritetty (esim. 'Kellarin ilmanvaihto', 'Yläkerran ilmanvaihto' jne.).",
+          "entity_prefix": "Täytyy olla yksilöllinen, jos useita laitteita on määritetty.",
           "device_model": "Mallin valinta esitäyttää laiteparametrit seuraavassa vaiheessa."
         }
       },
@@ -41,36 +35,39 @@
       },
       "house": {
         "title": "4 / 4 - Rakennuksen parametrit",
-        "description": "Syötä rakennuksen parametrit ilmanvaihtotarpeen laskemiseksi. Niitä voi muuttaa myöhemmin.",
-        "data": {
-          "house_area": "Asuinpinta-ala (m²)",
-          "house_volume": "Rakennuksen tilavuus (m³)",
-          "isolation_factor": "Eristyskerroin"
-        },
+        "description": "Syötä rakennuksen parametrit ilmanvaihtotarpeen laskentaa varten. Niitä voi muuttaa myöhemmin.",
+        "data": {"house_area": "Asuinpinta-ala (m²)", "house_volume": "Rakennuksen tilavuus (m³)", "isolation_factor": "Eristyskerroin"},
         "data_description": {
-          "house_area": "Koko lämmitetty asuinpinta-ala neliömetreissä (esim. 143).",
-          "house_volume": "Rakennuksen koko ilmatilavuus kuutiometreissä (pinta-ala x huonekorkeus, esim. 384).",
-          "isolation_factor": "Rakennuksen eristystaso: 0,3 = hyvin eristetty, 0,4 = standardi, 0,5 = huonosti eristetty."
+          "house_area": "Lämmitetty asuinpinta-ala neliömetreinä.",
+          "house_volume": "Rakennuksen kokonaisilmatilavuus kuutiometreinä, esim. pinta-ala × huonekorkeus.",
+          "isolation_factor": "Eristyksen laatu: 0,3 = hyvin eristetty, 0,4 = normaali, 0,5 = heikosti eristetty."
         }
       }
     },
     "error": {
-      "cannot_connect": "Yhteys ilmanvaihtolaitteeseen ei onnistu. Tarkista IP-osoite ja portti.",
-      "invalid_csv_count": "Tarvitaan tarkalleen 8 arvoa (yksi kutakin puhallintasoa kohti), pilkulla erotettuna.",
+      "cannot_connect": "Yhteyttä ilmanvaihtolaitteeseen ei voitu muodostaa. Tarkista yhteys ja sovittimen saatavuus.",
+      "connection_required": "Valitse tunnettu sarjaliitäntä tai syötä yhteys manuaalisesti.",
+      "invalid_connection": "Yhteys on virheellinen. Käytä tunnettua sarjaliitäntää, `socket://host:port` tai `/dev/...`.",
+      "invalid_csv_count": "Tarvitaan tarkalleen 8 arvoa, yksi kutakin puhallintasoa kohti, pilkulla erotettuna.",
       "invalid_csv_values": "Kaikkien arvojen täytyy olla kokonaislukuja."
     },
-    "abort": {
-      "already_configured": "Tämä laite on jo määritetty."
-    }
+    "abort": {"already_configured": "Tämä laite on jo määritetty."}
   },
   "options": {
     "step": {
       "init": {
-        "title": "Muokkaa ilmanvaihtoasetuksia",
-        "description": "Muokkaa yhteys-, laite- ja rakennusparametreja.",
+        "title": "1 / 2 - Yhteys",
+        "description": "Valitse tunnettu sarjaliitäntä tai syötä ilmanvaihtolaitteen yhteys manuaalisesti. Kirjoitusasu määrittää yhteystyypin automaattisesti:\n\n- **socket://ip_osoite:portti**\nLäpinäkyvä sarjamuotoinen verkkoyhteys, esimerkiksi tavallinen ser2net-sovitin.\n- **/dev/ttyUSB...**\nPaikallinen USB–sarjasovitin.\n- **/dev/serial/by-id/...**\nVakaa polku paikalliseen sarjaliitäntään.\n- **/dev/...**\nMuut paikalliset tai virtuaaliset sarjaliitännät, esimerkiksi `socat`-ohjelman kautta.\n\nHome Assistant tarjoaa ESPHome Serial Proxyt automaattisesti tunnettujen sarjaliitäntöjen joukossa. Vallox/Helios DIGIT -protokolla käyttää aina asetuksia 9600 baud, 8N1.",
+        "data": {"known_connection": "Tunnettu sarjaliitäntä", "connection": "Syötä yhteys manuaalisesti"},
+        "data_description": {
+          "known_connection": "Home Assistantin tunnistamat paikalliset liitännät ja ESPHome Serial Proxyt. Tässä tehty valinta ohittaa manuaalisen syötön.",
+          "connection": "Esimerkiksi `socket://192.168.178.36:502` tai `/dev/serial/by-id/...`."
+        }
+      },
+      "advanced": {
+        "title": "2 / 2 - Lisäasetukset",
+        "description": "Muokkaa laitteen ja rakennuksen parametreja, joita käytetään ilmavirran, tehon ja ilmanvaihtotarpeen laskennassa.",
         "data": {
-          "ip_address": "IP-osoite",
-          "port": "Portti",
           "airflow_per_mode": "Ilmavirta puhallintasoa kohti (m³/h)",
           "power_per_mode": "Sähköteho puhallintasoa kohti (W)",
           "heating_power": "Esi-/jälkilämmitysteho (W)",
@@ -79,20 +76,20 @@
           "isolation_factor": "Eristyskerroin"
         },
         "data_description": {
-          "ip_address": "RS485/TCP-sovittimen IP-osoite tai isäntänimi.",
-          "port": "RS485/TCP-sovittimen TCP-portti.",
-          "airflow_per_mode": "Tarkalleen 8 kokonaislukua pilkulla erotettuna, yksi puhallintasoa 1-8 kohti. Esimerkki: 60,90,120,150,180,210,240,270",
-          "power_per_mode": "Tarkalleen 8 kokonaislukua pilkulla erotettuna, yksi puhallintasoa 1-8 kohti. Esimerkki: 10,18,25,34,50,75,117,185",
-          "heating_power": "Esi- tai jälkilämmittimen teho watteina.",
-          "house_area": "Rakennuksen lämmitetty asuinpinta-ala neliömetreinä.",
-          "house_volume": "Rakennuksen koko ilmatilavuus kuutiometreinä, esim. pinta-ala × huonekorkeus.",
-          "isolation_factor": "Rakennuksen eristyskerroin: 0,3 = hyvin eristetty, 0,4 = normaali, 0,5 = huonosti eristetty."
+          "airflow_per_mode": "Tarkalleen 8 kokonaislukua pilkulla erotettuna, yksi puhallintasoa kohti (1–8), esim. '60,90,120,150,180,210,240,270'.",
+          "power_per_mode": "Tarkalleen 8 kokonaislukua pilkulla erotettuna, yksi puhallintasoa kohti (1–8), esim. '10,18,25,34,50,75,117,185'.",
+          "heating_power": "Esi- tai jälkilämmityselementin teho watteina.",
+          "house_area": "Lämmitetty asuinpinta-ala neliömetreinä.",
+          "house_volume": "Rakennuksen kokonaisilmatilavuus kuutiometreinä, esim. pinta-ala × huonekorkeus.",
+          "isolation_factor": "Eristyksen laatu: 0,3 = hyvin eristetty, 0,4 = normaali, 0,5 = heikosti eristetty."
         }
       }
     },
     "error": {
-      "cannot_connect": "Yhteys epäonnistui. Tarkista IP-osoite, portti ja sovitin.",
-      "invalid_csv_count": "Tarkalleen 8 arvoa vaaditaan, yksi puhallintasoa kohti, pilkulla erotettuna.",
+      "cannot_connect": "Yhteyttä ilmanvaihtolaitteeseen ei voitu muodostaa. Tarkista yhteys ja sovittimen saatavuus.",
+      "connection_required": "Valitse tunnettu sarjaliitäntä tai syötä yhteys manuaalisesti.",
+      "invalid_connection": "Yhteys on virheellinen. Käytä tunnettua sarjaliitäntää, `socket://host:port` tai `/dev/...`.",
+      "invalid_csv_count": "Tarvitaan tarkalleen 8 arvoa, yksi kutakin puhallintasoa kohti, pilkulla erotettuna.",
       "invalid_csv_values": "Kaikkien arvojen täytyy olla kokonaislukuja."
     }
   },
@@ -140,7 +137,7 @@
       "configuration": {"name": "Konfiguraatio"}
     },
     "binary_sensor": {
-      "connection": { "name": "Yhteys" },
+      "connection": {"name": "Yhteys"},
       "boost_status": {"name": "Indikaattori: tehostus aktiivinen"},
       "fault_detected": {"name": "Indikaattori: vikailmoitus"},
       "clean_filter": {"name": "Indikaattori: suodattimen vaihto"},
@@ -167,9 +164,9 @@
       "input_fan_percent": {"name": "Tuloilmapuhaltimen nopeus %"},
       "output_fan_percent": {"name": "Poistopuhaltimen nopeus %"},
       "basic_humidity_level": {"name": "Ilmankosteuden perustaso"},
-      "co2_setting_value": {"name": "CO₂-varoituskynnys"},
+      "co2_setting_value": {"name": "CO₂-varoitusraja"},
       "service_interval": {"name": "Suodatinvaroituksen aikaväli"},
-      "service_due_months": {"name": "Suodatinvaihtoon jäljellä"}
+      "service_due_months": {"name": "Aika suodattimen vaihtoon"}
     },
     "switch": {
       "powerstate": {"name": "Ilmanvaihto päälle/pois"},
@@ -196,7 +193,7 @@
       }
     },
     "button": {
-      "reset_service_reminder": { "name": "Nollaa huoltomuistutin" },
+      "reset_service_reminder": {"name": "Nollaa huoltomuistutin"},
       "softboost_start_stop": {"name": "Käynnistä/pysäytä Softboost"}
     }
   }

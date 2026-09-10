@@ -1,3 +1,7 @@
+# Connection configuration
+CONF_CONNECTION = "connection"
+CONF_KNOWN_CONNECTION = "known_connection"
+
 # Config keys for house / ventilation model
 CONF_HOUSE_AREA = "house_area"
 CONF_HOUSE_VOLUME = "house_volume"
@@ -11,7 +15,6 @@ CONF_DEVICE_MODEL = "device_model"
 CUSTOM_MODEL = "Custom / Manual input"
 CONF_ENTITY_PREFIX = "entity_prefix"
 DEFAULT_ENTITY_PREFIX = "Ventilation"
-
 
 # Predefined device profiles
 DEVICE_PRESETS = {

@@ -2,15 +2,15 @@
   "config": {
     "step": {
       "user": {
-        "title": "1 / 4 - Helios/Vallox Lüftungsanlage",
-        "description": "Geben Sie die IP-Adresse und den Port Ihrer Lüftungsanlage ein.",
+        "title": "1 / 4 - Verbindung",
+        "description": "Wählen Sie eine bekannte serielle Schnittstelle aus oder geben Sie die Verbindung zur Lüftungsanlage manuell ein. Die Schreibweise bestimmt automatisch die Verbindungsart:\n\n- **socket://ip_adresse:port**\nTransparente serielle Netzwerkverbindung, z. B. ein normaler ser2net-Adapter.\n- **/dev/ttyUSB...**\nLokaler USB-Seriell-Adapter.\n- **/dev/serial/by-id/...**\nStabiler Pfad zu einer lokalen seriellen Schnittstelle.\n- **/dev/...**\nAndere lokale oder virtuelle serielle Schnittstellen, z. B. über `socat`.\n\nESPHome Serial Proxies werden von Home Assistant automatisch unter den bekannten seriellen Schnittstellen angeboten. Das Vallox/Helios DIGIT-Protokoll verwendet immer 9600 Baud, 8N1.",
         "data": {
-          "ip_address": "IP-Adresse",
-          "port": "Port"
+          "known_connection": "Bekannte serielle Schnittstelle",
+          "connection": "Verbindung manuell eingeben"
         },
         "data_description": {
-          "ip_address": "Die IP-Adresse des Seriell-zu-Ethernet-Konverters in Ihrem lokalen Netzwerk.",
-          "port": "Der TCP-Port."
+          "known_connection": "Von Home Assistant erkannte lokale Schnittstellen und ESPHome Serial Proxies. Eine Auswahl hier hat Vorrang vor der manuellen Eingabe.",
+          "connection": "Zum Beispiel `socket://192.168.178.36:502` oder `/dev/serial/by-id/...`."
         }
       },
       "model": {
@@ -55,7 +55,9 @@
       }
     },
     "error": {
-      "cannot_connect": "Verbindung zur Lüftungsanlage nicht möglich. Bitte IP-Adresse und Port prüfen.",
+      "cannot_connect": "Verbindung zur Lüftungsanlage nicht möglich. Bitte die Verbindung und die Erreichbarkeit des Adapters prüfen.",
+      "connection_required": "Bitte eine bekannte serielle Schnittstelle auswählen oder eine Verbindung manuell eingeben.",
+      "invalid_connection": "Die Verbindung ist ungültig. Verwenden Sie eine bekannte serielle Schnittstelle, `socket://host:port` oder `/dev/...`.",
       "invalid_csv_count": "Es werden genau 8 Werte benötigt (je einer pro Lüftungsstufe), kommagetrennt.",
       "invalid_csv_values": "Alle Werte müssen ganze Zahlen sein."
     },
@@ -66,11 +68,21 @@
   "options": {
     "step": {
       "init": {
-        "title": "KWL-Einstellungen bearbeiten",
-        "description": "Bearbeiten Sie die Verbindungs-, Geräte- und Gebäudeparameter.",
+        "title": "1 / 2 - Verbindung",
+        "description": "Wählen Sie eine bekannte serielle Schnittstelle aus oder geben Sie die Verbindung zur Lüftungsanlage manuell ein. Die Schreibweise bestimmt automatisch die Verbindungsart:\n\n- **socket://ip_adresse:port**\nTransparente serielle Netzwerkverbindung, z. B. ein normaler ser2net-Adapter.\n- **/dev/ttyUSB...**\nLokaler USB-Seriell-Adapter.\n- **/dev/serial/by-id/...**\nStabiler Pfad zu einer lokalen seriellen Schnittstelle.\n- **/dev/...**\nAndere lokale oder virtuelle serielle Schnittstellen, z. B. über `socat`.\n\nESPHome Serial Proxies werden von Home Assistant automatisch unter den bekannten seriellen Schnittstellen angeboten. Das Vallox/Helios DIGIT-Protokoll verwendet immer 9600 Baud, 8N1.",
         "data": {
-          "ip_address": "IP-Adresse",
-          "port": "Port",
+          "known_connection": "Bekannte serielle Schnittstelle",
+          "connection": "Verbindung manuell eingeben"
+        },
+        "data_description": {
+          "known_connection": "Von Home Assistant erkannte lokale Schnittstellen und ESPHome Serial Proxies. Eine Auswahl hier hat Vorrang vor der manuellen Eingabe.",
+          "connection": "Zum Beispiel `socket://192.168.178.36:502` oder `/dev/serial/by-id/...`."
+        }
+      },
+      "advanced": {
+        "title": "2 / 2 - Erweiterte Einstellungen",
+        "description": "Bearbeiten Sie die Geräte- und Gebäudeparameter für Luftmengen-, Leistungs- und Lüftungsbedarfsberechnungen.",
+        "data": {
           "airflow_per_mode": "Luftmenge pro Lüftungsstufe (m³/h)",
           "power_per_mode": "Elektrische Leistung pro Lüftungsstufe (W)",
           "heating_power": "Vor-/Nachheizleistung (W)",
@@ -79,8 +91,6 @@
           "isolation_factor": "Dämmfaktor"
         },
         "data_description": {
-          "ip_address": "IP-Adresse oder Hostname des RS485-/TCP-Adapters.",
-          "port": "TCP-Port des RS485-/TCP-Adapters.",
           "airflow_per_mode": "Genau 8 ganzzahlige Werte, kommagetrennt, je einer pro Lüftungsstufe 1–8. Beispiel: 60,90,120,150,180,210,240,270",
           "power_per_mode": "Genau 8 ganzzahlige Werte, kommagetrennt, je einer pro Lüftungsstufe 1–8. Beispiel: 10,18,25,34,50,75,117,185",
           "heating_power": "Leistung des Vor- oder Nachheizers in Watt.",
@@ -91,7 +101,9 @@
       }
     },
     "error": {
-      "cannot_connect": "Verbindung fehlgeschlagen. Bitte IP-Adresse, Port und Adapter prüfen.",
+      "cannot_connect": "Verbindung fehlgeschlagen. Bitte die Verbindung und die Erreichbarkeit des Adapters prüfen.",
+      "connection_required": "Bitte eine bekannte serielle Schnittstelle auswählen oder eine Verbindung manuell eingeben.",
+      "invalid_connection": "Die Verbindung ist ungültig. Verwenden Sie eine bekannte serielle Schnittstelle, `socket://host:port` oder `/dev/...`.",
       "invalid_csv_count": "Es werden genau 8 Werte benötigt, je einer pro Lüftungsstufe, kommagetrennt.",
       "invalid_csv_values": "Alle Werte müssen ganze Zahlen sein."
     }
@@ -152,7 +164,7 @@
       "co2_sensor3_present": { "name": "CO\u2082-Sensor 3 installiert" },
       "co2_sensor4_present": { "name": "CO\u2082-Sensor 4 installiert" },
       "co2_sensor5_present": { "name": "CO\u2082-Sensor 5 installiert" },
-      "softboost_active": {"name": "Softboost aktiv"}
+      "softboost_active": { "name": "Softboost aktiv" }
     },
     "number": {
       "fanspeed": { "name": "Lüftungsstufe" },
@@ -184,20 +196,29 @@
     "select": {
       "boost_mode": {
         "name": "Modus bei Stoßlüftung",
-        "state": {  "fireplace": "Kaminmodus", "normal": "Normal" }
+        "state": {
+          "fireplace": "Kaminmodus",
+          "normal": "Normal"
+        }
       },
       "winter_mode": {
         "name": "Betriebsmodus",
-        "state": { "summer": "Sommer", "winter": "Winter" }
+        "state": {
+          "summer": "Sommer",
+          "winter": "Winter"
+        }
       },
       "humidity_control_mode": {
         "name": "Luftfeuchte Regelung",
-        "state": { "manual": "Manuell", "automatic": "Automatisch" }
+        "state": {
+          "manual": "Manuell",
+          "automatic": "Automatisch"
+        }
       }
     },
     "button": {
       "reset_service_reminder": { "name": "Warnintervall Filter zurücksetzen" },
-      "softboost_start_stop": {"name": "Softboost starten/stoppen"}
+      "softboost_start_stop": { "name": "Softboost starten/stoppen" }
     }
   }
 }

@@ -8,6 +8,8 @@ from .bus import (
 )
 
 from .config import (
+    CONF_CONNECTION,
+    CONF_KNOWN_CONNECTION,
     CONF_HOUSE_AREA,
     CONF_HOUSE_VOLUME,
     CONF_ISOLATION_FACTOR,
@@ -22,7 +24,6 @@ from .config import (
     CONF_ENTITY_PREFIX,
     DEFAULT_ENTITY_PREFIX,
 )
-
 from .entities import (
     SENSOR_ENTITIES,
     BINARY_SENSOR_ENTITIES,
@@ -30,7 +31,6 @@ from .entities import (
     SWITCH_ENTITIES,
     SELECT_ENTITIES,
 )
-
 from .helpers import (
     LOVELACE_DEVICE_SELECT_KEY,
     LOVELACE_DEVICE_SELECT_NAME,
