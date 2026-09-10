@@ -134,7 +134,9 @@
       "din_airflow_boost": {"name": "Luftflöde 4 - DIN forcerad ventilation"},
       "effective_airflow": {"name": "Aktuellt luftflöde"},
       "electrical_power": {"name": "Elektrisk effekt"},
-      "configuration": {"name": "Konfiguration"}
+      "configuration": {"name": "Konfiguration"},
+      "analog_input": {"name": "mA-/spänningsingång (råvärde)"},
+      "post_heating_target": {"name": "Eftervärmning – aktuell måltemperatur"}
     },
     "binary_sensor": {
       "connection": {"name": "Anslutning"},
@@ -142,14 +144,18 @@
       "fault_detected": {"name": "Indikator: felmeddelande"},
       "clean_filter": {"name": "Indikator: filterbyte"},
       "service_requested": {"name": "Indikator: service"},
-      "post_heating_on": {"name": "Indikator: värme aktiv"},
+      "post_heating_on": {"name": "Eftervärmning aktiv"},
       "co2_alarm": {"name": "Indikator: CO₂-larm"},
       "co2_sensor1_present": {"name": "CO₂-givare 1 installerad"},
       "co2_sensor2_present": {"name": "CO₂-givare 2 installerad"},
       "co2_sensor3_present": {"name": "CO₂-givare 3 installerad"},
       "co2_sensor4_present": {"name": "CO₂-givare 4 installerad"},
       "co2_sensor5_present": {"name": "CO₂-givare 5 installerad"},
-      "softboost_active": {"name": "Softboost aktiv"}
+      "softboost_active": {"name": "Softboost aktiv"},
+      "bypass_damper_position": {"name": "Bypass-spjäll – sommarläge"},
+      "fault_relay": {"name": "Felrelä slutet"},
+      "preheating_on": {"name": "Förvärmning aktiv"},
+      "external_boost_switch": {"name": "Extern kamin-/boostbrytare sluten"}
     },
     "number": {
       "fanspeed": {"name": "Fläkthastighet"},
@@ -158,7 +164,7 @@
       "initial_fanspeed": {"name": "Fläkthastighet vid start"},
       "max_fanspeed": {"name": "Maximal fläkthastighet"},
       "bypass_setpoint": {"name": "Temperatur för bypass-aktivering"},
-      "preheat_setpoint": {"name": "Förvärmning på"},
+      "preheat_setpoint": {"name": "Förvärmning – aktiveringstemperatur"},
       "defrost_setpoint": {"name": "Frostläge på"},
       "defrost_hysteresis": {"name": "Frostläge hysteres"},
       "input_fan_percent": {"name": "Hastighet % tilluftsfläkt"},
@@ -166,7 +172,8 @@
       "basic_humidity_level": {"name": "Basnivå luftfuktighet"},
       "co2_setting_value": {"name": "CO₂-varningströskel"},
       "service_interval": {"name": "Filtervarningsintervall"},
-      "service_due_months": {"name": "Återstående tid till filterbyte"}
+      "service_due_months": {"name": "Återstående tid till filterbyte"},
+      "post_heating_setpoint": {"name": "Eftervärmning – börvärde"}
     },
     "switch": {
       "powerstate": {"name": "Ventilation på/av"},

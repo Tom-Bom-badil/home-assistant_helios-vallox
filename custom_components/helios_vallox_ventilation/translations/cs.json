@@ -134,7 +134,9 @@
       "din_airflow_boost": {"name": "Průtok vzduchu DIN (intenzivní)"},
       "effective_airflow": {"name": "Aktuální průtok vzduchu"},
       "electrical_power": {"name": "Elektrický příkon"},
-      "configuration": {"name": "Konfigurace"}
+      "configuration": {"name": "Konfigurace"},
+      "analog_input": {"name": "mA/napěťový vstup (surová hodnota)"},
+      "post_heating_target": {"name": "Dohřev – aktuální cílová teplota"}
     },
     "binary_sensor": {
       "connection": {"name": "Připojení"},
@@ -149,7 +151,11 @@
       "co2_sensor3_present": {"name": "Čidlo CO₂ 3 přítomno"},
       "co2_sensor4_present": {"name": "Čidlo CO₂ 4 přítomno"},
       "co2_sensor5_present": {"name": "Čidlo CO₂ 5 přítomno"},
-      "softboost_active": {"name": "Softboost aktivní"}
+      "softboost_active": {"name": "Softboost aktivní"},
+      "bypass_damper_position": {"name": "Bypass klapka – letní poloha"},
+      "fault_relay": {"name": "Poruchové relé sepnuté"},
+      "preheating_on": {"name": "Předehřev aktivní"},
+      "external_boost_switch": {"name": "Externí spínač krb/intenzivní větrání sepnutý"}
     },
     "number": {
       "fanspeed": {"name": "Stupeň ventilátoru"},
@@ -158,7 +164,7 @@
       "initial_fanspeed": {"name": "Počáteční stupeň ventilátoru"},
       "max_fanspeed": {"name": "Maximální stupeň ventilátoru"},
       "bypass_setpoint": {"name": "Nastavená hodnota bypassu"},
-      "preheat_setpoint": {"name": "Nastavená hodnota předehřevu"},
+      "preheat_setpoint": {"name": "Teplota aktivace předehřevu"},
       "defrost_setpoint": {"name": "Nastavená hodnota odmrazování"},
       "defrost_hysteresis": {"name": "Hystereze odmrazování"},
       "input_fan_percent": {"name": "Otáčky přívodního ventilátoru"},
@@ -166,7 +172,8 @@
       "basic_humidity_level": {"name": "Základní úroveň vlhkosti"},
       "co2_setting_value": {"name": "Nastavená hodnota CO₂"},
       "service_interval": {"name": "Servisní interval"},
-      "service_due_months": {"name": "Čas do servisu"}
+      "service_due_months": {"name": "Čas do servisu"},
+      "post_heating_setpoint": {"name": "Nastavená teplota dohřevu"}
     },
     "switch": {
       "powerstate": {"name": "Napájení"},

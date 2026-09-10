@@ -2,7 +2,6 @@ import array
 
 # domain
 DOMAIN = "helios_vallox_ventilation"
-
 # mapping for the four NTC5k temperature sensors
 NTC5K_TEMPERATURES = array.array(
     "i",
@@ -19,7 +18,6 @@ NTC5K_TEMPERATURES = array.array(
         75,77,79,81,82,86,90,93,97,100,100,100,100,100,100,100,100,100
     ]
 )
-
 # mapping for valid senders / receivers
 BUS_ADDRESSES = {
     "MB*": 0x10,  # all mainboards
@@ -30,7 +28,6 @@ BUS_ADDRESSES = {
     "_HA": 0x2E,  # this HA Python script; we are simulating a remote
     "_SH": 0x2F   # SmartHomeNG Python script; also simulating a remote
 }
-
 # mapping bits to fan speeds
 FANSPEEDS = {
     1:   1,
@@ -53,7 +50,6 @@ COMPONENT_FAULTS = {
     9:  'water_coil_frost_warning',
     10: 'extract_air_sensor_fault'
 }
-
 # mapping for registers and coils
 REGISTERS_AND_COILS = {
     # Current fanspeed (EC300Pro: 1..8)
@@ -70,6 +66,8 @@ REGISTERS_AND_COILS = {
     "temperature_extract_air": {"varid": 0x34, 'type': 'temperature', 'bitposition': -1, 'read': True, 'write': False},
     # NTC5K sensors: discharge air temperature
     "temperature_exhaust_air": {"varid": 0x33, 'type': 'temperature', 'bitposition': -1, 'read': True, 'write': False},
+    # Current post-heating target temperature on the NTC sensor scale
+    "post_heating_target":     {"varid": 0x57, 'type': 'temperature', 'bitposition': -1, 'read': True, 'write': False},
     # various coils in register 0xA3 that are displayed on the remote controls (0..3 read/write, 4..7 readonly)
     # FB LED1: on/off Caution: Remotes will not be switched back on automatically; initial_fanspeed set if done manually.
     "powerstate":              {"varid": 0xA3, 'type': 'bit',         'bitposition':  0, 'read': True, 'write': True },
@@ -81,7 +79,7 @@ REGISTERS_AND_COILS = {
     "winter_mode":             {"varid": 0xA3, 'type': 'bit',         'bitposition':  3, 'read': True, 'write': True },
     # FB icon 1: "Clean filter" warning
     "clean_filter":            {"varid": 0xA3, 'type': 'bit',         'bitposition':  4, 'read': True, 'write': False},
-    # FB icon 2 2: Pre-/Post heating active
+    # FB icon 2: Post-heating active
     "post_heating_on":         {"varid": 0xA3, 'type': 'bit',         'bitposition':  5, 'read': True, 'write': False},
     # FB icon 3: Error / fault
     "fault_detected":          {"varid": 0xA3, 'type': 'bit',         'bitposition':  6, 'read': True, 'write': False},
@@ -89,7 +87,9 @@ REGISTERS_AND_COILS = {
     "service_requested":       {"varid": 0xA3, 'type': 'bit',         'bitposition':  7, 'read': True, 'write': False},
     # Summer mode: Activate bypass from this temperature onwards if fresh air °C (outside) < extract air °C (inside)
     "bypass_setpoint":         {"varid": 0xAF, 'type': 'temperature', 'bitposition': -1, 'read': True, 'write': True },
-    # Activation temperature for pre / post heating
+    # Post-heating setpoint on the NTC sensor scale
+    "post_heating_setpoint":   {"varid": 0xA4, 'type': 'temperature', 'bitposition': -1, 'read': True, 'write': True },
+    # Pre-heating activation temperature on the NTC sensor scale
     "preheat_setpoint":        {"varid": 0xA7, 'type': 'temperature', 'bitposition': -1, 'read': True, 'write': True },
     # Pre / post heating is off (0) / on (1)
     "preheat_status":          {"varid": 0x70, 'type': 'bit',         'bitposition':  7, 'read': True, 'write': True },
@@ -105,20 +105,27 @@ REGISTERS_AND_COILS = {
     "boost_status":            {"varid": 0x71, 'type': 'bit',         'bitposition':  6, 'read': True, 'write': False},
     # Remaining minutes of boost if on
     "boost_remaining":         {"varid": 0x79, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
+    # I/O port 0x08: read-only status bits and writable fan-off flags
+    "bypass_damper_position":  {"varid": 0x08, 'type': 'bit',         'bitposition':  1, 'read': True, 'write': False},
+    "fault_relay":             {"varid": 0x08, 'type': 'bit',         'bitposition':  2, 'read': True, 'write': False},
     # Fresh air vetilator off; set to 1 to switch off; requires to be set twice
     "input_fan_off":           {"varid": 0x08, 'type': 'bit',         'bitposition':  3, 'read': True, 'write': True },
+    "preheating_on":           {"varid": 0x08, 'type': 'bit',         'bitposition':  4, 'read': True, 'write': False},
     # Exhaust air vetilator off; set to 1 to switch off; requires to be set twice
     "output_fan_off":          {"varid": 0x08, 'type': 'bit',         'bitposition':  5, 'read': True, 'write': True },
+    "external_boost_switch":   {"varid": 0x08, 'type': 'bit',         'bitposition':  6, 'read': True, 'write': False},
     # rpm of fresh air ventilator (65...100% - pneumatic calibration; default=100)
     "input_fan_percent":       {"varid": 0xB0, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },
     # rpm of exhaust air ventilator (65...100% - pneumatic calibration; default=100)
-    "output_fan_percent":      {"varid": 0xB1, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },   
+    "output_fan_percent":      {"varid": 0xB1, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },
     # Service reminder interval in months (used after reset f service reminder)
     "service_interval":        {"varid": 0xA6, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },
     # Remaining months for current service reminder
     "service_due_months":      {"varid": 0xAB, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': True },
     # Error / fault register. 0 = no fault. see COMPONENT_FAULTS above
     "fault_number":            {"varid": 0x36, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
+    # Current mA/voltage input signal, raw scale 00H...FFH
+    "analog_input":            {"varid": 0x2E, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
     # Humidity reading sensor 1. 33H = 0% RH FFH = 100% RH
     "rh_sensor1_raw":          {"varid": 0x2F, 'type': 'dec',         'bitposition': -1, 'read': True, 'write': False},
     # Humidity reading sensor 2. 33H = 0% RH FFH = 100% RH

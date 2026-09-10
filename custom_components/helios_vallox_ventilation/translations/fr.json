@@ -134,7 +134,9 @@
       "din_airflow_boost": {"name": "Débit d’air 4 - Ventilation intensive DIN"},
       "effective_airflow": {"name": "Débit d’air actuel"},
       "electrical_power": {"name": "Puissance électrique"},
-      "configuration": {"name": "Configuration"}
+      "configuration": {"name": "Configuration"},
+      "analog_input": {"name": "Entrée mA/tension (valeur brute)"},
+      "post_heating_target": {"name": "Post-chauffage – température cible actuelle"}
     },
     "binary_sensor": {
       "connection": {"name": "Connexion"},
@@ -142,14 +144,18 @@
       "fault_detected": {"name": "Indicateur : défaut"},
       "clean_filter": {"name": "Indicateur : changement du filtre"},
       "service_requested": {"name": "Indicateur : maintenance"},
-      "post_heating_on": {"name": "Indicateur : chauffage actif"},
+      "post_heating_on": {"name": "Post-chauffage actif"},
       "co2_alarm": {"name": "Indicateur : alarme CO₂"},
       "co2_sensor1_present": {"name": "Capteur CO₂ 1 installé"},
       "co2_sensor2_present": {"name": "Capteur CO₂ 2 installé"},
       "co2_sensor3_present": {"name": "Capteur CO₂ 3 installé"},
       "co2_sensor4_present": {"name": "Capteur CO₂ 4 installé"},
       "co2_sensor5_present": {"name": "Capteur CO₂ 5 installé"},
-      "softboost_active": {"name": "Softboost actif"}
+      "softboost_active": {"name": "Softboost actif"},
+      "bypass_damper_position": {"name": "Clapet bypass – position été"},
+      "fault_relay": {"name": "Relais de défaut fermé"},
+      "preheating_on": {"name": "Préchauffage actif"},
+      "external_boost_switch": {"name": "Contact externe cheminée/boost fermé"}
     },
     "number": {
       "fanspeed": {"name": "Vitesse de ventilation"},
@@ -158,7 +164,7 @@
       "initial_fanspeed": {"name": "Vitesse de ventilation au démarrage"},
       "max_fanspeed": {"name": "Vitesse de ventilation maximale"},
       "bypass_setpoint": {"name": "Température d’activation du bypass"},
-      "preheat_setpoint": {"name": "Préchauffage activé"},
+      "preheat_setpoint": {"name": "Température d’activation du préchauffage"},
       "defrost_setpoint": {"name": "Mode antigel activé"},
       "defrost_hysteresis": {"name": "Hystérésis du mode antigel"},
       "input_fan_percent": {"name": "Vitesse % ventilateur d’air neuf"},
@@ -166,7 +172,8 @@
       "basic_humidity_level": {"name": "Niveau d’humidité de base"},
       "co2_setting_value": {"name": "Seuil d’alerte CO₂"},
       "service_interval": {"name": "Intervalle d’alerte filtre"},
-      "service_due_months": {"name": "Temps restant avant changement du filtre"}
+      "service_due_months": {"name": "Temps restant avant changement du filtre"},
+      "post_heating_setpoint": {"name": "Consigne de post-chauffage"}
     },
     "switch": {
       "powerstate": {"name": "Ventilation marche/arrêt"},

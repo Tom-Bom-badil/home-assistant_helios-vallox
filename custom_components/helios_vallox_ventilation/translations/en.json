@@ -4,10 +4,7 @@
       "user": {
         "title": "1 / 4 - Connection",
         "description": "Select a known serial interface or enter the connection to the ventilation unit manually. The syntax automatically determines the connection type:\n\n- **socket://ip_address:port**\nTransparent serial network connection, e.g. a standard ser2net adapter.\n- **/dev/ttyUSB...**\nLocal USB-to-serial adapter.\n- **/dev/serial/by-id/...**\nStable path to a local serial interface.\n- **/dev/...**\nOther local or virtual serial interfaces, e.g. via `socat`.\n\nESPHome Serial Proxies are automatically offered by Home Assistant under the known serial interfaces. The Vallox/Helios DIGIT protocol always uses 9600 baud, 8N1.",
-        "data": {
-          "known_connection": "Known serial interface",
-          "connection": "Enter connection manually"
-        },
+        "data": {"known_connection": "Known serial interface", "connection": "Enter connection manually"},
         "data_description": {
           "known_connection": "Local interfaces and ESPHome Serial Proxies detected by Home Assistant. A selection here takes precedence over the manual entry.",
           "connection": "For example `socket://192.168.178.36:502` or `/dev/serial/by-id/...`."
@@ -16,10 +13,7 @@
       "model": {
         "title": "2 / 4 - Device Name and Model",
         "description": "Enter a unique device name / entities prefix, and select your model to auto-populate device parameters (choose 'Custom' for manual input).",
-        "data": {
-          "entity_prefix": "Unique name (e.g. 'Ventilation')",
-          "device_model": "Device Model"
-        },
+        "data": {"entity_prefix": "Unique name (e.g. 'Ventilation')", "device_model": "Device Model"},
         "data_description": {
           "entity_prefix": "Must be unique if multiple devices are configured (e.g. 'Basement vent', 'Upstairs vent', etc.)",
           "device_model": "Selecting a model will pre-fill the device parameters in the next step."
@@ -42,11 +36,7 @@
       "house": {
         "title": "4 / 4 - House Parameters",
         "description": "Enter the parameters of your house to calculate ventilation requirements. Can be changed later again.",
-        "data": {
-          "house_area": "Living area (m²)",
-          "house_volume": "House volume (m³)",
-          "isolation_factor": "Isolation factor"
-        },
+        "data": {"house_area": "Living area (m²)", "house_volume": "House volume (m³)", "isolation_factor": "Isolation factor"},
         "data_description": {
           "house_area": "The living area of your house in square meters (e.g.: 143).",
           "house_volume": "The air volume of your house in cubic meters (area x room height, e.g.: 384).",
@@ -61,19 +51,14 @@
       "invalid_csv_count": "Exactly 8 values are required (one per fan speed level), separated by commas.",
       "invalid_csv_values": "All values must be integers."
     },
-    "abort": {
-      "already_configured": "This device is already configured."
-    }
+    "abort": {"already_configured": "This device is already configured."}
   },
   "options": {
     "step": {
       "init": {
         "title": "1 / 2 - Connection",
         "description": "Select a known serial interface or enter the connection to the ventilation unit manually. The syntax automatically determines the connection type:\n\n- **socket://ip_address:port**\nTransparent serial network connection, e.g. a standard ser2net adapter.\n- **/dev/ttyUSB...**\nLocal USB-to-serial adapter.\n- **/dev/serial/by-id/...**\nStable path to a local serial interface.\n- **/dev/...**\nOther local or virtual serial interfaces, e.g. via `socat`.\n\nESPHome Serial Proxies are automatically offered by Home Assistant under the known serial interfaces. The Vallox/Helios DIGIT protocol always uses 9600 baud, 8N1.",
-        "data": {
-          "known_connection": "Known serial interface",
-          "connection": "Enter connection manually"
-        },
+        "data": {"known_connection": "Known serial interface", "connection": "Enter connection manually"},
         "data_description": {
           "known_connection": "Local interfaces and ESPHome Serial Proxies detected by Home Assistant. A selection here takes precedence over the manual entry.",
           "connection": "For example `socket://192.168.178.36:502` or `/dev/serial/by-id/...`."
@@ -110,115 +95,113 @@
   },
   "entity": {
     "sensor": {
-      "temperature_outdoor_air": { "name": "Outdoor air temperature" },
-      "temperature_supply_air": { "name": "Supply air temperature" },
-      "temperature_extract_air": { "name": "Extract air temperature" },
-      "temperature_exhaust_air": { "name": "Exhaust air temperature" },
-      "boost_remaining": { "name": "Boost remaining" },
-      "softboost_remaining": { "name": "Softboost remaining" },
-      "fault_number": { "name": "Fault number" },
+      "temperature_outdoor_air": {"name": "Outdoor air temperature"},
+      "temperature_supply_air": {"name": "Supply air temperature"},
+      "temperature_extract_air": {"name": "Extract air temperature"},
+      "temperature_exhaust_air": {"name": "Exhaust air temperature"},
+      "post_heating_target": {"name": "Post-heating – current target temperature"},
+      "boost_remaining": {"name": "Boost remaining"},
+      "softboost_remaining": {"name": "Softboost remaining"},
+      "fault_number": {"name": "Fault number"},
       "fault_text": {
         "name": "Fault text",
         "state": {
           "none": "No fault",
           "supply_air_sensor_fault": "Supply air sensor fault",
-          "co2_alarm": "CO\u2082 alarm",
+          "co2_alarm": "CO₂ alarm",
           "outdoor_air_sensor_fault": "Outdoor air sensor fault",
           "exhaust_air_sensor_fault": "Exhaust air sensor fault",
           "water_coil_frost_warning": "Water coil frost warning",
           "extract_air_sensor_fault": "Extract air sensor fault"
         }
       },
-      "rh_sensor1_raw": { "name": "Humidity sensor 1 (raw)" },
-      "rh_sensor2_raw": { "name": "Humidity sensor 2 (raw)" },
-      "co2_reading_upper_byte": { "name": "CO\u2082 reading (upper byte)" },
-      "co2_reading_lower_byte": { "name": "CO\u2082 reading (lower byte)" },
-      "co2_setting_upper_byte": { "name": "CO\u2082 setting (upper byte)" },
-      "co2_setting_lower_byte": { "name": "CO\u2082 setting (lower byte)" },
-      "temperature_reduction": { "name": "Temperature reduction" },
-      "temperature_gain": { "name": "Temperature gain" },
-      "temperature_balance": { "name": "Temperature balance" },
-      "efficiency": { "name": "Heat recovery efficiency" },
-      "rh_sensor1": { "name": "Humidity sensor 1" },
-      "rh_sensor2": { "name": "Humidity sensor 2" },
-      "highest_humidity": { "name": "Highest humidity" },
-      "co2_concentration": { "name": "CO\u2082 concentration" },
-      "din_airflow_moisture": { "name": "DIN airflow (moisture protection)" },
-      "din_airflow_reduced": { "name": "DIN airflow (reduced)" },
-      "din_airflow_normal": { "name": "DIN airflow (normal)" },
-      "din_airflow_boost": { "name": "DIN airflow (boost)" },
-      "effective_airflow": { "name": "Effective airflow" },
-      "electrical_power": { "name": "Electrical power" },
-      "configuration": { "name": "Configuration" }
+      "analog_input": {"name": "mA/voltage input (raw)"},
+      "rh_sensor1_raw": {"name": "Humidity sensor 1 (raw)"},
+      "rh_sensor2_raw": {"name": "Humidity sensor 2 (raw)"},
+      "co2_reading_upper_byte": {"name": "CO₂ reading (upper byte)"},
+      "co2_reading_lower_byte": {"name": "CO₂ reading (lower byte)"},
+      "co2_setting_upper_byte": {"name": "CO₂ setting (upper byte)"},
+      "co2_setting_lower_byte": {"name": "CO₂ setting (lower byte)"},
+      "temperature_reduction": {"name": "Temperature reduction"},
+      "temperature_gain": {"name": "Temperature gain"},
+      "temperature_balance": {"name": "Temperature balance"},
+      "efficiency": {"name": "Heat recovery efficiency"},
+      "rh_sensor1": {"name": "Humidity sensor 1"},
+      "rh_sensor2": {"name": "Humidity sensor 2"},
+      "highest_humidity": {"name": "Highest humidity"},
+      "co2_concentration": {"name": "CO₂ concentration"},
+      "din_airflow_moisture": {"name": "DIN airflow (moisture protection)"},
+      "din_airflow_reduced": {"name": "DIN airflow (reduced)"},
+      "din_airflow_normal": {"name": "DIN airflow (normal)"},
+      "din_airflow_boost": {"name": "DIN airflow (boost)"},
+      "effective_airflow": {"name": "Effective airflow"},
+      "electrical_power": {"name": "Electrical power"},
+      "configuration": {"name": "Configuration"}
     },
     "binary_sensor": {
-      "connection": { "name": "Connection" },
-      "boost_status": { "name": "Boost status" },
-      "fault_detected": { "name": "Fault detected" },
-      "clean_filter": { "name": "Filter cleaning required" },
-      "service_requested": { "name": "Service requested" },
-      "post_heating_on": { "name": "Post-heating active" },
-      "co2_sensor1_present": { "name": "CO\u2082 sensor 1 present" },
-      "co2_sensor2_present": { "name": "CO\u2082 sensor 2 present" },
-      "co2_sensor3_present": { "name": "CO\u2082 sensor 3 present" },
-      "co2_sensor4_present": { "name": "CO\u2082 sensor 4 present" },
-      "co2_sensor5_present": { "name": "CO\u2082 sensor 5 present" },
-      "co2_alarm": { "name": "CO\u2082 alarm" },
-      "softboost_active": { "name": "Softboost active" }
+      "connection": {"name": "Connection"},
+      "boost_status": {"name": "Boost status"},
+      "fault_detected": {"name": "Fault detected"},
+      "clean_filter": {"name": "Filter cleaning required"},
+      "service_requested": {"name": "Service requested"},
+      "post_heating_on": {"name": "Post-heating active"},
+      "bypass_damper_position": {"name": "Bypass damper – summer position"},
+      "fault_relay": {"name": "Fault relay closed"},
+      "preheating_on": {"name": "Pre-heating active"},
+      "external_boost_switch": {"name": "External fireplace/boost switch closed"},
+      "co2_sensor1_present": {"name": "CO₂ sensor 1 present"},
+      "co2_sensor2_present": {"name": "CO₂ sensor 2 present"},
+      "co2_sensor3_present": {"name": "CO₂ sensor 3 present"},
+      "co2_sensor4_present": {"name": "CO₂ sensor 4 present"},
+      "co2_sensor5_present": {"name": "CO₂ sensor 5 present"},
+      "co2_alarm": {"name": "CO₂ alarm"},
+      "softboost_active": {"name": "Softboost active"}
     },
     "number": {
-      "fanspeed": { "name": "Fan speed" },
-      "softboost_level": { "name": "Softboost fanspeed" },
-      "softboost_duration": { "name": "Softboost duration" },
-      "initial_fanspeed": { "name": "Initial fan speed" },
-      "max_fanspeed": { "name": "Maximum fan speed" },
-      "bypass_setpoint": { "name": "Bypass setpoint" },
-      "preheat_setpoint": { "name": "Pre-heat setpoint" },
-      "defrost_setpoint": { "name": "Defrost setpoint" },
-      "defrost_hysteresis": { "name": "Defrost hysteresis" },
-      "basic_humidity_level": { "name": "Humidity base level" },
-      "co2_setting_value": { "name": "CO\u2082 setpoint" },
-      "input_fan_percent": { "name": "Input fan speed" },
-      "output_fan_percent": { "name": "Output fan speed" },
-      "service_interval": { "name": "Service interval" },
-      "service_due_months": { "name": "Service due in" }
+      "fanspeed": {"name": "Fan speed"},
+      "softboost_level": {"name": "Softboost fanspeed"},
+      "softboost_duration": {"name": "Softboost duration"},
+      "initial_fanspeed": {"name": "Initial fan speed"},
+      "max_fanspeed": {"name": "Maximum fan speed"},
+      "bypass_setpoint": {"name": "Bypass setpoint"},
+      "preheat_setpoint": {"name": "Pre-heating activation temperature"},
+      "post_heating_setpoint": {"name": "Post-heating setpoint"},
+      "defrost_setpoint": {"name": "Defrost setpoint"},
+      "defrost_hysteresis": {"name": "Defrost hysteresis"},
+      "basic_humidity_level": {"name": "Humidity base level"},
+      "co2_setting_value": {"name": "CO₂ setpoint"},
+      "input_fan_percent": {"name": "Input fan speed"},
+      "output_fan_percent": {"name": "Output fan speed"},
+      "service_interval": {"name": "Service interval"},
+      "service_due_months": {"name": "Service due in"}
     },
     "switch": {
-      "powerstate": { "name": "Power" },
-      "co2_indicator": { "name": "CO\u2082 indicator" },
-      "rh_indicator": { "name": "Humidity indicator" },
-      "preheat_status": { "name": "Pre-heating" },
-      "activate_boost": { "name": "Activate boost" },
-      "softboost_fireplace_mode": { "name": "Softboost fireplace mode" },
-      "input_fan_off": { "name": "Input fan off" },
-      "output_fan_off": { "name": "Output fan off" }
+      "powerstate": {"name": "Power"},
+      "co2_indicator": {"name": "CO₂ indicator"},
+      "rh_indicator": {"name": "Humidity indicator"},
+      "preheat_status": {"name": "Pre-heating"},
+      "activate_boost": {"name": "Activate boost"},
+      "softboost_fireplace_mode": {"name": "Softboost fireplace mode"},
+      "input_fan_off": {"name": "Input fan off"},
+      "output_fan_off": {"name": "Output fan off"}
     },
     "select": {
       "boost_mode": {
         "name": "Boost mode",
-        "state": {
-          "fireplace": "Fireplace",
-          "normal": "Normal"
-        }
+        "state": {"fireplace": "Fireplace", "normal": "Normal"}
       },
       "winter_mode": {
         "name": "Operating mode",
-        "state": {
-          "summer": "Summer",
-          "winter": "Winter"
-        }
+        "state": {"summer": "Summer", "winter": "Winter"}
       },
       "humidity_control_mode": {
         "name": "Humidity control mode",
-        "state": {
-          "manual": "Manual",
-          "automatic": "Automatic"
-        }
+        "state": {"manual": "Manual", "automatic": "Automatic"}
       }
     },
     "button": {
-      "reset_service_reminder": { "name": "Reset filter reminder" },
-      "softboost_start_stop": { "name": "Start/stop Softboost" }
+      "reset_service_reminder": {"name": "Reset filter reminder"},
+      "softboost_start_stop": {"name": "Start/stop Softboost"}
     }
   }
 }

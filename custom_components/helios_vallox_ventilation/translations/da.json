@@ -134,7 +134,9 @@
       "din_airflow_boost": {"name": "Luftmængde 4 - DIN forceret ventilation"},
       "effective_airflow": {"name": "Aktuel luftmængde"},
       "electrical_power": {"name": "Elektrisk effekt"},
-      "configuration": {"name": "Konfiguration"}
+      "configuration": {"name": "Konfiguration"},
+      "analog_input": {"name": "mA-/spændingsindgang (råværdi)"},
+      "post_heating_target": {"name": "Eftervarme – aktuel måltemperatur"}
     },
     "binary_sensor": {
       "connection": {"name": "Forbindelse"},
@@ -142,14 +144,18 @@
       "fault_detected": {"name": "Indikator: fejlmeddelelse"},
       "clean_filter": {"name": "Indikator: filterskift"},
       "service_requested": {"name": "Indikator: service"},
-      "post_heating_on": {"name": "Indikator: varme aktiv"},
+      "post_heating_on": {"name": "Eftervarme aktiv"},
       "co2_alarm": {"name": "Indikator: CO₂-alarm"},
       "co2_sensor1_present": {"name": "CO₂-føler 1 installeret"},
       "co2_sensor2_present": {"name": "CO₂-føler 2 installeret"},
       "co2_sensor3_present": {"name": "CO₂-føler 3 installeret"},
       "co2_sensor4_present": {"name": "CO₂-føler 4 installeret"},
       "co2_sensor5_present": {"name": "CO₂-føler 5 installeret"},
-      "softboost_active": {"name": "Softboost aktiv"}
+      "softboost_active": {"name": "Softboost aktiv"},
+      "bypass_damper_position": {"name": "Bypass-spjæld – sommerposition"},
+      "fault_relay": {"name": "Fejlrelæ lukket"},
+      "preheating_on": {"name": "Forvarme aktiv"},
+      "external_boost_switch": {"name": "Ekstern pejs-/boostkontakt lukket"}
     },
     "number": {
       "fanspeed": {"name": "Ventilatortrin"},
@@ -158,7 +164,7 @@
       "initial_fanspeed": {"name": "Ventilatortrin ved opstart"},
       "max_fanspeed": {"name": "Maksimalt ventilatortrin"},
       "bypass_setpoint": {"name": "Temperatur for bypass-aktivering"},
-      "preheat_setpoint": {"name": "Forvarme til"},
+      "preheat_setpoint": {"name": "Forvarme – aktiveringstemperatur"},
       "defrost_setpoint": {"name": "Frosttilstand til"},
       "defrost_hysteresis": {"name": "Frosttilstand hysterese"},
       "input_fan_percent": {"name": "Hastighed % indblæsningsventilator"},
@@ -166,7 +172,8 @@
       "basic_humidity_level": {"name": "Basisniveau for luftfugtighed"},
       "co2_setting_value": {"name": "CO₂-advarselstærskel"},
       "service_interval": {"name": "Filteradvarselsinterval"},
-      "service_due_months": {"name": "Resterende tid til filterskift"}
+      "service_due_months": {"name": "Resterende tid til filterskift"},
+      "post_heating_setpoint": {"name": "Eftervarme – setpunkt"}
     },
     "switch": {
       "powerstate": {"name": "Ventilation til/fra"},

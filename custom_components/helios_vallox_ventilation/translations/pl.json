@@ -134,7 +134,9 @@
       "din_airflow_boost": {"name": "Przepływ powietrza 4 - DIN wentylacja intensywna"},
       "effective_airflow": {"name": "Aktualny przepływ powietrza"},
       "electrical_power": {"name": "Moc elektryczna"},
-      "configuration": {"name": "Konfiguracja"}
+      "configuration": {"name": "Konfiguracja"},
+      "analog_input": {"name": "Wejście mA/napięciowe (wartość surowa)"},
+      "post_heating_target": {"name": "Dogrzewanie – aktualna temperatura docelowa"}
     },
     "binary_sensor": {
       "connection": {"name": "Połączenie"},
@@ -149,7 +151,11 @@
       "co2_sensor3_present": {"name": "Czujnik CO₂ 3 obecny"},
       "co2_sensor4_present": {"name": "Czujnik CO₂ 4 obecny"},
       "co2_sensor5_present": {"name": "Czujnik CO₂ 5 obecny"},
-      "softboost_active": {"name": "Softboost aktywny"}
+      "softboost_active": {"name": "Softboost aktywny"},
+      "bypass_damper_position": {"name": "Klapa bypass – pozycja letnia"},
+      "fault_relay": {"name": "Przekaźnik usterki zamknięty"},
+      "preheating_on": {"name": "Podgrzewanie wstępne aktywne"},
+      "external_boost_switch": {"name": "Zewnętrzny przełącznik kominek/boost zamknięty"}
     },
     "number": {
       "fanspeed": {"name": "Stopień wentylatora"},
@@ -158,7 +164,7 @@
       "initial_fanspeed": {"name": "Początkowy stopień wentylatora"},
       "max_fanspeed": {"name": "Maksymalny stopień wentylatora"},
       "bypass_setpoint": {"name": "Temperatura aktywacji obejścia"},
-      "preheat_setpoint": {"name": "Nastawa podgrzewania wstępnego"},
+      "preheat_setpoint": {"name": "Temperatura załączenia podgrzewania wstępnego"},
       "defrost_setpoint": {"name": "Nastawa odszraniania"},
       "defrost_hysteresis": {"name": "Histereza odszraniania"},
       "input_fan_percent": {"name": "Prędkość wentylatora nawiewnego %"},
@@ -166,7 +172,8 @@
       "basic_humidity_level": {"name": "Bazowy poziom wilgotności"},
       "co2_setting_value": {"name": "Próg ostrzegawczy CO₂"},
       "service_interval": {"name": "Interwał przypomnienia o filtrze"},
-      "service_due_months": {"name": "Pozostały czas do wymiany filtra"}
+      "service_due_months": {"name": "Pozostały czas do wymiany filtra"},
+      "post_heating_setpoint": {"name": "Nastawa temperatury dogrzewania"}
     },
     "switch": {
       "powerstate": {"name": "Wentylacja wł./wył."},

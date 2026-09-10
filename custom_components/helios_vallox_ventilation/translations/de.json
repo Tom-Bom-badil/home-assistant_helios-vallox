@@ -4,10 +4,7 @@
       "user": {
         "title": "1 / 4 - Verbindung",
         "description": "Wählen Sie eine bekannte serielle Schnittstelle aus oder geben Sie die Verbindung zur Lüftungsanlage manuell ein. Die Schreibweise bestimmt automatisch die Verbindungsart:\n\n- **socket://ip_adresse:port**\nTransparente serielle Netzwerkverbindung, z. B. ein normaler ser2net-Adapter.\n- **/dev/ttyUSB...**\nLokaler USB-Seriell-Adapter.\n- **/dev/serial/by-id/...**\nStabiler Pfad zu einer lokalen seriellen Schnittstelle.\n- **/dev/...**\nAndere lokale oder virtuelle serielle Schnittstellen, z. B. über `socat`.\n\nESPHome Serial Proxies werden von Home Assistant automatisch unter den bekannten seriellen Schnittstellen angeboten. Das Vallox/Helios DIGIT-Protokoll verwendet immer 9600 Baud, 8N1.",
-        "data": {
-          "known_connection": "Bekannte serielle Schnittstelle",
-          "connection": "Verbindung manuell eingeben"
-        },
+        "data": {"known_connection": "Bekannte serielle Schnittstelle", "connection": "Verbindung manuell eingeben"},
         "data_description": {
           "known_connection": "Von Home Assistant erkannte lokale Schnittstellen und ESPHome Serial Proxies. Eine Auswahl hier hat Vorrang vor der manuellen Eingabe.",
           "connection": "Zum Beispiel `socket://192.168.178.36:502` oder `/dev/serial/by-id/...`."
@@ -16,10 +13,7 @@
       "model": {
         "title": "2 / 4 - Gerätename und -modell",
         "description": "Wählen Sie einen eindeutigen Gerätenamen / Entity Prefix und Ihr Lüftungsmodell (oder 'Custom' für manuelle Eingabe).",
-        "data": {
-          "entity_prefix": "Eindeutiger Name (z.B. 'KWL')",
-          "device_model": "Gerätemodell"
-        },
+        "data": {"entity_prefix": "Eindeutiger Name (z.B. 'KWL')", "device_model": "Gerätemodell"},
         "data_description": {
           "entity_prefix": "Darf bei mehreren Geräten nur einmal existieren - dann z.B. 'KWL Keller', 'KWL oben' usw.",
           "device_model": "Die Auswahl eines Modells belegt die Geräteparameter im nächsten Schritt vor."
@@ -42,11 +36,7 @@
       "house": {
         "title": "4 / 4 - Gebäudeparameter",
         "description": "Geben Sie die Parameter Ihres Gebäudes zur Berechnung des Lüftungsbedarfs ein. Kann später erneut geändert werden.",
-        "data": {
-          "house_area": "Wohnfläche (m²)",
-          "house_volume": "Gebäudevolumen (m³)",
-          "isolation_factor": "Dämmfaktor"
-        },
+        "data": {"house_area": "Wohnfläche (m²)", "house_volume": "Gebäudevolumen (m³)", "isolation_factor": "Dämmfaktor"},
         "data_description": {
           "house_area": "Die gesamte beheizte Wohnfläche in Quadratmetern (z.B. 143).",
           "house_volume": "Das gesamte Luftvolumen des Gebäudes in Kubikmetern (Fläche x Raumhöhe, z.B. 384).",
@@ -61,19 +51,14 @@
       "invalid_csv_count": "Es werden genau 8 Werte benötigt (je einer pro Lüftungsstufe), kommagetrennt.",
       "invalid_csv_values": "Alle Werte müssen ganze Zahlen sein."
     },
-    "abort": {
-      "already_configured": "Dieses Gerät ist bereits konfiguriert."
-    }
+    "abort": {"already_configured": "Dieses Gerät ist bereits konfiguriert."}
   },
   "options": {
     "step": {
       "init": {
         "title": "1 / 2 - Verbindung",
         "description": "Wählen Sie eine bekannte serielle Schnittstelle aus oder geben Sie die Verbindung zur Lüftungsanlage manuell ein. Die Schreibweise bestimmt automatisch die Verbindungsart:\n\n- **socket://ip_adresse:port**\nTransparente serielle Netzwerkverbindung, z. B. ein normaler ser2net-Adapter.\n- **/dev/ttyUSB...**\nLokaler USB-Seriell-Adapter.\n- **/dev/serial/by-id/...**\nStabiler Pfad zu einer lokalen seriellen Schnittstelle.\n- **/dev/...**\nAndere lokale oder virtuelle serielle Schnittstellen, z. B. über `socat`.\n\nESPHome Serial Proxies werden von Home Assistant automatisch unter den bekannten seriellen Schnittstellen angeboten. Das Vallox/Helios DIGIT-Protokoll verwendet immer 9600 Baud, 8N1.",
-        "data": {
-          "known_connection": "Bekannte serielle Schnittstelle",
-          "connection": "Verbindung manuell eingeben"
-        },
+        "data": {"known_connection": "Bekannte serielle Schnittstelle", "connection": "Verbindung manuell eingeben"},
         "data_description": {
           "known_connection": "Von Home Assistant erkannte lokale Schnittstellen und ESPHome Serial Proxies. Eine Auswahl hier hat Vorrang vor der manuellen Eingabe.",
           "connection": "Zum Beispiel `socket://192.168.178.36:502` oder `/dev/serial/by-id/...`."
@@ -110,115 +95,113 @@
   },
   "entity": {
     "sensor": {
-      "temperature_outdoor_air": { "name": "Temperatur Außenluft" },
-      "temperature_supply_air": { "name": "Temperatur Zuluft" },
-      "temperature_extract_air": { "name": "Temperatur Abluft" },
-      "temperature_exhaust_air": { "name": "Temperatur Fortluft" },
-      "boost_remaining": { "name": "Restzeit Stoßlüftung" },
-      "softboost_remaining": { "name": "Softboost Restzeit" },
-      "fault_number": { "name": "Fehler-/Störungsnummer" },
+      "temperature_outdoor_air": {"name": "Temperatur Außenluft"},
+      "temperature_supply_air": {"name": "Temperatur Zuluft"},
+      "temperature_extract_air": {"name": "Temperatur Abluft"},
+      "temperature_exhaust_air": {"name": "Temperatur Fortluft"},
+      "post_heating_target": {"name": "Nachheizung – aktuelle Zieltemperatur"},
+      "boost_remaining": {"name": "Restzeit Stoßlüftung"},
+      "softboost_remaining": {"name": "Softboost Restzeit"},
+      "fault_number": {"name": "Fehler-/Störungsnummer"},
       "fault_text": {
         "name": "Fehlertext",
         "state": {
           "none": "Kein Fehler",
           "supply_air_sensor_fault": "Zuluft-Sensorfehler",
-          "co2_alarm": "CO\u2082-Alarm",
+          "co2_alarm": "CO₂-Alarm",
           "outdoor_air_sensor_fault": "Außenluft-Sensorfehler",
           "exhaust_air_sensor_fault": "Fortluft-Sensorfehler",
           "water_coil_frost_warning": "Frostwarnung Wasserregister",
           "extract_air_sensor_fault": "Abluft-Sensorfehler"
         }
       },
-      "rh_sensor1_raw": { "name": "Feuchtesensor 1 (Rohwert)" },
-      "rh_sensor2_raw": { "name": "Feuchtesensor 2 (Rohwert)" },
-      "co2_reading_upper_byte": { "name": "CO\u2082-Messwert (oberes Byte)" },
-      "co2_reading_lower_byte": { "name": "CO\u2082-Messwert (unteres Byte)" },
-      "co2_setting_upper_byte": { "name": "CO\u2082-Stellwert (oberes Byte)" },
-      "co2_setting_lower_byte": { "name": "CO\u2082-Stellwert (unteres Byte)" },
-      "temperature_reduction": { "name": "Temperaturabfall ausgehend" },
-      "temperature_gain": { "name": "Temperaturgewinn eingehend" },
-      "temperature_balance": { "name": "Temperaturbilanz" },
-      "efficiency": { "name": "Effizienz Wärmerückgewinnung" },
-      "rh_sensor1": { "name": "Feuchtesensor 1" },
-      "rh_sensor2": { "name": "Feuchtesensor 2" },
-      "highest_humidity": { "name": "Höchste Luftfeuchtigkeit" },
-      "co2_concentration": { "name": "CO\u2082-Konzentration" },
-      "din_airflow_moisture": { "name": "Luftmenge 1 - DIN Feuchteschutz" },
-      "din_airflow_reduced": { "name": "Luftmenge 2 - DIN Reduzierte Lüftung" },
-      "din_airflow_normal": { "name": "Luftmenge 3 - DIN Normallüftung" },
-      "din_airflow_boost": { "name": "Luftmenge 4 - DIN Stoßlüftung" },
-      "effective_airflow": { "name": "Luftmenge aktuell" },
-      "electrical_power": { "name": "Elektrische Leistung" },
-      "configuration": { "name": "Konfiguration" }
+      "analog_input": {"name": "mA-/Spannungseingang (Rohwert)"},
+      "rh_sensor1_raw": {"name": "Feuchtesensor 1 (Rohwert)"},
+      "rh_sensor2_raw": {"name": "Feuchtesensor 2 (Rohwert)"},
+      "co2_reading_upper_byte": {"name": "CO₂-Messwert (oberes Byte)"},
+      "co2_reading_lower_byte": {"name": "CO₂-Messwert (unteres Byte)"},
+      "co2_setting_upper_byte": {"name": "CO₂-Stellwert (oberes Byte)"},
+      "co2_setting_lower_byte": {"name": "CO₂-Stellwert (unteres Byte)"},
+      "temperature_reduction": {"name": "Temperaturabfall ausgehend"},
+      "temperature_gain": {"name": "Temperaturgewinn eingehend"},
+      "temperature_balance": {"name": "Temperaturbilanz"},
+      "efficiency": {"name": "Effizienz Wärmerückgewinnung"},
+      "rh_sensor1": {"name": "Feuchtesensor 1"},
+      "rh_sensor2": {"name": "Feuchtesensor 2"},
+      "highest_humidity": {"name": "Höchste Luftfeuchtigkeit"},
+      "co2_concentration": {"name": "CO₂-Konzentration"},
+      "din_airflow_moisture": {"name": "Luftmenge 1 - DIN Feuchteschutz"},
+      "din_airflow_reduced": {"name": "Luftmenge 2 - DIN Reduzierte Lüftung"},
+      "din_airflow_normal": {"name": "Luftmenge 3 - DIN Normallüftung"},
+      "din_airflow_boost": {"name": "Luftmenge 4 - DIN Stoßlüftung"},
+      "effective_airflow": {"name": "Luftmenge aktuell"},
+      "electrical_power": {"name": "Elektrische Leistung"},
+      "configuration": {"name": "Konfiguration"}
     },
     "binary_sensor": {
-      "connection": { "name": "Verbindung" },
-      "boost_status": { "name": "Indikator: Stoßlüftung aktiv" },
-      "fault_detected": { "name": "Indikator: Fehlermeldung" },
-      "clean_filter": { "name": "Indikator: Filterwechsel" },
-      "service_requested": { "name": "Indikator: Service" },
-      "post_heating_on": { "name": "Indikator: Heizung aktiv" },
-      "co2_alarm": { "name": "Indikator: CO\u2082-Alarm" },
-      "co2_sensor1_present": { "name": "CO\u2082-Sensor 1 installiert" },
-      "co2_sensor2_present": { "name": "CO\u2082-Sensor 2 installiert" },
-      "co2_sensor3_present": { "name": "CO\u2082-Sensor 3 installiert" },
-      "co2_sensor4_present": { "name": "CO\u2082-Sensor 4 installiert" },
-      "co2_sensor5_present": { "name": "CO\u2082-Sensor 5 installiert" },
-      "softboost_active": { "name": "Softboost aktiv" }
+      "connection": {"name": "Verbindung"},
+      "boost_status": {"name": "Indikator: Stoßlüftung aktiv"},
+      "fault_detected": {"name": "Indikator: Fehlermeldung"},
+      "clean_filter": {"name": "Indikator: Filterwechsel"},
+      "service_requested": {"name": "Indikator: Service"},
+      "post_heating_on": {"name": "Indikator: Nachheizung aktiv"},
+      "bypass_damper_position": {"name": "Bypassklappe – Sommerstellung"},
+      "fault_relay": {"name": "Störmelderelais geschlossen"},
+      "preheating_on": {"name": "Vorheizung aktiv"},
+      "external_boost_switch": {"name": "Externer Kamin-/Boost-Schalter geschlossen"},
+      "co2_alarm": {"name": "Indikator: CO₂-Alarm"},
+      "co2_sensor1_present": {"name": "CO₂-Sensor 1 installiert"},
+      "co2_sensor2_present": {"name": "CO₂-Sensor 2 installiert"},
+      "co2_sensor3_present": {"name": "CO₂-Sensor 3 installiert"},
+      "co2_sensor4_present": {"name": "CO₂-Sensor 4 installiert"},
+      "co2_sensor5_present": {"name": "CO₂-Sensor 5 installiert"},
+      "softboost_active": {"name": "Softboost aktiv"}
     },
     "number": {
-      "fanspeed": { "name": "Lüftungsstufe" },
-      "softboost_level": { "name": "Softboost Stufe" },
-      "softboost_duration": { "name": "Softboost Dauer" },
-      "initial_fanspeed": { "name": "Lüftungsstufe beim Einschalten" },
-      "max_fanspeed": { "name": "Lüftungsstufe maximal" },
-      "bypass_setpoint": { "name": "Temperatur für Bypass Aktivierung" },
-      "preheat_setpoint": { "name": "Vorheizung Ein" },
-      "defrost_setpoint": { "name": "Frostmodus Ein" },
-      "defrost_hysteresis": { "name": "Frostmodus Hysterese" },
-      "input_fan_percent": { "name": "Drehzahl % Zuluftmotor" },
-      "output_fan_percent": { "name": "Drehzahl % Fortluftmotor" },
-      "basic_humidity_level": { "name": "Luftfeuchte Basisniveau" },
-      "co2_setting_value": { "name": "CO\u2082 Warnschwelle" },
-      "service_interval": { "name": "Warnintervall Filter" },
-      "service_due_months": { "name": "Restzeit Filterwechsel" }
+      "fanspeed": {"name": "Lüftungsstufe"},
+      "softboost_level": {"name": "Softboost Stufe"},
+      "softboost_duration": {"name": "Softboost Dauer"},
+      "initial_fanspeed": {"name": "Lüftungsstufe beim Einschalten"},
+      "max_fanspeed": {"name": "Lüftungsstufe maximal"},
+      "bypass_setpoint": {"name": "Temperatur für Bypass Aktivierung"},
+      "preheat_setpoint": {"name": "Vorheizung – Einschalttemperatur"},
+      "post_heating_setpoint": {"name": "Nachheizung – Solltemperatur"},
+      "defrost_setpoint": {"name": "Frostmodus Ein"},
+      "defrost_hysteresis": {"name": "Frostmodus Hysterese"},
+      "input_fan_percent": {"name": "Drehzahl % Zuluftmotor"},
+      "output_fan_percent": {"name": "Drehzahl % Fortluftmotor"},
+      "basic_humidity_level": {"name": "Luftfeuchte Basisniveau"},
+      "co2_setting_value": {"name": "CO₂ Warnschwelle"},
+      "service_interval": {"name": "Warnintervall Filter"},
+      "service_due_months": {"name": "Restzeit Filterwechsel"}
     },
     "switch": {
-      "powerstate": { "name": "KWL an/aus" },
-      "co2_indicator": { "name": "Warnung CO\u2082" },
-      "rh_indicator": { "name": "Warnung Luftfeuchte" },
-      "preheat_status": { "name": "Vorheizung Status" },
-      "activate_boost": { "name": "Stoßlüftung aktivieren" },
-      "softboost_fireplace_mode": { "name": "Softboost Kaminmodus" },
-      "input_fan_off": { "name": "Frischluftventilator aus" },
-      "output_fan_off": { "name": "Fortluftventilator aus" }
+      "powerstate": {"name": "KWL an/aus"},
+      "co2_indicator": {"name": "Warnung CO₂"},
+      "rh_indicator": {"name": "Warnung Luftfeuchte"},
+      "preheat_status": {"name": "Vorheizung Status"},
+      "activate_boost": {"name": "Stoßlüftung aktivieren"},
+      "softboost_fireplace_mode": {"name": "Softboost Kaminmodus"},
+      "input_fan_off": {"name": "Frischluftventilator aus"},
+      "output_fan_off": {"name": "Fortluftventilator aus"}
     },
     "select": {
       "boost_mode": {
         "name": "Modus bei Stoßlüftung",
-        "state": {
-          "fireplace": "Kaminmodus",
-          "normal": "Normal"
-        }
+        "state": {"fireplace": "Kaminmodus", "normal": "Normal"}
       },
       "winter_mode": {
         "name": "Betriebsmodus",
-        "state": {
-          "summer": "Sommer",
-          "winter": "Winter"
-        }
+        "state": {"summer": "Sommer", "winter": "Winter"}
       },
       "humidity_control_mode": {
         "name": "Luftfeuchte Regelung",
-        "state": {
-          "manual": "Manuell",
-          "automatic": "Automatisch"
-        }
+        "state": {"manual": "Manuell", "automatic": "Automatisch"}
       }
     },
     "button": {
-      "reset_service_reminder": { "name": "Warnintervall Filter zurücksetzen" },
-      "softboost_start_stop": { "name": "Softboost starten/stoppen" }
+      "reset_service_reminder": {"name": "Warnintervall Filter zurücksetzen"},
+      "softboost_start_stop": {"name": "Softboost starten/stoppen"}
     }
   }
 }
