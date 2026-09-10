@@ -1,10 +1,25 @@
-import socket
+# This module is intentionally kept independent of Home Assistant and can also
+# be executed directly for diagnostics and development.
+#
+# The transport layer uses serialx. Therefore, serialx must be installed when
+# running this file standalone. Home Assistant-specific helpers or imports must
+# not be added here.
+#
+# Supported connection targets include:
+# - socket://host:port
+# - /dev/ttyUSB...
+# - /dev/serial/by-id/...
+# - esphome://...
+#
+# The Vallox/Helios DIGIT protocol itself is implemented below and is not Modbus.
+
+import argparse
 import logging
+import random
 import threading
 import time
-import argparse
-import select
-import random
+
+import serialx
 
 try:
     from .constants import ( # HA
@@ -44,14 +59,29 @@ class HeliosBase:
 
     ###### Init and Logging ####################################################
 
-    def __init__(self, hass=None, ip=None, port=None, config_data=None):
+    def __init__(
+        self,
+        hass=None,
+        ip=None,
+        port=None,
+        config_data=None,
+        connection=None,
+    ):
         # self.logger = logging.getLogger(__name__)
         self.logger = logging.getLogger(__name__)
         self._hass = hass
         self._ip = ip
         self._port = port
         self._config_data = config_data or {}
-        self._socket = None
+
+        # Backward-compatible transition:
+        # Existing HA config entries still provide IP + port. Convert them
+        # internally to the serialx socket URL until the config flow is migrated.
+        self._connection = connection
+        if self._connection is None and ip is not None and port is not None:
+            self._connection = f"socket://{ip}:{port}"
+
+        self._serial = None
         self._lock = threading.Lock()
         self._all_values, self._cache = {}, {}
 
@@ -402,55 +432,90 @@ class HeliosBase:
 
     # connect to bus upon start and re-connect if needed
     def _connect(self):
-        if self._socket:
+        if self._serial is not None:
             try:
-                self._socket.recv(1, socket.MSG_PEEK) # check for active socket
-                return True
-            except socket.error:
-                self.logger.debug("(Re-)connecting to RS485.")
-                self._socket.close()
-                self._socket = None
+                if self._serial.is_open:
+                    return True
+            except Exception:
+                pass
+
+            try:
+                self._serial.close()
+            except Exception:
+                pass
+
+            self._serial = None
+
+        if not self._connection:
+            self.logger.error("Connection failed: no connection configured.")
+            return False
+
         try:
-            self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self._socket.settimeout(RS485_SOCKET_TIMEOUT)
-            self._socket.connect((self._ip, self._port))
-            self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
-            self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024)
-            self._socket.setsockopt(socket.SOL_TCP, socket.TCP_USER_TIMEOUT, 1500)
-            self._socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+            self._serial = serialx.serial_for_url(
+                self._connection,
+                baudrate=9600,
+                parity=serialx.PARITY_NONE,
+                stopbits=serialx.STOPBITS_ONE,
+                byte_size=serialx.EIGHTBITS,
+                read_timeout=RS485_SOCKET_TIMEOUT,
+                write_timeout=RS485_SOCKET_TIMEOUT,
+                connect_timeout=RS485_SOCKET_TIMEOUT,
+            )
+            self._serial.open()
             return True
+
         except Exception as e:
             self.logger.error(f"Connection failed: {e}")
-            self._socket = None
+
+            if self._serial is not None:
+                try:
+                    self._serial.close()
+                except Exception:
+                    pass
+
+            self._serial = None
             return False
 
 
     # disconnect from bus
     def _disconnect(self):
-        if self._socket is not None:
+        if self._serial is not None:
             self.logger.debug("Disconnecting.")
-            self._socket.close()
-            self._socket = None
+
+            try:
+                self._serial.close()
+            finally:
+                self._serial = None
 
 
     # discover bus silence, return a free sending slot or a timeout
     def _syncWithRS485(self):
         gotSlot = False
-        silence_time = RS485_SILENCE_TIME
         timeout = time.time() + RS485_SILENCE_TIMEOUT
+        char = bytearray(1)
+
         while time.time() < timeout:
-            ready = select.select([self._socket], [], [], silence_time)
-            if ready[0]:
-                try:
-                    chars = self._socket.recv(1)
-                    if chars:  # data received, bus busy
-                        continue  # try again
-                except socket.error as e:
-                    self.logger.error(f"Socket error in _syncWithRS485: {e}")
-                    return False
-            else:  # bus is quiet, we have a sending slot
+            try:
+                received = self._serial.readinto(
+                    char,
+                    timeout=RS485_SILENCE_TIME,
+                )
+
+                if received:
+                    # Data received: bus is busy. Discard the byte just like the
+                    # previous socket implementation and start the silence timer
+                    # again.
+                    continue
+
+                # No byte received during the complete silence interval:
+                # the bus is quiet and we have a sending slot.
                 gotSlot = True
                 break
+
+            except Exception as e:
+                self.logger.error(f"Transport error in _syncWithRS485: {e}")
+                return False
+
         return gotSlot
 
 
@@ -493,45 +558,92 @@ class HeliosBase:
     def _sendTelegram(self, sender, receiver, register, value, repeat_checksum=False):
         telegram = [0x01, sender, receiver, register, value, 0]
         telegram[5] = self._calculateCRC(telegram)
+
         if repeat_checksum:
             telegram.append(telegram[5])
+
         # Never send into active bus traffic.
         # If no free slot is found, wait once and try again.
         for attempt in range(RS485_SEND_SLOT_ATTEMPTS):
             if self._syncWithRS485():
                 try:
-                    self._socket.sendall(bytearray(telegram))
+                    data = memoryview(bytearray(telegram))
+                    timeout = time.time() + RS485_SOCKET_TIMEOUT
+
+                    # socket.sendall() guaranteed that the complete telegram was
+                    # handed to the transport. Preserve that behaviour for serial
+                    # transports, where write() may legally write fewer bytes.
+                    while data:
+                        remaining = timeout - time.time()
+                        if remaining <= 0:
+                            raise TimeoutError("Transport write timeout")
+
+                        written = self._serial.write(
+                            data,
+                            timeout=remaining,
+                        )
+
+                        if written <= 0:
+                            raise TimeoutError("Transport write timeout")
+
+                        data = data[written:]
+
                     return True
-                except socket.error as e:
-                    self.logger.error(f"Socket error during send: {e}")
+
+                except Exception as e:
+                    self.logger.error(f"Transport error during send: {e}")
                     return False
+
             if attempt == 0:
-                self.logger.debug("No free RS485 slot available. Retrying send in 1 second.")
+                self.logger.debug(
+                    "No free RS485 slot available. Retrying send in 1 second."
+                )
+
             time.sleep(RS485_SEND_RETRY_DELAY)
-        self.logger.error("Sending failed: no free RS485 slot available after retry.")
+
+        self.logger.error(
+            "Sending failed: no free RS485 slot available after retry."
+        )
         return False
 
 
     # read a telegram from RS485 (called after sending a register read request)
     def _receiveTelegram(self, sender, receiver, register):
-        telegram = [0, 0, 0, 0, 0, 0] # FIFO ring buffer
+        telegram = [0, 0, 0, 0, 0, 0]  # FIFO ring buffer
         timeout = time.time() + RS485_RESPONSE_TIMEOUT
+        char = bytearray(1)
+
         while time.time() < timeout:
             try:
-                char = self._socket.recv(1) # parse each byte received from bus
-                if not char:
+                remaining = timeout - time.time()
+                if remaining <= 0:
+                    break
+
+                received = self._serial.readinto(
+                    char,
+                    timeout=remaining,
+                )
+
+                if not received:
                     continue
+
                 byte = char[0]
-                telegram.pop(0) # delete oldest byte from the left
-                telegram.append(byte) # add newly read byte to the right
-                if telegram[0] == 0x01: # compare and return value if successful
-                    if (telegram[1] == sender and
-                        telegram[2] == receiver and
-                        telegram[3] == register and
-                        telegram[5] == self._calculateCRC(telegram)):
+                telegram.pop(0)  # delete oldest byte from the left
+                telegram.append(byte)  # add newly read byte to the right
+
+                if telegram[0] == 0x01:  # compare and return value if successful
+                    if (
+                        telegram[1] == sender
+                        and telegram[2] == receiver
+                        and telegram[3] == register
+                        and telegram[5] == self._calculateCRC(telegram)
+                    ):
                         return telegram[4]
-            except socket.timeout:
-                continue
+
+            except Exception as e:
+                self.logger.error(f"Transport error during receive: {e}")
+                return None
+
         self.logger.debug("Read timeout.")
         return None
 
@@ -581,13 +693,43 @@ class HeliosBase:
 
 def main():
     parser = argparse.ArgumentParser(description="Test HeliosBase functions")
-    parser.add_argument("--ip", type=str, help="IP address of the device")
-    parser.add_argument("--port", type=int, help="Port of the device")
+    parser.add_argument(
+        "--connection",
+        type=str,
+        help=(
+            "serialx connection target, e.g. socket://host:port, "
+            "/dev/ttyUSB0 or esphome://..."
+        ),
+    )
+    parser.add_argument(
+        "--ip",
+        type=str,
+        help="IP address of the device (legacy shortcut)",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        help="Port of the device (legacy shortcut)",
+    )
     parser.add_argument("--read", type=str, help="Variable name to read")
     parser.add_argument("--readall", action="store_true", help="Read all values")
-    parser.add_argument("--write", nargs=2, metavar=("varname", "value"), help="Variable name and value to write")
+    parser.add_argument(
+        "--write",
+        nargs=2,
+        metavar=("varname", "value"),
+        help="Variable name and value to write",
+    )
     args = parser.parse_args()
-    helios = HeliosBase(ip=args.ip, port=args.port)
+
+    if args.connection:
+        helios = HeliosBase(connection=args.connection)
+    elif args.ip is not None and args.port is not None:
+        helios = HeliosBase(ip=args.ip, port=args.port)
+    else:
+        parser.error(
+            "Either --connection or both --ip and --port must be specified."
+        )
+
     if args.read:
         value = helios.readSingleValue(args.read)
         print(value)
@@ -598,7 +740,11 @@ def main():
         varname, value = args.write
         vardef = REGISTERS_AND_COILS.get(varname)
         if vardef is not None:
-            if vardef["type"] == "bit" or vardef["type"] == "dec" or vardef["type"] == "fanspeed":
+            if (
+                vardef["type"] == "bit"
+                or vardef["type"] == "dec"
+                or vardef["type"] == "fanspeed"
+            ):
                 value = int(value)
             elif vardef["type"] == "temperature":
                 value = float(value)
