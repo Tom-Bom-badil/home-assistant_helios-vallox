@@ -1,6 +1,7 @@
 {
     "domain": "helios_vallox_ventilation",
     "name": "Helios Pro / Vallox SE Ventilation",
+    "after_dependencies": ["esphome"],
     "codeowners": ["@Tom-Bom-badil", "@wertzui"],
     "config_flow": true,
     "dependencies": [],
