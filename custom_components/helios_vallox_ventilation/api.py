@@ -49,6 +49,10 @@ RS485_SEND_RETRY_DELAY = 1.0
 RS485_SEND_SLOT_ATTEMPTS = 5
 
 
+class TransportError(Exception):
+    """Raised when the serial transport is no longer usable."""
+
+
 # Log major DEBUG messages as INFO in developer environment (replaced)
 def log_debug_or_developer_info(logger, message, *args):
     """Log developer diagnostics as DEBUG."""
@@ -67,7 +71,6 @@ class HeliosBase:
         config_data=None,
         connection=None,
     ):
-        # self.logger = logging.getLogger(__name__)
         self.logger = logging.getLogger(__name__)
         self._hass = hass
         self._ip = ip
@@ -87,7 +90,6 @@ class HeliosBase:
 
 
     def _logDebugOrDeveloperInfo(self, message, *args):
-        """Log as DEBUG in releases, but force logging as INFO in developer mode."""
         log_debug_or_developer_info(self.logger, message, *args)
 
 
@@ -103,6 +105,9 @@ class HeliosBase:
             self._cache.pop(REGISTERS_AND_COILS[varname]["varid"], None)
             value = self._performRead(varname)
             return {varname: value}
+        except TransportError as e:
+            self.logger.error(f"Connection lost during single read: {e}")
+            return {}
         except Exception as e:
             self.logger.error(f"Exception in _readSingleValue(): {e}")
             return {}
@@ -125,6 +130,9 @@ class HeliosBase:
             self._all_values = self._addCalculationsToReadings(self._all_values)
             self._logDebugOrDeveloperInfo(f"Full read took {time.time() - start_time:.2f}s.")
             return self._all_values
+        except TransportError as e:
+            self.logger.error(f"Connection lost during full read: {e}")
+            return {}
         except Exception as e:
             self.logger.error(f"Exception in _readAllValues(): {e}")
             return {}
@@ -140,6 +148,9 @@ class HeliosBase:
             if not self._connect() or not self._validateBeforeWrite(varname, value, min_value, max_value):
                 return False
             return self._performWrite(varname, value)
+        except TransportError as e:
+            self.logger.error(f"Connection lost during write: {e}")
+            return False
         except Exception as e:
             self.logger.error(f"Exception in _writeValue(): {e}")
             return False
@@ -189,6 +200,11 @@ class HeliosBase:
             self._cache[REGISTERS_AND_COILS["service_requested"]["varid"]] = new_a3
             return True
 
+        except TransportError as e:
+            self.logger.error(
+                f"Connection lost during service reminder reset: {e}"
+            )
+            return False
         except Exception as e:
             self.logger.error(f"Exception in resetServiceReminder(): {e}", exc_info=True)
             return False
@@ -231,6 +247,8 @@ class HeliosBase:
             # give up, too many re-reads
             self.logger.error(f"Failed to read '{varname}' after {retry_count} attempts.")
             return None
+        except TransportError:
+            raise
         except Exception as e:
             self.logger.error(f"Exception in _performRead(): {e}")
             return None
@@ -241,12 +259,13 @@ class HeliosBase:
         fault_number = all_values.get('fault_number')
         if fault_number is not None:
             all_values['fault_text'] = COMPONENT_FAULTS.get(fault_number, "none")
+
         # add heat recovery and efficiency values (all temps required for this)
         keys = {
             'temperature_outdoor_air', 'temperature_supply_air',
             'temperature_extract_air', 'temperature_exhaust_air'
         }
-        if keys.issubset(all_values) and all(all_values[k] is not None for k in keys):  
+        if keys.issubset(all_values) and all(all_values[k] is not None for k in keys):
             outdoor_air = all_values['temperature_outdoor_air']
             supply_air = all_values['temperature_supply_air']
             extract_air = all_values['temperature_extract_air']
@@ -374,11 +393,15 @@ class HeliosBase:
                 currentval = self._cache.get(vardef["varid"])
             else:
                 currentval = None
+
             rawvalue = self._convertToRaw(varname, value, currentval)
+
             if rawvalue is None:
                 self.logger.error(f"Writing failed: Cannot convert {value}.")
                 return False
+
             register = vardef["varid"]
+
             self._logDebugOrDeveloperInfo(
                 "Writing %s to %s: register=0x%02X, raw=0x%02X",
                 value,
@@ -386,13 +409,20 @@ class HeliosBase:
                 register,
                 rawvalue,
             )
+
             if not self._sendWriteSequence(varname, register, rawvalue):
                 return False
+
             self._all_values[varname] = value
+
             # update bit cache with the complete byte value
             if vardef["type"] == "bit":
                 self._cache[register] = rawvalue
+
             return True
+
+        except TransportError:
+            raise
         except Exception as e:
             self.logger.error(f"Exception in _performWrite(): {e}")
             return False
@@ -409,6 +439,7 @@ class HeliosBase:
             ("MB*", BUS_ADDRESSES["MB*"], False),
             ("MB1", BUS_ADDRESSES["MB1"], True),
         )
+
         for target_name, receiver, repeat_checksum in write_targets:
             self._logDebugOrDeveloperInfo(
                 "Sending %s to %s: register=0x%02X, raw=0x%02X",
@@ -417,13 +448,21 @@ class HeliosBase:
                 register,
                 rawvalue,
             )
-            if not self._sendTelegram(sender, receiver, register, rawvalue, repeat_checksum=repeat_checksum):
+
+            if not self._sendTelegram(
+                sender,
+                receiver,
+                register,
+                rawvalue,
+                repeat_checksum=repeat_checksum,
+            ):
                 self.logger.error(
                     "Writing failed for '%s': no free RS485 slot available while sending to %s.",
                     varname,
                     target_name,
                 )
                 return False
+
         return True
 
 
@@ -484,6 +523,11 @@ class HeliosBase:
 
             try:
                 self._serial.close()
+            except Exception as e:
+                self.logger.debug(
+                    "Ignoring transport close error: %s",
+                    e,
+                )
             finally:
                 self._serial = None
 
@@ -513,8 +557,9 @@ class HeliosBase:
                 break
 
             except Exception as e:
-                self.logger.error(f"Transport error in _syncWithRS485: {e}")
-                return False
+                raise TransportError(
+                    f"Transport error in _syncWithRS485: {e}"
+                ) from e
 
         return gotSlot
 
@@ -538,7 +583,7 @@ class HeliosBase:
         conversion_map = {
             "temperature": lambda v: int(NTC5K_TEMPERATURES.index(int(v))),
             "fanspeed": lambda v: int({v: k for k, v in FANSPEEDS.items()}.get(int(v), 0)),
-            "bit": lambda v: currentval | (1 << vardef["bitposition"]) if str(v).lower() in {"true", "1", "on"} 
+            "bit": lambda v: currentval | (1 << vardef["bitposition"]) if str(v).lower() in {"true", "1", "on"}
                 else currentval & ~(1 << vardef["bitposition"]),
             "dec": lambda v: int(v * 3) if varname == "defrost_hysteresis" else int(v),
             "rh_percent": lambda v: max(0x33, min(0xFF, int(round(float(v) * 2.04 + 51))))
@@ -575,6 +620,7 @@ class HeliosBase:
                     # transports, where write() may legally write fewer bytes.
                     while data:
                         remaining = timeout - time.time()
+
                         if remaining <= 0:
                             raise TimeoutError("Transport write timeout")
 
@@ -591,8 +637,9 @@ class HeliosBase:
                     return True
 
                 except Exception as e:
-                    self.logger.error(f"Transport error during send: {e}")
-                    return False
+                    raise TransportError(
+                        f"Transport error during send: {e}"
+                    ) from e
 
             if attempt == 0:
                 self.logger.debug(
@@ -616,6 +663,7 @@ class HeliosBase:
         while time.time() < timeout:
             try:
                 remaining = timeout - time.time()
+
                 if remaining <= 0:
                     break
 
@@ -641,8 +689,9 @@ class HeliosBase:
                         return telegram[4]
 
             except Exception as e:
-                self.logger.error(f"Transport error during receive: {e}")
-                return None
+                raise TransportError(
+                    f"Transport error during receive: {e}"
+                ) from e
 
         self.logger.debug("Read timeout.")
         return None
@@ -654,14 +703,17 @@ class HeliosBase:
         if REGISTERS_AND_COILS.get(varname) is None:
             self.logger.error(f"Writing stopped: Invalid variable '{varname}'.")
             return False
+
         # Prevent writing to register 06h (may cause irrepairable damage)
         if REGISTERS_AND_COILS[varname]["varid"] == 0x06:
             self.logger.critical("Writing stopped: 06h writes are prohibited.")
             return False
+
         # Prevent writing read-only variables
         if REGISTERS_AND_COILS[varname]["write"] != True:
             self.logger.error(f"Writing stopped: '{varname}' is read-only.")
             return False
+
         # Make sure value is int or bool
         if not isinstance(value, (int, bool)):
             if REGISTERS_AND_COILS[varname]["type"] == "bit":
@@ -674,17 +726,21 @@ class HeliosBase:
             else:
                 self.logger.error(f"Writing stopped: '{value}' is not an integer.")
                 return False
+
         # Check if value is within allowed limits
         if REGISTERS_AND_COILS[varname]["type"] != "bit" and min_value is not None and max_value is not None:
             min_value = int(min_value)
             max_value = int(max_value)
             self.logger.debug(f"Validating '{varname}': value={value}, min={min_value}, max={max_value}")
+
             if int(value) < min_value:
                 self.logger.error(f"Writing stopped: {value} below min of {min_value}.")
                 return False
+
             if int(value) > max_value:
                 self.logger.error(f"Writing stopped: {value} above max of {max_value}.")
                 return False
+
         return True
 
 
@@ -693,6 +749,7 @@ class HeliosBase:
 
 def main():
     parser = argparse.ArgumentParser(description="Test HeliosBase functions")
+
     parser.add_argument(
         "--connection",
         type=str,
@@ -701,24 +758,29 @@ def main():
             "/dev/ttyUSB0 or esphome://..."
         ),
     )
+
     parser.add_argument(
         "--ip",
         type=str,
         help="IP address of the device (legacy shortcut)",
     )
+
     parser.add_argument(
         "--port",
         type=int,
         help="Port of the device (legacy shortcut)",
     )
+
     parser.add_argument("--read", type=str, help="Variable name to read")
     parser.add_argument("--readall", action="store_true", help="Read all values")
+
     parser.add_argument(
         "--write",
         nargs=2,
         metavar=("varname", "value"),
         help="Variable name and value to write",
     )
+
     args = parser.parse_args()
 
     if args.connection:
@@ -733,12 +795,15 @@ def main():
     if args.read:
         value = helios.readSingleValue(args.read)
         print(value)
+
     elif args.readall:
         values = helios.readAllValues()
         print(values)
+
     elif args.write:
         varname, value = args.write
         vardef = REGISTERS_AND_COILS.get(varname)
+
         if vardef is not None:
             if (
                 vardef["type"] == "bit"
@@ -748,10 +813,12 @@ def main():
                 value = int(value)
             elif vardef["type"] == "temperature":
                 value = float(value)
+
         if helios.writeValue(varname, value):
             print(f"Successfully wrote {value} to {varname}")
         else:
             print(f"Failed to write {value} to {varname}")
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
