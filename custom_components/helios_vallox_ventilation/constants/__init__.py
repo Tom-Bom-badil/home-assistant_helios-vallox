@@ -9,7 +9,6 @@ from .bus import (
 
 from .config import (
     CONF_CONNECTION,
-    CONF_KNOWN_CONNECTION,
     CONF_HOUSE_AREA,
     CONF_HOUSE_VOLUME,
     CONF_ISOLATION_FACTOR,

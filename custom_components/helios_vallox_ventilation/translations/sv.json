@@ -3,11 +3,9 @@
     "step": {
       "user": {
         "title": "1 / 4 - Anslutning",
-        "description": "Välj ett känt seriellt gränssnitt eller ange anslutningen till ventilationsaggregatet manuellt. Syntaxen avgör automatiskt anslutningstypen:\n\n- **socket://ip_adress:port**\nTransparent seriell nätverksanslutning, t.ex. en vanlig ser2net-adapter.\n- **/dev/ttyUSB...**\nLokal USB-till-seriell-adapter.\n- **/dev/serial/by-id/...**\nStabil sökväg till ett lokalt seriellt gränssnitt.\n- **/dev/...**\nAndra lokala eller virtuella seriella gränssnitt, t.ex. via `socat`.\n\nESPHome Serial Proxies erbjuds automatiskt av Home Assistant bland de kända seriella gränssnitten. Vallox/Helios DIGIT-protokollet använder alltid 9600 baud, 8N1.",
-        "data": {"known_connection": "Känt seriellt gränssnitt", "connection": "Ange anslutning manuellt"},
-        "data_description": {
-          "known_connection": "Lokala gränssnitt och ESPHome Serial Proxies som upptäckts av Home Assistant. Ett val här har företräde framför den manuella inmatningen.",
-          "connection": "Till exempel `socket://192.168.178.36:502` eller `/dev/serial/by-id/...`."
+        "description": "Välj ett seriellt gränssnitt som Home Assistant redan känner till.\n\n**ELLER**\n\nAnge anslutningsdata manuellt i något av följande format:\n\n- **socket://ip_adress:port**\nTransparent seriell anslutning över TCP, t.ex. en seriell-till-Ethernet-adapter i transparent läge.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFysiskt eller virtuellt lokalt seriellt gränssnitt, t.ex. en USB-till-seriell-adapter eller `socat`-enhet. Detta fylls vanligtvis i automatiskt när ett känt gränssnitt väljs.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSeriell anslutning via en ESPHome Serial Proxy som använder en UART på en fjärr-ESP. Detta fylls vanligtvis i automatiskt när ett känt gränssnitt väljs.\n\nVallox/Helios DIGIT-protokollet använder alltid 9600 baud, 8N1.",
+        "data": {
+          "connection": "Gränssnitt för kommunikationen med ventilationsaggregatet."
         }
       },
       "model": {
@@ -46,8 +44,8 @@
     },
     "error": {
       "cannot_connect": "Kan inte ansluta till ventilationsaggregatet. Kontrollera anslutningen och att adaptern är tillgänglig.",
-      "connection_required": "Välj ett känt seriellt gränssnitt eller ange en anslutning manuellt.",
-      "invalid_connection": "Anslutningen är ogiltig. Använd ett känt seriellt gränssnitt, `socket://host:port` eller `/dev/...`.",
+      "connection_required": "Välj eller ange en anslutning.",
+      "invalid_connection": "Anslutningen är ogiltig. Använd `socket://host:port`, `/dev/...` eller en ESPHome Serial Proxy.",
       "invalid_csv_count": "Exakt 8 värden krävs, ett per fläkthastighet, separerade med kommatecken.",
       "invalid_csv_values": "Alla värden måste vara heltal."
     },
@@ -57,11 +55,9 @@
     "step": {
       "init": {
         "title": "1 / 2 - Anslutning",
-        "description": "Välj ett känt seriellt gränssnitt eller ange anslutningen till ventilationsaggregatet manuellt. Syntaxen avgör automatiskt anslutningstypen:\n\n- **socket://ip_adress:port**\nTransparent seriell nätverksanslutning, t.ex. en vanlig ser2net-adapter.\n- **/dev/ttyUSB...**\nLokal USB-till-seriell-adapter.\n- **/dev/serial/by-id/...**\nStabil sökväg till ett lokalt seriellt gränssnitt.\n- **/dev/...**\nAndra lokala eller virtuella seriella gränssnitt, t.ex. via `socat`.\n\nESPHome Serial Proxies erbjuds automatiskt av Home Assistant bland de kända seriella gränssnitten. Vallox/Helios DIGIT-protokollet använder alltid 9600 baud, 8N1.",
-        "data": {"known_connection": "Känt seriellt gränssnitt", "connection": "Ange anslutning manuellt"},
-        "data_description": {
-          "known_connection": "Lokala gränssnitt och ESPHome Serial Proxies som upptäckts av Home Assistant. Ett val här har företräde framför den manuella inmatningen.",
-          "connection": "Till exempel `socket://192.168.178.36:502` eller `/dev/serial/by-id/...`."
+        "description": "Välj ett seriellt gränssnitt som Home Assistant redan känner till.\n\n**ELLER**\n\nAnge anslutningsdata manuellt i något av följande format:\n\n- **socket://ip_adress:port**\nTransparent seriell anslutning över TCP, t.ex. en seriell-till-Ethernet-adapter i transparent läge.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFysiskt eller virtuellt lokalt seriellt gränssnitt, t.ex. en USB-till-seriell-adapter eller `socat`-enhet. Detta fylls vanligtvis i automatiskt när ett känt gränssnitt väljs.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSeriell anslutning via en ESPHome Serial Proxy som använder en UART på en fjärr-ESP. Detta fylls vanligtvis i automatiskt när ett känt gränssnitt väljs.\n\nVallox/Helios DIGIT-protokollet använder alltid 9600 baud, 8N1.",
+        "data": {
+          "connection": "Gränssnitt för kommunikationen med ventilationsaggregatet."
         }
       },
       "advanced": {
@@ -87,8 +83,8 @@
     },
     "error": {
       "cannot_connect": "Kan inte ansluta till ventilationsaggregatet. Kontrollera anslutningen och att adaptern är tillgänglig.",
-      "connection_required": "Välj ett känt seriellt gränssnitt eller ange en anslutning manuellt.",
-      "invalid_connection": "Anslutningen är ogiltig. Använd ett känt seriellt gränssnitt, `socket://host:port` eller `/dev/...`.",
+      "connection_required": "Välj eller ange en anslutning.",
+      "invalid_connection": "Anslutningen är ogiltig. Använd `socket://host:port`, `/dev/...` eller en ESPHome Serial Proxy.",
       "invalid_csv_count": "Exakt 8 värden krävs, ett per fläkthastighet, separerade med kommatecken.",
       "invalid_csv_values": "Alla värden måste vara heltal."
     }

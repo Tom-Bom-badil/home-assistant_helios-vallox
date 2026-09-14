@@ -1,6 +1,5 @@
 # Connection configuration
 CONF_CONNECTION = "connection"
-CONF_KNOWN_CONNECTION = "known_connection"
 
 # Config keys for house / ventilation model
 CONF_HOUSE_AREA = "house_area"

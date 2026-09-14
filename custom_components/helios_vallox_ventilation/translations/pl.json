@@ -3,11 +3,9 @@
     "step": {
       "user": {
         "title": "1 / 4 - Połączenie",
-        "description": "Wybierz znany interfejs szeregowy lub ręcznie wprowadź połączenie z centralą wentylacyjną. Składnia automatycznie określa typ połączenia:\n\n- **socket://adres_ip:port**\nPrzezroczyste szeregowe połączenie sieciowe, np. standardowy adapter ser2net.\n- **/dev/ttyUSB...**\nLokalny adapter USB–szeregowy.\n- **/dev/serial/by-id/...**\nStabilna ścieżka do lokalnego interfejsu szeregowego.\n- **/dev/...**\nInne lokalne lub wirtualne interfejsy szeregowe, np. przez `socat`.\n\nESPHome Serial Proxies są automatycznie oferowane przez Home Assistant wśród znanych interfejsów szeregowych. Protokół Vallox/Helios DIGIT zawsze używa 9600 baud, 8N1.",
-        "data": {"known_connection": "Znany interfejs szeregowy", "connection": "Wprowadź połączenie ręcznie"},
-        "data_description": {
-          "known_connection": "Lokalne interfejsy i ESPHome Serial Proxies wykryte przez Home Assistant. Wybór tutaj ma pierwszeństwo przed wpisem ręcznym.",
-          "connection": "Na przykład `socket://192.168.178.36:502` lub `/dev/serial/by-id/...`."
+        "description": "Wybierz interfejs szeregowy już znany Home Assistant.\n\n**LUB**\n\nWprowadź ręcznie dane połączenia w jednym z następujących formatów:\n\n- **socket://adres_ip:port**\nPrzezroczyste połączenie szeregowe przez TCP, np. adapter szeregowy-Ethernet w trybie transparentnym.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFizyczny lub wirtualny lokalny interfejs szeregowy, np. adapter USB-szeregowy lub urządzenie `socat`. To pole jest zwykle wypełniane automatycznie po wybraniu znanego interfejsu.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nPołączenie szeregowe przez ESPHome Serial Proxy wykorzystujące UART zdalnego ESP. To pole jest zwykle wypełniane automatycznie po wybraniu znanego interfejsu.\n\nProtokół Vallox/Helios DIGIT zawsze używa 9600 baud, 8N1.",
+        "data": {
+          "connection": "Interfejs do komunikacji z centralą wentylacyjną."
         }
       },
       "model": {
@@ -46,8 +44,8 @@
     },
     "error": {
       "cannot_connect": "Nie można połączyć się z centralą wentylacyjną. Sprawdź połączenie i dostępność adaptera.",
-      "connection_required": "Wybierz znany interfejs szeregowy lub ręcznie wprowadź połączenie.",
-      "invalid_connection": "Połączenie jest nieprawidłowe. Użyj znanego interfejsu szeregowego, `socket://host:port` lub `/dev/...`.",
+      "connection_required": "Wybierz lub wprowadź połączenie.",
+      "invalid_connection": "Połączenie jest nieprawidłowe. Użyj `socket://host:port`, `/dev/...` lub ESPHome Serial Proxy.",
       "invalid_csv_count": "Wymaganych jest dokładnie 8 wartości, po jednej dla każdego stopnia wentylatora, oddzielonych przecinkami.",
       "invalid_csv_values": "Wszystkie wartości muszą być liczbami całkowitymi."
     },
@@ -57,11 +55,9 @@
     "step": {
       "init": {
         "title": "1 / 2 - Połączenie",
-        "description": "Wybierz znany interfejs szeregowy lub ręcznie wprowadź połączenie z centralą wentylacyjną. Składnia automatycznie określa typ połączenia:\n\n- **socket://adres_ip:port**\nPrzezroczyste szeregowe połączenie sieciowe, np. standardowy adapter ser2net.\n- **/dev/ttyUSB...**\nLokalny adapter USB–szeregowy.\n- **/dev/serial/by-id/...**\nStabilna ścieżka do lokalnego interfejsu szeregowego.\n- **/dev/...**\nInne lokalne lub wirtualne interfejsy szeregowe, np. przez `socat`.\n\nESPHome Serial Proxies są automatycznie oferowane przez Home Assistant wśród znanych interfejsów szeregowych. Protokół Vallox/Helios DIGIT zawsze używa 9600 baud, 8N1.",
-        "data": {"known_connection": "Znany interfejs szeregowy", "connection": "Wprowadź połączenie ręcznie"},
-        "data_description": {
-          "known_connection": "Lokalne interfejsy i ESPHome Serial Proxies wykryte przez Home Assistant. Wybór tutaj ma pierwszeństwo przed wpisem ręcznym.",
-          "connection": "Na przykład `socket://192.168.178.36:502` lub `/dev/serial/by-id/...`."
+        "description": "Wybierz interfejs szeregowy już znany Home Assistant.\n\n**LUB**\n\nWprowadź ręcznie dane połączenia w jednym z następujących formatów:\n\n- **socket://adres_ip:port**\nPrzezroczyste połączenie szeregowe przez TCP, np. adapter szeregowy-Ethernet w trybie transparentnym.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFizyczny lub wirtualny lokalny interfejs szeregowy, np. adapter USB-szeregowy lub urządzenie `socat`. To pole jest zwykle wypełniane automatycznie po wybraniu znanego interfejsu.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nPołączenie szeregowe przez ESPHome Serial Proxy wykorzystujące UART zdalnego ESP. To pole jest zwykle wypełniane automatycznie po wybraniu znanego interfejsu.\n\nProtokół Vallox/Helios DIGIT zawsze używa 9600 baud, 8N1.",
+        "data": {
+          "connection": "Interfejs do komunikacji z centralą wentylacyjną."
         }
       },
       "advanced": {
@@ -87,8 +83,8 @@
     },
     "error": {
       "cannot_connect": "Nie można połączyć się z centralą wentylacyjną. Sprawdź połączenie i dostępność adaptera.",
-      "connection_required": "Wybierz znany interfejs szeregowy lub ręcznie wprowadź połączenie.",
-      "invalid_connection": "Połączenie jest nieprawidłowe. Użyj znanego interfejsu szeregowego, `socket://host:port` lub `/dev/...`.",
+      "connection_required": "Wybierz lub wprowadź połączenie.",
+      "invalid_connection": "Połączenie jest nieprawidłowe. Użyj `socket://host:port`, `/dev/...` lub ESPHome Serial Proxy.",
       "invalid_csv_count": "Wymaganych jest dokładnie 8 wartości, po jednej dla każdego stopnia wentylatora, oddzielonych przecinkami.",
       "invalid_csv_values": "Wszystkie wartości muszą być liczbami całkowitymi."
     }

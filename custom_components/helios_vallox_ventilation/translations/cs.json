@@ -3,11 +3,9 @@
     "step": {
       "user": {
         "title": "1 / 4 - Připojení",
-        "description": "Vyberte známé sériové rozhraní nebo zadejte připojení k ventilační jednotce ručně. Zápis automaticky určuje typ připojení:\n\n- **socket://ip_adresa:port**\nTransparentní sériové síťové připojení, např. běžný adaptér ser2net.\n- **/dev/ttyUSB...**\nMístní USB-sériový adaptér.\n- **/dev/serial/by-id/...**\nStabilní cesta k místnímu sériovému rozhraní.\n- **/dev/...**\nJiná místní nebo virtuální sériová rozhraní, např. přes `socat`.\n\nESPHome Serial Proxy jsou Home Assistantem automaticky nabízeny mezi známými sériovými rozhraními. Protokol Vallox/Helios DIGIT vždy používá 9600 baud, 8N1.",
-        "data": {"known_connection": "Známé sériové rozhraní", "connection": "Zadat připojení ručně"},
-        "data_description": {
-          "known_connection": "Místní rozhraní a ESPHome Serial Proxy rozpoznané Home Assistantem. Výběr zde má přednost před ručním zadáním.",
-          "connection": "Například `socket://192.168.178.36:502` nebo `/dev/serial/by-id/...`."
+        "description": "Vyberte sériové rozhraní, které je již známé Home Assistantu.\n\n**NEBO**\n\nZadejte údaje připojení ručně v jednom z následujících formátů:\n\n- **socket://ip_adresa:port**\nTransparentní sériové připojení přes TCP, např. sériový-Ethernet adaptér v transparentním režimu.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFyzické nebo virtuální místní sériové rozhraní, např. USB-sériový adaptér nebo zařízení `socat`. Toto se obvykle vyplní automaticky výběrem známého rozhraní.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSériové připojení přes ESPHome Serial Proxy využívající UART vzdáleného ESP. Toto se obvykle vyplní automaticky výběrem známého rozhraní.\n\nProtokol Vallox/Helios DIGIT vždy používá 9600 baud, 8N1.",
+        "data": {
+          "connection": "Rozhraní pro komunikaci s ventilační jednotkou."
         }
       },
       "model": {
@@ -46,8 +44,8 @@
     },
     "error": {
       "cannot_connect": "K ventilační jednotce se nelze připojit. Zkontrolujte připojení a dostupnost adaptéru.",
-      "connection_required": "Vyberte známé sériové rozhraní nebo zadejte připojení ručně.",
-      "invalid_connection": "Připojení je neplatné. Použijte známé sériové rozhraní, `socket://host:port` nebo `/dev/...`.",
+      "connection_required": "Vyberte nebo zadejte připojení.",
+      "invalid_connection": "Připojení je neplatné. Použijte `socket://host:port`, `/dev/...` nebo ESPHome Serial Proxy.",
       "invalid_csv_count": "Je vyžadováno přesně 8 hodnot, jedna pro každý stupeň ventilátoru, oddělených čárkami.",
       "invalid_csv_values": "Všechny hodnoty musí být celá čísla."
     },
@@ -57,11 +55,9 @@
     "step": {
       "init": {
         "title": "1 / 2 - Připojení",
-        "description": "Vyberte známé sériové rozhraní nebo zadejte připojení k ventilační jednotce ručně. Zápis automaticky určuje typ připojení:\n\n- **socket://ip_adresa:port**\nTransparentní sériové síťové připojení, např. běžný adaptér ser2net.\n- **/dev/ttyUSB...**\nMístní USB-sériový adaptér.\n- **/dev/serial/by-id/...**\nStabilní cesta k místnímu sériovému rozhraní.\n- **/dev/...**\nJiná místní nebo virtuální sériová rozhraní, např. přes `socat`.\n\nESPHome Serial Proxy jsou Home Assistantem automaticky nabízeny mezi známými sériovými rozhraními. Protokol Vallox/Helios DIGIT vždy používá 9600 baud, 8N1.",
-        "data": {"known_connection": "Známé sériové rozhraní", "connection": "Zadat připojení ručně"},
-        "data_description": {
-          "known_connection": "Místní rozhraní a ESPHome Serial Proxy rozpoznané Home Assistantem. Výběr zde má přednost před ručním zadáním.",
-          "connection": "Například `socket://192.168.178.36:502` nebo `/dev/serial/by-id/...`."
+        "description": "Vyberte sériové rozhraní, které je již známé Home Assistantu.\n\n**NEBO**\n\nZadejte údaje připojení ručně v jednom z následujících formátů:\n\n- **socket://ip_adresa:port**\nTransparentní sériové připojení přes TCP, např. sériový-Ethernet adaptér v transparentním režimu.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFyzické nebo virtuální místní sériové rozhraní, např. USB-sériový adaptér nebo zařízení `socat`. Toto se obvykle vyplní automaticky výběrem známého rozhraní.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSériové připojení přes ESPHome Serial Proxy využívající UART vzdáleného ESP. Toto se obvykle vyplní automaticky výběrem známého rozhraní.\n\nProtokol Vallox/Helios DIGIT vždy používá 9600 baud, 8N1.",
+        "data": {
+          "connection": "Rozhraní pro komunikaci s ventilační jednotkou."
         }
       },
       "advanced": {
@@ -87,8 +83,8 @@
     },
     "error": {
       "cannot_connect": "K ventilační jednotce se nelze připojit. Zkontrolujte připojení a dostupnost adaptéru.",
-      "connection_required": "Vyberte známé sériové rozhraní nebo zadejte připojení ručně.",
-      "invalid_connection": "Připojení je neplatné. Použijte známé sériové rozhraní, `socket://host:port` nebo `/dev/...`.",
+      "connection_required": "Vyberte nebo zadejte připojení.",
+      "invalid_connection": "Připojení je neplatné. Použijte `socket://host:port`, `/dev/...` nebo ESPHome Serial Proxy.",
       "invalid_csv_count": "Je vyžadováno přesně 8 hodnot, jedna pro každý stupeň ventilátoru, oddělených čárkami.",
       "invalid_csv_values": "Všechny hodnoty musí být celá čísla."
     }

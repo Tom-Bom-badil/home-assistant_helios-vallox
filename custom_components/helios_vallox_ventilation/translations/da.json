@@ -3,11 +3,9 @@
     "step": {
       "user": {
         "title": "1 / 4 - Forbindelse",
-        "description": "Vælg en kendt seriel grænseflade, eller indtast forbindelsen til ventilationsanlægget manuelt. Syntaksen bestemmer automatisk forbindelsestypen:\n\n- **socket://ip_adresse:port**\nTransparent seriel netværksforbindelse, f.eks. en almindelig ser2net-adapter.\n- **/dev/ttyUSB...**\nLokal USB-til-seriel-adapter.\n- **/dev/serial/by-id/...**\nStabil sti til en lokal seriel grænseflade.\n- **/dev/...**\nAndre lokale eller virtuelle serielle grænseflader, f.eks. via `socat`.\n\nESPHome Serial Proxies tilbydes automatisk af Home Assistant blandt de kendte serielle grænseflader. Vallox/Helios DIGIT-protokollen bruger altid 9600 baud, 8N1.",
-        "data": {"known_connection": "Kendt seriel grænseflade", "connection": "Indtast forbindelse manuelt"},
-        "data_description": {
-          "known_connection": "Lokale grænseflader og ESPHome Serial Proxies registreret af Home Assistant. Et valg her har prioritet over den manuelle indtastning.",
-          "connection": "For eksempel `socket://192.168.178.36:502` eller `/dev/serial/by-id/...`."
+        "description": "Vælg en seriel grænseflade, som Home Assistant allerede kender.\n\n**ELLER**\n\nIndtast forbindelsesdata manuelt i et af følgende formater:\n\n- **socket://ip_adresse:port**\nTransparent seriel forbindelse over TCP, f.eks. en seriel-til-Ethernet-adapter i transparent tilstand.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFysisk eller virtuel lokal seriel grænseflade, f.eks. en USB-til-seriel-adapter eller `socat`-enhed. Dette udfyldes normalt automatisk ved valg af en kendt grænseflade.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSeriel forbindelse via en ESPHome Serial Proxy, der bruger en UART på en ekstern ESP. Dette udfyldes normalt automatisk ved valg af en kendt grænseflade.\n\nVallox/Helios DIGIT-protokollen bruger altid 9600 baud, 8N1.",
+        "data": {
+          "connection": "Grænseflade til kommunikation med ventilationsanlægget."
         }
       },
       "model": {
@@ -46,8 +44,8 @@
     },
     "error": {
       "cannot_connect": "Kan ikke oprette forbindelse til ventilationsanlægget. Kontrollér forbindelsen og adapterens tilgængelighed.",
-      "connection_required": "Vælg en kendt seriel grænseflade, eller indtast en forbindelse manuelt.",
-      "invalid_connection": "Forbindelsen er ugyldig. Brug en kendt seriel grænseflade, `socket://host:port` eller `/dev/...`.",
+      "connection_required": "Vælg eller indtast en forbindelse.",
+      "invalid_connection": "Forbindelsen er ugyldig. Brug `socket://host:port`, `/dev/...` eller en ESPHome Serial Proxy.",
       "invalid_csv_count": "Der kræves præcis 8 værdier, én pr. ventilatortrin, adskilt med komma.",
       "invalid_csv_values": "Alle værdier skal være heltal."
     },
@@ -57,11 +55,9 @@
     "step": {
       "init": {
         "title": "1 / 2 - Forbindelse",
-        "description": "Vælg en kendt seriel grænseflade, eller indtast forbindelsen til ventilationsanlægget manuelt. Syntaksen bestemmer automatisk forbindelsestypen:\n\n- **socket://ip_adresse:port**\nTransparent seriel netværksforbindelse, f.eks. en almindelig ser2net-adapter.\n- **/dev/ttyUSB...**\nLokal USB-til-seriel-adapter.\n- **/dev/serial/by-id/...**\nStabil sti til en lokal seriel grænseflade.\n- **/dev/...**\nAndre lokale eller virtuelle serielle grænseflader, f.eks. via `socat`.\n\nESPHome Serial Proxies tilbydes automatisk af Home Assistant blandt de kendte serielle grænseflader. Vallox/Helios DIGIT-protokollen bruger altid 9600 baud, 8N1.",
-        "data": {"known_connection": "Kendt seriel grænseflade", "connection": "Indtast forbindelse manuelt"},
-        "data_description": {
-          "known_connection": "Lokale grænseflader og ESPHome Serial Proxies registreret af Home Assistant. Et valg her har prioritet over den manuelle indtastning.",
-          "connection": "For eksempel `socket://192.168.178.36:502` eller `/dev/serial/by-id/...`."
+        "description": "Vælg en seriel grænseflade, som Home Assistant allerede kender.\n\n**ELLER**\n\nIndtast forbindelsesdata manuelt i et af følgende formater:\n\n- **socket://ip_adresse:port**\nTransparent seriel forbindelse over TCP, f.eks. en seriel-til-Ethernet-adapter i transparent tilstand.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFysisk eller virtuel lokal seriel grænseflade, f.eks. en USB-til-seriel-adapter eller `socat`-enhed. Dette udfyldes normalt automatisk ved valg af en kendt grænseflade.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSeriel forbindelse via en ESPHome Serial Proxy, der bruger en UART på en ekstern ESP. Dette udfyldes normalt automatisk ved valg af en kendt grænseflade.\n\nVallox/Helios DIGIT-protokollen bruger altid 9600 baud, 8N1.",
+        "data": {
+          "connection": "Grænseflade til kommunikation med ventilationsanlægget."
         }
       },
       "advanced": {
@@ -87,8 +83,8 @@
     },
     "error": {
       "cannot_connect": "Kan ikke oprette forbindelse til ventilationsanlægget. Kontrollér forbindelsen og adapterens tilgængelighed.",
-      "connection_required": "Vælg en kendt seriel grænseflade, eller indtast en forbindelse manuelt.",
-      "invalid_connection": "Forbindelsen er ugyldig. Brug en kendt seriel grænseflade, `socket://host:port` eller `/dev/...`.",
+      "connection_required": "Vælg eller indtast en forbindelse.",
+      "invalid_connection": "Forbindelsen er ugyldig. Brug `socket://host:port`, `/dev/...` eller en ESPHome Serial Proxy.",
       "invalid_csv_count": "Der kræves præcis 8 værdier, én pr. ventilatortrin, adskilt med komma.",
       "invalid_csv_values": "Alle værdier skal være heltal."
     }

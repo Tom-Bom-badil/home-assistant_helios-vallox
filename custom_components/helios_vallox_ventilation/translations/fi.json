@@ -3,11 +3,9 @@
     "step": {
       "user": {
         "title": "1 / 4 - Yhteys",
-        "description": "Valitse tunnettu sarjaliitäntä tai syötä ilmanvaihtolaitteen yhteys manuaalisesti. Kirjoitusasu määrittää yhteystyypin automaattisesti:\n\n- **socket://ip_osoite:portti**\nLäpinäkyvä sarjamuotoinen verkkoyhteys, esimerkiksi tavallinen ser2net-sovitin.\n- **/dev/ttyUSB...**\nPaikallinen USB–sarjasovitin.\n- **/dev/serial/by-id/...**\nVakaa polku paikalliseen sarjaliitäntään.\n- **/dev/...**\nMuut paikalliset tai virtuaaliset sarjaliitännät, esimerkiksi `socat`-ohjelman kautta.\n\nHome Assistant tarjoaa ESPHome Serial Proxyt automaattisesti tunnettujen sarjaliitäntöjen joukossa. Vallox/Helios DIGIT -protokolla käyttää aina asetuksia 9600 baud, 8N1.",
-        "data": {"known_connection": "Tunnettu sarjaliitäntä", "connection": "Syötä yhteys manuaalisesti"},
-        "data_description": {
-          "known_connection": "Home Assistantin tunnistamat paikalliset liitännät ja ESPHome Serial Proxyt. Tässä tehty valinta ohittaa manuaalisen syötön.",
-          "connection": "Esimerkiksi `socket://192.168.178.36:502` tai `/dev/serial/by-id/...`."
+        "description": "Valitse Home Assistantin jo tuntema sarjaliitäntä.\n\n**TAI**\n\nSyötä yhteystiedot manuaalisesti jossakin seuraavista muodoista:\n\n- **socket://ip_osoite:portti**\nLäpinäkyvä sarjayhteys TCP:n yli, esimerkiksi sarja-Ethernet-sovitin läpinäkyvässä tilassa.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFyysinen tai virtuaalinen paikallinen sarjaliitäntä, esimerkiksi USB-sarjasovitin tai `socat`-laite. Tämä täytetään yleensä automaattisesti valitsemalla tunnettu liitäntä.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSarjayhteys ESPHome Serial Proxyn kautta käyttäen etä-ESP:n UART-porttia. Tämä täytetään yleensä automaattisesti valitsemalla tunnettu liitäntä.\n\nVallox/Helios DIGIT -protokolla käyttää aina 9600 baudia, 8N1.",
+        "data": {
+          "connection": "Liitäntä ilmanvaihtokoneen tiedonsiirtoon."
         }
       },
       "model": {
@@ -46,8 +44,8 @@
     },
     "error": {
       "cannot_connect": "Yhteyttä ilmanvaihtolaitteeseen ei voitu muodostaa. Tarkista yhteys ja sovittimen saatavuus.",
-      "connection_required": "Valitse tunnettu sarjaliitäntä tai syötä yhteys manuaalisesti.",
-      "invalid_connection": "Yhteys on virheellinen. Käytä tunnettua sarjaliitäntää, `socket://host:port` tai `/dev/...`.",
+      "connection_required": "Valitse tai syötä yhteys.",
+      "invalid_connection": "Yhteys on virheellinen. Käytä `socket://host:port`, `/dev/...` tai ESPHome Serial Proxya.",
       "invalid_csv_count": "Tarvitaan tarkalleen 8 arvoa, yksi kutakin puhallintasoa kohti, pilkulla erotettuna.",
       "invalid_csv_values": "Kaikkien arvojen täytyy olla kokonaislukuja."
     },
@@ -57,11 +55,9 @@
     "step": {
       "init": {
         "title": "1 / 2 - Yhteys",
-        "description": "Valitse tunnettu sarjaliitäntä tai syötä ilmanvaihtolaitteen yhteys manuaalisesti. Kirjoitusasu määrittää yhteystyypin automaattisesti:\n\n- **socket://ip_osoite:portti**\nLäpinäkyvä sarjamuotoinen verkkoyhteys, esimerkiksi tavallinen ser2net-sovitin.\n- **/dev/ttyUSB...**\nPaikallinen USB–sarjasovitin.\n- **/dev/serial/by-id/...**\nVakaa polku paikalliseen sarjaliitäntään.\n- **/dev/...**\nMuut paikalliset tai virtuaaliset sarjaliitännät, esimerkiksi `socat`-ohjelman kautta.\n\nHome Assistant tarjoaa ESPHome Serial Proxyt automaattisesti tunnettujen sarjaliitäntöjen joukossa. Vallox/Helios DIGIT -protokolla käyttää aina asetuksia 9600 baud, 8N1.",
-        "data": {"known_connection": "Tunnettu sarjaliitäntä", "connection": "Syötä yhteys manuaalisesti"},
-        "data_description": {
-          "known_connection": "Home Assistantin tunnistamat paikalliset liitännät ja ESPHome Serial Proxyt. Tässä tehty valinta ohittaa manuaalisen syötön.",
-          "connection": "Esimerkiksi `socket://192.168.178.36:502` tai `/dev/serial/by-id/...`."
+        "description": "Valitse Home Assistantin jo tuntema sarjaliitäntä.\n\n**TAI**\n\nSyötä yhteystiedot manuaalisesti jossakin seuraavista muodoista:\n\n- **socket://ip_osoite:portti**\nLäpinäkyvä sarjayhteys TCP:n yli, esimerkiksi sarja-Ethernet-sovitin läpinäkyvässä tilassa.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFyysinen tai virtuaalinen paikallinen sarjaliitäntä, esimerkiksi USB-sarjasovitin tai `socat`-laite. Tämä täytetään yleensä automaattisesti valitsemalla tunnettu liitäntä.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSarjayhteys ESPHome Serial Proxyn kautta käyttäen etä-ESP:n UART-porttia. Tämä täytetään yleensä automaattisesti valitsemalla tunnettu liitäntä.\n\nVallox/Helios DIGIT -protokolla käyttää aina 9600 baudia, 8N1.",
+        "data": {
+          "connection": "Liitäntä ilmanvaihtokoneen tiedonsiirtoon."
         }
       },
       "advanced": {
@@ -87,8 +83,8 @@
     },
     "error": {
       "cannot_connect": "Yhteyttä ilmanvaihtolaitteeseen ei voitu muodostaa. Tarkista yhteys ja sovittimen saatavuus.",
-      "connection_required": "Valitse tunnettu sarjaliitäntä tai syötä yhteys manuaalisesti.",
-      "invalid_connection": "Yhteys on virheellinen. Käytä tunnettua sarjaliitäntää, `socket://host:port` tai `/dev/...`.",
+      "connection_required": "Valitse tai syötä yhteys.",
+      "invalid_connection": "Yhteys on virheellinen. Käytä `socket://host:port`, `/dev/...` tai ESPHome Serial Proxya.",
       "invalid_csv_count": "Tarvitaan tarkalleen 8 arvoa, yksi kutakin puhallintasoa kohti, pilkulla erotettuna.",
       "invalid_csv_values": "Kaikkien arvojen täytyy olla kokonaislukuja."
     }

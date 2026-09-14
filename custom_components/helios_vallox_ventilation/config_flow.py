@@ -10,7 +10,6 @@ from homeassistant.helpers.selector import (
     SelectSelectorConfig,
     SelectSelectorMode,
     SerialPortSelector,
-    TextSelector,
 )
 from homeassistant.util import slugify
 
@@ -24,7 +23,6 @@ from .constants import (
     CONF_HOUSE_AREA,
     CONF_HOUSE_VOLUME,
     CONF_ISOLATION_FACTOR,
-    CONF_KNOWN_CONNECTION,
     CONF_MAX_AIRFLOW,
     CONF_MAX_POWER,
     CONF_POWER_PER_MODE,
@@ -42,26 +40,9 @@ def _connection_schema() -> vol.Schema:
     """Return the unified connection schema."""
     return vol.Schema(
         {
-            vol.Optional(CONF_KNOWN_CONNECTION): SerialPortSelector(),
-            vol.Optional(CONF_CONNECTION): TextSelector(),
+            vol.Required(CONF_CONNECTION): SerialPortSelector(),
         }
     )
-
-
-def _selected_connection(user_input: dict) -> str | None:
-    """Return the selected connection target.
-
-    A known Home Assistant serial interface takes precedence over the manual
-    field. This makes it possible to switch an existing socket connection to
-    a detected local or ESPHome serial interface without clearing the manual
-    field first.
-    """
-    known = str(user_input.get(CONF_KNOWN_CONNECTION) or "").strip()
-    if known:
-        return known
-
-    manual = str(user_input.get(CONF_CONNECTION) or "").strip()
-    return manual or None
 
 
 def _normalize_connection(value: str) -> str:
@@ -279,9 +260,9 @@ class HeliosValloxConfigFlow(
         errors = {}
 
         if user_input is not None:
-            connection = _selected_connection(user_input)
+            connection = str(user_input.get(CONF_CONNECTION) or "").strip()
 
-            if connection is None:
+            if not connection:
                 errors[CONF_CONNECTION] = "connection_required"
 
             else:
@@ -519,9 +500,9 @@ class HeliosValloxOptionsFlowHandler(
         errors = {}
 
         if user_input is not None:
-            connection = _selected_connection(user_input)
+            connection = str(user_input.get(CONF_CONNECTION) or "").strip()
 
-            if connection is None:
+            if not connection:
                 errors[CONF_CONNECTION] = "connection_required"
 
             else:

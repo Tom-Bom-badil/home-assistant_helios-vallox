@@ -3,11 +3,9 @@
     "step": {
       "user": {
         "title": "1 / 4 - Conexión",
-        "description": "Seleccione una interfaz serie conocida o introduzca manualmente la conexión a la unidad de ventilación. La sintaxis determina automáticamente el tipo de conexión:\n\n- **socket://direccion_ip:puerto**\nConexión de red serie transparente, por ejemplo un adaptador ser2net estándar.\n- **/dev/ttyUSB...**\nAdaptador USB-serie local.\n- **/dev/serial/by-id/...**\nRuta estable a una interfaz serie local.\n- **/dev/...**\nOtras interfaces serie locales o virtuales, por ejemplo mediante `socat`.\n\nHome Assistant ofrece automáticamente los ESPHome Serial Proxies entre las interfaces serie conocidas. El protocolo Vallox/Helios DIGIT siempre utiliza 9600 baudios, 8N1.",
-        "data": {"known_connection": "Interfaz serie conocida", "connection": "Introducir conexión manualmente"},
-        "data_description": {
-          "known_connection": "Interfaces locales y ESPHome Serial Proxies detectados por Home Assistant. Una selección aquí tiene prioridad sobre la entrada manual.",
-          "connection": "Por ejemplo `socket://192.168.178.36:502` o `/dev/serial/by-id/...`."
+        "description": "Seleccione una interfaz serie que Home Assistant ya conozca.\n\n**O**\n\nIntroduzca manualmente los datos de conexión en uno de los siguientes formatos:\n\n- **socket://direccion_ip:puerto**\nConexión serie transparente sobre TCP, por ejemplo, un adaptador serie-a-Ethernet en modo transparente.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nInterfaz serie local física o virtual, por ejemplo, un adaptador USB-a-serie o un dispositivo `socat`. Normalmente se rellena automáticamente al seleccionar una interfaz conocida.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nConexión serie mediante un ESPHome Serial Proxy utilizando una UART de un ESP remoto. Normalmente se rellena automáticamente al seleccionar una interfaz conocida.\n\nEl protocolo Vallox/Helios DIGIT utiliza siempre 9600 baudios, 8N1.",
+        "data": {
+          "connection": "Interfaz para la comunicación con la unidad de ventilación."
         }
       },
       "model": {
@@ -46,8 +44,8 @@
     },
     "error": {
       "cannot_connect": "No se puede conectar a la unidad de ventilación. Compruebe la conexión y la disponibilidad del adaptador.",
-      "connection_required": "Seleccione una interfaz serie conocida o introduzca una conexión manualmente.",
-      "invalid_connection": "La conexión no es válida. Use una interfaz serie conocida, `socket://host:port` o `/dev/...`.",
+      "connection_required": "Seleccione o introduzca una conexión.",
+      "invalid_connection": "La conexión no es válida. Use `socket://host:port`, `/dev/...` o un ESPHome Serial Proxy.",
       "invalid_csv_count": "Se requieren exactamente 8 valores, uno por velocidad de ventilación, separados por comas.",
       "invalid_csv_values": "Todos los valores deben ser números enteros."
     },
@@ -57,11 +55,9 @@
     "step": {
       "init": {
         "title": "1 / 2 - Conexión",
-        "description": "Seleccione una interfaz serie conocida o introduzca manualmente la conexión a la unidad de ventilación. La sintaxis determina automáticamente el tipo de conexión:\n\n- **socket://direccion_ip:puerto**\nConexión de red serie transparente, por ejemplo un adaptador ser2net estándar.\n- **/dev/ttyUSB...**\nAdaptador USB-serie local.\n- **/dev/serial/by-id/...**\nRuta estable a una interfaz serie local.\n- **/dev/...**\nOtras interfaces serie locales o virtuales, por ejemplo mediante `socat`.\n\nHome Assistant ofrece automáticamente los ESPHome Serial Proxies entre las interfaces serie conocidas. El protocolo Vallox/Helios DIGIT siempre utiliza 9600 baudios, 8N1.",
-        "data": {"known_connection": "Interfaz serie conocida", "connection": "Introducir conexión manualmente"},
-        "data_description": {
-          "known_connection": "Interfaces locales y ESPHome Serial Proxies detectados por Home Assistant. Una selección aquí tiene prioridad sobre la entrada manual.",
-          "connection": "Por ejemplo `socket://192.168.178.36:502` o `/dev/serial/by-id/...`."
+        "description": "Seleccione una interfaz serie que Home Assistant ya conozca.\n\n**O**\n\nIntroduzca manualmente los datos de conexión en uno de los siguientes formatos:\n\n- **socket://direccion_ip:puerto**\nConexión serie transparente sobre TCP, por ejemplo, un adaptador serie-a-Ethernet en modo transparente.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nInterfaz serie local física o virtual, por ejemplo, un adaptador USB-a-serie o un dispositivo `socat`. Normalmente se rellena automáticamente al seleccionar una interfaz conocida.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nConexión serie mediante un ESPHome Serial Proxy utilizando una UART de un ESP remoto. Normalmente se rellena automáticamente al seleccionar una interfaz conocida.\n\nEl protocolo Vallox/Helios DIGIT utiliza siempre 9600 baudios, 8N1.",
+        "data": {
+          "connection": "Interfaz para la comunicación con la unidad de ventilación."
         }
       },
       "advanced": {
@@ -87,8 +83,8 @@
     },
     "error": {
       "cannot_connect": "No se puede conectar a la unidad de ventilación. Compruebe la conexión y la disponibilidad del adaptador.",
-      "connection_required": "Seleccione una interfaz serie conocida o introduzca una conexión manualmente.",
-      "invalid_connection": "La conexión no es válida. Use una interfaz serie conocida, `socket://host:port` o `/dev/...`.",
+      "connection_required": "Seleccione o introduzca una conexión.",
+      "invalid_connection": "La conexión no es válida. Use `socket://host:port`, `/dev/...` o un ESPHome Serial Proxy.",
       "invalid_csv_count": "Se requieren exactamente 8 valores, uno por velocidad de ventilación, separados por comas.",
       "invalid_csv_values": "Todos los valores deben ser números enteros."
     }

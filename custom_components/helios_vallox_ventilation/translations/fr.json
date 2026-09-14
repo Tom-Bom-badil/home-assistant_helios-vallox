@@ -3,11 +3,9 @@
     "step": {
       "user": {
         "title": "1 / 4 - Connexion",
-        "description": "Sélectionnez une interface série connue ou saisissez manuellement la connexion à l’unité de ventilation. La syntaxe détermine automatiquement le type de connexion :\n\n- **socket://adresse_ip:port**\nConnexion réseau série transparente, par exemple un adaptateur ser2net standard.\n- **/dev/ttyUSB...**\nAdaptateur USB-série local.\n- **/dev/serial/by-id/...**\nChemin stable vers une interface série locale.\n- **/dev/...**\nAutres interfaces série locales ou virtuelles, par exemple via `socat`.\n\nLes ESPHome Serial Proxies sont automatiquement proposés par Home Assistant parmi les interfaces série connues. Le protocole Vallox/Helios DIGIT utilise toujours 9600 bauds, 8N1.",
-        "data": {"known_connection": "Interface série connue", "connection": "Saisir la connexion manuellement"},
-        "data_description": {
-          "known_connection": "Interfaces locales et ESPHome Serial Proxies détectés par Home Assistant. Une sélection ici est prioritaire sur la saisie manuelle.",
-          "connection": "Par exemple `socket://192.168.178.36:502` ou `/dev/serial/by-id/...`."
+        "description": "Sélectionnez une interface série déjà connue de Home Assistant.\n\n**OU**\n\nSaisissez manuellement les données de connexion dans l’un des formats suivants :\n\n- **socket://adresse_ip:port**\nConnexion série transparente via TCP, par exemple un adaptateur série-vers-Ethernet en mode transparent.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nInterface série locale physique ou virtuelle, par exemple un adaptateur USB-série ou un périphérique `socat`. Ce champ est généralement rempli automatiquement lors de la sélection d’une interface connue.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nConnexion série via un ESPHome Serial Proxy utilisant l’UART d’un ESP distant. Ce champ est généralement rempli automatiquement lors de la sélection d’une interface connue.\n\nLe protocole Vallox/Helios DIGIT utilise toujours 9600 bauds, 8N1.",
+        "data": {
+          "connection": "Interface de communication avec l’unité de ventilation."
         }
       },
       "model": {
@@ -46,8 +44,8 @@
     },
     "error": {
       "cannot_connect": "Impossible de se connecter à l’unité de ventilation. Vérifiez la connexion et la disponibilité de l’adaptateur.",
-      "connection_required": "Sélectionnez une interface série connue ou saisissez une connexion manuellement.",
-      "invalid_connection": "La connexion est invalide. Utilisez une interface série connue, `socket://host:port` ou `/dev/...`.",
+      "connection_required": "Sélectionnez ou saisissez une connexion.",
+      "invalid_connection": "La connexion est invalide. Utilisez `socket://host:port`, `/dev/...` ou un ESPHome Serial Proxy.",
       "invalid_csv_count": "Exactement 8 valeurs sont requises, une par vitesse de ventilation, séparées par des virgules.",
       "invalid_csv_values": "Toutes les valeurs doivent être des nombres entiers."
     },
@@ -57,11 +55,9 @@
     "step": {
       "init": {
         "title": "1 / 2 - Connexion",
-        "description": "Sélectionnez une interface série connue ou saisissez manuellement la connexion à l’unité de ventilation. La syntaxe détermine automatiquement le type de connexion :\n\n- **socket://adresse_ip:port**\nConnexion réseau série transparente, par exemple un adaptateur ser2net standard.\n- **/dev/ttyUSB...**\nAdaptateur USB-série local.\n- **/dev/serial/by-id/...**\nChemin stable vers une interface série locale.\n- **/dev/...**\nAutres interfaces série locales ou virtuelles, par exemple via `socat`.\n\nLes ESPHome Serial Proxies sont automatiquement proposés par Home Assistant parmi les interfaces série connues. Le protocole Vallox/Helios DIGIT utilise toujours 9600 bauds, 8N1.",
-        "data": {"known_connection": "Interface série connue", "connection": "Saisir la connexion manuellement"},
-        "data_description": {
-          "known_connection": "Interfaces locales et ESPHome Serial Proxies détectés par Home Assistant. Une sélection ici est prioritaire sur la saisie manuelle.",
-          "connection": "Par exemple `socket://192.168.178.36:502` ou `/dev/serial/by-id/...`."
+        "description": "Sélectionnez une interface série déjà connue de Home Assistant.\n\n**OU**\n\nSaisissez manuellement les données de connexion dans l’un des formats suivants :\n\n- **socket://adresse_ip:port**\nConnexion série transparente via TCP, par exemple un adaptateur série-vers-Ethernet en mode transparent.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nInterface série locale physique ou virtuelle, par exemple un adaptateur USB-série ou un périphérique `socat`. Ce champ est généralement rempli automatiquement lors de la sélection d’une interface connue.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nConnexion série via un ESPHome Serial Proxy utilisant l’UART d’un ESP distant. Ce champ est généralement rempli automatiquement lors de la sélection d’une interface connue.\n\nLe protocole Vallox/Helios DIGIT utilise toujours 9600 bauds, 8N1.",
+        "data": {
+          "connection": "Interface de communication avec l’unité de ventilation."
         }
       },
       "advanced": {
@@ -87,8 +83,8 @@
     },
     "error": {
       "cannot_connect": "Impossible de se connecter à l’unité de ventilation. Vérifiez la connexion et la disponibilité de l’adaptateur.",
-      "connection_required": "Sélectionnez une interface série connue ou saisissez une connexion manuellement.",
-      "invalid_connection": "La connexion est invalide. Utilisez une interface série connue, `socket://host:port` ou `/dev/...`.",
+      "connection_required": "Sélectionnez ou saisissez une connexion.",
+      "invalid_connection": "La connexion est invalide. Utilisez `socket://host:port`, `/dev/...` ou un ESPHome Serial Proxy.",
       "invalid_csv_count": "Exactement 8 valeurs sont requises, une par vitesse de ventilation, séparées par des virgules.",
       "invalid_csv_values": "Toutes les valeurs doivent être des nombres entiers."
     }

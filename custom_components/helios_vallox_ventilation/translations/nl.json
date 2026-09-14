@@ -3,11 +3,9 @@
     "step": {
       "user": {
         "title": "1 / 4 - Verbinding",
-        "description": "Selecteer een bekende seriële interface of voer de verbinding met de ventilatie-unit handmatig in. De notatie bepaalt automatisch het verbindingstype:\n\n- **socket://ip_adres:poort**\nTransparante seriële netwerkverbinding, bijvoorbeeld een standaard ser2net-adapter.\n- **/dev/ttyUSB...**\nLokale USB-naar-serieel-adapter.\n- **/dev/serial/by-id/...**\nStabiel pad naar een lokale seriële interface.\n- **/dev/...**\nAndere lokale of virtuele seriële interfaces, bijvoorbeeld via `socat`.\n\nESPHome Serial Proxies worden door Home Assistant automatisch aangeboden bij de bekende seriële interfaces. Het Vallox/Helios DIGIT-protocol gebruikt altijd 9600 baud, 8N1.",
-        "data": {"known_connection": "Bekende seriële interface", "connection": "Verbinding handmatig invoeren"},
-        "data_description": {
-          "known_connection": "Lokale interfaces en ESPHome Serial Proxies die door Home Assistant zijn gedetecteerd. Een keuze hier heeft voorrang op de handmatige invoer.",
-          "connection": "Bijvoorbeeld `socket://192.168.178.36:502` of `/dev/serial/by-id/...`."
+        "description": "Selecteer een seriële interface die al bij Home Assistant bekend is.\n\n**OF**\n\nVoer de verbindingsgegevens handmatig in een van de volgende formaten in:\n\n- **socket://ip_adres:poort**\nTransparante seriële verbinding via TCP, bijvoorbeeld een serieel-naar-Ethernet-adapter in transparante modus.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFysieke of virtuele lokale seriële interface, bijvoorbeeld een USB-naar-serieel-adapter of `socat`-apparaat. Dit wordt meestal automatisch ingevuld wanneer een bekende interface wordt geselecteerd.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSeriële verbinding via een ESPHome Serial Proxy met een UART van een externe ESP. Dit wordt meestal automatisch ingevuld wanneer een bekende interface wordt geselecteerd.\n\nHet Vallox/Helios DIGIT-protocol gebruikt altijd 9600 baud, 8N1.",
+        "data": {
+          "connection": "Interface voor de communicatie met de ventilatie-unit."
         }
       },
       "model": {
@@ -46,8 +44,8 @@
     },
     "error": {
       "cannot_connect": "Kan geen verbinding maken met de ventilatie-unit. Controleer de verbinding en beschikbaarheid van de adapter.",
-      "connection_required": "Selecteer een bekende seriële interface of voer handmatig een verbinding in.",
-      "invalid_connection": "De verbinding is ongeldig. Gebruik een bekende seriële interface, `socket://host:port` of `/dev/...`.",
+      "connection_required": "Selecteer of voer een verbinding in.",
+      "invalid_connection": "De verbinding is ongeldig. Gebruik `socket://host:port`, `/dev/...` of een ESPHome Serial Proxy.",
       "invalid_csv_count": "Er zijn precies 8 waarden vereist, één per ventilatiestand, gescheiden door komma's.",
       "invalid_csv_values": "Alle waarden moeten gehele getallen zijn."
     },
@@ -57,11 +55,9 @@
     "step": {
       "init": {
         "title": "1 / 2 - Verbinding",
-        "description": "Selecteer een bekende seriële interface of voer de verbinding met de ventilatie-unit handmatig in. De notatie bepaalt automatisch het verbindingstype:\n\n- **socket://ip_adres:poort**\nTransparante seriële netwerkverbinding, bijvoorbeeld een standaard ser2net-adapter.\n- **/dev/ttyUSB...**\nLokale USB-naar-serieel-adapter.\n- **/dev/serial/by-id/...**\nStabiel pad naar een lokale seriële interface.\n- **/dev/...**\nAndere lokale of virtuele seriële interfaces, bijvoorbeeld via `socat`.\n\nESPHome Serial Proxies worden door Home Assistant automatisch aangeboden bij de bekende seriële interfaces. Het Vallox/Helios DIGIT-protocol gebruikt altijd 9600 baud, 8N1.",
-        "data": {"known_connection": "Bekende seriële interface", "connection": "Verbinding handmatig invoeren"},
-        "data_description": {
-          "known_connection": "Lokale interfaces en ESPHome Serial Proxies die door Home Assistant zijn gedetecteerd. Een keuze hier heeft voorrang op de handmatige invoer.",
-          "connection": "Bijvoorbeeld `socket://192.168.178.36:502` of `/dev/serial/by-id/...`."
+        "description": "Selecteer een seriële interface die al bij Home Assistant bekend is.\n\n**OF**\n\nVoer de verbindingsgegevens handmatig in een van de volgende formaten in:\n\n- **socket://ip_adres:poort**\nTransparante seriële verbinding via TCP, bijvoorbeeld een serieel-naar-Ethernet-adapter in transparante modus.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFysieke of virtuele lokale seriële interface, bijvoorbeeld een USB-naar-serieel-adapter of `socat`-apparaat. Dit wordt meestal automatisch ingevuld wanneer een bekende interface wordt geselecteerd.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSeriële verbinding via een ESPHome Serial Proxy met een UART van een externe ESP. Dit wordt meestal automatisch ingevuld wanneer een bekende interface wordt geselecteerd.\n\nHet Vallox/Helios DIGIT-protocol gebruikt altijd 9600 baud, 8N1.",
+        "data": {
+          "connection": "Interface voor de communicatie met de ventilatie-unit."
         }
       },
       "advanced": {
@@ -87,8 +83,8 @@
     },
     "error": {
       "cannot_connect": "Kan geen verbinding maken met de ventilatie-unit. Controleer de verbinding en beschikbaarheid van de adapter.",
-      "connection_required": "Selecteer een bekende seriële interface of voer handmatig een verbinding in.",
-      "invalid_connection": "De verbinding is ongeldig. Gebruik een bekende seriële interface, `socket://host:port` of `/dev/...`.",
+      "connection_required": "Selecteer of voer een verbinding in.",
+      "invalid_connection": "De verbinding is ongeldig. Gebruik `socket://host:port`, `/dev/...` of een ESPHome Serial Proxy.",
       "invalid_csv_count": "Er zijn precies 8 waarden vereist, één per ventilatiestand, gescheiden door komma's.",
       "invalid_csv_values": "Alle waarden moeten gehele getallen zijn."
     }

@@ -3,11 +3,9 @@
     "step": {
       "user": {
         "title": "1 / 4 - Connection",
-        "description": "Select a known serial interface or enter the connection to the ventilation unit manually. The syntax automatically determines the connection type:\n\n- **socket://ip_address:port**\nTransparent serial network connection, e.g. a standard ser2net adapter.\n- **/dev/ttyUSB...**\nLocal USB-to-serial adapter.\n- **/dev/serial/by-id/...**\nStable path to a local serial interface.\n- **/dev/...**\nOther local or virtual serial interfaces, e.g. via `socat`.\n\nESPHome Serial Proxies are automatically offered by Home Assistant under the known serial interfaces. The Vallox/Helios DIGIT protocol always uses 9600 baud, 8N1.",
-        "data": {"known_connection": "Known serial interface", "connection": "Enter connection manually"},
-        "data_description": {
-          "known_connection": "Local interfaces and ESPHome Serial Proxies detected by Home Assistant. A selection here takes precedence over the manual entry.",
-          "connection": "For example `socket://192.168.178.36:502` or `/dev/serial/by-id/...`."
+        "description": "Pick a serial interface already known to Home Assistant.\n\n**OR**\n\nEnter the connection data manually in one of the following formats:\n\n- **socket://ip_address:port**\nTransparent serial connection over TCP, e.g. a serial-to-Ethernet adapter in transparent mode.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nPhysical or virtual local serial interface, e.g. a USB-to-serial adapter or `socat` device. This is usually auto-filled by selecting a known interface.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSerial connection via an ESPHome Serial Proxy using a remote ESP UART. This is usually auto-filled by selecting a known interface.\n\nThe Vallox/Helios DIGIT protocol always uses 9600 baud, 8N1.",
+        "data": {
+          "connection": "Interface for the communication to the ventilation unit."
         }
       },
       "model": {
@@ -46,8 +44,8 @@
     },
     "error": {
       "cannot_connect": "Cannot connect to the ventilation unit. Please check the connection and adapter availability.",
-      "connection_required": "Select a known serial interface or enter a connection manually.",
-      "invalid_connection": "The connection is invalid. Use a known serial interface, `socket://host:port`, or `/dev/...`.",
+      "connection_required": "Select or enter a connection.",
+      "invalid_connection": "The connection is invalid. Use `socket://host:port`, `/dev/...`, or an ESPHome Serial Proxy.",
       "invalid_csv_count": "Exactly 8 values are required (one per fan speed level), separated by commas.",
       "invalid_csv_values": "All values must be integers."
     },
@@ -57,11 +55,9 @@
     "step": {
       "init": {
         "title": "1 / 2 - Connection",
-        "description": "Select a known serial interface or enter the connection to the ventilation unit manually. The syntax automatically determines the connection type:\n\n- **socket://ip_address:port**\nTransparent serial network connection, e.g. a standard ser2net adapter.\n- **/dev/ttyUSB...**\nLocal USB-to-serial adapter.\n- **/dev/serial/by-id/...**\nStable path to a local serial interface.\n- **/dev/...**\nOther local or virtual serial interfaces, e.g. via `socat`.\n\nESPHome Serial Proxies are automatically offered by Home Assistant under the known serial interfaces. The Vallox/Helios DIGIT protocol always uses 9600 baud, 8N1.",
-        "data": {"known_connection": "Known serial interface", "connection": "Enter connection manually"},
-        "data_description": {
-          "known_connection": "Local interfaces and ESPHome Serial Proxies detected by Home Assistant. A selection here takes precedence over the manual entry.",
-          "connection": "For example `socket://192.168.178.36:502` or `/dev/serial/by-id/...`."
+        "description": "Pick a serial interface already known to Home Assistant.\n\n**OR**\n\nEnter the connection data manually in one of the following formats:\n\n- **socket://ip_address:port**\nTransparent serial connection over TCP, e.g. a serial-to-Ethernet adapter in transparent mode.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nPhysical or virtual local serial interface, e.g. a USB-to-serial adapter or `socat` device. This is usually auto-filled by selecting a known interface.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSerial connection via an ESPHome Serial Proxy using a remote ESP UART. This is usually auto-filled by selecting a known interface.\n\nThe Vallox/Helios DIGIT protocol always uses 9600 baud, 8N1.",
+        "data": {
+          "connection": "Interface for the communication to the ventilation unit."
         }
       },
       "advanced": {
@@ -87,8 +83,8 @@
     },
     "error": {
       "cannot_connect": "Connection failed. Please check the connection and adapter availability.",
-      "connection_required": "Select a known serial interface or enter a connection manually.",
-      "invalid_connection": "The connection is invalid. Use a known serial interface, `socket://host:port`, or `/dev/...`.",
+      "connection_required": "Select or enter a connection.",
+      "invalid_connection": "The connection is invalid. Use `socket://host:port`, `/dev/...`, or an ESPHome Serial Proxy.",
       "invalid_csv_count": "Exactly 8 values are required, one per fan speed level, separated by commas.",
       "invalid_csv_values": "All values must be integers."
     }
