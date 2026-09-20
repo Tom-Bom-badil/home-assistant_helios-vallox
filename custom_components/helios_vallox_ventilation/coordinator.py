@@ -1,4 +1,6 @@
 import logging
+import asyncio
+
 from collections.abc import Awaitable, Callable
 from datetime import datetime, timedelta
 from time import monotonic
@@ -123,6 +125,7 @@ class HeliosCoordinator:
 
     async def setup_coordinator(self) -> None:
         """Perform the initial full read."""
+        await asyncio.sleep(5)
         await self._coordinator.async_config_entry_first_refresh()
 
     async def _async_update_data(self) -> dict[str, Any]:
