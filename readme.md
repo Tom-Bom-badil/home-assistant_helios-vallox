@@ -26,7 +26,8 @@ As I migrated to HA a while ago, I reworked the plugin to be a HA custom integra
 
 👉 Main features of the integration are:
 
-- 60+ predefined entities for common ventilation registers and derived values
+- 🔥 New: Full `serialx` local and remote serial support (e.g. for ESP UART proxying through Wifi)
+- ~70 predefined entities for common ventilation registers and derived values
 - auto-detection of rH and CO2 sensors (if installed)
 - support of multiple ventilation units
 - write access to any writable register with plausibility and validity checks
