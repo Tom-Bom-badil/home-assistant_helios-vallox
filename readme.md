@@ -26,7 +26,8 @@ As I migrated to HA a while ago, I reworked the plugin to be a HA custom integra
 
 👉 Main features of the integration are:
 
-- 🔥 New: Full `serialx` local and remote serial support (e.g. for ESP UART proxying through Wifi)
+- 🔥 New 🔥 Full `serialx` local and remote serial interface support
+- 🔥 New 🔥 Looking for an ESP-based plug&play solution? Check [this guide](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki/esp-plug-and-play-solution)!
 - ~70 predefined entities for common ventilation registers and derived values
 - auto-detection of rH and CO2 sensors (if installed)
 - support of multiple ventilation units
@@ -63,6 +64,12 @@ _(the 130D requires changing a few register numbers due to different addresses; 
 👉 According to docs I came across, the following models should also work:<br/>
 _`Vallox 150/270 SE`, `Vallox Digit SE2` (likely there are more models)<br/>
 (Please report back if you got it working on one of these models, thanks in advance!)_
+
+## ⚙️ Compatible / tested ser2net adapters
+
+A list of tested RS485-to-LAN/WiFi adapters can be found [here](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki/Appendix-1-%E2%80%90-Tested-adaptors) on the Wiki.
+
+In addition, [this Wiki page](https://github.com/Tom-Bom-badil/home-assistant_helios-vallox/wiki/esp-plug-and-play-solution) contains a detailed step-by-step guide on how to utilize an ESP as ser2WiFi adapter, including a ready-made ESPHome YAML configuration.
 
 ## ⚙️ Installation
 
