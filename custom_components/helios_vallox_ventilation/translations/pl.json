@@ -5,7 +5,10 @@
         "title": "1 / 4 - Połączenie",
         "description": "Wybierz interfejs szeregowy już znany Home Assistant.\n\n**LUB**\n\nWprowadź ręcznie dane połączenia w jednym z następujących formatów:\n\n- **socket://adres_ip:port**\nPrzezroczyste połączenie szeregowe przez TCP, np. adapter szeregowy-Ethernet w trybie transparentnym.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFizyczny lub wirtualny lokalny interfejs szeregowy, np. adapter USB-szeregowy lub urządzenie `socat`. To pole jest zwykle wypełniane automatycznie po wybraniu znanego interfejsu.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nPołączenie szeregowe przez ESPHome Serial Proxy wykorzystujące UART zdalnego ESP. To pole jest zwykle wypełniane automatycznie po wybraniu znanego interfejsu.\n\nProtokół Vallox/Helios DIGIT zawsze używa 9600 baud, 8N1.",
         "data": {
-          "connection": "Interfejs do komunikacji z centralą wentylacyjną."
+          "connection": "Interfejs szeregowy lub połączenie z centralą wentylacyjną"
+        },
+        "data_description": {
+          "connection": "Na przykład: `socket://192.168.178.36:502`, `/dev/ttyUSB0` lub `/dev/serial/by-id/...`."
         }
       },
       "model": {
@@ -55,9 +58,12 @@
     "step": {
       "init": {
         "title": "1 / 2 - Połączenie",
-        "description": "Wybierz interfejs szeregowy już znany Home Assistant.\n\n**LUB**\n\nWprowadź ręcznie dane połączenia w jednym z następujących formatów:\n\n- **socket://adres_ip:port**\nPrzezroczyste połączenie szeregowe przez TCP, np. adapter szeregowy-Ethernet w trybie transparentnym.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFizyczny lub wirtualny lokalny interfejs szeregowy, np. adapter USB-szeregowy lub urządzenie `socat`. To pole jest zwykle wypełniane automatycznie po wybraniu znanego interfejsu.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nPołączenie szeregowe przez ESPHome Serial Proxy wykorzystujące UART zdalnego ESP. To pole jest zwykle wypełniane automatycznie po wybraniu znanego interfejsu.\n\nProtokół Vallox/Helios DIGIT zawsze używa 9600 baud, 8N1.",
+        "description": "Wybierz interfejs szeregowy już znany Home Assistant.\n\n**LUB**\n\nWprowadź ręcznie dane połączenia w jednym z następujących formatów:\n\n- **socket://adres_ip:port**\nPrzezroczyste połączenie szeregowe przez TCP, np. adapter szeregowy-Ethernet w trybie transparentnym.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFizyczny lub wirtualny lokalny interfejs szeregowy, np. adapter USB-szeregowy lub urządzenie `socat`. To pole jest zwykle wypełniane automatycznie po wybraniu znanego interfejsu.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nPołączenie szeregowe przez ESPHome Serial Proxy wykorzystujące UART zdalnego ESP. To pole jest zwykle wypełniane automatycznie po wybraniu znanego interfejsu.",
         "data": {
-          "connection": "Interfejs do komunikacji z centralą wentylacyjną."
+          "connection": "Interfejs szeregowy lub połączenie z centralą wentylacyjną"
+        },
+        "data_description": {
+          "connection": "Na przykład: `socket://192.168.178.36:502`, `/dev/ttyUSB0` lub `/dev/serial/by-id/...`."
         }
       },
       "advanced": {

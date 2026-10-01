@@ -5,7 +5,10 @@
         "title": "1 / 4 - Připojení",
         "description": "Vyberte sériové rozhraní, které je již známé Home Assistantu.\n\n**NEBO**\n\nZadejte údaje připojení ručně v jednom z následujících formátů:\n\n- **socket://ip_adresa:port**\nTransparentní sériové připojení přes TCP, např. sériový-Ethernet adaptér v transparentním režimu.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFyzické nebo virtuální místní sériové rozhraní, např. USB-sériový adaptér nebo zařízení `socat`. Toto se obvykle vyplní automaticky výběrem známého rozhraní.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSériové připojení přes ESPHome Serial Proxy využívající UART vzdáleného ESP. Toto se obvykle vyplní automaticky výběrem známého rozhraní.\n\nProtokol Vallox/Helios DIGIT vždy používá 9600 baud, 8N1.",
         "data": {
-          "connection": "Rozhraní pro komunikaci s ventilační jednotkou."
+          "connection": "Sériové rozhraní nebo připojení k ventilační jednotce"
+        },
+        "data_description": {
+          "connection": "Například: `socket://192.168.178.36:502`, `/dev/ttyUSB0` nebo `/dev/serial/by-id/...`."
         }
       },
       "model": {
@@ -55,9 +58,12 @@
     "step": {
       "init": {
         "title": "1 / 2 - Připojení",
-        "description": "Vyberte sériové rozhraní, které je již známé Home Assistantu.\n\n**NEBO**\n\nZadejte údaje připojení ručně v jednom z následujících formátů:\n\n- **socket://ip_adresa:port**\nTransparentní sériové připojení přes TCP, např. sériový-Ethernet adaptér v transparentním režimu.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFyzické nebo virtuální místní sériové rozhraní, např. USB-sériový adaptér nebo zařízení `socat`. Toto se obvykle vyplní automaticky výběrem známého rozhraní.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSériové připojení přes ESPHome Serial Proxy využívající UART vzdáleného ESP. Toto se obvykle vyplní automaticky výběrem známého rozhraní.\n\nProtokol Vallox/Helios DIGIT vždy používá 9600 baud, 8N1.",
+        "description": "Vyberte sériové rozhraní, které je již známé Home Assistantu.\n\n**NEBO**\n\nZadejte údaje připojení ručně v jednom z následujících formátů:\n\n- **socket://ip_adresa:port**\nTransparentní sériové připojení přes TCP, např. sériový-Ethernet adaptér v transparentním režimu.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFyzické nebo virtuální místní sériové rozhraní, např. USB-sériový adaptér nebo zařízení `socat`. Toto se obvykle vyplní automaticky výběrem známého rozhraní.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSériové připojení přes ESPHome Serial Proxy využívající UART vzdáleného ESP. Toto se obvykle vyplní automaticky výběrem známého rozhraní.",
         "data": {
-          "connection": "Rozhraní pro komunikaci s ventilační jednotkou."
+          "connection": "Sériové rozhraní nebo připojení k ventilační jednotce"
+        },
+        "data_description": {
+          "connection": "Například: `socket://192.168.178.36:502`, `/dev/ttyUSB0` nebo `/dev/serial/by-id/...`."
         }
       },
       "advanced": {

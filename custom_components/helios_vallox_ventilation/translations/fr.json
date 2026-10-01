@@ -5,7 +5,10 @@
         "title": "1 / 4 - Connexion",
         "description": "Sélectionnez une interface série déjà connue de Home Assistant.\n\n**OU**\n\nSaisissez manuellement les données de connexion dans l’un des formats suivants :\n\n- **socket://adresse_ip:port**\nConnexion série transparente via TCP, par exemple un adaptateur série-vers-Ethernet en mode transparent.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nInterface série locale physique ou virtuelle, par exemple un adaptateur USB-série ou un périphérique `socat`. Ce champ est généralement rempli automatiquement lors de la sélection d’une interface connue.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nConnexion série via un ESPHome Serial Proxy utilisant l’UART d’un ESP distant. Ce champ est généralement rempli automatiquement lors de la sélection d’une interface connue.\n\nLe protocole Vallox/Helios DIGIT utilise toujours 9600 bauds, 8N1.",
         "data": {
-          "connection": "Interface de communication avec l’unité de ventilation."
+          "connection": "Interface série ou connexion à l’unité de ventilation"
+        },
+        "data_description": {
+          "connection": "Par exemple : `socket://192.168.178.36:502`, `/dev/ttyUSB0` ou `/dev/serial/by-id/...`."
         }
       },
       "model": {
@@ -55,9 +58,12 @@
     "step": {
       "init": {
         "title": "1 / 2 - Connexion",
-        "description": "Sélectionnez une interface série déjà connue de Home Assistant.\n\n**OU**\n\nSaisissez manuellement les données de connexion dans l’un des formats suivants :\n\n- **socket://adresse_ip:port**\nConnexion série transparente via TCP, par exemple un adaptateur série-vers-Ethernet en mode transparent.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nInterface série locale physique ou virtuelle, par exemple un adaptateur USB-série ou un périphérique `socat`. Ce champ est généralement rempli automatiquement lors de la sélection d’une interface connue.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nConnexion série via un ESPHome Serial Proxy utilisant l’UART d’un ESP distant. Ce champ est généralement rempli automatiquement lors de la sélection d’une interface connue.\n\nLe protocole Vallox/Helios DIGIT utilise toujours 9600 bauds, 8N1.",
+        "description": "Sélectionnez une interface série déjà connue de Home Assistant.\n\n**OU**\n\nSaisissez manuellement les données de connexion dans l’un des formats suivants :\n\n- **socket://adresse_ip:port**\nConnexion série transparente via TCP, par exemple un adaptateur série-vers-Ethernet en mode transparent.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nInterface série locale physique ou virtuelle, par exemple un adaptateur USB-série ou un périphérique `socat`. Ce champ est généralement rempli automatiquement lors de la sélection d’une interface connue.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nConnexion série via un ESPHome Serial Proxy utilisant l’UART d’un ESP distant. Ce champ est généralement rempli automatiquement lors de la sélection d’une interface connue.",
         "data": {
-          "connection": "Interface de communication avec l’unité de ventilation."
+          "connection": "Interface série ou connexion à l’unité de ventilation"
+        },
+        "data_description": {
+          "connection": "Par exemple : `socket://192.168.178.36:502`, `/dev/ttyUSB0` ou `/dev/serial/by-id/...`."
         }
       },
       "advanced": {

@@ -5,7 +5,10 @@
         "title": "1 / 4 - Connection",
         "description": "Pick a serial interface already known to Home Assistant.\n\n**OR**\n\nEnter the connection data manually in one of the following formats:\n\n- **socket://ip_address:port**\nTransparent serial connection over TCP, e.g. a serial-to-Ethernet adapter in transparent mode.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nPhysical or virtual local serial interface, e.g. a USB-to-serial adapter or `socat` device. This is usually auto-filled by selecting a known interface.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSerial connection via an ESPHome Serial Proxy using a remote ESP UART. This is usually auto-filled by selecting a known interface.\n\nThe Vallox/Helios DIGIT protocol always uses 9600 baud, 8N1.",
         "data": {
-          "connection": "Interface for the communication to the ventilation unit."
+          "connection": "Serial interface or connection to the ventilation unit"
+        },
+        "data_description": {
+          "connection": "For example: `socket://192.168.178.36:502`, `/dev/ttyUSB0`, or `/dev/serial/by-id/...`."
         }
       },
       "model": {
@@ -13,7 +16,7 @@
         "description": "Enter a unique device name / entities prefix, and select your model to auto-populate device parameters (choose 'Custom' for manual input).",
         "data": {"entity_prefix": "Unique name (e.g. 'Ventilation')", "device_model": "Device Model"},
         "data_description": {
-          "entity_prefix": "Must be unique if multiple devices are configured (e.g. 'Basement vent', 'Upstairs vent', etc.)",
+          "entity_prefix": "Must be unique if multiple devices are configured (e.g. 'KWL', 'Basement vent', 'Upstairs vent', etc.)",
           "device_model": "Selecting a model will pre-fill the device parameters in the next step."
         }
       },
@@ -55,9 +58,12 @@
     "step": {
       "init": {
         "title": "1 / 2 - Connection",
-        "description": "Pick a serial interface already known to Home Assistant.\n\n**OR**\n\nEnter the connection data manually in one of the following formats:\n\n- **socket://ip_address:port**\nTransparent serial connection over TCP, e.g. a serial-to-Ethernet adapter in transparent mode.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nPhysical or virtual local serial interface, e.g. a USB-to-serial adapter or `socat` device. This is usually auto-filled by selecting a known interface.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSerial connection via an ESPHome Serial Proxy using a remote ESP UART. This is usually auto-filled by selecting a known interface.\n\nThe Vallox/Helios DIGIT protocol always uses 9600 baud, 8N1.",
+        "description": "Pick a serial interface already known to Home Assistant.\n\n**OR**\n\nEnter the connection data manually in one of the following formats:\n\n- **socket://ip_address:port**\nTransparent serial connection over TCP, e.g. a serial-to-Ethernet adapter in transparent mode.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nPhysical or virtual local serial interface, e.g. a USB-to-serial adapter or `socat` device. This is usually auto-filled by selecting a known interface.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSerial connection via an ESPHome Serial Proxy using a remote ESP UART. This is usually auto-filled by selecting a known interface.",
         "data": {
-          "connection": "Interface for the communication to the ventilation unit."
+          "connection": "Serial interface or connection to the ventilation unit"
+        },
+        "data_description": {
+          "connection": "For example: `socket://192.168.178.36:502`, `/dev/ttyUSB0`, or `/dev/serial/by-id/...`."
         }
       },
       "advanced": {

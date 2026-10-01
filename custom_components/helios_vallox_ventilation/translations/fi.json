@@ -5,7 +5,10 @@
         "title": "1 / 4 - Yhteys",
         "description": "Valitse Home Assistantin jo tuntema sarjaliitäntä.\n\n**TAI**\n\nSyötä yhteystiedot manuaalisesti jossakin seuraavista muodoista:\n\n- **socket://ip_osoite:portti**\nLäpinäkyvä sarjayhteys TCP:n yli, esimerkiksi sarja-Ethernet-sovitin läpinäkyvässä tilassa.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFyysinen tai virtuaalinen paikallinen sarjaliitäntä, esimerkiksi USB-sarjasovitin tai `socat`-laite. Tämä täytetään yleensä automaattisesti valitsemalla tunnettu liitäntä.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSarjayhteys ESPHome Serial Proxyn kautta käyttäen etä-ESP:n UART-porttia. Tämä täytetään yleensä automaattisesti valitsemalla tunnettu liitäntä.\n\nVallox/Helios DIGIT -protokolla käyttää aina 9600 baudia, 8N1.",
         "data": {
-          "connection": "Liitäntä ilmanvaihtokoneen tiedonsiirtoon."
+          "connection": "Sarjaliitäntä tai yhteys ilmanvaihtokoneeseen"
+        },
+        "data_description": {
+          "connection": "Esimerkiksi: `socket://192.168.178.36:502`, `/dev/ttyUSB0` tai `/dev/serial/by-id/...`."
         }
       },
       "model": {
@@ -55,9 +58,12 @@
     "step": {
       "init": {
         "title": "1 / 2 - Yhteys",
-        "description": "Valitse Home Assistantin jo tuntema sarjaliitäntä.\n\n**TAI**\n\nSyötä yhteystiedot manuaalisesti jossakin seuraavista muodoista:\n\n- **socket://ip_osoite:portti**\nLäpinäkyvä sarjayhteys TCP:n yli, esimerkiksi sarja-Ethernet-sovitin läpinäkyvässä tilassa.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFyysinen tai virtuaalinen paikallinen sarjaliitäntä, esimerkiksi USB-sarjasovitin tai `socat`-laite. Tämä täytetään yleensä automaattisesti valitsemalla tunnettu liitäntä.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSarjayhteys ESPHome Serial Proxyn kautta käyttäen etä-ESP:n UART-porttia. Tämä täytetään yleensä automaattisesti valitsemalla tunnettu liitäntä.\n\nVallox/Helios DIGIT -protokolla käyttää aina 9600 baudia, 8N1.",
+        "description": "Valitse Home Assistantin jo tuntema sarjaliitäntä.\n\n**TAI**\n\nSyötä yhteystiedot manuaalisesti jossakin seuraavista muodoista:\n\n- **socket://ip_osoite:portti**\nLäpinäkyvä sarjayhteys TCP:n yli, esimerkiksi sarja-Ethernet-sovitin läpinäkyvässä tilassa.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFyysinen tai virtuaalinen paikallinen sarjaliitäntä, esimerkiksi USB-sarjasovitin tai `socat`-laite. Tämä täytetään yleensä automaattisesti valitsemalla tunnettu liitäntä.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSarjayhteys ESPHome Serial Proxyn kautta käyttäen etä-ESP:n UART-porttia. Tämä täytetään yleensä automaattisesti valitsemalla tunnettu liitäntä.",
         "data": {
-          "connection": "Liitäntä ilmanvaihtokoneen tiedonsiirtoon."
+          "connection": "Sarjaliitäntä tai yhteys ilmanvaihtokoneeseen"
+        },
+        "data_description": {
+          "connection": "Esimerkiksi: `socket://192.168.178.36:502`, `/dev/ttyUSB0` tai `/dev/serial/by-id/...`."
         }
       },
       "advanced": {

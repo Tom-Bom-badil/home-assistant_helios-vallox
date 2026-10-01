@@ -5,7 +5,10 @@
         "title": "1 / 4 - Pripojenie",
         "description": "Vyberte sériové rozhranie, ktoré už Home Assistant pozná.\n\n**ALEBO**\n\nZadajte údaje pripojenia ručne v jednom z nasledujúcich formátov:\n\n- **socket://ip_adresa:port**\nTransparentné sériové pripojenie cez TCP, napr. sériový-Ethernet adaptér v transparentnom režime.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFyzické alebo virtuálne lokálne sériové rozhranie, napr. USB-sériový adaptér alebo zariadenie `socat`. Toto sa zvyčajne vyplní automaticky výberom známeho rozhrania.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSériové pripojenie cez ESPHome Serial Proxy využívajúce UART vzdialeného ESP. Toto sa zvyčajne vyplní automaticky výberom známeho rozhrania.\n\nProtokol Vallox/Helios DIGIT vždy používa 9600 baud, 8N1.",
         "data": {
-          "connection": "Rozhranie pre komunikáciu s ventilačnou jednotkou."
+          "connection": "Sériové rozhranie alebo pripojenie k ventilačnej jednotke"
+        },
+        "data_description": {
+          "connection": "Napríklad: `socket://192.168.178.36:502`, `/dev/ttyUSB0` alebo `/dev/serial/by-id/...`."
         }
       },
       "model": {
@@ -55,9 +58,12 @@
     "step": {
       "init": {
         "title": "1 / 2 - Pripojenie",
-        "description": "Vyberte sériové rozhranie, ktoré už Home Assistant pozná.\n\n**ALEBO**\n\nZadajte údaje pripojenia ručne v jednom z nasledujúcich formátov:\n\n- **socket://ip_adresa:port**\nTransparentné sériové pripojenie cez TCP, napr. sériový-Ethernet adaptér v transparentnom režime.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFyzické alebo virtuálne lokálne sériové rozhranie, napr. USB-sériový adaptér alebo zariadenie `socat`. Toto sa zvyčajne vyplní automaticky výberom známeho rozhrania.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSériové pripojenie cez ESPHome Serial Proxy využívajúce UART vzdialeného ESP. Toto sa zvyčajne vyplní automaticky výberom známeho rozhrania.\n\nProtokol Vallox/Helios DIGIT vždy používa 9600 baud, 8N1.",
+        "description": "Vyberte sériové rozhranie, ktoré už Home Assistant pozná.\n\n**ALEBO**\n\nZadajte údaje pripojenia ručne v jednom z nasledujúcich formátov:\n\n- **socket://ip_adresa:port**\nTransparentné sériové pripojenie cez TCP, napr. sériový-Ethernet adaptér v transparentnom režime.\n\n- **/dev/serial/by-id/...**, **/dev/ttyUSB...**, **/dev/...**\nFyzické alebo virtuálne lokálne sériové rozhranie, napr. USB-sériový adaptér alebo zariadenie `socat`. Toto sa zvyčajne vyplní automaticky výberom známeho rozhrania.\n\n- **esphome-hass://esphome/ID?port_name=PORT**\nSériové pripojenie cez ESPHome Serial Proxy využívajúce UART vzdialeného ESP. Toto sa zvyčajne vyplní automaticky výberom známeho rozhrania.",
         "data": {
-          "connection": "Rozhranie pre komunikáciu s ventilačnou jednotkou."
+          "connection": "Sériové rozhranie alebo pripojenie k ventilačnej jednotke"
+        },
+        "data_description": {
+          "connection": "Napríklad: `socket://192.168.178.36:502`, `/dev/ttyUSB0` alebo `/dev/serial/by-id/...`."
         }
       },
       "advanced": {
